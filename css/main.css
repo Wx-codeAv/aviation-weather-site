@@ -368,3 +368,437 @@ footer .container {
   z-index: 10;
 }
 .tag:hover::after { opacity: 1; }
+
+/* ============================================
+   Concept pages (pages/learn/*)
+   Sectional-chart aesthetic, study-friendly layout.
+   ============================================ */
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.7rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.breadcrumb a {
+  color: var(--ink-soft);
+  border: none;
+}
+.breadcrumb a:hover { color: var(--rust); }
+.breadcrumb-sep { color: var(--rule); margin: 0 0.5rem; }
+
+/* ---------- Concept hero ---------- */
+.concept-hero {
+  padding: 3.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.concept-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0.005em;
+  margin-bottom: 1.2rem;
+}
+.concept-hero h1 .accent { color: var(--rust); }
+.concept-hero .lede {
+  font-size: 1.1rem;
+  max-width: 60ch;
+  margin-bottom: 1.5rem;
+}
+.concept-hero .lede em { font-style: italic; color: var(--ink); }
+.concept-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sage);
+}
+.concept-meta-item strong { color: var(--ink); margin-right: 0.3rem; font-weight: 600; }
+
+/* ---------- Body grid: sidebar + article ---------- */
+.concept-body { padding: 3rem 0 5rem; }
+.concept-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .concept-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* ---------- Sidebar TOC ---------- */
+.concept-toc {
+  position: sticky;
+  top: 100px; /* clears the sticky site header */
+  font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+  .concept-toc {
+    position: static;
+    border: 1px solid var(--rule);
+    padding: 1.2rem;
+    background: #fffaf0;
+  }
+}
+.toc-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rust);
+  margin: 0 0 0.8rem;
+}
+.concept-toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: toc;
+}
+.concept-toc li {
+  counter-increment: toc;
+  padding: 0.35rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.concept-toc li::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--sage);
+  margin-right: 0.6rem;
+}
+.concept-toc a {
+  color: var(--ink-soft);
+  border: none;
+  font-weight: 500;
+}
+.concept-toc a:hover { color: var(--rust); }
+
+/* ---------- Article body ---------- */
+.concept-article { max-width: 70ch; }
+.concept-article section { margin-bottom: 3.5rem; scroll-margin-top: 90px; }
+.concept-article h2 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  letter-spacing: 0.015em;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--ink);
+  display: inline-block;
+}
+.concept-article h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.6rem;
+}
+.concept-article p { margin: 0 0 1.1rem; }
+.concept-article ul, .concept-article ol { padding-left: 1.4rem; margin: 0 0 1.2rem; }
+.concept-article li { margin-bottom: 0.4rem; }
+.concept-article strong { color: var(--ink); font-weight: 700; }
+
+/* ---------- Hazard cards (the three AIRMETs) ---------- */
+.card-grid {
+  display: grid;
+  gap: 1.2rem;
+  margin: 1.5rem 0 2rem;
+}
+.card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 800px) {
+  .card-grid-3 { grid-template-columns: 1fr; }
+}
+.hazard-card {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--ink);
+  padding: 1.4rem;
+  position: relative;
+}
+.hazard-sierra { border-top-color: var(--sky); }
+.hazard-tango  { border-top-color: var(--sun); }
+.hazard-zulu   { border-top-color: var(--rust); }
+.hazard-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--sage);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.hazard-card h3 { font-size: 1.1rem; margin-bottom: 0.7rem; }
+.hazard-mnemonic {
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 1px dashed var(--rule);
+}
+.hazard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.92rem;
+}
+.hazard-list li {
+  padding: 0.25rem 0 0.25rem 1.2rem;
+  position: relative;
+}
+.hazard-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--rust);
+}
+
+/* ---------- Callout (highlighted note) ---------- */
+.callout {
+  background: rgba(217, 165, 33, 0.12);
+  border-left: 4px solid var(--sun);
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+/* ---------- Compare table (two-col definition lists) ---------- */
+.compare-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--rule);
+  margin: 1.5rem 0 2rem;
+  background: #fffaf0;
+}
+@media (max-width: 700px) {
+  .compare-table { grid-template-columns: 1fr; }
+  .compare-col + .compare-col { border-top: 1px solid var(--rule); }
+}
+.compare-col { padding: 1.4rem; }
+.compare-col + .compare-col { border-left: 1px solid var(--rule); }
+@media (max-width: 700px) {
+  .compare-col + .compare-col { border-left: none; }
+}
+.compare-head {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ink);
+  letter-spacing: 0.03em;
+}
+.compare-col dl { margin: 0; }
+.compare-col dt {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sage);
+  margin-top: 0.8rem;
+}
+.compare-col dt:first-child { margin-top: 0; }
+.compare-col dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+/* ---------- Q&A details/accordion ---------- */
+.qa {
+  border: 1px solid var(--rule);
+  background: #fffaf0;
+  padding: 0;
+  margin-bottom: 0.7rem;
+}
+.qa summary {
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+  list-style: none;
+  position: relative;
+  padding-right: 2.5rem;
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after {
+  content: "+";
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--rust);
+  transition: transform 0.2s;
+}
+.qa[open] summary::after { content: "−"; }
+.qa[open] summary { border-bottom: 1px solid var(--rule); }
+.qa p {
+  padding: 1rem 1.2rem;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ---------- Decision scenario ---------- */
+.scenario-disclaimer {
+  font-size: 0.85rem;
+  background: rgba(181, 61, 31, 0.08);
+  border: 1px solid var(--rust);
+  padding: 0.7rem 1rem;
+  margin-bottom: 1.2rem;
+  color: var(--ink);
+}
+.scenario-box {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1.6rem;
+}
+.scenario-setup {
+  border-bottom: 1px dashed var(--rule);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.scenario-question {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  margin: 1.2rem 0 0.8rem;
+}
+.scenario-questions {
+  margin-bottom: 1.2rem;
+}
+.scenario-questions li { margin-bottom: 0.7rem; }
+.scenario-takeaway {
+  background: var(--ink);
+  color: var(--buff);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+}
+.scenario-takeaway strong { color: var(--sun); }
+
+/* ---------- Pilot takeaway ---------- */
+.takeaway-box {
+  background: var(--ink);
+  color: var(--buff);
+  padding: 1.6rem;
+  border-left: 4px solid var(--rust);
+}
+.takeaway-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.takeaway-list li {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(244, 236, 214, 0.15);
+}
+.takeaway-list li:last-child { border-bottom: none; }
+.takeaway-list li::before {
+  content: "✈";
+  position: absolute;
+  left: 0;
+  color: var(--sun);
+}
+.takeaway-list strong { color: var(--sun); font-weight: 700; }
+
+/* ---------- Bottom nav between concepts ---------- */
+.concept-nav-bottom {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.concept-nav-link {
+  color: var(--ink);
+  border: none;
+  font-weight: 600;
+}
+.concept-nav-link:hover { color: var(--rust); }
+.concept-nav-next {
+  color: var(--ink-soft);
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- Learn index — concept list cards ---------- */
+.learn-list {
+  display: grid;
+  gap: 0.8rem;
+}
+.learn-card {
+  display: grid;
+  grid-template-columns: 60px 1fr 30px;
+  gap: 1.5rem;
+  align-items: center;
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1.6rem;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.learn-card:hover {
+  border-color: var(--rust);
+  transform: translate(-1px, -1px);
+}
+.learn-card-pending {
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+  background: transparent;
+}
+.learn-card-num {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: var(--rust);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.learn-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.4rem;
+  color: var(--ink);
+}
+.learn-card p {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+.learn-card-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sage);
+}
+.learn-card-pending .learn-card-meta { color: var(--ink-soft); }
+.learn-card-arrow {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--rust);
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .learn-card {
+    grid-template-columns: 40px 1fr;
+  }
+  .learn-card-arrow { display: none; }
+}

@@ -14,13 +14,17 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 
 ## Phase 2 — Learn section (Weeks 3–5)
 
-Goal: build out the educational content. This is where your tutoring experience matters most.
+Goal: build out the educational content. This is where tutoring experience matters most.
 
-- [ ] Outline every ACS weather task element (Private + Instrument)
-- [ ] Pick the 6–8 concepts students struggle with most (you'll know these)
-- [ ] Build a template page for a single concept: explanation, diagram, "what examiners ask"
-- [ ] Fill in the first three concepts
-- [ ] Add navigation between concepts
+- [x] Outline every ACS weather task element (Private + Instrument)
+- [x] Pick the 6–8 concepts students struggle with most
+- [x] Build a template page for a single concept: explanation, sidebar TOC, hazard cards, comparison table, Q&A accordion, decision scenario, takeaway
+- [x] Build out AIRMETs & SIGMETs as the first complete concept page
+- [x] Build the Learn index page listing all concepts (available + coming soon)
+- [ ] Add Stability & Lapse Rates page
+- [ ] Add Fog Formation page
+- [ ] Add remaining concepts (thunderstorms, icing, turbulence, fronts)
+- [ ] Add cross-links between related concepts
 
 ## Phase 3 — METAR/TAF Decoder (Weeks 6–8)
 
@@ -31,6 +35,7 @@ Goal: a working tool that takes a METAR and produces a visual + plain-English br
 - [ ] Add the visual layer: wind arrow, cloud layers, visibility ring
 - [ ] Pull live METARs from aviationweather.gov by ICAO code
 - [ ] Repeat for TAFs (harder — they have time periods)
+- [ ] Stretch: pull live AIRMETs/SIGMETs by route from aviationweather.gov
 
 ## Phase 4 — Nav Log Helper (Weeks 9–11)
 

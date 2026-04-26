@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIRMETs &amp; SIGMETs — CrosswindWX</title>
+  <meta name="description" content="The difference between AIRMETs, SIGMETs, and Convective SIGMETs, explained in plain English for pilots.">
+  <!-- Two ../ because this page sits two folders deep: pages/learn/ -->
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>AIRMETs &amp; SIGMETs</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · In-flight weather advisories</p>
+      <h1>AIRMETs <span class="accent">&amp;</span> SIGMETs</h1>
+      <p class="lede">
+        These are the FAA's way of saying <em>"hey, something's going on out there you should know about."</em> The names are confusing, the categories overlap, and most students mix them up at least once. Let's walk through it step by step.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K1, IR.I.C.K1</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~8 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav (sticky on desktop) -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what">What they are</a></li>
+          <li><a href="#why">Why pilots care</a></li>
+          <li><a href="#airmet-types">The three AIRMETs</a></li>
+          <li><a href="#vs-sigmet">AIRMET vs SIGMET</a></li>
+          <li><a href="#convective">Convective SIGMETs</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Decision scenario</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: What they are -->
+        <section id="what">
+          <h2>What they are</h2>
+          <p>
+            An <strong>AIRMET</strong> (AIRmen's METeorological Information) and a <strong>SIGMET</strong> (SIGnificant METeorological Information) are both <em>in-flight weather advisories</em>. The Aviation Weather Center issues them to warn pilots about conditions that could affect flight safety — turbulence, icing, low ceilings, mountain obscuration, thunderstorms, volcanic ash, dust storms.
+          </p>
+          <p>
+            The fastest way to keep them straight: <strong>AIRMET = "hazardous to small/light aircraft." SIGMET = "hazardous to all aircraft."</strong> Same idea, two severity levels.
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            These are the FAA's official "we're telling you, in writing, that this hazard exists." If you take off into known icing without checking AIRMET Zulu, and something goes wrong, you'll have a hard time arguing you didn't have the information. Both products are part of a complete weather briefing under <strong>FAR 91.103</strong> — preflight action.
+          </p>
+          <p>
+            Practically: AIRMETs and SIGMETs are how you find out about hazards that don't show up cleanly on a METAR or TAF. A surface report at your departure airport tells you it's clear and a million. It doesn't tell you there's moderate rime icing forecast along your route at 8,000 ft.
+          </p>
+        </section>
+
+        <!-- Section: The three AIRMETs (cards) -->
+        <section id="airmet-types">
+          <h2>The three AIRMETs</h2>
+          <p>
+            AIRMETs come in three flavors. Each one covers a specific type of hazard. The names are phonetic alphabet letters, which is mostly memorable once you know the trick:
+          </p>
+
+          <div class="card-grid card-grid-3">
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">AIRMET Sierra</span>
+              <h3>IFR &amp; Mountain Obscuration</h3>
+              <p class="hazard-mnemonic">"<strong>S</strong>ight" — anything that limits how far you can see.</p>
+              <ul class="hazard-list">
+                <li>Ceilings below 1,000 ft AGL</li>
+                <li>Visibility below 3 SM</li>
+                <li>Mountains obscured by clouds, precip, or haze</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">AIRMET Tango</span>
+              <h3>Turbulence &amp; Strong Surface Winds</h3>
+              <p class="hazard-mnemonic">"<strong>T</strong>urbulence" — the easy one to remember.</p>
+              <ul class="hazard-list">
+                <li>Moderate turbulence</li>
+                <li>Sustained surface winds 30 kt or greater</li>
+                <li>Non-convective low-level wind shear</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-zulu">
+              <span class="hazard-label">AIRMET Zulu</span>
+              <h3>Icing &amp; Freezing Levels</h3>
+              <p class="hazard-mnemonic">"<strong>Z</strong>ero degrees" — think freezing.</p>
+              <ul class="hazard-list">
+                <li>Moderate icing</li>
+                <li>Forecast freezing levels</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <p class="callout">
+            <strong>Heads up:</strong> AIRMETs only describe <em>moderate</em> conditions. If turbulence or icing is forecast as <em>severe</em>, that's a SIGMET. Same hazard, more severe — different product.
+          </p>
+        </section>
+
+        <!-- Section: AIRMET vs SIGMET -->
+        <section id="vs-sigmet">
+          <h2>AIRMET vs SIGMET — the key distinction</h2>
+          <p>
+            This is the one most students get wrong on the oral. Read the table top-to-bottom, not column-by-column:
+          </p>
+
+          <div class="compare-table">
+            <div class="compare-col">
+              <h3 class="compare-head">AIRMET</h3>
+              <dl>
+                <dt>Severity</dt>
+                <dd>Moderate</dd>
+                <dt>Affects</dt>
+                <dd>Light aircraft, often pilots without certain ratings or equipment</dd>
+                <dt>Issued every</dt>
+                <dd>6 hours, with amendments as needed</dd>
+                <dt>Valid for</dt>
+                <dd>6 hours</dd>
+                <dt>Examples</dt>
+                <dd>Moderate icing, ceiling 800 ft, moderate turbulence</dd>
+              </dl>
+            </div>
+            <div class="compare-col">
+              <h3 class="compare-head">SIGMET</h3>
+              <dl>
+                <dt>Severity</dt>
+                <dd>Severe — hazardous to <em>all</em> aircraft</dd>
+                <dt>Affects</dt>
+                <dd>Everyone, including airliners</dd>
+                <dt>Issued</dt>
+                <dd>As needed, when conditions warrant</dd>
+                <dt>Valid for</dt>
+                <dd>Up to 4 hours (longer for volcanic ash and tropical cyclones)</dd>
+                <dt>Examples</dt>
+                <dd>Severe icing, severe turbulence, volcanic ash, dust storms reducing vis below 3 SM, tropical cyclones</dd>
+              </dl>
+            </div>
+          </div>
+
+          <p>
+            One way I explain it to my tutoring students: an AIRMET is the equivalent of a winter weather advisory on a regular forecast. A SIGMET is the equivalent of a winter storm warning. Same hazard family, but the warning version means it's serious enough that everyone should pay attention.
+          </p>
+        </section>
+
+        <!-- Section: Convective SIGMETs -->
+        <section id="convective">
+          <h2>Convective SIGMETs — the third category</h2>
+          <p>
+            Convective SIGMETs are the FAA's separate product specifically for thunderstorms and the things thunderstorms produce. They get their own category because thunderstorms are uniquely dangerous and uniquely common, and pilots need a dedicated product for them.
+          </p>
+          <p>A Convective SIGMET is automatically issued when there's:</p>
+          <ul>
+            <li>An area of thunderstorms covering 3,000 sq mi or greater with thunderstorms affecting at least 40% of the area</li>
+            <li>Embedded or severe thunderstorms expected to last 30+ minutes</li>
+            <li>Tornadoes</li>
+            <li>Hail at the surface ≥ 3/4 inch</li>
+            <li>Wind gusts ≥ 50 knots at the surface</li>
+          </ul>
+          <p>
+            Convective SIGMETs are issued hourly at H+55 (five minutes before the top of each hour) and are valid for 2 hours. They cover three regions: Eastern, Central, and Western U.S.
+          </p>
+          <p class="callout">
+            <strong>The relationship to remember:</strong> if you have a Convective SIGMET in effect, you don't <em>also</em> need a regular SIGMET for the same area — the convective one already covers severe turbulence, icing, and low-level wind shear that come with thunderstorms.
+          </p>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>
+            Pulled from real ACS oral exam questions and what your DPE is likely to push on. Try to answer each before reading the response.
+          </p>
+
+          <details class="qa">
+            <summary>Q: What's the difference between an AIRMET and a SIGMET?</summary>
+            <p>Severity. AIRMETs cover moderate conditions hazardous to light aircraft. SIGMETs cover severe conditions hazardous to all aircraft. Same hazard families (turbulence, icing) — different intensity thresholds.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What three types of AIRMETs exist and what does each cover?</summary>
+            <p>Sierra (IFR conditions and mountain obscuration), Tango (turbulence and strong surface winds), Zulu (icing and freezing levels). Memory aid: Sight, Turbulence, Zero degrees.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How long is an AIRMET valid for? A SIGMET?</summary>
+            <p>AIRMETs are issued every 6 hours and valid for 6 hours. SIGMETs are issued as needed and valid for up to 4 hours (longer for volcanic ash and tropical cyclones — up to 6 hours for those).</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why is there a separate Convective SIGMET product?</summary>
+            <p>Thunderstorms are common and uniquely dangerous, with multiple hazards bundled together (severe turbulence, severe icing, hail, wind shear, tornadoes). Giving them a dedicated product issued hourly means pilots get current convective info without it being buried in other advisories.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: You're VFR-only and there's an AIRMET Sierra along your route. Can you legally fly?</summary>
+            <p>"Legally" — yes, AIRMETs are advisory, not prohibitive. But the AIRMET tells you to expect ceilings below 1,000 ft or visibility below 3 SM somewhere in the affected area, which would put you in IFR conditions you're not rated for. The right answer is to identify where the IFR conditions are forecast, decide whether your route avoids them, and have an alternate plan. The AIRMET doesn't make the decision — it gives you information to make one.</p>
+          </details>
+        </section>
+
+        <!-- Section: Decision scenario -->
+        <section id="scenario">
+          <h2>Decision scenario</h2>
+          <p class="scenario-disclaimer">
+            <strong>Educational example only.</strong> Not for real flight planning. Real go/no-go decisions require official sources, current data, and your own pilot-in-command judgment.
+          </p>
+
+          <div class="scenario-box">
+            <p class="scenario-setup">
+              <strong>The setup:</strong> January morning. You're a Private Pilot, no instrument rating, planning a VFR cross-country in a Cessna 172 from a low-elevation airport over moderate mountain terrain to a destination on the other side. Cruise altitude 9,500 ft. Surface conditions at both airports look fine — clear skies, light winds, 10 SM visibility.
+            </p>
+            <p class="scenario-setup">
+              The briefing shows an <strong>AIRMET Zulu</strong> in effect along your route: <em>"Moderate icing between freezing level and FL180. Freezing level surface to 4,000 ft."</em>
+            </p>
+
+            <p class="scenario-question"><strong>What questions should you be asking?</strong></p>
+
+            <ol class="scenario-questions">
+              <li><strong>Where exactly is the freezing level relative to my route?</strong> If it's at the surface to 4,000 ft, my 9,500 ft cruise puts me well into icing territory.</li>
+              <li><strong>Is there visible moisture at my altitude?</strong> No moisture, no icing — but the AIRMET wouldn't be issued if forecasters didn't expect moisture somewhere along the route.</li>
+              <li><strong>What's my aircraft equipped for?</strong> A 172 is not certified for flight into known icing. "Known icing" includes a forecast you've read.</li>
+              <li><strong>What's my exit strategy if I encounter ice?</strong> Descending below freezing level might not be possible over mountains. Climbing above might not be possible in a 172.</li>
+              <li><strong>What does the rest of my briefing show?</strong> PIREPs of actual icing? Cloud tops? Temperature aloft data?</li>
+            </ol>
+
+            <p class="scenario-takeaway">
+              The AIRMET didn't tell you whether to fly. It told you that ice is forecast in the airspace you're planning to use. Whether you go is your decision as PIC, informed by the AIRMET, the rest of your briefing, your aircraft's capabilities, your personal minimums, and your willingness to turn around if it gets worse than forecast.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>AIRMET = moderate, light-aircraft hazard.</strong> Sierra (visibility), Tango (turbulence), Zulu (icing).</li>
+              <li><strong>SIGMET = severe, all-aircraft hazard.</strong> Same families as AIRMETs, but the severe versions.</li>
+              <li><strong>Convective SIGMET = thunderstorm-specific.</strong> Issued hourly, valid 2 hours, covers TS-related hazards in one bundle.</li>
+              <li><strong>They're advisories, not commands.</strong> Your job is to read them, understand what they say about your specific route and altitude, and use them as one input into a PIC decision.</li>
+              <li><strong>Read freshly every time.</strong> AIRMETs are valid 6 hours, SIGMETs up to 4. By the time you're rolling onto the runway, the briefing you got 90 minutes ago might already be stale.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Next concept -->
+        <nav class="concept-nav-bottom">
+          <a href="../learn.html" class="concept-nav-link">← Back to Learn</a>
+          <span class="concept-nav-next">Next concept: Stability &amp; Lapse Rates (coming soon)</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

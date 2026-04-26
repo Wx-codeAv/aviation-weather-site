@@ -4,9 +4,18 @@ An aviation weather site that translates the dense, cryptic weather products pil
 
 ## Why this exists
 
+This site has two goals:
+
+1. Help pilots prepare for the weather knowledge and risk-management portions of the FAA ACS / checkride.
+2. Make aviation weather easier to understand and more interesting, so pilots actually develop appreciation for meteorology rather than just memorizing definitions.
+
 Most pilots — including ones already certificated — struggle with the weather portions of the ACS. The official products (METARs, TAFs, prog charts, AIRMETs, SIGMETs, area forecasts, icing/turbulence/PIREP data) are not the problem. They're free, accessible, and authoritative. The problem is that they were designed in the 1970s for teletype machines and have never been re-translated for visual learners.
 
-CrosswindWX does that translation.
+CrosswindWX does that translation, and tries to make the underlying meteorology genuinely interesting along the way.
+
+## Who's building this
+
+Built by a private pilot with an instrument rating, currently working toward commercial, with a minor in meteorology and experience tutoring weather lab at university. End goal: fly for NOAA.
 
 ## Planned sections
 
