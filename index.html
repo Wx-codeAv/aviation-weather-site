@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrosswindWX — aviation weather, decoded</title>
+  <meta name="description" content="Aviation weather products translated for student pilots and check-ride preparation.">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Crosswind<span class="brand-mark">WX</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="pages/learn.html">Learn</a></li>
+          <li><a href="pages/decoder.html">Decoder</a></li>
+          <li><a href="pages/navlog.html">Nav Log</a></li>
+          <li><a href="pages/acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Hero ============== -->
+  <section class="hero">
+    <div class="container">
+      <!-- subtle compass-rose ornament, top-right -->
+      <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#0c2541" stroke-width="1"/>
+        <circle cx="50" cy="50" r="32" fill="none" stroke="#0c2541" stroke-width="0.5"/>
+        <polygon points="50,8 53,50 50,92 47,50" fill="#b53d1f"/>
+        <polygon points="8,50 50,47 92,50 50,53" fill="#0c2541"/>
+        <text x="50" y="6" text-anchor="middle" font-family="Anton, sans-serif" font-size="8" fill="#0c2541">N</text>
+        <text x="50" y="99" text-anchor="middle" font-family="Anton, sans-serif" font-size="8" fill="#0c2541">S</text>
+      </svg>
+
+      <div class="hero-grid">
+        <div>
+          <p class="hero-eyebrow">Aviation weather, decoded</p>
+          <h1>
+            The TAF<br>
+            said <span class="accent">VCTS.</span><br>
+            What now?
+          </h1>
+          <p class="lede">
+            Built by a meteorology tutor and a student pilot, for the people who freeze when an examiner asks what an AIRMET Sierra means. The weather products are doing fine. The translations are not.
+          </p>
+          <a href="pages/decoder.html" class="hero-cta">Decode a METAR →</a>
+        </div>
+
+        <!-- Sample METAR card with tooltips -->
+        <div class="metar-card">
+          <span class="metar-card-label">METAR · KDAB</span>
+          <p class="metar-raw">
+            KDAB
+            <span class="tag" data-tip="Day 25, 17:53 Zulu">251753Z</span>
+            <span class="tag tag-wind" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
+            <span class="tag tag-vis" data-tip="Visibility 6 statute miles">6SM</span>
+            <span class="tag tag-wx" data-tip="Light rain in the vicinity">-RA</span>
+            <span class="tag" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
+            <span class="tag" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
+            22/19
+            <span class="tag" data-tip="Altimeter 29.84 inHg">A2984</span>
+          </p>
+          <dl class="metar-decode">
+            <dt>Wind</dt>
+            <dd>240° at 14 kt, gusting 22</dd>
+            <dt>Vis</dt>
+            <dd>6 SM, light rain</dd>
+            <dt>Sky</dt>
+            <dd>BKN 2,500 · OVC 8,000</dd>
+            <dt>Temp</dt>
+            <dd>22°C / dew 19°C — spread of 3</dd>
+            <dt>Alt</dt>
+            <dd>29.84 inHg</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule container">
+
+  <!-- ============== Features ============== -->
+  <section id="features">
+    <div class="container">
+      <p class="section-label">— Sections in development</p>
+      <h2 class="section-title">Four tools, one job: get pilots to "I understand."</h2>
+
+      <div class="features">
+        <article class="feature">
+          <span class="feature-num">01 / Learn</span>
+          <h3>Concepts mapped to the ACS</h3>
+          <p>Every weather concept the ACS expects you to know — fronts, stability, icing, fog, thunderstorms, turbulence — explained the way a tutor would explain it. With visuals, and with what the examiner actually wants to hear.</p>
+          <span class="feature-status upcoming">In progress · Phase 2</span>
+        </article>
+
+        <article class="feature">
+          <span class="feature-num">02 / Decoder</span>
+          <h3>METAR &amp; TAF translator</h3>
+          <p>Paste a raw METAR or TAF. Get a plain-English breakdown plus a visual: cloud layers at altitude, wind arrow over a runway, visibility ring. The way you wish you'd been taught it the first time.</p>
+          <span class="feature-status upcoming">Planned · Phase 3</span>
+        </article>
+
+        <article class="feature">
+          <span class="feature-num">03 / Nav Log</span>
+          <h3>Cross-country, walked through</h3>
+          <p>A guided nav log builder. Enter your route, pick an altitude, the tool pulls winds aloft and computes WCA, ground speed, ETE, and fuel burn per leg. For students drowning in their first XC plan.</p>
+          <span class="feature-status upcoming">Planned · Phase 4</span>
+        </article>
+
+        <article class="feature">
+          <span class="feature-num">04 / ACS</span>
+          <h3>The standard, looked up fast</h3>
+          <p>The weather-related ACS task elements for Private, Instrument, and Commercial. Search by topic, see the standard, jump straight to the relevant explainer. No more PDF-scrolling at 11 PM the night before.</p>
+          <span class="feature-status upcoming">Planned · Phase 5</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== About strip ============== -->
+  <section class="about">
+    <div class="container">
+      <p class="section-label">— Why this exists</p>
+      <h2>Most pilots don't fail weather questions because they're bad at weather.</h2>
+      <p>
+        They fail because the products were designed for a 1970s teletype and have never been re-translated for visual learners. As a meteorology tutor and student pilot working through the ratings, I see the same six concepts trip people up over and over. CrosswindWX is the site I wish I'd had when I started studying for my own check-ride.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Not for navigation · Not for flight planning · Educational use only</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

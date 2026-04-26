@@ -1,0 +1,370 @@
+/* ============================================
+   CrosswindWX — main stylesheet
+   Aesthetic: sectional aeronautical chart
+   Cream background, navy ink, sage green, aviation red.
+   ============================================ */
+
+/* ---------- Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ---------- CSS variables ---------- */
+:root {
+  --buff: #f4ecd6;          /* sectional chart base */
+  --buff-dark: #e8dcb8;     /* slightly darker for depth */
+  --ink: #0c2541;           /* navy "ink" for text */
+  --ink-soft: #2d4360;      /* softer navy for body text */
+  --sage: #5d6f3c;          /* aviation green */
+  --rust: #b53d1f;          /* aviation red / caution */
+  --sky: #4a7ba6;           /* navigation chart blue */
+  --sun: #d9a521;           /* METAR yellow / runway markings */
+  --rule: #b9a87a;          /* hairline color, like chart contour lines */
+
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --max-width: 1200px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  background: var(--buff);
+  /* subtle grain for paper-chart feel */
+  background-image:
+    radial-gradient(circle at 25% 35%, rgba(181, 61, 31, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 75% 65%, rgba(93, 111, 60, 0.04) 0%, transparent 40%);
+}
+
+a { color: var(--sky); text-decoration: none; border-bottom: 1px solid currentColor; }
+a:hover { color: var(--rust); }
+
+h1, h2, h3 { color: var(--ink); margin: 0; }
+
+/* ---------- Layout helpers ---------- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 4rem 0;
+}
+
+/* ---------- Header / Nav ---------- */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  background: var(--buff);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.1rem;
+  padding-bottom: 1.1rem;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  border: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.brand .brand-mark {
+  color: var(--rust);
+  font-size: 0.8em;
+  letter-spacing: 0;
+}
+.nav-links {
+  display: flex;
+  gap: 1.8rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  border: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.nav-links a:hover { border-bottom-color: var(--rust); color: var(--ink); }
+
+@media (max-width: 700px) {
+  .nav-links { gap: 1rem; font-size: 0.85rem; }
+  .nav-links a { font-size: 0.85rem; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 5rem 0 3rem;
+  position: relative;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sage);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--sage);
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 .accent { color: var(--rust); }
+
+.hero p.lede {
+  font-size: 1.15rem;
+  max-width: 38ch;
+  margin-bottom: 2rem;
+}
+
+.hero-cta {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--buff);
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  padding: 0.9rem 1.8rem;
+  border: none;
+  font-size: 1rem;
+  transition: background 0.15s, transform 0.15s;
+}
+.hero-cta:hover { background: var(--rust); color: var(--buff); transform: translate(-1px, -1px); }
+
+/* ---------- METAR teaser card ---------- */
+.metar-card {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1.8rem;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--buff-dark);
+}
+.metar-card-label {
+  position: absolute;
+  top: -12px;
+  left: 1.5rem;
+  background: var(--rust);
+  color: var(--buff);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+.metar-raw {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.7;
+  word-break: break-all;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px dashed var(--rule);
+}
+.metar-raw .tag {
+  background: var(--sun);
+  padding: 1px 4px;
+  border-radius: 2px;
+  cursor: help;
+}
+.metar-raw .tag-wind { background: rgba(74, 123, 166, 0.25); }
+.metar-raw .tag-vis  { background: rgba(93, 111, 60, 0.25); }
+.metar-raw .tag-wx   { background: rgba(181, 61, 31, 0.2); }
+
+.metar-decode {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  font-size: 0.92rem;
+}
+.metar-decode dt {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-top: 2px;
+}
+.metar-decode dd { margin: 0; color: var(--ink); }
+
+/* ---------- Sections ---------- */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rust);
+  margin-bottom: 0.8rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 0.01em;
+  margin-bottom: 2.5rem;
+  max-width: 22ch;
+}
+
+/* ---------- Feature grid ---------- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border: 1px solid var(--rule);
+}
+@media (max-width: 700px) {
+  .features { grid-template-columns: 1fr; }
+}
+.feature {
+  padding: 2.2rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  transition: background 0.2s;
+}
+.feature:nth-child(2n) { border-right: none; }
+.feature:nth-last-child(-n+2) { border-bottom: none; }
+@media (max-width: 700px) {
+  .feature { border-right: none; }
+  .feature:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .feature:last-child { border-bottom: none; }
+}
+.feature:hover { background: rgba(255, 250, 240, 0.6); }
+.feature-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--rust);
+  letter-spacing: 0.1em;
+}
+.feature h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+  margin: 0.6rem 0 0.8rem;
+}
+.feature p { margin: 0; font-size: 0.95rem; }
+.feature-status {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 1.2rem;
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--sage);
+}
+.feature-status.upcoming { color: var(--ink-soft); border-color: var(--rule); }
+
+/* ---------- About strip ---------- */
+.about {
+  background: var(--ink);
+  color: var(--buff);
+  padding: 4rem 0;
+  margin-top: 5rem;
+}
+.about h2 {
+  color: var(--buff);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  margin-bottom: 1.2rem;
+  max-width: 24ch;
+}
+.about p { max-width: 60ch; color: rgba(244, 236, 214, 0.85); }
+.about .section-label { color: var(--sun); }
+
+/* ---------- Footer ---------- */
+footer {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ---------- Compass rose ornament ---------- */
+.compass {
+  position: absolute;
+  top: 2rem;
+  right: var(--gutter);
+  width: 60px;
+  height: 60px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ---------- Tooltip on tagged METAR words ---------- */
+.tag { position: relative; }
+.tag::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--buff);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.tag:hover::after { opacity: 1; }
