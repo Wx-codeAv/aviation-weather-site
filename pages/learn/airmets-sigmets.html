@@ -45,7 +45,8 @@
         These are the FAA's way of saying <em>"hey, something's going on out there you should know about."</em> The names are confusing, the categories overlap, and most students mix them up at least once. Let's walk through it step by step.
       </p>
       <div class="concept-meta">
-        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K1, IR.I.C.K1</span>
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K2g · IR.I.B.K2g · CA.I.C.K2g</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1c</span>
         <span class="concept-meta-item"><strong>Read time:</strong> ~8 min</span>
       </div>
     </div>
@@ -92,6 +93,9 @@
           </p>
           <p>
             Practically: AIRMETs and SIGMETs are how you find out about hazards that don't show up cleanly on a METAR or TAF. A surface report at your departure airport tells you it's clear and a million. It doesn't tell you there's moderate rime icing forecast along your route at 8,000 ft.
+          </p>
+          <p class="callout">
+            <strong>Checkride context:</strong> AIRMETs and SIGMETs fall under K2g of the weather task — that's <code>PA.I.C.K2g</code> for Private, <code>IR.I.B.K2g</code> for Instrument, and <code>CA.I.C.K2g</code> for Commercial. The K2 sub-elements are essentially identical across all three ratings. If your DPE picks K2, they'll assess at least three of the seven products listed (K2a–K2g), so know this one alongside METARs, TAFs, the GFA, surface analysis charts, winds aloft, and the convective outlook.
           </p>
         </section>
 
@@ -194,19 +198,31 @@
           <p>
             Convective SIGMETs are the FAA's separate product specifically for thunderstorms and the things thunderstorms produce. They get their own category because thunderstorms are uniquely dangerous and uniquely common, and pilots need a dedicated product for them.
           </p>
-          <p>A Convective SIGMET is automatically issued when there's:</p>
-          <ul>
-            <li>An area of thunderstorms covering 3,000 sq mi or greater with thunderstorms affecting at least 40% of the area</li>
-            <li>Embedded or severe thunderstorms expected to last 30+ minutes</li>
-            <li>Tornadoes</li>
-            <li>Hail at the surface ≥ 3/4 inch</li>
-            <li>Wind gusts ≥ 50 knots at the surface</li>
-          </ul>
           <p>
-            Convective SIGMETs are issued hourly at H+55 (five minutes before the top of each hour) and are valid for 2 hours. They cover three regions: Eastern, Central, and Western U.S.
+            <strong>AC 00-45H</strong> (the FAA's <em>Aviation Weather Services</em> advisory circular) divides the criteria into two categories. Knowing the distinction is useful — and testable.
+          </p>
+
+          <h3 style="margin-top: 1.4rem;">Routine issuance criteria</h3>
+          <p>A routine Convective SIGMET is issued when any of these are occurring or expected:</p>
+          <ul>
+            <li>A <strong>line of thunderstorms at least 60 miles long</strong>, with thunderstorms affecting at least 40% of its length</li>
+            <li>An <strong>area of active thunderstorms covering at least 40% of an area of 3,000 sq mi or greater</strong>, exhibiting strong radar reflectivity or a significant satellite or lightning signature</li>
+            <li><strong>Embedded or severe thunderstorms</strong> expected for more than 30 minutes during the valid period — regardless of area size</li>
+          </ul>
+
+          <h3 style="margin-top: 1.4rem;">Special issuance criteria</h3>
+          <p>A <em>special</em> Convective SIGMET may be issued when any of these are occurring or expected for more than 30 minutes of the valid period:</p>
+          <ul>
+            <li><strong>Tornado</strong></li>
+            <li><strong>Hail ≥ 3/4 inch in diameter</strong> at the surface</li>
+            <li><strong>Wind gusts ≥ 50 knots</strong> at the surface</li>
+          </ul>
+
+          <p>
+            Routine Convective SIGMETs are issued at H+55 (five minutes before the top of each hour). Special issuances happen whenever the criteria are met — they don't wait for the schedule. All Convective SIGMETs are valid for up to 2 hours and cover three regions: Eastern, Central, and Western U.S. Source: <a href="https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentid/1041464" target="_blank" rel="noopener">AC 00-45H, Aviation Weather Services</a>.
           </p>
           <p class="callout">
-            <strong>The relationship to remember:</strong> if you have a Convective SIGMET in effect, you don't <em>also</em> need a regular SIGMET for the same area — the convective one already covers severe turbulence, icing, and low-level wind shear that come with thunderstorms.
+            <strong>Important implication:</strong> any Convective SIGMET <em>implies</em> severe or greater turbulence, severe icing, and low-level wind shear — even if those hazards aren't separately listed in the report. Don't expect to see a separate SIGMET for severe turbulence inside a thunderstorm; the Convective SIGMET already covers it.
           </p>
         </section>
 
@@ -235,6 +251,11 @@
           <details class="qa">
             <summary>Q: Why is there a separate Convective SIGMET product?</summary>
             <p>Thunderstorms are common and uniquely dangerous, with multiple hazards bundled together (severe turbulence, severe icing, hail, wind shear, tornadoes). Giving them a dedicated product issued hourly means pilots get current convective info without it being buried in other advisories.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What's the difference between a routine and a special Convective SIGMET?</summary>
+            <p>Per AC 00-45H, routine Convective SIGMETs cover lines of thunderstorms (≥ 60 mi, ≥ 40% affected), areas of thunderstorms (≥ 3,000 sq mi, ≥ 40% covered), or embedded/severe thunderstorms expected for over 30 minutes. They're issued on the hourly schedule at H+55. Special Convective SIGMETs cover specific dangerous events — tornadoes, surface hail ≥ 3/4 inch, surface wind gusts ≥ 50 kt — and can be issued any time the criteria are met, not just at H+55.</p>
           </details>
 
           <details class="qa">
