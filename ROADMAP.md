@@ -21,7 +21,8 @@ Goal: build out the educational content. This is where tutoring experience matte
 - [x] Build a template page for a single concept: explanation, sidebar TOC, hazard cards, comparison table, Q&A accordion, decision scenario, takeaway
 - [x] Build out AIRMETs & SIGMETs as the first complete concept page
 - [x] Build the Learn index page listing all concepts (available + coming soon)
-- [ ] Add Stability & Lapse Rates page
+- [x] Build SVG diagram patterns for visual concept pages
+- [x] Add Stability & Lapse Rates page (parcel-vs-env, lapse rates, conditional instability, ELR worked examples, skew-T overview with LCL/LFC/EL/CAPE, altimeter section with three worked examples and the indicated-vs-true direction trap)
 - [ ] Add Fog Formation page
 - [ ] Add remaining concepts (thunderstorms, icing, turbulence, fronts)
 - [ ] Add cross-links between related concepts
@@ -56,6 +57,7 @@ Goal: a guided nav log builder for student pilots planning their first cross-cou
 
 ## Stretch goals (post-launch)
 
+- Dedicated **skew-T page** with live sounding data (Tropical Tidbits-style), parcel-path generator from user-entered surface T/Td, and built-in calculators for Lifted Index, K-Index, Showalter Index, Total Totals
 - PIREP map (filtered by altitude, severity, time window)
 - Density altitude calculator with takeoff/landing performance
 - "Should I fly today?" personal-minimums checker

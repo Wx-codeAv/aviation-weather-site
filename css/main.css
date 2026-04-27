@@ -802,3 +802,56 @@ footer .container {
   }
   .learn-card-arrow { display: none; }
 }
+
+/* ---------- Inline diagrams (figure + svg) ---------- */
+.diagram {
+  margin: 1.8rem 0;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: #fffaf0;
+}
+.diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+.diagram figcaption {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  padding: 0.7rem 1rem;
+  border-top: 1px dashed var(--rule);
+  background: var(--buff);
+}
+
+/* ---------- Standard atmosphere table (used on stability page) ---------- */
+.atmo-table {
+  width: 100%;
+  max-width: 420px;
+  margin: 1.2rem 0 1.6rem;
+  border-collapse: collapse;
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+.atmo-table thead th {
+  background: var(--ink);
+  color: var(--buff);
+  text-align: left;
+  padding: 0.55rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.atmo-table tbody td {
+  padding: 0.4rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+.atmo-table tbody tr:last-child td { border-bottom: none; }
+.atmo-table tbody tr:nth-child(even) { background: var(--buff); }
+.atmo-table tbody td:first-child { color: var(--ink-soft); }
