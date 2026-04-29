@@ -105,15 +105,15 @@
 
           <!-- Diagram: parcel vs environment -->
           <figure class="diagram">
-            <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="parcel-diagram-title">
+            <svg viewBox="0 0 600 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="parcel-diagram-title">
               <title id="parcel-diagram-title">Parcel vs environment temperature comparison</title>
-              <rect x="0" y="0" width="600" height="360" fill="#fffaf0"/>
+              <rect x="0" y="0" width="600" height="430" fill="#fffaf0"/>
 
               <!-- Y-axis -->
               <line x1="80" y1="40" x2="80" y2="310" stroke="#0c2541" stroke-width="1.5"/>
               <text x="40" y="170" font-family="Anton, sans-serif" font-size="14" fill="#0c2541" transform="rotate(-90 40 170)">ALTITUDE</text>
               <line x1="80" y1="310" x2="560" y2="310" stroke="#0c2541" stroke-width="1.5"/>
-              <text x="320" y="345" font-family="Anton, sans-serif" font-size="14" fill="#0c2541" text-anchor="middle">TEMPERATURE →</text>
+              <text x="320" y="332" font-family="Anton, sans-serif" font-size="14" fill="#0c2541" text-anchor="middle">TEMPERATURE →</text>
 
               <!-- LEFT: STABLE -->
               <text x="200" y="30" font-family="Anton, sans-serif" font-size="16" fill="#5d6f3c" text-anchor="middle">STABLE</text>
@@ -121,11 +121,11 @@
               <text x="200" y="55" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541">ENV</text>
               <line x1="220" y1="310" x2="120" y2="40" stroke="#b53d1f" stroke-width="2.5"/>
               <text x="115" y="55" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">PARCEL</text>
-              <text x="200" y="200" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Parcel cools faster than env</text>
-              <text x="200" y="214" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">→ colder than env at altitude</text>
-              <text x="200" y="228" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" font-style="italic">→ sinks back</text>
+              <text x="200" y="370" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Parcel cools faster than env</text>
+              <text x="200" y="386" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">→ colder than env at altitude</text>
+              <text x="200" y="402" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" font-style="italic">→ sinks back</text>
 
-              <line x1="320" y1="20" x2="320" y2="340" stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="2,4"/>
+              <line x1="320" y1="20" x2="320" y2="412" stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="2,4"/>
 
               <!-- RIGHT: UNSTABLE -->
               <text x="450" y="30" font-family="Anton, sans-serif" font-size="16" fill="#b53d1f" text-anchor="middle">UNSTABLE</text>
@@ -133,9 +133,9 @@
               <text x="375" y="55" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541">ENV</text>
               <line x1="470" y1="310" x2="430" y2="40" stroke="#b53d1f" stroke-width="2.5"/>
               <text x="445" y="55" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">PARCEL</text>
-              <text x="475" y="200" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Parcel cools slower than env</text>
-              <text x="475" y="214" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">→ warmer than env at altitude</text>
-              <text x="475" y="228" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" font-style="italic">→ keeps rising</text>
+              <text x="450" y="370" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Parcel cools slower than env</text>
+              <text x="450" y="386" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">→ warmer than env at altitude</text>
+              <text x="450" y="402" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" font-style="italic">→ keeps rising</text>
             </svg>
             <figcaption>Stable vs. unstable comes down to comparing two temperature profiles at altitude. If the parcel ends up colder than its surroundings, it sinks. Warmer, it keeps rising.</figcaption>
           </figure>
@@ -444,34 +444,14 @@
               <!-- ============================================
                    Plot area: x in [100, 540], y in [60, 480]
                    Pressure log scale: 1000mb at y=480, 100mb at y=60
-                   Temperature axis (surface): -50°C at x=100, +40°C at x=540 (4.89 px/°C)
-                   Skew offset increases linearly in log-pressure: 0 at sfc to +110 px at 100mb
-                   x(T,P) = 100 + (T+50)*4.89 + 110*(log10(1000)-log10(P))
+                   y(P) = 480 - (3 - log10(P)) * 420
+                   Surface temperature axis: T=-60 at x=100, T=+40 at x=540 (4.4 px/°C)
+                   Skew offset: 0 at sfc, +240 px at top (linear in y)
+                   x(T,y) = 100 + (T+60)*4.4 + 240*(480-y)/420
                    ============================================ -->
 
               <!-- Plot frame -->
               <rect x="100" y="60" width="440" height="420" fill="#fffefa" stroke="#0c2541" stroke-width="1.2"/>
-
-              <!-- Pressure horizontal grid lines + labels -->
-              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="end">
-                <line x1="100" y1="480" x2="540" y2="480" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="483">1000</text>
-                <line x1="100" y1="450" x2="540" y2="450" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="453">850</text>
-                <line x1="100" y1="415" x2="540" y2="415" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="418">700</text>
-                <line x1="100" y1="354" x2="540" y2="354" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="357">500</text>
-                <line x1="100" y1="313" x2="540" y2="313" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="316">400</text>
-                <line x1="100" y1="260" x2="540" y2="260" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="263">300</text>
-                <line x1="100" y1="186" x2="540" y2="186" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="189">200</text>
-                <line x1="100" y1="60" x2="540" y2="60" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
-                <text x="95" y="63">100</text>
-              </g>
-              <text x="55" y="270" font-family="Anton, sans-serif" font-size="12" fill="#0c2541" transform="rotate(-90 55 270)">PRESSURE (mb)</text>
 
               <!-- Clip path for in-plot drawings -->
               <defs>
@@ -480,152 +460,215 @@
                 </clipPath>
               </defs>
 
+              <!-- Pressure horizontal grid lines + labels -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="end">
+                <line x1="100" y1="480" x2="540" y2="480" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="483">1000</text>
+                <line x1="100" y1="450.2" x2="540" y2="450.2" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="453">850</text>
+                <line x1="100" y1="414.9" x2="540" y2="414.9" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="418">700</text>
+                <line x1="100" y1="353.6" x2="540" y2="353.6" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="357">500</text>
+                <line x1="100" y1="312.8" x2="540" y2="312.8" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="316">400</text>
+                <line x1="100" y1="260.4" x2="540" y2="260.4" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="263">300</text>
+                <line x1="100" y1="186.4" x2="540" y2="186.4" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="189">200</text>
+                <line x1="100" y1="60" x2="540" y2="60" stroke="#b9a87a" stroke-width="0.5" opacity="0.5"/>
+                <text x="95" y="63">100</text>
+              </g>
+              <text x="55" y="270" font-family="Anton, sans-serif" font-size="12" fill="#0c2541" transform="rotate(-90 55 270)">PRESSURE (mb)</text>
+
               <!-- ============ Skewed isotherms (background, faint) ============
-                   Each isotherm tilts up-and-right by +110 px from y=480 to y=60. -->
-              <g stroke="#b9a87a" stroke-width="0.5" opacity="0.4" clip-path="url(#skewt-plot-area)">
-                <line x1="100" y1="480" x2="210" y2="60"/>      <!-- T=-50 -->
-                <line x1="148.9" y1="480" x2="258.9" y2="60"/>  <!-- T=-40 -->
-                <line x1="197.8" y1="480" x2="307.8" y2="60"/>  <!-- T=-30 -->
-                <line x1="246.7" y1="480" x2="356.7" y2="60"/>  <!-- T=-20 -->
-                <line x1="295.6" y1="480" x2="405.6" y2="60"/>  <!-- T=-10 -->
-                <line x1="344.5" y1="480" x2="454.5" y2="60" stroke="#0c2541" stroke-width="0.8" opacity="0.7"/>  <!-- T=0 highlighted -->
-                <line x1="393.4" y1="480" x2="503.4" y2="60"/>  <!-- T=10 -->
-                <line x1="442.3" y1="480" x2="552.3" y2="60"/>  <!-- T=20 -->
-                <line x1="491.2" y1="480" x2="601.2" y2="60"/>  <!-- T=30 -->
-                <line x1="540" y1="480" x2="650" y2="60"/>      <!-- T=40 -->
+                   Each isotherm goes from (x_sfc, 480) to (x_sfc+240, 60), clipped to plot. -->
+              <g stroke="#b9a87a" stroke-width="0.5" opacity="0.4" fill="none" clip-path="url(#skewt-plot-area)">
+                <line x1="100" y1="480" x2="340" y2="60"/>     <!-- T=-60 -->
+                <line x1="144" y1="480" x2="384" y2="60"/>     <!-- T=-50 -->
+                <line x1="188" y1="480" x2="428" y2="60"/>     <!-- T=-40 -->
+                <line x1="232" y1="480" x2="472" y2="60"/>     <!-- T=-30 -->
+                <line x1="276" y1="480" x2="516" y2="60"/>     <!-- T=-20 -->
+                <line x1="320" y1="480" x2="560" y2="60"/>     <!-- T=-10 -->
+                <line x1="364" y1="480" x2="604" y2="60" stroke="#0c2541" stroke-width="0.8" opacity="0.7"/>  <!-- T=0 highlighted -->
+                <line x1="408" y1="480" x2="648" y2="60"/>     <!-- T=10 -->
+                <line x1="452" y1="480" x2="692" y2="60"/>     <!-- T=20 -->
+                <line x1="496" y1="480" x2="736" y2="60"/>     <!-- T=30 -->
               </g>
 
-              <!-- Temperature axis labels along the bottom edge -->
+              <!-- Temperature axis labels along the bottom edge (every 10°C, all inside frame) -->
               <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="middle">
-                <text x="100" y="498">-50</text>
-                <text x="148.9" y="498">-40</text>
-                <text x="197.8" y="498">-30</text>
-                <text x="246.7" y="498">-20</text>
-                <text x="295.6" y="498">-10</text>
-                <text x="344.5" y="498">0</text>
-                <text x="393.4" y="498">10</text>
-                <text x="442.3" y="498">20</text>
-                <text x="491.2" y="498">30</text>
+                <text x="100" y="498">-60</text>
+                <text x="144" y="498">-50</text>
+                <text x="188" y="498">-40</text>
+                <text x="232" y="498">-30</text>
+                <text x="276" y="498">-20</text>
+                <text x="320" y="498">-10</text>
+                <text x="364" y="498">0</text>
+                <text x="408" y="498">10</text>
+                <text x="452" y="498">20</text>
+                <text x="496" y="498">30</text>
                 <text x="540" y="498">40</text>
               </g>
               <text x="320" y="520" font-family="Anton, sans-serif" font-size="12" fill="#0c2541" text-anchor="middle">TEMPERATURE (°C)</text>
 
               <!-- ============ DRY ADIABATS (red dashed, DALR family) ============
-                   Curve down-and-right going up. Steep cooling rate. -->
-              <g stroke="#b53d1f" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.55" fill="none" clip-path="url(#skewt-plot-area)">
-                <path d="M 540 480 Q 470 380 380 60"/>
-                <path d="M 491 480 Q 420 380 330 60"/>
-                <path d="M 442 480 Q 370 380 280 60"/>
-                <path d="M 393 480 Q 320 380 230 60"/>
-                <path d="M 344 480 Q 270 380 180 60"/>
+                   Constant potential temperature θ. Curves up-and-LEFT going up
+                   (parcel cools fast on dry-adiabatic ascent). -->
+              <g stroke="#b53d1f" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.5" fill="none" clip-path="url(#skewt-plot-area)">
+                <!-- θ=300K (sfc 27°C): polyline through (482.8,480)(440.4,450.2)(389.8,414.9)(313.0,353.6)(192.9,260.4) -->
+                <path d="M 482.8 480 L 440.4 450.2 L 389.8 414.9 L 313.0 353.6 L 192.9 260.4"/>
+                <!-- θ=290K (sfc 17°C) -->
+                <path d="M 438.8 480 L 398.6 450.2 L 350.2 414.9 L 277.0 353.6 L 161.0 260.4"/>
+                <!-- θ=280K (sfc 7°C) -->
+                <path d="M 394.8 480 L 356.4 450.2 L 310.6 414.9 L 240.9 353.6 L 130.0 260.4"/>
+                <!-- θ=270K (sfc -3°C) -->
+                <path d="M 350.8 480 L 314.6 450.2 L 270.6 414.9 L 205.2 353.6 L 105.0 260.4"/>
+                <!-- θ=260K (sfc -13°C) -->
+                <path d="M 306.8 480 L 272.8 450.2 L 230.9 414.9 L 169.2 353.6"/>
+                <!-- θ=250K (sfc -23°C) -->
+                <path d="M 262.8 480 L 230.9 450.2 L 191.3 414.9 L 133.4 353.6"/>
+                <!-- θ=240K (sfc -33°C) -->
+                <path d="M 218.8 480 L 189.1 450.2 L 151.6 414.9"/>
               </g>
 
               <!-- ============ MOIST ADIABATS (blue dashed, MALR family) ============
-                   Less steep; curve more gradually. -->
-              <g stroke="#1c4e8c" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.55" fill="none" clip-path="url(#skewt-plot-area)">
-                <path d="M 540 480 Q 510 380 470 60"/>
-                <path d="M 491 480 Q 460 380 420 60"/>
-                <path d="M 442 480 Q 410 380 370 60"/>
-                <path d="M 393 480 Q 360 380 320 60"/>
-                <path d="M 344 480 Q 310 380 270 60"/>
+                   Less steep cooling than DALR; gentler upward-left slope. -->
+              <g stroke="#1c4e8c" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.5" fill="none" clip-path="url(#skewt-plot-area)">
+                <!-- Sfc 20°C MALR: (452,480)(442.6,450.2)(423.2,414.9)(392.2,353.6)(362.7,312.8)(313.5,260.4)(289.8,186.4) -->
+                <path d="M 452 480 L 442.6 450.2 L 423.2 414.9 L 392.2 353.6 L 362.7 312.8 L 313.5 260.4 L 289.8 186.4"/>
+                <!-- Sfc 10°C MALR -->
+                <path d="M 408 480 L 398.6 450.2 L 379.2 414.9 L 339.4 353.6 L 308.1 312.8 L 269.5 260.4 L 250.6 186.4"/>
+                <!-- Sfc 0°C MALR -->
+                <path d="M 364 480 L 354.6 450.2 L 339.6 414.9 L 295.4 353.6 L 263.5 312.8 L 225.5 260.4"/>
+                <!-- Sfc -10°C MALR -->
+                <path d="M 320 480 L 315.0 450.2 L 304.4 414.9 L 269.0 353.6 L 240.0 312.8 L 197.5 260.4"/>
+                <!-- Sfc -20°C MALR -->
+                <path d="M 276 480 L 271.4 450.2 L 269.6 414.9 L 247.4 353.6 L 217.5 312.8 L 174.0 260.4"/>
+                <!-- Sfc 30°C MALR -->
+                <path d="M 496 480 L 482.6 450.2 L 463.0 414.9 L 421.0 353.6 L 390.0 312.8 L 339.0 260.4 L 311.0 186.4"/>
               </g>
 
               <!-- ============ MIXING RATIO LINES (green dashed) ============
-                   Straight lines, leaning RIGHT going up (slope +0.262 dx/dy_up).
-                   Stop at 300mb (y=260). The third line from right passes through the
-                   LCL point so the diagram is geometrically self-consistent. -->
-              <g stroke="#3a8a3a" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.55" fill="none" clip-path="url(#skewt-plot-area)">
-                <line x1="330" y1="480" x2="387.5" y2="260"/>
-                <line x1="360" y1="480" x2="417.5" y2="260"/>
-                <line x1="390" y1="480" x2="447.5" y2="260"/>
-                <line x1="420" y1="480" x2="477.5" y2="260"/>
-                <line x1="452" y1="480" x2="509.5" y2="260"/>  <!-- surface-dewpoint line, passes through LCL -->
-                <line x1="480" y1="480" x2="537.5" y2="260"/>
+                   Constant w (g/kg). Lines lean RIGHT going up. Stop at 400mb. -->
+              <g stroke="#3a8a3a" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.5" fill="none" clip-path="url(#skewt-plot-area)">
+                <!-- w=20 -->
+                <path d="M 472.7 480 L 478.8 450.2 L 484.4 414.9 L 496.1 353.6 L 506.5 312.8"/>
+                <!-- w=10 -->
+                <path d="M 424.7 480 L 431.6 450.2 L 439.0 414.9 L 451.6 353.6 L 461.4 312.8"/>
+                <!-- w=5 -->
+                <path d="M 379.8 480 L 386.3 450.2 L 394.6 414.9 L 403.2 353.6 L 412.1 312.8"/>
+                <!-- w=2 -->
+                <path d="M 331.0 480 L 337.0 450.2 L 344.0 414.9 L 359.2 353.6 L 369.4 312.8"/>
+                <!-- w=1 -->
+                <path d="M 287.0 480 L 295.0 450.2 L 308.8 414.9 L 321.8 353.6 L 333.0 312.8"/>
               </g>
 
               <!-- ============ CAPE shaded region ============
-                   Between parcel path (right side) and ELR temperature (left side),
-                   from LFC (700mb, y=414.9) up to EL (130mb, y=107.9). -->
+                   Bounded by parcel path (warm side) and env temperature (cool side)
+                   from LFC (700mb) up to EL (200mb). -->
               <path d="
-                M 425 415
-                L 338 354
-                L 290 313
-                L 240 260
-                L 177 186
-                L 124 108
-                L 152 186
-                L 255 260
-                L 315 313
-                L 353 354
+                M 436.40 414.90
+                L 401.03 353.60
+                L 371.54 312.80
+                L 335.49 260.40
+                L 311.66 232.80
+                L 285.37 186.40
+                L 272.06 232.80
+                L 291.49 260.40
+                L 327.54 312.80
+                L 357.03 353.60
                 Z"
-                fill="#d9a521" opacity="0.18" stroke="none"/>
+                fill="#d9a521" opacity="0.22" stroke="none"/>
 
-              <!-- ============ TEMPERATURE ELR (solid red) ============ -->
+              <!-- ============ ENVIRONMENT TEMPERATURE (solid red) ============
+                   1000:30 / 925:24 / 880:22 / 850:21 / 700:8 / 500:-18 / 400:-30 /
+                   300:-45 / 250:-53 / 200:-56 / 150:-55 / 100:-52 -->
               <path d="
-                M 471.6 480
-                L 459.8 450
-                L 425.0 415
-                L 353.1 354
-                L 314.9 313
-                L 255.3 260
-                L 152.4 186
-                L 124.1 108
-                L 102.4 60"
+                M 496.00 480.00
+                L 477.14 466.80
+                L 474.17 456.60
+                L 473.43 450.20
+                L 436.40 414.90
+                L 357.03 353.60
+                L 327.54 312.80
+                L 291.49 260.40
+                L 272.06 232.80
+                L 285.37 186.40
+                L 319.71 134.00
+                L 375.20 60.00"
                 stroke="#b53d1f" stroke-width="2.6" fill="none" stroke-linejoin="round"/>
 
-              <!-- ============ DEWPOINT ELR (solid green) ============ -->
+              <!-- ============ ENVIRONMENT DEWPOINT (solid green) ============
+                   1000:22 / 925:17 / 880:17 / 850:16 / 700:0 / 500:-32 / 400:-45 /
+                   300:-58 / 250:-67 / 200:-68. Always to the LEFT of red T trace. -->
               <path d="
-                M 452.0 480
-                L 440.2 450
-                L 428.4 439
-                L 288.2 415
-                L 255.3 354
-                L 217.1 313
-                L 157.5 260
-                L 152.4 186
-                L 148.6 108
-                L 136.7 60"
+                M 460.80 480.00
+                L 446.34 466.80
+                L 452.17 456.60
+                L 451.43 450.20
+                L 401.20 414.90
+                L 295.43 353.60
+                L 261.54 312.80
+                L 234.29 260.40
+                L 210.46 232.80
+                L 232.57 186.40"
                 stroke="#3a8a3a" stroke-width="2.6" fill="none" stroke-linejoin="round"/>
 
               <!-- ============ PARCEL PATH (black dashed) ============
-                   Sfc (26°C, 1000mb) → DALR-style up to LCL (22°C, 860mb) →
-                   MALR-style above to LFC (13°C, 700mb) → continues to EL (-65°C, 130mb).
-                   At LFC and EL, parcel path crosses the temperature ELR exactly. -->
+                   Sfc (30°C, 1000mb) → DALR up to LCL (19°C, 880mb) →
+                   MALR through LFC (8°C, 700mb) → continues warmer than env →
+                   reaches EL (-56°C, 200mb) where it crosses env temperature again. -->
               <path d="
-                M 471.6 480
-                L 463.5 461
-                L 459.2 452.5
-                L 425.0 415
-                L 338.4 354
-                L 290.4 313
-                L 240.6 260
-                L 176.9 186
-                L 124.1 108"
+                M 496.00 480.00
+                L 460.97 456.60
+                L 455.83 450.20
+                L 436.40 414.90
+                L 401.03 353.60
+                L 371.54 312.80
+                L 335.49 260.40
+                L 311.66 232.80
+                L 285.37 186.40"
                 stroke="#0c2541" stroke-width="2.2" stroke-dasharray="5,4" fill="none"/>
 
               <!-- ============ MARKED POINTS: LCL / LFC / EL ============ -->
-              <!-- LCL at (459.2, 452.5) — slightly BELOW the 850mb gridline at y=450 -->
-              <circle cx="459.2" cy="452.5" r="4" fill="#0c2541"/>
-              <line x1="459.2" y1="452.5" x2="555" y2="452.5" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
-              <text x="558" y="450" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">LCL</text>
-              <text x="558" y="462" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">860 mb</text>
+              <!-- LCL at (460.97, 456.60) — 880 mb, where parcel saturates -->
+              <circle cx="460.97" cy="456.60" r="4" fill="#0c2541"/>
+              <line x1="460.97" y1="456.60" x2="555" y2="456.60" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
+              <text x="558" y="454" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">LCL</text>
+              <text x="558" y="466" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">880 mb</text>
 
-              <!-- LFC at (425, 415) — exactly on the 700mb line, parcel meets ELR temp -->
-              <circle cx="425" cy="415" r="4" fill="#0c2541"/>
-              <line x1="425" y1="415" x2="555" y2="415" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
+              <!-- LFC at (436.40, 414.90) — 700 mb, parcel meets env temperature -->
+              <circle cx="436.40" cy="414.90" r="4" fill="#0c2541"/>
+              <line x1="436.40" y1="414.90" x2="555" y2="414.90" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
               <text x="558" y="412" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">LFC</text>
               <text x="558" y="424" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">700 mb</text>
 
-              <!-- EL at (124.1, 108) — parcel path crosses back through ELR temp -->
-              <circle cx="124.1" cy="108" r="4" fill="#0c2541"/>
-              <line x1="124.1" y1="108" x2="555" y2="108" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
-              <text x="558" y="105" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">EL</text>
-              <text x="558" y="117" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">130 mb</text>
+              <!-- EL at (285.37, 186.40) — 200 mb, parcel cools back to env temperature -->
+              <circle cx="285.37" cy="186.40" r="4" fill="#0c2541"/>
+              <line x1="285.37" y1="186.40" x2="555" y2="186.40" stroke="#0c2541" stroke-width="0.6" stroke-dasharray="2,2"/>
+              <text x="558" y="184" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">EL</text>
+              <text x="558" y="196" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">200 mb</text>
 
               <!-- CAPE label inside shaded region -->
-              <text x="290" y="280" font-family="Anton, sans-serif" font-size="14" fill="#a87a18" font-weight="700">CAPE</text>
+              <text x="320" y="295" font-family="Anton, sans-serif" font-size="14" fill="#a87a18" font-weight="700">CAPE</text>
+
+              <!-- Inline legend (bottom-left of plot, in the empty cold-surface region) -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541">
+                <rect x="110" y="385" width="128" height="88" fill="#fffefa" stroke="#0c2541" stroke-width="0.6" opacity="0.92"/>
+                <line x1="118" y1="397" x2="138" y2="397" stroke="#b53d1f" stroke-width="2.4"/>
+                <text x="144" y="400">Env. temperature</text>
+                <line x1="118" y1="412" x2="138" y2="412" stroke="#3a8a3a" stroke-width="2.4"/>
+                <text x="144" y="415">Env. dewpoint</text>
+                <line x1="118" y1="427" x2="138" y2="427" stroke="#0c2541" stroke-width="2" stroke-dasharray="4,3"/>
+                <text x="144" y="430">Parcel path</text>
+                <rect x="118" y="438" width="20" height="8" fill="#d9a521" opacity="0.6"/>
+                <text x="144" y="445">CAPE</text>
+                <circle cx="128" cy="458" r="3" fill="#0c2541"/>
+                <text x="144" y="461">Key levels</text>
+              </g>
             </svg>
-            <figcaption>A skew-T log P diagram. The labeled points (LCL = 860 mb, LFC = 700 mb, EL = 130 mb) come from the example problem in WX 301. The shaded yellow region between the parcel path (black dashed) and the environmental temperature (solid red) — bounded below by the LFC and above by the EL — is the CAPE. Notice the parcel path crosses the temperature ELR twice: warmer than the environment between LFC and EL (rising freely), then colder than the environment above EL (no longer accelerating).</figcaption>
+            <figcaption>An idealized skew-T log P sounding showing a clear convective profile. Surface (1000 mb): T = 30 °C, Td = 22 °C. The parcel (black dashed) is lifted from the surface — it cools dry-adiabatically until it saturates at the <strong>LCL (880 mb)</strong>, then follows the moist-adiabatic rate. It reaches the <strong>LFC (700 mb)</strong> where it becomes warmer than the environment (solid red), accelerates upward through the shaded yellow <strong>CAPE</strong> region, and finally cools back to environmental temperature at the <strong>EL (200 mb)</strong>. Note the dewpoint (solid green) stays to the left of — i.e. cooler than — the temperature trace at every level, as it must.</figcaption>
           </figure>
 
           <h3 style="margin-top: 1.4rem;">Line definitions</h3>
@@ -938,7 +981,7 @@
         <!-- Bottom nav -->
         <nav class="concept-nav-bottom">
           <a href="airmets-sigmets.html" class="concept-nav-link">← AIRMETs &amp; SIGMETs</a>
-          <span class="concept-nav-next">Next concept: Fog Formation (coming soon)</span>
+          <a href="fog-formation.html" class="concept-nav-link">Fog Formation →</a>
         </nav>
 
       </article>
