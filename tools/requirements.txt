@@ -1,0 +1,15 @@
+# Build dependencies for tools/generate_skewt.py
+#
+# SHARPpy's PyPI release (1.4.0a5) is from 2019 and predates modern NumPy.
+# Install from the GitHub main branch instead.
+#
+# Version pins (verified working as of 2026-04 on Python 3.11):
+#   - SHARPpy's versioneer.py uses configparser.SafeConfigParser, removed in
+#     Python 3.12. Stay on Python 3.11.x.
+#   - matplotlib 3.9+ tightened Tick.__init__ to 3 positional args; SHARPpy's
+#     SkewXTick still passes 4 (axes, loc, label, major). Pin to <3.9.
+#   - NumPy 2.x has C-API breaks SHARPpy hasn't been updated for.
+
+sharppy @ git+https://github.com/sharppy/SHARPpy.git@main
+numpy<2.0
+matplotlib>=3.7,<3.9

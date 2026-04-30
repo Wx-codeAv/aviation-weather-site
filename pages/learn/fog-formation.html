@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fog Formation — CrosswindWX</title>
+  <meta name="description" content="All seven fog types — radiation, advection, upslope, steam, freezing, frontal, and precipitation fog — how each forms, how to predict them from a METAR, and why some types never burn off.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Fog Formation</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Visibility hazards</p>
+      <h1>Fog <span class="accent">Formation</span></h1>
+      <p class="lede">
+        Fog kills more pilots than almost anything else — not because it's unpredictable, but because pilots trust a forecast that said "becoming VFR by 0900" without understanding <em>why</em> fog forms and what determines whether it actually clears. There are seven fog types the FAA tests. Know each one and you can usually tell whether that burn-off is real — or wishful thinking.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3a · IR.I.B.K3a · CA.I.C.K3a</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1c</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~12 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav (sticky on desktop) -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what">What fog actually is</a></li>
+          <li><a href="#types">The four fog types</a></li>
+          <li><a href="#radiation">Radiation fog</a></li>
+          <li><a href="#advection">Advection fog</a></li>
+          <li><a href="#other">Upslope &amp; steam fog</a></li>
+          <li><a href="#additional">Freezing, frontal &amp; precip fog</a></li>
+          <li><a href="#predict">Predicting fog from observations</a></li>
+          <li><a href="#burnoff">Why fog burns off (or doesn't)</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Decision scenario</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: What fog actually is -->
+        <section id="what">
+          <h2>What fog actually is</h2>
+          <p>
+            Fog is a cloud at ground level. Meteorologically it's identical to stratus — tiny suspended water droplets — except that it's touching the surface. The FAA definition for METAR purposes: fog (<code>FG</code>) is reported when visibility drops <strong>below 5/8 statute mile</strong>. When visibility is 5/8 to 6 SM with near-100% relative humidity, it's mist (<code>BR</code>). Same phenomenon, different severity.
+          </p>
+          <p>
+            Fog forms in one of two ways:
+          </p>
+          <ul>
+            <li><strong>Cooling:</strong> the air temperature drops until it reaches the dew point. Relative humidity hits 100%, water vapor condenses.</li>
+            <li><strong>Moisture addition:</strong> enough water vapor is added to the air that RH reaches 100% without significant temperature change. Less common; steam fog is the main aviation example.</li>
+          </ul>
+          <p>
+            Either way, the key number is the <strong>temperature/dew point spread</strong> — the gap between T and Td. When that gap closes to zero, you have fog (or a cloud, if it's elevated). This single value is the most useful fog predictor available in a standard METAR or hourly observation.
+          </p>
+          <p class="callout">
+            <strong>METAR quick read:</strong> In <code>METAR KORF 120855Z 00000KT 1/4SM FG OVC002 11/11 A3006</code>, the <code>11/11</code> tells you T = Td = 11°C — spread is zero. Visibility is 1/4 SM with fog. The surface is saturated. This is textbook radiation fog on a calm morning.
+          </p>
+        </section>
+
+        <!-- Section: Four fog types -->
+        <section id="types">
+          <h2>The four fog types</h2>
+          <p>
+            The FAA recognizes four formation mechanisms. Each requires different conditions, forms in different places, and — critically — dissipates differently. Confusing them leads to bad go/no-go calls.
+          </p>
+
+          <div class="card-grid" style="grid-template-columns: repeat(2, 1fr); margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">Type 01 · Most common</span>
+              <h3>Radiation Fog</h3>
+              <p class="hazard-mnemonic">Clear sky + calm night → surface cools → air cools to Td.</p>
+              <ul class="hazard-list">
+                <li>Requires: clear sky, calm winds (&lt; 5 kt), high humidity</li>
+                <li>Forms in valleys and low spots (cold air drainage)</li>
+                <li>Thickest at dawn; usually burns off 1–3 hr after sunrise</li>
+                <li>Inland, overnight, fair-weather fog</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Type 02 · Coastal hazard</span>
+              <h3>Advection Fog</h3>
+              <p class="hazard-mnemonic">Warm moist air moves over a cold surface → cools from below.</p>
+              <ul class="hazard-list">
+                <li>Does NOT need calm winds or clear sky</li>
+                <li>Can form with winds up to 15+ kt</li>
+                <li>Classic: Pacific coast summer, Gulf coast winter</li>
+                <li>Does NOT burn off with solar heating — needs wind shift</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-zulu">
+              <span class="hazard-label">Type 03 · Terrain-driven</span>
+              <h3>Upslope Fog</h3>
+              <p class="hazard-mnemonic">Moist air forced up terrain → cools adiabatically to Td.</p>
+              <ul class="hazard-list">
+                <li>Requires: moist air mass + sustained upslope wind</li>
+                <li>Common on windward slopes of mountains and hills</li>
+                <li>Persists as long as upslope flow continues</li>
+                <li>Often extensive — can cover an entire slope or range</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sage);">
+              <span class="hazard-label">Type 04 · Over water</span>
+              <h3>Steam Fog</h3>
+              <p class="hazard-mnemonic">Cold air over warm water → water evaporates into cold air → instant saturation.</p>
+              <ul class="hazard-list">
+                <li>Looks like steam rising off a lake or river</li>
+                <li>Fall and early winter, after cold frontal passage</li>
+                <li>Usually shallow (&lt; 100–200 ft) but surface-turbulent</li>
+                <li>Can produce low-level icing in cold enough air</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <p class="callout">
+            <strong>The most important distinction for pilots:</strong> Radiation fog almost always clears by late morning. Advection fog may persist all day regardless of clear skies and sunshine — the only thing that fixes it is a wind shift bringing drier air. If the forecast says "fog burning off by 1000L" and you're in a coastal area with an onshore flow, ask yourself: what changes the wind direction? If nothing does, that fog isn't going anywhere.
+          </p>
+
+          <h3 style="margin-top: 2.2rem;">Three more types — all testable</h3>
+          <p>
+            These appear less often than radiation or advection fog but are fair game on any Private, Instrument, or Commercial oral. Freezing fog is particularly important to recognize because it isn't just a visibility problem.
+          </p>
+
+          <div class="card-grid card-grid-3">
+
+            <article class="hazard-card hazard-zulu">
+              <span class="hazard-label">Type 05 · Icing hazard</span>
+              <h3>Freezing Fog</h3>
+              <p class="hazard-mnemonic">Regular fog in below-0°C air — supercooled droplets freeze on contact with any surface.</p>
+              <ul class="hazard-list">
+                <li>METAR code: <strong>FZFG</strong></li>
+                <li>Deposits rime ice on aircraft and runways</li>
+                <li>Can produce black ice on pavement with no visible warning</li>
+                <li>Any <code>FZ</code> prefix = icing flag</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">Type 06 · Frontal weather</span>
+              <h3>Frontal Fog</h3>
+              <p class="hazard-mnemonic">Warm rain evaporates into cold surface air ahead of an advancing warm front.</p>
+              <ul class="hazard-list">
+                <li>Forms 100–300 nm ahead of a warm front</li>
+                <li>Evaporating precipitation raises Td in the cold surface air</li>
+                <li>IFR conditions arrive before the front does — deceptive setup</li>
+                <li>Clears only after frontal passage</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Type 07 · Precipitation-driven</span>
+              <h3>Precipitation Fog</h3>
+              <p class="hazard-mnemonic">Heavy precipitation evaporates in the subcloud layer and saturates moist surface air.</p>
+              <ul class="hazard-list">
+                <li>Can occur under any heavy precipitation, not just fronts</li>
+                <li>Common near thunderstorm rain shafts</li>
+                <li>Typically patchy (<code>BCFG</code>) and short-lived</li>
+                <li>Visibility can drop suddenly before rain reaches the surface</li>
+              </ul>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- Section: Radiation fog -->
+        <section id="radiation">
+          <h2>Radiation fog — in depth</h2>
+          <p>
+            Radiation fog is the most common fog type in the continental U.S. and the most predictable. It happens because the earth's surface is constantly losing heat to space via longwave infrared radiation. During the day, solar heating more than compensates. At night — especially on clear, calm nights — the surface cools faster than the overlying air, and that cooling is conducted upward layer by layer.
+          </p>
+          <p>
+            Three things must come together:
+          </p>
+          <ol>
+            <li><strong>Clear sky.</strong> Clouds act like a blanket, absorbing outgoing IR and radiating some back toward the surface. A cloudy night significantly slows surface cooling. Clear sky = maximum cooling.</li>
+            <li><strong>Calm winds (&lt; 5 kt).</strong> Wind mixes the boundary layer, stirring cold surface air up with warmer air aloft. A gentle wind distributes the cooling through a deeper layer and slows the rate at which surface air reaches saturation. Too much wind and the fog never forms — it dissipates before it can establish.</li>
+            <li><strong>Sufficient moisture.</strong> The closer T is to Td before sunset, the less cooling required overnight. A surface T/Td spread of 5–7°F at sunset is a reliable warning flag.</li>
+          </ol>
+
+          <!-- Diagram: diurnal T and Td convergence -->
+          <figure class="diagram">
+            <svg viewBox="0 0 620 345" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="rad-fog-title">
+              <title id="rad-fog-title">Radiation fog: temperature dropping to meet dew point through a clear night, then rising with solar heating</title>
+              <rect width="620" height="345" fill="#fffaf0"/>
+
+              <!-- Night shading -->
+              <rect x="200" y="58" width="240" height="250" fill="#2d4360" opacity="0.06" rx="2"/>
+              <text x="320" y="76" text-anchor="middle" font-family="Anton, sans-serif" font-size="10" fill="#2d4360" opacity="0.45" letter-spacing="0.15em">NIGHT</text>
+
+              <!-- Fog zone shading (where T = Td) -->
+              <rect x="367" y="264" width="110" height="44" fill="#4a7ba6" opacity="0.18" rx="3"/>
+
+              <!-- Y-axis -->
+              <line x1="80" y1="58" x2="80" y2="308" stroke="#0c2541" stroke-width="1.5"/>
+              <text x="26" y="185" font-family="Anton, sans-serif" font-size="12" fill="#0c2541" transform="rotate(-90 26 185)">TEMPERATURE (°C)</text>
+
+              <!-- Y-axis ticks (y = 308 - (T-8)*12) -->
+              <!-- T=10: y=284  T=14: y=236  T=18: y=188  T=22: y=140  T=26: y=92 -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="end">
+                <text x="73" y="288">10</text>
+                <text x="73" y="240">14</text>
+                <text x="73" y="192">18</text>
+                <text x="73" y="144">22</text>
+                <text x="73" y="96">26</text>
+              </g>
+              <g stroke="#0c2541" stroke-width="0.8">
+                <line x1="76" y1="284" x2="80" y2="284"/>
+                <line x1="76" y1="236" x2="80" y2="236"/>
+                <line x1="76" y1="188" x2="80" y2="188"/>
+                <line x1="76" y1="140" x2="80" y2="140"/>
+                <line x1="76" y1="92"  x2="80" y2="92"/>
+              </g>
+
+              <!-- Light grid lines -->
+              <g stroke="#b9a87a" stroke-width="0.4" opacity="0.5">
+                <line x1="80" y1="284" x2="560" y2="284"/>
+                <line x1="80" y1="236" x2="560" y2="236"/>
+                <line x1="80" y1="188" x2="560" y2="188"/>
+                <line x1="80" y1="140" x2="560" y2="140"/>
+                <line x1="80" y1="92"  x2="560" y2="92"/>
+              </g>
+
+              <!-- X-axis -->
+              <line x1="80" y1="308" x2="560" y2="308" stroke="#0c2541" stroke-width="1.5"/>
+
+              <!-- X-axis ticks and labels (20 px/hr, noon at x=80) -->
+              <!-- noon=80, 6pm=200, midnight=320, 6am=440, noon=560 -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="middle">
+                <text x="80"  y="323">noon</text>
+                <text x="200" y="323">6 pm</text>
+                <text x="320" y="323">midnight</text>
+                <text x="440" y="323">6 am</text>
+                <text x="560" y="323">noon</text>
+              </g>
+              <g stroke="#0c2541" stroke-width="0.8">
+                <line x1="80"  y1="308" x2="80"  y2="313"/>
+                <line x1="200" y1="308" x2="200" y2="313"/>
+                <line x1="320" y1="308" x2="320" y2="313"/>
+                <line x1="440" y1="308" x2="440" y2="313"/>
+                <line x1="560" y1="308" x2="560" y2="313"/>
+              </g>
+
+              <!-- Dew point line (Td = 10°C, y = 284) -->
+              <line x1="80" y1="284" x2="560" y2="284" stroke="#4a7ba6" stroke-width="2" stroke-dasharray="8,4"/>
+
+              <!-- Temperature curve -->
+              <!-- noon(80): 26°C → y=92   6pm(200): 22°C → y=140   midnight(320): 13°C → y=248
+                   3am(380): 10°C → y=284  6am(440): 10°C → y=284   9am(500): 16°C → y=188  noon(560): 25°C → y=104 -->
+              <polyline
+                points="80,92 200,140 320,248 380,284 440,284 500,188 560,104"
+                fill="none" stroke="#b53d1f" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+              <!-- Line labels -->
+              <text x="86" y="88" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" font-style="italic">Temperature</text>
+              <text x="86" y="298" font-family="Manrope, sans-serif" font-size="10" fill="#4a7ba6" font-style="italic">Dew point (steady)</text>
+
+              <!-- Annotation: radiative cooling -->
+              <text x="258" y="168" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Surface cools under</text>
+              <text x="258" y="179" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">clear, calm sky</text>
+
+              <!-- Annotation: fog forms -->
+              <text x="360" y="248" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">T reaches Td</text>
+              <text x="360" y="259" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">→ fog forms</text>
+              <!-- Dot at convergence -->
+              <circle cx="380" cy="284" r="4" fill="#4a7ba6"/>
+
+              <!-- FOG label -->
+              <text x="422" y="292" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.1em">FOG</text>
+
+              <!-- Annotation: solar heating -->
+              <text x="526" y="168" font-family="Manrope, sans-serif" font-size="9" fill="#d9a521" text-anchor="middle">Solar heating</text>
+              <text x="526" y="179" font-family="Manrope, sans-serif" font-size="9" fill="#d9a521" text-anchor="middle">raises T above Td</text>
+              <text x="526" y="190" font-family="Manrope, sans-serif" font-size="9" fill="#d9a521" text-anchor="middle">→ fog dissipates</text>
+            </svg>
+            <figcaption>On a clear, calm night, surface temperature (red) falls while dew point (blue dashed) stays steady. When the two lines meet, the air is saturated and fog forms. Solar heating after sunrise raises temperature back above dew point, and the fog burns off. Temperature and dew point are illustrative; real values vary.</figcaption>
+          </figure>
+
+          <p>
+            Radiation fog tends to pool in low terrain — valleys, river bottoms, basins — because cold, dense air drains downslope and collects. A ridge-top airport may be completely clear while a valley field 10 miles away is 0/0. Cold air drainage is why "valley fog" is the textbook example.
+          </p>
+          <p>
+            <strong>Key operational fact:</strong> radiation fog is almost always thickest at dawn (maximum cooling has occurred; solar heating hasn't started yet) and typically clears within 1–3 hours of sunrise. The exception is when humidity is very high — then the fog may not burn off until mid-morning or may re-form the following night.
+          </p>
+        </section>
+
+        <!-- Section: Advection fog -->
+        <section id="advection">
+          <h2>Advection fog — in depth</h2>
+          <p>
+            Advection is just weather-speak for horizontal transport. Advection fog forms when a warm, moist air mass moves over a surface that is cold enough to cool it to the dew point. The cooling comes from the bottom, through contact, not from the surface radiating heat away. That distinction drives everything about how this fog behaves.
+          </p>
+          <p>
+            The classic setup: California summer. The North Pacific High pushes warm, moist marine air onshore. But the California Current offshore is cold — upwelling brings deep, frigid water to the surface. As that warm air crosses the cold current, it cools from below, reaches saturation, and produces fog that rolls in off the water. This is the infamous San Francisco marine layer.
+          </p>
+          <p>
+            What makes advection fog different from radiation fog in terms of behavior:
+          </p>
+          <ul>
+            <li><strong>Wind doesn't prevent it.</strong> Radiation fog requires calm air. Advection fog can form with surface winds of 10–15 kt and sometimes more. The wind is what's transporting the air mass — it's part of the mechanism.</li>
+            <li><strong>Solar heating doesn't fix it.</strong> Radiation fog clears when the sun warms the ground, which warms the air above it, pushing T above Td. With advection fog, the underlying cold surface is still there. Even if the sun heats the fog layer itself slightly, the fog just reforms as the air advecting over the cold surface keeps cooling.</li>
+            <li><strong>It can set in rapidly over a wide area.</strong> An onshore flow can push a marine layer 50+ miles inland in hours.</li>
+          </ul>
+
+          <!-- Diagram: advection fog cross-section -->
+          <figure class="diagram">
+            <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="adv-fog-title">
+              <title id="adv-fog-title">Advection fog cross-section: warm moist air advecting over a cold surface, cooling from below until it reaches the dew point</title>
+              <rect width="620" height="230" fill="#fffaf0"/>
+
+              <!-- Source region background (left: warm) -->
+              <rect x="0" y="0" width="265" height="230" fill="#b53d1f" opacity="0.05" rx="2"/>
+              <!-- Target region background (right: cold) -->
+              <rect x="285" y="0" width="335" height="230" fill="#4a7ba6" opacity="0.07" rx="2"/>
+
+              <!-- Region divider -->
+              <line x1="275" y1="30" x2="275" y2="190" stroke="#b9a87a" stroke-width="1" stroke-dasharray="4,4"/>
+
+              <!-- Surface line -->
+              <line x1="60" y1="190" x2="580" y2="190" stroke="#0c2541" stroke-width="2.5"/>
+
+              <!-- Surface temperature labels -->
+              <text x="150" y="210" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">WARM SOURCE</text>
+              <text x="430" y="210" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">COLD SURFACE</text>
+
+              <!-- Wind arrows (left to right) at three altitudes -->
+              <!-- Arrow at y=80 -->
+              <line x1="90" y1="80" x2="510" y2="80" stroke="#2d4360" stroke-width="1.5"/>
+              <polygon points="510,80 500,75 500,85" fill="#2d4360"/>
+              <!-- Arrow at y=110 -->
+              <line x1="90" y1="110" x2="510" y2="110" stroke="#2d4360" stroke-width="1.5"/>
+              <polygon points="510,110 500,105 500,115" fill="#2d4360"/>
+              <!-- Arrow at y=140 -->
+              <line x1="90" y1="140" x2="390" y2="140" stroke="#2d4360" stroke-width="1.5"/>
+              <polygon points="390,140 380,135 380,145" fill="#2d4360"/>
+
+              <!-- Air mass label on arrows -->
+              <text x="190" y="68" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Warm moist air advecting →</text>
+
+              <!-- Fog layer forming on right side -->
+              <rect x="285" y="155" width="295" height="35" fill="#4a7ba6" opacity="0.25" rx="3"/>
+              <text x="432" y="178" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.1em">FOG LAYER</text>
+
+              <!-- Temperature profile on right: air cools from bottom up -->
+              <!-- Vertical arrow showing cooling direction -->
+              <text x="430" y="42" font-family="Manrope, sans-serif" font-size="10" fill="#4a7ba6" text-anchor="middle">Air cools from below</text>
+              <text x="430" y="54" font-family="Manrope, sans-serif" font-size="10" fill="#4a7ba6" text-anchor="middle">as it contacts cold surface</text>
+              <text x="430" y="66" font-family="Manrope, sans-serif" font-size="10" fill="#4a7ba6" text-anchor="middle">→ T drops to Td → fog</text>
+
+              <!-- Source conditions label -->
+              <text x="135" y="108" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">T = 22°C</text>
+              <text x="135" y="120" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">Td = 18°C</text>
+
+              <!-- No-burnoff note -->
+              <text x="432" y="98" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-style="italic">Solar heating does NOT clear</text>
+              <text x="432" y="109" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-style="italic">advection fog — needs wind shift</text>
+
+              <!-- Border -->
+              <rect x="1" y="1" width="618" height="228" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Advection fog forms wherever warm moist air moves over a cold surface — coast, lake, or cold-season land mass. The arrows represent wind, which is also what's transporting the air mass. Unlike radiation fog, no calm conditions are needed and solar heating alone won't clear it.</figcaption>
+          </figure>
+
+          <p>
+            Advection fog is more hazardous operationally than radiation fog because it's harder to predict its clearing time. A TAF that says "BECMG 1200/1400 VFR" when the cause is a marine layer is based on a forecast wind shift. If that wind shift is late, the fog isn't lifting at 1200. Check the surface analysis and the area forecast to understand what's driving the fog and what conditions would actually dissipate it.
+          </p>
+        </section>
+
+        <!-- Section: Upslope & steam fog -->
+        <section id="other">
+          <h2>Upslope &amp; steam fog</h2>
+
+          <h3>Upslope fog</h3>
+          <p>
+            When moist air is pushed up a slope by a persistent wind, it cools adiabatically (dry adiabatic lapse rate if unsaturated). If the slope is long enough and the air moist enough, it cools to the dew point before reaching the summit — and fog forms. This is identical to cloud formation via forced lifting, just at the surface.
+          </p>
+          <p>
+            Upslope fog is common on the eastern slopes of the Rockies when moisture-laden southerly or southeasterly flow is forced upward. It can cover terrain from foothills to timberline and can be extensive — a single air mass pushed up a broad slope produces fog across a wide front. Unlike radiation fog, upslope fog doesn't care whether it's night or day, and unlike advection fog, it's tied to the terrain. Dissipation requires the wind to die down or shift direction.
+          </p>
+
+          <h3>Steam fog (evaporation fog)</h3>
+          <p>
+            Steam fog is the opposite of advection fog in one key way: instead of warm air over a cold surface, it's cold air over a warm surface (water). Water evaporates rapidly into the cold air and immediately saturates it. The result looks exactly like steam rising from a hot spring or a pot of water — wisps of fog curling upward from the surface.
+          </p>
+          <p>
+            You'll see steam fog on lakes and rivers in fall and early winter, typically after a cold front brings cold air over water that is still warm from summer. It's usually shallow — 50 to a few hundred feet deep — but can reduce visibility to near zero right at the surface. Because the process is turbulent (the warm water keeps driving convection), steam fog tends to be rough-looking, not the smooth flat layer you get with radiation fog.
+          </p>
+          <p class="callout">
+            <strong>Icing risk with steam fog:</strong> In subfreezing air, steam fog can produce supercooled droplets — liquid water in air below 0°C. A low-altitude pass through steam fog in cold temperatures can deposit rime ice quickly. It's one of those situations where the fog itself isn't the only hazard.
+          </p>
+        </section>
+
+        <!-- Section: Freezing, frontal, and precipitation fog -->
+        <section id="additional">
+          <h2>Freezing, frontal &amp; precipitation fog</h2>
+
+          <h3>Freezing fog (FZFG)</h3>
+          <p>
+            Freezing fog is ordinary fog — radiation, advection, or any other type — that happens to be in air below 0°C. The formation mechanism is the same. What changes is the state of the droplets: at subfreezing temperatures they become <strong>supercooled liquid water</strong>, remaining liquid despite being below the freezing point. Supercooled droplets are metastable. They stay liquid until they contact a surface or an ice nucleus, at which point they freeze instantly.
+          </p>
+          <p>
+            This creates two hazards simultaneously:
+          </p>
+          <ul>
+            <li><strong>Aircraft icing.</strong> Flying through freezing fog or taxiing on a foggy subfreezing ramp deposits rime ice on every exposed surface — wing leading edges, tail, pitot tubes, antennas, control hinges. The droplets are small and produce a rough, opaque white deposit that builds faster than most pilots expect.</li>
+            <li><strong>Runway and taxiway icing.</strong> Freezing fog coats pavement with a glaze that looks dry under normal lighting. This is one of the sources of "black ice" — the surface appears clean but has friction comparable to wet ice. Braking action reports and NOTAMs are your primary tools here; visual inspection alone is unreliable.</li>
+          </ul>
+          <p>
+            In a METAR, freezing fog is coded <code>FZFG</code>. The <code>FZ</code> prefix is always an icing indicator — you'll also see <code>FZRA</code> (freezing rain) and <code>FZDZ</code> (freezing drizzle). Any <code>FZ</code> code in the present weather group means liquid water is freezing on contact.
+          </p>
+
+          <!-- Diagram: Freezing fog comparison (regular fog vs FZFG) -->
+          <figure class="diagram">
+            <svg viewBox="0 0 620 265" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fzfg-title">
+              <title id="fzfg-title">Regular fog vs freezing fog: how droplet behavior differs and why FZFG creates icing hazards on surfaces</title>
+              <rect width="620" height="265" fill="#fffaf0"/>
+
+              <!-- Panel A background -->
+              <rect x="8" y="8" width="290" height="250" fill="#4a7ba6" opacity="0.05" rx="3"/>
+              <!-- Panel B background -->
+              <rect x="322" y="8" width="290" height="250" fill="#0c2541" opacity="0.05" rx="3"/>
+
+              <!-- Divider -->
+              <line x1="311" y1="14" x2="311" y2="252" stroke="#b9a87a" stroke-width="1" stroke-dasharray="5,4"/>
+
+              <!-- Panel A header -->
+              <rect x="8" y="8" width="290" height="32" fill="#4a7ba6" opacity="0.18" rx="3"/>
+              <text x="153" y="29" font-family="Anton, sans-serif" font-size="13" fill="#0c2541" text-anchor="middle" letter-spacing="0.07em">REGULAR FOG</text>
+
+              <!-- Panel B header -->
+              <rect x="322" y="8" width="290" height="32" fill="#b53d1f" opacity="0.18" rx="3"/>
+              <text x="467" y="29" font-family="Anton, sans-serif" font-size="13" fill="#0c2541" text-anchor="middle" letter-spacing="0.07em">FREEZING FOG  (FZFG)</text>
+
+              <!-- Temperature labels -->
+              <text x="153" y="52" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle">T = +4°C · droplets liquid</text>
+              <text x="467" y="52" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle">T = −3°C · droplets supercooled</text>
+
+              <!-- Fog droplets — Panel A (liquid, blue) -->
+              <g fill="#4a7ba6" opacity="0.65">
+                <circle cx="38"  cy="85"  r="5"/><circle cx="75"  cy="70"  r="4"/>
+                <circle cx="112" cy="88"  r="6"/><circle cx="148" cy="74"  r="4"/>
+                <circle cx="185" cy="92"  r="5"/><circle cx="222" cy="68"  r="4"/>
+                <circle cx="258" cy="82"  r="5"/><circle cx="55"  cy="115" r="4"/>
+                <circle cx="95"  cy="128" r="5"/><circle cx="135" cy="112" r="6"/>
+                <circle cx="175" cy="132" r="4"/><circle cx="215" cy="118" r="5"/>
+                <circle cx="252" cy="130" r="4"/><circle cx="42"  cy="155" r="5"/>
+                <circle cx="82"  cy="162" r="4"/><circle cx="125" cy="152" r="5"/>
+                <circle cx="165" cy="165" r="4"/><circle cx="205" cy="158" r="6"/>
+                <circle cx="245" cy="168" r="4"/><circle cx="275" cy="148" r="5"/>
+                <circle cx="60"  cy="182" r="4"/><circle cx="108" cy="188" r="5"/>
+                <circle cx="152" cy="182" r="4"/><circle cx="196" cy="190" r="5"/>
+                <circle cx="240" cy="183" r="4"/>
+              </g>
+
+              <!-- Panel A surface — clean -->
+              <line x1="18" y1="208" x2="292" y2="208" stroke="#5d6f3c" stroke-width="2.5"/>
+              <text x="155" y="224" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle">Surface — dry, clean</text>
+              <text x="155" y="237" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" font-style="italic">No icing hazard to aircraft or pavement</text>
+
+              <!-- Fog droplets — Panel B (supercooled, darker) -->
+              <g fill="#2d4360" opacity="0.7">
+                <circle cx="352" cy="85"  r="5"/><circle cx="389" cy="70"  r="4"/>
+                <circle cx="426" cy="88"  r="6"/><circle cx="462" cy="74"  r="4"/>
+                <circle cx="499" cy="92"  r="5"/><circle cx="536" cy="68"  r="4"/>
+                <circle cx="572" cy="82"  r="5"/><circle cx="369" cy="115" r="4"/>
+                <circle cx="409" cy="128" r="5"/><circle cx="449" cy="112" r="6"/>
+                <circle cx="489" cy="132" r="4"/><circle cx="529" cy="118" r="5"/>
+                <circle cx="566" cy="130" r="4"/><circle cx="356" cy="155" r="5"/>
+                <circle cx="396" cy="162" r="4"/><circle cx="439" cy="152" r="5"/>
+                <circle cx="479" cy="165" r="4"/><circle cx="519" cy="158" r="6"/>
+                <circle cx="559" cy="168" r="4"/><circle cx="585" cy="148" r="5"/>
+                <circle cx="374" cy="182" r="4"/><circle cx="422" cy="188" r="5"/>
+                <circle cx="466" cy="182" r="4"/><circle cx="510" cy="190" r="5"/>
+                <circle cx="554" cy="183" r="4"/>
+              </g>
+
+              <!-- Panel B surface — rime deposit layer on top, then ground line -->
+              <rect x="322" y="198" width="290" height="10" fill="#4a7ba6" opacity="0.30" rx="1"/>
+              <line x1="322" y1="208" x2="612" y2="208" stroke="#5d6f3c" stroke-width="2.5"/>
+              <!-- Rime deposit label arrow -->
+              <text x="467" y="224" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Rime ice deposit on surface</text>
+              <text x="467" y="237" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-style="italic">Droplets freeze on contact — aircraft &amp; pavement icing</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="618" height="263" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>In regular fog (left), droplets remain liquid — no icing hazard. In freezing fog (right), identical-looking droplets are supercooled and freeze the instant they contact a surface, building rime ice on wings, tailplanes, and pavement. The surface looks the same; the hazard is invisible until it matters.</figcaption>
+          </figure>
+
+          <h3 style="margin-top: 2.2rem;">Frontal fog</h3>
+          <p>
+            Frontal fog is most commonly associated with advancing warm fronts, though it can occur along any frontal boundary. As a warm front approaches, warm moist air glides up and over the cooler air mass sitting at the surface ahead of it. That warm air produces <strong>precipitation — rain or drizzle — that falls through the cooler air below the front</strong>.
+          </p>
+          <p>
+            As the warm rain descends into the cold surface air, it partially evaporates. Evaporation adds moisture directly to the cold air, raising its dew point. If that surface air is already moderately humid — as it often is ahead of a warm front — the added moisture is enough to close the T/Td spread to zero. Fog forms, often 100–300 nm ahead of the frontal surface.
+          </p>
+          <p>
+            The operational trap with frontal fog: the weather <em>looks</em> like it's improving. The front is approaching, warmer temperatures are on the way, the skies might be brightening slightly — but visibility can be near zero. IFR conditions can set in hours before the front arrives and persist until after frontal passage. Solar heating does essentially nothing to clear frontal fog because the evaporation source (warm precipitation) is still running.
+          </p>
+
+          <!-- Diagram: Frontal fog cross-section -->
+          <figure class="diagram">
+            <svg viewBox="0 0 620 275" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="front-fog-title">
+              <title id="front-fog-title">Frontal fog cross-section: warm precipitation falls through cold surface air ahead of a warm front, evaporates, and raises dew point until fog forms</title>
+              <rect width="620" height="275" fill="#fffaf0"/>
+
+              <!-- Cold air zone background (left, below frontal slope) -->
+              <polygon points="60,248 430,248 185,62 60,62" fill="#4a7ba6" opacity="0.07"/>
+
+              <!-- Warm air zone background (right, above frontal slope) -->
+              <polygon points="185,62 560,62 560,248 430,248" fill="#b53d1f" opacity="0.05"/>
+
+              <!-- Ground line -->
+              <line x1="60" y1="248" x2="560" y2="248" stroke="#0c2541" stroke-width="2"/>
+
+              <!-- Warm front slope line -->
+              <line x1="430" y1="248" x2="185" y2="62" stroke="#b53d1f" stroke-width="2"/>
+
+              <!-- Warm front symbols (filled semicircles on warm side of line) -->
+              <circle cx="370" cy="152" r="7" fill="#b53d1f" opacity="0.75"/>
+              <circle cx="340" cy="170" r="7" fill="#b53d1f" opacity="0.75"/>
+              <circle cx="310" cy="188" r="7" fill="#b53d1f" opacity="0.75"/>
+              <circle cx="400" cy="130" r="7" fill="#b53d1f" opacity="0.75"/>
+
+              <!-- Warm front label -->
+              <text x="455" y="148" font-family="Anton, sans-serif" font-size="10" fill="#b53d1f" letter-spacing="0.07em">WARM FRONT</text>
+              <text x="457" y="161" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">advancing →</text>
+
+              <!-- Zone labels -->
+              <text x="115" y="168" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">COLD AIR</text>
+              <text x="500" y="105" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">WARM AIR</text>
+
+              <!-- Warm cloud / precip source band at top of warm air -->
+              <rect x="192" y="62" width="368" height="22" fill="#b53d1f" opacity="0.12" rx="2"/>
+              <text x="376" y="78" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Warm air aloft — precipitation source</text>
+
+              <!-- Rain shafts (dashed lines) falling in the cold air zone left of front -->
+              <g stroke="#4a7ba6" stroke-width="1.2" stroke-dasharray="4,5" opacity="0.65">
+                <line x1="130" y1="84" x2="130" y2="196"/>
+                <line x1="155" y1="84" x2="162" y2="218"/>
+                <line x1="180" y1="84" x2="200" y2="232"/>
+                <line x1="205" y1="84" x2="232" y2="240"/>
+                <line x1="230" y1="84" x2="258" y2="244"/>
+                <line x1="255" y1="84" x2="280" y2="246"/>
+                <line x1="280" y1="84" x2="302" y2="248"/>
+                <line x1="305" y1="84" x2="320" y2="248"/>
+              </g>
+
+              <!-- Evaporation arrows in cold zone near surface -->
+              <g stroke="#4a7ba6" stroke-width="0.9" opacity="0.55">
+                <line x1="90" y1="240" x2="90" y2="225"/>
+                <polygon points="90,225 86,232 94,232" fill="#4a7ba6" opacity="0.55"/>
+                <line x1="108" y1="240" x2="108" y2="225"/>
+                <polygon points="108,225 104,232 112,232" fill="#4a7ba6" opacity="0.55"/>
+                <line x1="126" y1="240" x2="126" y2="225"/>
+                <polygon points="126,225 122,232 130,232" fill="#4a7ba6" opacity="0.55"/>
+                <line x1="144" y1="240" x2="144" y2="225"/>
+                <polygon points="144,225 140,232 148,232" fill="#4a7ba6" opacity="0.55"/>
+                <line x1="162" y1="240" x2="162" y2="225"/>
+                <polygon points="162,225 158,232 166,232" fill="#4a7ba6" opacity="0.55"/>
+              </g>
+
+              <!-- Evaporation label -->
+              <text x="125" y="212" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">Rain evaporates</text>
+              <text x="125" y="222" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">→ raises Td</text>
+
+              <!-- Fog zone at surface -->
+              <rect x="65" y="230" width="195" height="18" fill="#4a7ba6" opacity="0.22" rx="2"/>
+              <text x="162" y="243" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.1em">FOG LAYER</text>
+
+              <!-- Distance callout -->
+              <text x="312" y="267" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">IFR fog commonly 100–300 nm ahead of the surface front</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="618" height="273" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Ahead of an advancing warm front, warm precipitation falls from the overriding warm air into the colder surface air mass. As it evaporates, it raises the dew point of the cold surface air until T = Td and fog forms. This IFR layer can extend well ahead of the front — long before conditions "should" be bad based on the front's position alone.</figcaption>
+          </figure>
+
+          <h3 style="margin-top: 2.2rem;">Precipitation fog</h3>
+          <p>
+            Precipitation fog generalizes the frontal fog mechanism: it can occur under any heavy precipitation source, not just warm fronts. The physical process is identical — precipitation evaporates in the subcloud layer, moisture is added to the surface air, T/Td spread closes, fog forms. What varies is the trigger.
+          </p>
+          <p>
+            The most common non-frontal example is a <strong>summer thunderstorm rain shaft</strong>. When a high-precipitation convective cell produces heavy rain, the rain shaft can evaporate enough water near the surface — especially if surface humidity is already elevated — to produce localized fog under and immediately downwind of the storm. Visibility can drop to near zero <em>before the precipitation itself arrives</em>, as the evaporating rain ahead of the shaft saturates the air.
+          </p>
+          <p>
+            Precipitation fog is almost always <strong>patchy and short-lived</strong> compared to radiation or advection fog. It dissipates once the precipitation moves on and surface heating or wind mixes the saturated layer away. In METARs, patchy fog is coded <code>BCFG</code> and partial fog is <code>PRFG</code>; both indicate fog is not uniformly distributed — one area may be 1/4 SM while an adjacent area is clear.
+          </p>
+
+          <p class="callout">
+            <strong>METAR fog codes at a glance:</strong> <code>FG</code> = fog (vis &lt; 5/8 SM) · <code>BR</code> = mist (5/8–6 SM, high humidity) · <code>FZFG</code> = freezing fog · <code>MIFG</code> = shallow fog (dense fog layer &lt; 6 ft deep — can be VFR overhead) · <code>BCFG</code> = patchy fog (uneven distribution) · <code>PRFG</code> = partial fog (covers part of airport). Knowing these qualifiers lets you reconstruct what the airport actually looked like — not just that "fog" was present.
+          </p>
+        </section>
+
+        <!-- Section: Predicting fog from observations -->
+        <section id="predict">
+          <h2>Predicting fog from observations</h2>
+          <p>
+            The most useful pre-flight fog predictor is the <strong>temperature/dew point spread</strong> from the current METAR or hourly observation. If you can estimate overnight cooling from your route's surface temps, you can make a reasonable fog prediction without any special tools.
+          </p>
+
+          <div class="compare-table">
+            <div class="compare-col">
+              <h3 class="compare-head">T – Td Spread</h3>
+              <dl>
+                <dt>≤ 4°F (≤ 2°C)</dt>
+                <dd><strong>High fog risk.</strong> Air is very close to saturation. Even modest cooling through the night can bring T to Td. If conditions are otherwise favorable (calm wind, clear sky), fog is likely.</dd>
+                <dt>5–9°F (3–5°C)</dt>
+                <dd><strong>Moderate fog risk.</strong> Fog possible if cooling is significant and conditions persist. Worth monitoring — check the overnight forecast and any wind-shift timing.</dd>
+                <dt>≥ 10°F (≥ 6°C)</dt>
+                <dd><strong>Lower fog risk.</strong> Air is far enough from saturation that typical overnight cooling alone is unlikely to produce fog. Risk increases if a front or moisture surge is moving through.</dd>
+              </dl>
+            </div>
+            <div class="compare-col">
+              <h3 class="compare-head">Other Signals</h3>
+              <dl>
+                <dt>Wind forecast</dt>
+                <dd>Calm or very light winds overnight → radiation fog risk. Persistent onshore flow near coast → advection fog risk. Strong winds → fog unlikely (too much mixing).</dd>
+                <dt>Sky condition</dt>
+                <dd>Clear sky overnight → maximum surface cooling → radiation fog risk. Cloudy sky → less cooling → lower radiation fog risk. Cloud cover doesn't affect advection or upslope fog.</dd>
+                <dt>TAF / area forecast</dt>
+                <dd>Look for the FG, MIFG (shallow fog), BCFG (patchy fog), or PRFG (partial fog) qualifiers. A TAF that says BECMG VFR is a prediction — it's based on modeled wind shifts. Know what's actually driving the fog before you trust the clearing time.</dd>
+                <dt>Recent PIREPs</dt>
+                <dd>If pilots are reporting tops at 500 ft AGL, a thin fog layer is confirmed. If tops are 200 ft, IFR conditions are almost certainly at the surface.</dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Why fog burns off -->
+        <section id="burnoff">
+          <h2>Why fog burns off — or doesn't</h2>
+          <p>
+            "Fog burns off" is aviation shorthand for solar insolation raising the near-surface air temperature back above the dew point, causing droplets to evaporate. This works reliably for <strong>radiation fog</strong> because the mechanism that formed it — surface cooling — is reversed once the sun rises. As the ground warms, so does the air above it. T climbs back above Td. Fog lifts and dissipates.
+          </p>
+          <p>
+            The timeline depends on fog thickness, humidity, and solar angle:
+          </p>
+          <ul>
+            <li>Thin fog on a late spring/summer morning at low latitude → clears within 30–60 minutes of sunrise.</li>
+            <li>Thick fog in November at high latitude → may not clear until 1000–1100 local, or at all on short winter days.</li>
+            <li>Dense fog with Td very close to surface temperature → requires more heating, clears later.</li>
+          </ul>
+
+          <p>
+            <strong>Advection fog does not burn off with sunshine alone.</strong> The underlying cold surface is still there. Even when the sun warms the fog layer from above, the cold surface below keeps cooling the air in contact with it. The only thing that clears advection fog is a change in the air mass — a wind shift bringing drier continental air, or an offshore flow replacing the onshore marine layer.
+          </p>
+          <p>
+            <strong>Upslope fog clears when the upslope flow stops</strong> — wind shift, frontal passage, or diurnal wind reversal (slope winds often shift downslope by afternoon as surface heating decreases upslope pressure gradient). Radiation fog can also "burn from the bottom up" — the sun heats the surface, which erodes the fog from below, often producing a shallow 200–300 ft ceiling as the main fog layer lifts slightly while the tops consolidate.
+          </p>
+          <p class="callout">
+            <strong>The most common pilot error:</strong> planning a morning departure based on a forecast that says "fog clearing by 0900" without asking <em>why</em> it clears. If it's radiation fog, the mechanism (solar heating) is reliable and the timing is reasonable. If it's advection fog along a coast, "clearing by 0900" depends entirely on the wind shift — which may or may not happen as forecast. The TAF is only as good as the wind forecast it's based on.
+          </p>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>Fog comes up on nearly every Private and Instrument oral. Try to answer each before reading the response.</p>
+
+          <details class="qa">
+            <summary>Q: What is fog and how does it differ from a cloud?</summary>
+            <p>Fog is a cloud at the surface — same physical process (water vapor condensing onto particles to form suspended droplets), just at ground level. By convention, fog reduces visibility below 5/8 SM. A cloud at the same altitude but not touching the surface would be a low stratus layer. The FAA uses the 5/8 SM threshold to distinguish fog (FG) from mist (BR), which is 5/8 to 6 SM with near-100% humidity.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What are the four types of fog?</summary>
+            <p>Radiation fog (surface cools under clear, calm sky until T reaches Td), advection fog (warm moist air moves over a cold surface and cools from below), upslope fog (moist air forced up terrain and cools adiabatically to Td), and steam fog / evaporation fog (cold air moves over warm water; water evaporates and immediately saturates the air). Each has different formation requirements, locations, and dissipation characteristics.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What conditions are required for radiation fog to form?</summary>
+            <p>Three: (1) a clear sky so the surface can radiate heat to space efficiently, (2) calm winds — generally under 5 kt — so the boundary layer stays stratified and the cooling is concentrated near the surface, and (3) sufficient moisture, meaning a T/Td spread of roughly 5°F or less at sunset. High-humidity air needs much less cooling to reach saturation. Valleys and low areas are most vulnerable because cold, dense air drains into them.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How is advection fog different from radiation fog?</summary>
+            <p>Formation: advection fog requires a warm moist air mass moving over a cold surface; radiation fog requires calm air under a clear sky cooling from below. Wind: radiation fog needs calm conditions; advection fog can form with winds of 10–15 kt. Dissipation: radiation fog burns off with solar heating because the sun reverses the cooling mechanism; advection fog persists through the day because the cold surface is still there. Only a wind shift bringing drier air clears advection fog. Location: radiation fog is typically inland overnight; advection fog is classic along coasts with cold offshore currents.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What T/Td spread would concern you on a preflight weather check for fog?</summary>
+            <p>A spread of 4°F (about 2°C) or less at evening observation is a reliable warning flag for overnight fog, especially if the forecast calls for calm winds and clear skies. Even a 7–8°F spread deserves a look — if temperatures are forecast to drop 10°F overnight (common in fall), that spread could close. The key is estimating the overnight cooling and comparing it to the spread remaining at sunset.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: A coastal TAF says "BECMG 0900/1100 VFR" after a night of IFR fog. Should you plan on departing at 0900?</summary>
+            <p>Not without knowing what type of fog it is. If it's radiation fog, the clearing is driven by solar heating, which is reliable — a 0900–1100 clearing is plausible for a fall or winter morning. If it's advection fog driven by an onshore marine layer, that BECMG is based on a forecast wind shift. Check the surface analysis and synoptic forecast: is there a mechanism (frontal passage, pressure pattern change) that will actually shift the flow? If the marine layer is entrenched and the pressure pattern shows persistent onshore flow, that TAF clearing may not verify. Have an alternate plan.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is freezing fog and what makes it particularly hazardous compared to regular fog?</summary>
+            <p>Freezing fog is fog in below-0°C air. The droplets are supercooled — still liquid despite the temperature — and freeze instantly on contact with any cold surface. Regular fog creates a visibility problem. Freezing fog creates both a visibility problem and an active icing problem at the same time. It deposits rime ice on aircraft surfaces during taxi, takeoff roll, and low-altitude flight without any precipitation falling. It also coats runway and taxiway pavement with a glaze indistinguishable from a dry surface under normal lighting — a major contributor to runway excursions. In a METAR, any <code>FZ</code> prefix is an icing warning: <code>FZFG</code>, <code>FZRA</code>, <code>FZDZ</code> all mean liquid water freezing on contact.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How does frontal fog form, and why is it a deceptive hazard?</summary>
+            <p>Frontal fog — most common ahead of warm fronts — forms when warm precipitation falls through the cooler air mass sitting at the surface ahead of the front. As the rain evaporates in the cold air, it adds moisture and raises the dew point until the surface air reaches saturation. The deceptive part: the weather appears to be improving (the front is approaching, warmer temperatures are on the way), but IFR conditions can extend 100–300 nm ahead of the frontal surface. Pilots expecting the improving conditions associated with a warm front passage may not account for the IFR fog layer that arrives first. Solar heating won't clear it — only frontal passage, which brings a different air mass, will.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the difference between FG, MIFG, BCFG, and PRFG in a METAR?</summary>
+            <p>All four describe fog, but they tell you about coverage and depth. <code>FG</code> is standard fog — visibility below 5/8 SM throughout. <code>MIFG</code> is shallow fog, a dense layer less than 6 feet deep; visibility aloft may be fine but the surface layer is obscured — can be above landing minimums overhead but zero-zero at runway level. <code>BCFG</code> (patchy fog) means fog is not uniformly distributed; some areas are clear, others are IFR. <code>PRFG</code> (partial fog) means fog covers part but not all of the airport area. The qualifiers matter for practical planning: patchy fog from precipitation or local terrain means a nearby airport might be clear while your destination is IFR, or vice versa.</p>
+          </details>
+        </section>
+
+        <!-- Section: Decision scenario -->
+        <section id="scenario">
+          <h2>Decision scenario</h2>
+          <p class="scenario-disclaimer">
+            <strong>Educational example only.</strong> Not for real flight planning. Real go/no-go decisions require official sources, current data, and your own pilot-in-command judgment.
+          </p>
+
+          <div class="scenario-box">
+            <p class="scenario-setup">
+              <strong>The setup:</strong> October morning, 0700 local. You're a Private Pilot planning a VFR cross-country from a valley airport (KXYZ) in the southeastern foothills to a coastal destination (KABC) 120 nm to the east-southeast. The coast has a known history of marine layer fog in fall.
+            </p>
+            <p class="scenario-setup">
+              Current METAR at KXYZ: <code>1/4SM FG OVC001 12/12 A3005 CALM</code>. Current METAR at KABC: <code>1SM BR OVC004 16/15 A3004 12010KT</code>. The TAF for KABC says <code>BECMG 1100/1300 P6SM SCT018</code>.
+            </p>
+
+            <p class="scenario-question"><strong>What questions should you be asking?</strong></p>
+
+            <ol class="scenario-questions">
+              <li><strong>What type of fog is at each airport?</strong> KXYZ has calm winds, T = Td = 12°C, clear night implied by the observation — classic radiation fog. KABC has a 10 kt sea breeze with visibility 1 SM in mist and a 400 ft OVC — almost certainly advection fog or a marine layer, not radiation.</li>
+              <li><strong>What's the clearing mechanism at each?</strong> KXYZ's radiation fog should burn off within 1–3 hours of sunrise — expect VFR by 0900–1000 local. KABC's marine layer will only clear if the sea breeze shifts or weakens — not a solar heating story.</li>
+              <li><strong>What does "BECMG 1100/1300 P6SM" actually mean at KABC?</strong> The TAF is forecasting VFR conditions between 1100 and 1300Z. That improvement is based on the wind forecast. Check: is there a front or pressure pattern change driving this? Or is it just an educated guess about the sea breeze timing?</li>
+              <li><strong>What's my contingency if KABC doesn't clear?</strong> Where can I divert? Is there an alternate within fuel range that would be VFR? What are the conditions along the coast on either side of KABC?</li>
+              <li><strong>When can I actually depart KXYZ safely?</strong> Not at 0700 — it's currently 1/4 SM in fog. But if this is radiation fog, I may be VFR by 0930. Can I depart then and still have a workable plan at KABC if the TAF doesn't verify?</li>
+            </ol>
+
+            <p class="scenario-takeaway">
+              Two airports, two completely different fog types, two completely different clearing mechanisms. A pilot who treats both as "fog that will lift by midmorning" is working off a flawed mental model. Identify the type first, then reason about the clearing. KXYZ's radiation fog is predictable. KABC's marine layer is not — and the TAF's BECMG is a forecast, not a guarantee. Plan around it, not through it.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>Fog is saturated air at the surface.</strong> T = Td at ground level. The T/Td spread from any METAR is your most direct fog-risk indicator.</li>
+              <li><strong>Four types, four mechanisms.</strong> Radiation (surface cools, calm night), advection (warm air over cold surface), upslope (terrain lifting), steam (cold air over warm water).</li>
+              <li><strong>Radiation fog burns off. Advection fog usually doesn't.</strong> Solar heating reverses the radiation cooling mechanism. It doesn't change the cold surface that's driving advection fog. Only a wind shift does.</li>
+              <li><strong>T/Td spread ≤ 4°F = fog risk flag.</strong> Combine with the wind forecast, sky condition, and overnight temperature drop to assess how likely it is to verify.</li>
+              <li><strong>TAF BECMG clearing times assume the forecast conditions verify.</strong> For advection fog, that means a forecast wind shift. Know what the forecast is assuming and whether there's a mechanism to make it happen.</li>
+              <li><strong>Know your route's terrain.</strong> Valley airports fog earlier and more severely than ridge-top airports. Coastal airports face advection fog; inland airports face radiation fog. Same region, very different morning forecast.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="stability-lapse-rates.html" class="concept-nav-link">← Stability &amp; Lapse Rates</a>
+          <span class="concept-nav-next">Next concept: Thunderstorm Life Cycle (coming soon)</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>
