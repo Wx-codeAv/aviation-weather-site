@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fog Formation — CrosswindWX</title>
-  <meta name="description" content="All seven fog types — radiation, advection, upslope, steam, freezing, frontal, and precipitation fog — how each forms, how to predict them from a METAR, and why some types never burn off.">
+  <meta name="description" content="All five FAA fog types — radiation, advection, upslope, frontal, and steam fog — how each forms by formation mechanism, how to predict them from a METAR, and why some types never burn off.">
   <link rel="stylesheet" href="../../css/main.css">
 </head>
 <body>
@@ -41,7 +41,7 @@
       <p class="hero-eyebrow">Concept · Visibility hazards</p>
       <h1>Fog <span class="accent">Formation</span></h1>
       <p class="lede">
-        Fog kills more pilots than almost anything else — not because it's unpredictable, but because pilots trust a forecast that said "becoming VFR by 0900" without understanding <em>why</em> fog forms and what determines whether it actually clears. There are seven fog types the FAA tests. Know each one and you can usually tell whether that burn-off is real — or wishful thinking.
+        Fog kills more pilots than almost anything else — not because it's unpredictable, but because pilots trust a forecast that said "becoming VFR by 0900" without understanding <em>why</em> fog forms and what determines whether it actually clears. The FAA (AC 00-45H) names five fog types, each defined by its formation mechanism. Know each one and you can usually tell whether that burn-off is real — or wishful thinking.
       </p>
       <div class="concept-meta">
         <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3a · IR.I.B.K3a · CA.I.C.K3a</span>
@@ -60,11 +60,11 @@
         <p class="toc-label">On this page</p>
         <ol>
           <li><a href="#what">What fog actually is</a></li>
-          <li><a href="#types">The four fog types</a></li>
+          <li><a href="#types">The five fog types</a></li>
           <li><a href="#radiation">Radiation fog</a></li>
           <li><a href="#advection">Advection fog</a></li>
           <li><a href="#other">Upslope &amp; steam fog</a></li>
-          <li><a href="#additional">Freezing, frontal &amp; precip fog</a></li>
+          <li><a href="#additional">Frontal fog &amp; freezing fog</a></li>
           <li><a href="#predict">Predicting fog from observations</a></li>
           <li><a href="#burnoff">Why fog burns off (or doesn't)</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
@@ -97,113 +97,84 @@
           </p>
         </section>
 
-        <!-- Section: Four fog types -->
+        <!-- Section: Five fog types -->
         <section id="types">
-          <h2>The four fog types</h2>
+          <h2>The five fog types</h2>
           <p>
-            The FAA recognizes four formation mechanisms. Each requires different conditions, forms in different places, and — critically — dissipates differently. Confusing them leads to bad go/no-go calls.
+            The FAA (AC 00-45H §16.1.1.1) defines fog types by their <strong>formation mechanism</strong>. There are five: radiation, advection, upslope, frontal, and steam. Each requires different conditions, forms in different places, and — critically — dissipates differently. Confusing them leads to bad go/no-go calls.
           </p>
 
-          <div class="card-grid" style="grid-template-columns: repeat(2, 1fr); margin: 1.5rem 0 2rem;">
+          <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin: 1.5rem 0 2rem;">
 
             <article class="hazard-card hazard-sierra">
               <span class="hazard-label">Type 01 · Most common</span>
               <h3>Radiation Fog</h3>
               <p class="hazard-mnemonic">Clear sky + calm night → surface cools → air cools to Td.</p>
               <ul class="hazard-list">
-                <li>Requires: clear sky, calm winds (&lt; 5 kt), high humidity</li>
-                <li>Forms in valleys and low spots (cold air drainage)</li>
-                <li>Thickest at dawn; usually burns off 1–3 hr after sunrise</li>
-                <li>Inland, overnight, fair-weather fog</li>
+                <li>Requires: clear sky, calm winds (≤ 5 kt), high humidity</li>
+                <li>Inland only — water surfaces cool too little from radiation</li>
+                <li>Ground fog is a shallow form of radiation fog</li>
+                <li>Thickest at dawn; usually clears 1–3 hr after sunrise</li>
               </ul>
             </article>
 
             <article class="hazard-card hazard-tango">
               <span class="hazard-label">Type 02 · Coastal hazard</span>
               <h3>Advection Fog</h3>
-              <p class="hazard-mnemonic">Warm moist air moves over a cold surface → cools from below.</p>
+              <p class="hazard-mnemonic">Warm moist air moves over a cold surface → cools from below to Td.</p>
               <ul class="hazard-list">
-                <li>Does NOT need calm winds or clear sky</li>
-                <li>Can form with winds up to 15+ kt</li>
-                <li>Classic: Pacific coast summer, Gulf coast winter</li>
-                <li>Does NOT burn off with solar heating — needs wind shift</li>
+                <li>Does NOT need calm winds — deepens up to ~15 kt</li>
+                <li>Called sea fog when occurring over open water</li>
+                <li>Can move in rapidly at any hour, day or night</li>
+                <li>Does NOT burn off — needs a wind shift to clear</li>
               </ul>
             </article>
 
             <article class="hazard-card hazard-zulu">
               <span class="hazard-label">Type 03 · Terrain-driven</span>
               <h3>Upslope Fog</h3>
-              <p class="hazard-mnemonic">Moist air forced up terrain → cools adiabatically to Td.</p>
+              <p class="hazard-mnemonic">Moist stable air forced up terrain → adiabatic cooling to Td.</p>
               <ul class="hazard-list">
-                <li>Requires: moist air mass + sustained upslope wind</li>
-                <li>Common on windward slopes of mountains and hills</li>
-                <li>Persists as long as upslope flow continues</li>
-                <li>Often extensive — can cover an entire slope or range</li>
+                <li>Favorable winds: 5–15 kt (stronger → lifts to stratus)</li>
+                <li>Can form under cloudy skies — unlike radiation fog</li>
+                <li>Common on eastern slopes of Rockies and Appalachians</li>
+                <li>Often dense; extends to high altitudes</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">Type 04 · Precipitation-driven</span>
+              <h3>Frontal Fog</h3>
+              <p class="hazard-mnemonic">Warm precipitation evaporates into cold surface air → Td rises to T.</p>
+              <ul class="hazard-list">
+                <li>Also called precipitation-induced fog (AC 00-45H)</li>
+                <li>Most common ahead of warm fronts; possible with any front</li>
+                <li>IFR conditions extend well ahead of the frontal surface</li>
+                <li>Clears only after frontal passage brings a different air mass</li>
               </ul>
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--sage);">
-              <span class="hazard-label">Type 04 · Over water</span>
+              <span class="hazard-label">Type 05 · Over water</span>
               <h3>Steam Fog</h3>
-              <p class="hazard-mnemonic">Cold air over warm water → water evaporates into cold air → instant saturation.</p>
+              <p class="hazard-mnemonic">Cold air over warm water → evaporation saturates the cold air → steam-like wisps.</p>
               <ul class="hazard-list">
-                <li>Looks like steam rising off a lake or river</li>
-                <li>Fall and early winter, after cold frontal passage</li>
-                <li>Usually shallow (&lt; 100–200 ft) but surface-turbulent</li>
-                <li>Can produce low-level icing in cold enough air</li>
+                <li>Common over lakes/streams in fall, ocean in winter</li>
+                <li>Shallow unstable layer → expect convective turbulence</li>
+                <li>Can produce low-level icing in subfreezing air</li>
+                <li>Steam devils (whirling columns) may form over dense patches</li>
               </ul>
             </article>
 
           </div>
 
           <p class="callout">
+            <strong>Fog descriptors — not formation types:</strong> <strong>Freezing fog</strong> (METAR: <code>FZFG</code>) is any fog type occurring in below-0°C air — supercooled droplets freeze on contact with aircraft surfaces and pavement. <strong>Ice fog</strong> forms when fog is composed of ice crystals rather than liquid droplets, in very cold Arctic air. <strong>Ground fog</strong> (METAR: <code>MIFG</code>) is fog so shallow it does not obstruct vision at 6 ft above the surface — typically a form of radiation fog. These describe the fog's physical state or depth, not how it formed.
+          </p>
+
+          <p class="callout">
             <strong>The most important distinction for pilots:</strong> Radiation fog almost always clears by late morning. Advection fog may persist all day regardless of clear skies and sunshine — the only thing that fixes it is a wind shift bringing drier air. If the forecast says "fog burning off by 1000L" and you're in a coastal area with an onshore flow, ask yourself: what changes the wind direction? If nothing does, that fog isn't going anywhere.
           </p>
-
-          <h3 style="margin-top: 2.2rem;">Three more types — all testable</h3>
-          <p>
-            These appear less often than radiation or advection fog but are fair game on any Private, Instrument, or Commercial oral. Freezing fog is particularly important to recognize because it isn't just a visibility problem.
-          </p>
-
-          <div class="card-grid card-grid-3">
-
-            <article class="hazard-card hazard-zulu">
-              <span class="hazard-label">Type 05 · Icing hazard</span>
-              <h3>Freezing Fog</h3>
-              <p class="hazard-mnemonic">Regular fog in below-0°C air — supercooled droplets freeze on contact with any surface.</p>
-              <ul class="hazard-list">
-                <li>METAR code: <strong>FZFG</strong></li>
-                <li>Deposits rime ice on aircraft and runways</li>
-                <li>Can produce black ice on pavement with no visible warning</li>
-                <li>Any <code>FZ</code> prefix = icing flag</li>
-              </ul>
-            </article>
-
-            <article class="hazard-card hazard-sierra">
-              <span class="hazard-label">Type 06 · Frontal weather</span>
-              <h3>Frontal Fog</h3>
-              <p class="hazard-mnemonic">Warm rain evaporates into cold surface air ahead of an advancing warm front.</p>
-              <ul class="hazard-list">
-                <li>Forms 100–300 nm ahead of a warm front</li>
-                <li>Evaporating precipitation raises Td in the cold surface air</li>
-                <li>IFR conditions arrive before the front does — deceptive setup</li>
-                <li>Clears only after frontal passage</li>
-              </ul>
-            </article>
-
-            <article class="hazard-card hazard-tango">
-              <span class="hazard-label">Type 07 · Precipitation-driven</span>
-              <h3>Precipitation Fog</h3>
-              <p class="hazard-mnemonic">Heavy precipitation evaporates in the subcloud layer and saturates moist surface air.</p>
-              <ul class="hazard-list">
-                <li>Can occur under any heavy precipitation, not just fronts</li>
-                <li>Common near thunderstorm rain shafts</li>
-                <li>Typically patchy (<code>BCFG</code>) and short-lived</li>
-                <li>Visibility can drop suddenly before rain reaches the surface</li>
-              </ul>
-            </article>
-
-          </div>
         </section>
 
         <!-- Section: Radiation fog -->
@@ -320,7 +291,7 @@
           </figure>
 
           <p>
-            Radiation fog tends to pool in low terrain — valleys, river bottoms, basins — because cold, dense air drains downslope and collects. A ridge-top airport may be completely clear while a valley field 10 miles away is 0/0. Cold air drainage is why "valley fog" is the textbook example.
+            Radiation fog is <strong>restricted to land</strong> because water surfaces cool too little from nighttime radiation to produce fog this way. It tends to pool in low terrain — valleys, river bottoms, basins — because cold, dense air drains downslope and collects. A ridge-top airport may be completely clear while a valley field 10 miles away is 0/0. <strong>Ground fog</strong> is a form of radiation fog confined to near-ground level: so shallow it does not obstruct vision at 6 feet above the surface (<code>MIFG</code> in the METAR).
           </p>
           <p>
             <strong>Key operational fact:</strong> radiation fog is almost always thickest at dawn (maximum cooling has occurred; solar heating hasn't started yet) and typically clears within 1–3 hours of sunrise. The exception is when humidity is very high — then the fog may not burn off until mid-morning or may re-form the following night.
@@ -334,7 +305,7 @@
             Advection is just weather-speak for horizontal transport. Advection fog forms when a warm, moist air mass moves over a surface that is cold enough to cool it to the dew point. The cooling comes from the bottom, through contact, not from the surface radiating heat away. That distinction drives everything about how this fog behaves.
           </p>
           <p>
-            The classic setup: California summer. The North Pacific High pushes warm, moist marine air onshore. But the California Current offshore is cold — upwelling brings deep, frigid water to the surface. As that warm air crosses the cold current, it cools from below, reaches saturation, and produces fog that rolls in off the water. This is the infamous San Francisco marine layer.
+            Advection fog is most common along coastal areas but often moves deep into continental areas. When it occurs over open water, it is called <strong>sea fog</strong>. The classic setup: California summer. The North Pacific High pushes warm, moist marine air onshore. But the California Current offshore is cold — upwelling brings deep, frigid water to the surface. As that warm air crosses the cold current, it cools from below, reaches saturation, and produces fog that rolls in off the water. This is the infamous San Francisco marine layer. In winter, advection fog over the central and eastern United States forms when moist air from the Gulf of Mexico spreads northward over cold ground — it can extend as far north as the Great Lakes.
           </p>
           <p>
             What makes advection fog different from radiation fog in terms of behavior:
@@ -415,10 +386,10 @@
 
           <h3>Upslope fog</h3>
           <p>
-            When moist air is pushed up a slope by a persistent wind, it cools adiabatically (dry adiabatic lapse rate if unsaturated). If the slope is long enough and the air moist enough, it cools to the dew point before reaching the summit — and fog forms. This is identical to cloud formation via forced lifting, just at the surface.
+            When moist, stable air is pushed up a slope by a persistent wind, it cools adiabatically (dry adiabatic lapse rate if unsaturated). If the slope is long enough and the air moist enough, it cools to the dew point before reaching the summit — and fog forms. This is identical to cloud formation via forced lifting, just at the surface.
           </p>
           <p>
-            Upslope fog is common on the eastern slopes of the Rockies when moisture-laden southerly or southeasterly flow is forced upward. It can cover terrain from foothills to timberline and can be extensive — a single air mass pushed up a broad slope produces fog across a wide front. Unlike radiation fog, upslope fog doesn't care whether it's night or day, and unlike advection fog, it's tied to the terrain. Dissipation requires the wind to die down or shift direction.
+            Wind speeds of 5 to 15 knots are most favorable — winds stronger than 15 knots tend to lift the fog into a layer of low stratus clouds rather than letting it hug the terrain. Importantly, <strong>upslope fog can form under cloudy skies</strong>, unlike radiation fog which requires a clear sky for surface cooling. Upslope fog is common on the eastern slopes of the Rockies and somewhat less frequent east of the Appalachians. It is often quite dense and can extend to high altitudes. Dissipation requires the wind to die down or shift direction.
           </p>
 
           <h3>Steam fog (evaporation fog)</h3>
@@ -426,20 +397,23 @@
             Steam fog is the opposite of advection fog in one key way: instead of warm air over a cold surface, it's cold air over a warm surface (water). Water evaporates rapidly into the cold air and immediately saturates it. The result looks exactly like steam rising from a hot spring or a pot of water — wisps of fog curling upward from the surface.
           </p>
           <p>
-            You'll see steam fog on lakes and rivers in fall and early winter, typically after a cold front brings cold air over water that is still warm from summer. It's usually shallow — 50 to a few hundred feet deep — but can reduce visibility to near zero right at the surface. Because the process is turbulent (the warm water keeps driving convection), steam fog tends to be rough-looking, not the smooth flat layer you get with radiation fog.
+            You'll see steam fog on lakes and rivers in fall and early winter, typically after a cold front brings cold air over water that is still warm from summer. It is also observed over the ocean during winter when cold air masses move off the continents and ice shelves. It's usually shallow — 50 to a few hundred feet deep — but can reduce visibility to near zero right at the surface. Steam fog is associated with a <strong>shallow layer of unstable air</strong>; because the warm water keeps driving convection upward, pilots should expect <strong>convective turbulence</strong> when flying through it. On occasion, columns of condensed vapor rise from the fog layer forming whirling <strong>steam devils</strong>, similar in appearance to dust devils on land.
           </p>
           <p class="callout">
             <strong>Icing risk with steam fog:</strong> In subfreezing air, steam fog can produce supercooled droplets — liquid water in air below 0°C. A low-altitude pass through steam fog in cold temperatures can deposit rime ice quickly. It's one of those situations where the fog itself isn't the only hazard.
           </p>
         </section>
 
-        <!-- Section: Freezing, frontal, and precipitation fog -->
+        <!-- Section: Frontal fog and freezing fog -->
         <section id="additional">
-          <h2>Freezing, frontal &amp; precipitation fog</h2>
-
-          <h3>Freezing fog (FZFG)</h3>
+          <h2>Frontal fog &amp; freezing fog</h2>
           <p>
-            Freezing fog is ordinary fog — radiation, advection, or any other type — that happens to be in air below 0°C. The formation mechanism is the same. What changes is the state of the droplets: at subfreezing temperatures they become <strong>supercooled liquid water</strong>, remaining liquid despite being below the freezing point. Supercooled droplets are metastable. They stay liquid until they contact a surface or an ice nucleus, at which point they freeze instantly.
+            Frontal fog is the fifth FAA fog type, named for its formation mechanism. Freezing fog is <strong>not</strong> a fog type — it is a temperature modifier that can apply to any of the five types when air is at or below 0°C.
+          </p>
+
+          <h3>Freezing fog (FZFG) — icing modifier</h3>
+          <p>
+            Freezing fog is <strong>not a fog formation type</strong>. It is ordinary fog — radiation, advection, or any other type — that happens to be in air at or below 0°C. The formation mechanism is the same. What changes is the state of the droplets: at subfreezing temperatures they become <strong>supercooled liquid water</strong>, remaining liquid despite being below the freezing point. Supercooled droplets are metastable. They stay liquid until they contact a surface or an ice nucleus, at which point they freeze instantly.
           </p>
           <p>
             This creates two hazards simultaneously:
@@ -530,9 +504,9 @@
             <figcaption>In regular fog (left), droplets remain liquid — no icing hazard. In freezing fog (right), identical-looking droplets are supercooled and freeze the instant they contact a surface, building rime ice on wings, tailplanes, and pavement. The surface looks the same; the hazard is invisible until it matters.</figcaption>
           </figure>
 
-          <h3 style="margin-top: 2.2rem;">Frontal fog</h3>
+          <h3 style="margin-top: 2.2rem;">Frontal fog — Type 4 of 5</h3>
           <p>
-            Frontal fog is most commonly associated with advancing warm fronts, though it can occur along any frontal boundary. As a warm front approaches, warm moist air glides up and over the cooler air mass sitting at the surface ahead of it. That warm air produces <strong>precipitation — rain or drizzle — that falls through the cooler air below the front</strong>.
+            Frontal fog — also called <strong>precipitation-induced fog</strong> (the FAA's preferred term in AC 00-45H) — is most commonly associated with advancing warm fronts, though it can occur along any frontal boundary. As a warm front approaches, warm moist air glides up and over the cooler air mass sitting at the surface ahead of it. That warm air produces <strong>precipitation — rain or drizzle — that falls through the cooler air below the front</strong>.
           </p>
           <p>
             As the warm rain descends into the cold surface air, it partially evaporates. Evaporation adds moisture directly to the cold air, raising its dew point. If that surface air is already moderately humid — as it often is ahead of a warm front — the added moisture is enough to close the T/Td spread to zero. Fog forms, often 100–300 nm ahead of the frontal surface.
@@ -620,15 +594,8 @@
             <figcaption>Ahead of an advancing warm front, warm precipitation falls from the overriding warm air into the colder surface air mass. As it evaporates, it raises the dew point of the cold surface air until T = Td and fog forms. This IFR layer can extend well ahead of the front — long before conditions "should" be bad based on the front's position alone.</figcaption>
           </figure>
 
-          <h3 style="margin-top: 2.2rem;">Precipitation fog</h3>
-          <p>
-            Precipitation fog generalizes the frontal fog mechanism: it can occur under any heavy precipitation source, not just warm fronts. The physical process is identical — precipitation evaporates in the subcloud layer, moisture is added to the surface air, T/Td spread closes, fog forms. What varies is the trigger.
-          </p>
-          <p>
-            The most common non-frontal example is a <strong>summer thunderstorm rain shaft</strong>. When a high-precipitation convective cell produces heavy rain, the rain shaft can evaporate enough water near the surface — especially if surface humidity is already elevated — to produce localized fog under and immediately downwind of the storm. Visibility can drop to near zero <em>before the precipitation itself arrives</em>, as the evaporating rain ahead of the shaft saturates the air.
-          </p>
-          <p>
-            Precipitation fog is almost always <strong>patchy and short-lived</strong> compared to radiation or advection fog. It dissipates once the precipitation moves on and surface heating or wind mixes the saturated layer away. In METARs, patchy fog is coded <code>BCFG</code> and partial fog is <code>PRFG</code>; both indicate fog is not uniformly distributed — one area may be 1/4 SM while an adjacent area is clear.
+          <p class="callout" style="margin-top: 2.2rem;">
+            <strong>What about "precipitation fog"?</strong> The FAA classifies precipitation-induced fog as the same formation type as frontal fog — the mechanism is identical regardless of whether the precipitation source is a warm front, cold front, or convective cell. When evaporating precipitation saturates cold surface air and fog forms, that is frontal (precipitation-induced) fog. The FAA does not list precipitation fog as a separate formation type. For METAR decoding: patchy fog is <code>BCFG</code> (uneven distribution) and partial fog is <code>PRFG</code> (covers part of the airport) — both indicate that conditions may vary significantly across a short distance.
           </p>
 
           <p class="callout">
@@ -708,8 +675,8 @@
           </details>
 
           <details class="qa">
-            <summary>Q: What are the four types of fog?</summary>
-            <p>Radiation fog (surface cools under clear, calm sky until T reaches Td), advection fog (warm moist air moves over a cold surface and cools from below), upslope fog (moist air forced up terrain and cools adiabatically to Td), and steam fog / evaporation fog (cold air moves over warm water; water evaporates and immediately saturates the air). Each has different formation requirements, locations, and dissipation characteristics.</p>
+            <summary>Q: What are the five types of fog?</summary>
+            <p>The FAA (AC 00-45H) defines five fog types by formation mechanism: (1) <strong>Radiation fog</strong> — surface cools under a clear, calm sky until T reaches Td; (2) <strong>Advection fog</strong> — warm moist air moves over a cold surface and cools from below; (3) <strong>Upslope fog</strong> — moist stable air is forced up terrain and cools adiabatically to Td; (4) <strong>Frontal fog</strong> (also called precipitation-induced fog) — evaporating precipitation from warm air aloft saturates the cold surface air below; (5) <strong>Steam fog</strong> — cold air moves over warm water, water evaporates and immediately saturates the cold air. Each has different formation requirements, locations, and dissipation characteristics. Freezing fog is not a separate type — it is a temperature modifier that applies when any fog type occurs in below-0°C air.</p>
           </details>
 
           <details class="qa">
@@ -785,7 +752,7 @@
           <div class="takeaway-box">
             <ul class="takeaway-list">
               <li><strong>Fog is saturated air at the surface.</strong> T = Td at ground level. The T/Td spread from any METAR is your most direct fog-risk indicator.</li>
-              <li><strong>Four types, four mechanisms.</strong> Radiation (surface cools, calm night), advection (warm air over cold surface), upslope (terrain lifting), steam (cold air over warm water).</li>
+              <li><strong>Five types, five mechanisms.</strong> Radiation (surface cools, calm night), advection (warm air over cold surface), upslope (terrain lifting), frontal/precipitation-induced (evaporating precip raises Td), steam (cold air over warm water). Freezing fog is a temperature modifier — not a formation type.</li>
               <li><strong>Radiation fog burns off. Advection fog usually doesn't.</strong> Solar heating reverses the radiation cooling mechanism. It doesn't change the cold surface that's driving advection fog. Only a wind shift does.</li>
               <li><strong>T/Td spread ≤ 4°F = fog risk flag.</strong> Combine with the wind forecast, sky condition, and overnight temperature drop to assess how likely it is to verify.</li>
               <li><strong>TAF BECMG clearing times assume the forecast conditions verify.</strong> For advection fog, that means a forecast wind shift. Know what the forecast is assuming and whether there's a mechanism to make it happen.</li>
