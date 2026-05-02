@@ -357,30 +357,252 @@
           </p>
         </section>
 
-        <!-- Sections below are in progress — completing next session -->
+        <!-- Section: Thunderstorm types -->
         <section id="types">
           <h2>Thunderstorm types</h2>
-          <p><em>This section is being completed. Check back after the next site update.</em></p>
+          <p>
+            All thunderstorms share the same three ingredients and lifecycle stages, but their organization, intensity, and longevity differ dramatically. Understanding which type you are dealing with changes your go/no-go calculus significantly. A dying single-cell air mass storm is a very different hazard than an embedded supercell inside a squall line.
+          </p>
+
+          <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sage);">
+              <span class="hazard-label">Type 01</span>
+              <h3>Single-cell (Air Mass)</h3>
+              <p class="hazard-mnemonic">Classic afternoon storm. Short-lived and relatively isolated.</p>
+              <ul class="hazard-list">
+                <li>Driven by surface heating — peaks in late afternoon</li>
+                <li>Full lifecycle typically 20–60 minutes</li>
+                <li>Self-limiting: downdrafts undercut their own updrafts</li>
+                <li>Common in summer over flat terrain and near coasts</li>
+                <li>Hazardous but usually easy to see and navigate around VFR</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Type 02</span>
+              <h3>Multicell Cluster / Line</h3>
+              <p class="hazard-mnemonic">New cells continuously regenerate along outflow boundaries. Can last hours.</p>
+              <ul class="hazard-list">
+                <li>Most common severe weather producer in the continental U.S.</li>
+                <li>Gust fronts from old cells trigger new ones — self-sustaining</li>
+                <li>Squall line: multicell system arranged in a line, often along a front</li>
+                <li>Bow echoes from squall lines produce damaging straight-line winds</li>
+                <li>VFR pilots: do not attempt to fly through a squall line</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sun);">
+              <span class="hazard-label">Type 03</span>
+              <h3>Supercell</h3>
+              <p class="hazard-mnemonic">A rotating, organized storm with a persistent mesocyclone. Most dangerous of all types.</p>
+              <ul class="hazard-list">
+                <li>Characterized by a deep, persistent rotating updraft (mesocyclone)</li>
+                <li>Can last 2–6 hours and travel hundreds of miles</li>
+                <li>Produces the most significant tornadoes, large hail, and extreme updrafts</li>
+                <li>Hook echo on radar is the classic visual signature</li>
+                <li>No safe route near a supercell — treat as a 40+ nm threat radius</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid #4a7ba6;">
+              <span class="hazard-label">Type 04</span>
+              <h3>Embedded Thunderstorms</h3>
+              <p class="hazard-mnemonic">Hidden inside stratiform cloud layers. No visual warning. Instrument pilots' primary concern.</p>
+              <ul class="hazard-list">
+                <li>Thunderstorms obscured within areas of non-convective cloud</li>
+                <li>Common behind warm fronts, in tropical air masses, and in coastal systems</li>
+                <li>No lightning visible to the pilot, no building TCu to avoid</li>
+                <li>Airborne weather radar or Nexrad datalink is the only warning</li>
+                <li>Sigmet or Convective Sigmet is your pre-flight alert</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <p class="callout">
+            <strong>Frontal vs. air mass storms:</strong> Air mass thunderstorms form in a relatively uniform environment (surface heating only) and are scattered, short-lived, and relatively easy to predict and avoid. Frontal thunderstorms form along a front with strong vertical wind shear and are more organized, longer-lived, and harder to navigate around. The worst scenario for pilots is a line of frontal thunderstorms (squall line) oriented perpendicular to your route — there is no "threading through" a gap safely. If a Convective SIGMET covers your route with a squall line, the correct decision is to land and wait.
+          </p>
         </section>
 
+        <!-- Section: Reading radar -->
         <section id="radar">
           <h2>Reading radar</h2>
-          <p><em>This section is being completed. Check back after the next site update.</em></p>
+          <p>
+            Weather radar measures returned energy from precipitation — the greater the return, the heavier the precipitation, and (for convective activity) the more hazardous the storm. NEXRAD (WSR-88D) is the national network. What you see on ForeFlight, Garmin Pilot, or ATC's scope is derived from NEXRAD base reflectivity, usually with a 5–15 minute data age for in-cockpit Nexrad via ADS-B or datalink. That delay matters more than pilots usually account for.
+          </p>
+
+          <h3>Reflectivity and VIP levels</h3>
+          <p>
+            Radar reflectivity is measured in dBZ (decibels of Z). The FAA uses Video Integrator and Processor (VIP) levels — a 1–6 scale used in Convective SIGMETs, PIREPs, and ATC communication — that correspond to dBZ ranges and precipitation intensity.
+          </p>
+
+          <div class="compare-table" style="margin: 1.5rem 0;">
+            <div class="compare-col" style="flex: 1; padding: 0.5rem 1.4rem;">
+              <h3 class="compare-head">VIP Levels</h3>
+              <dl>
+                <dt>VIP 1 (Light, 18–30 dBZ)</dt>
+                <dd>Light precipitation. Weak echo, no significant hazard from the precipitation itself, but even a level-1 cell can have updrafts and turbulence at its borders.</dd>
+                <dt>VIP 2 (Moderate, 30–40 dBZ)</dt>
+                <dd>Moderate precipitation. Caution warranted. Turbulence possible. For VFR pilots: this is a cell to avoid, not to fly through.</dd>
+                <dt>VIP 3 (Heavy, 40–45 dBZ)</dt>
+                <dd>Heavy precipitation. Strong turbulence likely. Hail possible. No light aircraft should penetrate a level-3 return under any circumstances.</dd>
+                <dt>VIP 4 (Very Heavy, 45–50 dBZ)</dt>
+                <dd>Very heavy precipitation. Severe turbulence, icing, and large hail. Structural damage to aircraft. Give a wide berth — do not transit within 20 nm.</dd>
+                <dt>VIP 5 (Intense, 50–57 dBZ)</dt>
+                <dd>Intense precipitation. Extreme turbulence, large hail likely, possible tornado. A level-5 or higher return on radar is a severe thunderstorm. Treat as a no-go zone with 40+ nm clearance.</dd>
+                <dt>VIP 6 (Extreme, ≥57 dBZ)</dt>
+                <dd>Extreme. Catastrophic hazard. Associated with large to giant hail, violent updrafts, and likely tornadoes. Stay on the ground or divert immediately.</dd>
+              </dl>
+            </div>
+          </div>
+
+          <h3>What radar tells you — and what it doesn't</h3>
+          <ul>
+            <li><strong>Radar shows precipitation, not turbulence.</strong> The most dangerous turbulence is at the edges of a storm, where the updraft meets the environment. The clear air around a return can have severe turbulence. An aircraft that "just skirted the edge of the cell" may still get severe turbulence with no radar return overhead.</li>
+            <li><strong>The clear corridor rule:</strong> No gap between radar returns is safe to transit if the gap is less than 20 nm wide. Squall lines sometimes show apparent "holes" that are actually precip-free areas between active cells where gust fronts and turbulence still exist. Never use a gap shorter than 20 nm.</li>
+            <li><strong>Data age matters.</strong> In-cockpit ADS-B weather radar is typically 5–10 minutes old. A mature thunderstorm moves 20–30 knots and can develop rapidly. A return that looked clear 10 minutes ago may now be a VIP-4 cell over your intended route. Use Nexrad datalink as strategic awareness, not tactical avoidance.</li>
+            <li><strong>Attenuation.</strong> Heavy precipitation attenuates the radar beam — the signal weakens behind a strong return. A "clear" area behind a large red echo on your display may simply be where the beam was absorbed. A storm can be hidden in the radar shadow of another storm.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>ATC radar and "deviations clear of weather":</strong> ATC radar is not weather-optimized. When ATC says "traffic and weather appear clear on that heading," they are reading a radar optimized for aircraft separation, not precipitation intensity. It is not a clearance to deviate into what appears to be a clear area on approach radar. ATC can help with separation; convective avoidance is the pilot's responsibility, using dedicated weather radar or Nexrad datalink.
+          </p>
         </section>
 
+        <!-- Section: Avoidance rules -->
         <section id="avoidance">
           <h2>Avoidance rules</h2>
-          <p><em>This section is being completed. Check back after the next site update.</em></p>
+          <p>
+            The AIM and AC 00-45H provide explicit thunderstorm avoidance guidance. These are not conservative suggestions — they are the product of decades of accident data, military research, and flight crew incidents. The rules are also applicable directly to checkride oral questions, where the examiner will often ask for specific numbers.
+          </p>
+
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Rule 01</span>
+              <h3>Never penetrate a thunderstorm</h3>
+              <p class="hazard-mnemonic">No aircraft certified for general aviation flight is approved for intentional thunderstorm penetration.</p>
+              <ul class="hazard-list">
+                <li>Severe turbulence can cause structural failure regardless of aircraft type</li>
+                <li>Airspeed extremes may exceed Vne and Va simultaneously</li>
+                <li>Updrafts can exceed aircraft climb performance by 4:1 or more</li>
+                <li>"I'll just clip the edge" — the edge is where the shear is worst</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Rule 02</span>
+              <h3>20 nm lateral clearance</h3>
+              <p class="hazard-mnemonic">Maintain at least 20 nm from any severe thunderstorm cell.</p>
+              <ul class="hazard-list">
+                <li>Hail can extend 20 nm beyond the visible storm boundary</li>
+                <li>Gust fronts can reach 20 nm ahead of the storm</li>
+                <li>Severe turbulence has been encountered at 20 nm in clear air</li>
+                <li>For supercells: consider 40 nm or more</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Rule 03</span>
+              <h3>Never fly under the anvil</h3>
+              <p class="hazard-mnemonic">The anvil looks thin and benign. It is not.</p>
+              <ul class="hazard-list">
+                <li>Large hail is regularly thrown 20 nm downwind under the anvil</li>
+                <li>No radar return overhead does not mean no hazard</li>
+                <li>Pilots at cruise altitude have struck hail with clear sky visible above</li>
+                <li>Fly around, not under, even at altitude</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <h3>VFR-specific rules</h3>
+          <ul>
+            <li><strong>Do not attempt to fly beneath a storm</strong> to stay in VFR conditions. Low ceilings beneath a thunderstorm also mean microbursts, gust fronts, and rapidly shifting winds. VFR flight beneath a storm is not a workaround — it is flying into the most hazardous part of the storm's environment.</li>
+            <li><strong>Land before the storm arrives.</strong> If a storm is building over your destination or your route, the time to act is while you still have options. Waiting until the storm arrives before deciding puts you in the air with limited fuel and deteriorating conditions.</li>
+            <li><strong>Watch for fast-rising TCu.</strong> A towering cumulus growing rapidly ahead of your route is your last visible warning. The mature stage follows in 15–20 minutes at most. Do not fly toward rapidly building cumulus.</li>
+          </ul>
+
+          <h3>IFR-specific rules</h3>
+          <ul>
+            <li><strong>No instrument approach through embedded convective activity.</strong> If a Convective SIGMET covers the approach environment, the appropriate action is to hold, divert, or wait on the ground. No ILS or LPV approach is worth threading embedded thunderstorms on final.</li>
+            <li><strong>Airborne weather radar is not optional in convective conditions.</strong> Nexrad datalink provides strategic routing awareness; it is not a real-time tactical tool due to data age. IFR operations in potential convective environments should use onboard radar or at minimum Nexrad datalink with appropriate caution about data latency.</li>
+            <li><strong>"IMC with possible embedded thunderstorms" means no-go</strong> unless you have working onboard weather radar and a clear exit strategy. The embedded thunderstorm you can't see is the one that ends the flight.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>The attitude that saves lives:</strong> "I see a gap — I can make it through." This is the most dangerous thought in convective weather. The pilots who survive thunderstorm encounters are disproportionately those who turned around, landed short, or waited on the ground. The pilots who don't are disproportionately those who found a gap that closed on them. Convective weather does not reward optimism. It rewards early, conservative decisions made while options remain open.
+          </p>
         </section>
 
+        <!-- Section: Checkride questions -->
         <section id="checkride">
-          <h2>Checkride questions</h2>
-          <p><em>This section is being completed. Check back after the next site update.</em></p>
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>
+            These are drawn from real ACS oral exam requirements and common DPE follow-up questions. The examiner expects you to know specific numbers, be able to define each stage, and demonstrate an understanding of why the rules exist — not just what they are.
+          </p>
+
+          <details class="qa">
+            <summary>Q: What are the three stages of a thunderstorm? What defines the start of the mature stage?</summary>
+            <p>Cumulus, mature, and dissipating. The mature stage begins when precipitation first reaches the surface. That is the observable marker — a dark rain shaft visible under the cloud base. From that moment, all thunderstorm hazards are simultaneously present.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What are the three ingredients necessary for thunderstorm formation?</summary>
+            <p>Moisture (sufficient water vapor, usually measured by dewpoint), a lifting mechanism (surface heating, frontal boundary, orographic lifting, or upper-level divergence), and atmospheric instability (a lapse rate steep enough that lifted parcels remain warmer than the surrounding environment — quantified as CAPE).</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What makes the cumulus stage deceptive, and why is it dangerous to ignore?</summary>
+            <p>The cumulus stage has updrafts only — no precipitation, no radar return, and the cloud looks relatively innocuous. Pilots sometimes underestimate the risk because the storm doesn't yet look threatening. But the transition from cumulus to mature can take as little as 15–20 minutes, and a rapidly-building TCu is itself the warning sign. By the time it looks like a cumulonimbus, the mature stage is either present or seconds away.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is a gust front and how far can it extend from the visible storm?</summary>
+            <p>A gust front is the leading edge of cold, dense air that spreads outward at the surface as downdrafts from a thunderstorm reach the ground. It can extend 20 miles or more ahead of the visible storm. It produces sudden wind shifts, airspeed fluctuations, and microbursts. It is the primary mechanism behind wind shear accidents on approach — the airport can be under clear skies while the gust front from a distant storm passes through.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the FAA-recommended lateral clearance from a severe thunderstorm?</summary>
+            <p>At least 20 nautical miles. This distance accounts for hail trajectories, gust front extent, and clear-air turbulence associated with the storm. For supercells, a 40 nm clearance is more appropriate. Gaps between storm cells should be at least 40 nm wide (20 nm on each side) before considering a transit.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why is it dangerous to fly beneath a thunderstorm anvil even in clear air?</summary>
+            <p>Large hail can be thrown downwind 20 nautical miles or more under the anvil. The anvil itself appears as thin, fibrous cirrus — nothing alarming visually and no significant radar return overhead. But pilots have encountered severe hail under the anvil with clear skies visible above. Never fly under an anvil at any altitude.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is a microburst and why is it especially dangerous on approach?</summary>
+            <p>A microburst is a concentrated downburst with a horizontal extent of less than 2.5 nm. When it hits the surface, it spreads outward radially. An aircraft on approach flies through the increasing headwind on the downwind side (initially gaining airspeed and seeming to perform well), then into the core downdraft (losing climb performance), then into the increasing tailwind on the far side — a loss of 30–45 knots of airspeed and a sudden performance deficit below 1,000 ft AGL where there is no altitude to recover. The accident scenario often starts with the pilot feeling the airplane is performing better than expected, then suddenly worse.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the difference between an embedded thunderstorm and an ordinary thunderstorm from a pilot's perspective?</summary>
+            <p>An embedded thunderstorm is hidden inside stratiform cloud layers — the pilot cannot see it visually, cannot observe the building cumulus, and may receive no lightning or turbulence warning before penetrating it. Embedded thunderstorms are common behind warm fronts and in tropical systems. They are the reason a Convective SIGMET for "embedded" activity is a go/no-go item for IFR operations without airborne weather radar.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Can ATC clear you "through" convective weather?</summary>
+            <p>No. ATC radar is not weather-optimized and does not provide the information needed to safely route around convective hazards. ATC can offer routing suggestions and issue deviations, but convective avoidance is the pilot's responsibility. "Traffic and weather appear clear on that heading" from ATC is not a clearance through a storm — it is a statement about what appears on approach radar, which is not designed for precipitation analysis.</p>
+          </details>
         </section>
 
+        <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
-          <p><em>This section is being completed. Check back after the next site update.</em></p>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>Three ingredients: moisture, lifting, instability.</strong> If all three are present and aligned, convective activity is a serious possibility. A capping inversion can delay storms until it breaks — then development can be explosive.</li>
+              <li><strong>The mature stage begins with surface precipitation.</strong> That is the moment all hazards are simultaneously active: severe turbulence, icing, hail, lightning, and gust fronts. The cumulus stage before it is your warning, not your all-clear.</li>
+              <li><strong>Stay 20 nm from any severe cell — more from supercells.</strong> Hail, gust fronts, and severe turbulence exist well outside the visible storm boundary and outside any radar return. Do not use gaps smaller than 40 nm.</li>
+              <li><strong>Never fly under an anvil.</strong> It looks like harmless cirrus. It can throw hail 20 nm downwind. This rule applies at all altitudes.</li>
+              <li><strong>Embedded thunderstorms are uniquely dangerous IFR hazards.</strong> A Convective SIGMET for embedded activity without airborne weather radar means no-go. The storm you can't see is the one that ends the flight.</li>
+              <li><strong>In-cockpit Nexrad is strategic, not tactical.</strong> Data is 5–15 minutes old. Use it for routing decisions on the ground and for big-picture awareness in the air — not for real-time cell avoidance at close range.</li>
+              <li><strong>Conservative decisions made early are always correct.</strong> The pilots who survive convective encounters are the ones who landed short, waited on the ground, or turned around early. Not the ones who found the gap that almost closed on them.</li>
+            </ul>
+          </div>
         </section>
 
         <!-- Bottom nav -->

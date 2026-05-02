@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aircraft Icing — CrosswindWX</title>
+  <meta name="description" content="Structural icing types — rime, clear, and mixed — how they form, their temperature ranges, which is most dangerous, runback icing, tailplane icing, and the flaps-and-icing scenario that kills pilots. For PPL, IR, and commercial checkrides.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Aircraft Icing</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Structural hazards</p>
+      <h1>Aircraft <span class="accent">Icing</span></h1>
+      <p class="lede">
+        Structural icing doesn't announce itself until the performance numbers stop making sense. By then the wing is already compromised, the stall speed has risen — sometimes by 30% or more — and the tailplane may be closer to a stall than the pilot knows. The FAA expects you to know the three ice types, the temperature range each forms in, which one is the most dangerous, and exactly what happens when you extend flaps on a contaminated tailplane. These are not obscure topics — your examiner almost certainly asks about temperature ranges, and the tailplane icing scenario has caused fatal accidents in certificated, airworthy aircraft.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3b · IR.I.B.K3b · CA.I.C.K3b</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1c · .R1d</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 91-74B · AC 91-51A · AC 00-45H · FAA-H-8083-28</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~15 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#conditions">Three conditions for icing</a></li>
+          <li><a href="#types">Ice types &amp; temperature ranges</a></li>
+          <li><a href="#clear">Clear ice — most dangerous</a></li>
+          <li><a href="#runback">Runback icing</a></li>
+          <li><a href="#tailplane">Tailplane icing</a></li>
+          <li><a href="#flaps">The flaps-and-icing scenario</a></li>
+          <li><a href="#forecasts">Reading icing forecasts</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: Three conditions -->
+        <section id="conditions">
+          <h2>Three conditions for structural icing</h2>
+          <p>
+            Structural ice forms when all three conditions exist simultaneously. Remove any one and no icing occurs. These are your pre-flight risk checklist before any flight in IMC or near-freezing temperatures.
+          </p>
+
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Condition 01</span>
+              <h3>Visible Moisture</h3>
+              <p class="hazard-mnemonic">Supercooled liquid water droplets must be present in the air.</p>
+              <ul class="hazard-list">
+                <li>Clouds (especially stratiform and cumuliform), freezing rain, freezing drizzle</li>
+                <li>Clear air — even in IMC — may not contain enough liquid water</li>
+                <li>Above the freezing level, clouds contain a mix of ice crystals and supercooled droplets</li>
+                <li>Pure ice-crystal clouds (high cirrus) do not cause structural icing</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Condition 02</span>
+              <h3>Freezing Temperature</h3>
+              <p class="hazard-mnemonic">The outside air temperature (OAT) must be at or below 0°C at the aircraft's surface.</p>
+              <ul class="hazard-list">
+                <li>The aircraft surface — not just the OAT — must be at or below 0°C</li>
+                <li>Aerodynamic cooling can lower surface temps below OAT at high speeds</li>
+                <li>A recently-cold aircraft on the ground can ice in above-freezing OAT briefly</li>
+                <li>Most severe icing: 0°C to −20°C; less common below −40°C</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Condition 03</span>
+              <h3>Aircraft in the Cloud</h3>
+              <p class="hazard-mnemonic">The aircraft must physically intercept the supercooled droplets.</p>
+              <ul class="hazard-list">
+                <li>Flying above or below the cloud layer avoids icing even if conditions exist</li>
+                <li>Rate of accumulation increases with airspeed and droplet concentration</li>
+                <li>Larger droplets (SLD) cause faster accumulation and greater span of coverage</li>
+                <li>Icing intensity: trace, light, moderate, severe (as used in PIREPs)</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <p class="callout">
+            <strong>Supercooled liquid water (SLW):</strong> Water normally freezes at 0°C, but in clouds, pure water droplets can remain liquid well below freezing — down to approximately −40°C — because they lack the ice nuclei needed to initiate freezing. These supercooled droplets are in a metastable state: they are liquid, but freeze instantly on contact with any solid surface. Your airframe is that surface. The smaller and more numerous the droplets, the more rapidly ice accumulates, and the type of ice that forms depends heavily on droplet size and temperature together. (AC 91-74B §3; FAA-H-8083-28 Ch. 10)
+          </p>
+        </section>
+
+        <!-- Section: Ice types and temperature ranges -->
+        <section id="types">
+          <h2>Ice types &amp; temperature ranges</h2>
+          <p>
+            The FAA identifies three types of structural ice: rime, clear (glaze), and mixed. Each has a characteristic temperature range, droplet size association, physical appearance, and aerodynamic effect. <strong>Examiners regularly ask about these temperature ranges — know them cold.</strong>
+          </p>
+
+          <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Ice Type 01</span>
+              <h3>Rime Ice</h3>
+              <p class="hazard-mnemonic" style="font-family: var(--font-mono); font-size: 0.85rem; background: rgba(74,123,166,0.1); padding: 0.5rem 0.75rem; border-radius: 3px;">
+                Most common: <strong>−15°C to −20°C</strong>
+              </p>
+              <ul class="hazard-list">
+                <li><strong>Droplets:</strong> Small supercooled water droplets (stratiform clouds)</li>
+                <li><strong>Mechanism:</strong> Droplets freeze on impact before spreading — no water flow</li>
+                <li><strong>Appearance:</strong> Opaque, white or milky, rough/granular surface texture</li>
+                <li><strong>Shape:</strong> Confined to the leading edge stagnation point; blunt, cauliflower-like</li>
+                <li><strong>Growth:</strong> Builds forward from the leading edge</li>
+                <li><strong>Aerodynamic effect:</strong> Significant but generally predictable; rough surface increases drag</li>
+                <li><strong>Removal:</strong> Brittle — breaks off relatively easily with pneumatic de-ice boots</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Ice Type 02 · Most Dangerous</span>
+              <h3>Clear Ice (Glaze Ice)</h3>
+              <p class="hazard-mnemonic" style="font-family: var(--font-mono); font-size: 0.85rem; background: rgba(181,61,31,0.12); padding: 0.5rem 0.75rem; border-radius: 3px;">
+                Most common: <strong>0°C to −10°C</strong>
+              </p>
+              <ul class="hazard-list">
+                <li><strong>Droplets:</strong> Large supercooled droplets — cumulus clouds, freezing rain, freezing drizzle</li>
+                <li><strong>Mechanism:</strong> Droplets spread as a film before freezing — water runs back along the surface</li>
+                <li><strong>Appearance:</strong> Transparent, glass-like, smooth; can be nearly invisible against the airframe</li>
+                <li><strong>Shape:</strong> Wraps around the leading edge; can form "double horns" on upper and lower surfaces</li>
+                <li><strong>Growth:</strong> Extends aft beyond the protected zone (runback ice)</li>
+                <li><strong>Aerodynamic effect:</strong> Severe — double-horn shape dramatically disrupts airflow; stall speed rises sharply</li>
+                <li><strong>Removal:</strong> Dense, adheres strongly; difficult to remove with boots; can bridge over an inflated boot</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sun);">
+              <span class="hazard-label">Ice Type 03</span>
+              <h3>Mixed Ice</h3>
+              <p class="hazard-mnemonic" style="font-family: var(--font-mono); font-size: 0.85rem; background: rgba(217,165,33,0.12); padding: 0.5rem 0.75rem; border-radius: 3px;">
+                Most common: <strong>−10°C to −15°C</strong>
+              </p>
+              <ul class="hazard-list">
+                <li><strong>Droplets:</strong> Both small and large droplets present simultaneously (mixed cloud)</li>
+                <li><strong>Mechanism:</strong> Simultaneous rime and clear ice formation — rime traps unfrozen water</li>
+                <li><strong>Appearance:</strong> Irregular; opaque core with clear outer layers; jagged and unpredictable shape</li>
+                <li><strong>Shape:</strong> Can exhibit rime caps with clear extensions; irregular shape varies with altitude and cloud type</li>
+                <li><strong>Growth:</strong> Faster and more irregular than either pure type; difficult to predict</li>
+                <li><strong>Aerodynamic effect:</strong> High — irregular shape disrupts airflow unpredictably</li>
+                <li><strong>Removal:</strong> Difficult; opaque cores resist thermal de-icing</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <!-- Temperature range callout — exam question focus -->
+          <div style="border: 2px solid var(--rust); border-radius: 4px; background: #fffaf0; padding: 1.4rem 1.6rem; margin: 0.5rem 0 2rem;">
+            <p style="font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.08em; color: var(--rust); margin: 0 0 1rem;">EXAMINER FAVORITE — TEMPERATURE RANGES</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div style="text-align: center; padding: 0.8rem; background: rgba(74,123,166,0.08); border: 1px solid var(--rule); border-radius: 3px;">
+                <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); margin: 0 0 0.4rem;">CLEAR (GLAZE)</p>
+                <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--sky); margin: 0;">0°C to −10°C</p>
+                <p style="font-size: 0.8rem; color: var(--ink-soft); margin: 0.3rem 0 0;">32°F to +14°F</p>
+              </div>
+              <div style="text-align: center; padding: 0.8rem; background: rgba(217,165,33,0.08); border: 1px solid var(--rule); border-radius: 3px;">
+                <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); margin: 0 0 0.4rem;">MIXED</p>
+                <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--sun); margin: 0;">−10°C to −15°C</p>
+                <p style="font-size: 0.8rem; color: var(--ink-soft); margin: 0.3rem 0 0;">+14°F to +5°F</p>
+              </div>
+              <div style="text-align: center; padding: 0.8rem; background: rgba(93,111,60,0.08); border: 1px solid var(--rule); border-radius: 3px;">
+                <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); margin: 0 0 0.4rem;">RIME</p>
+                <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--sage); margin: 0;">−15°C to −20°C</p>
+                <p style="font-size: 0.8rem; color: var(--ink-soft); margin: 0.3rem 0 0;">+5°F to −4°F</p>
+              </div>
+            </div>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--ink-soft);">
+              <strong>The nuance behind the numbers:</strong> Droplet size is the primary driver — large droplets spread before freezing (clear ice) regardless of temperature, small droplets freeze on impact (rime). Temperature determines which droplet size is more likely: colder air tends toward smaller droplets. The ranges above are the exam answer; understanding droplet size is the follow-up. (AC 91-51A Table 1; AC 91-74B §4.1.2; FAA-H-8083-28 Ch. 10)
+            </p>
+          </div>
+
+          <!-- Diagram: Airfoil cross-section showing the three ice shapes -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ice-types-title">
+              <title id="ice-types-title">Three ice types on an airfoil leading edge: rime ice forms a small blunt deposit at the stagnation point; clear ice forms a larger glassy deposit that wraps around and creates dangerous double horns; mixed ice forms an irregular jagged deposit combining both types.</title>
+              <rect width="700" height="270" fill="#fffaf0"/>
+
+              <!-- Panel backgrounds -->
+              <rect x="8"   y="8" width="218" height="240" fill="#4a7ba6" opacity="0.04" rx="3"/>
+              <rect x="234" y="8" width="232" height="240" fill="#b53d1f" opacity="0.04" rx="3"/>
+              <rect x="474" y="8" width="218" height="240" fill="#d9a521" opacity="0.04" rx="3"/>
+
+              <!-- Panel dividers -->
+              <line x1="230" y1="12" x2="230" y2="242" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+              <line x1="470" y1="12" x2="470" y2="242" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+
+              <!-- Panel headers -->
+              <text x="117" y="30" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.1em">RIME ICE</text>
+              <text x="350" y="30" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.1em">CLEAR ICE (GLAZE)</text>
+              <text x="583" y="30" font-family="Anton, sans-serif" font-size="11" fill="#d9a521" text-anchor="middle" letter-spacing="0.1em">MIXED ICE</text>
+
+              <!-- ====== PANEL 1: Rime Ice ====== -->
+              <g transform="translate(50,135)">
+                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
+                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+                <path d="M 0,0 C -2,-6 -9,-8 -14,-6 C -18,-3 -19,0 -18,3 C -16,6 -10,8 -5,6 C -2,4 0,2 0,0 Z"
+                      fill="#dcdcdc" stroke="#999" stroke-width="1.2"/>
+                <circle cx="-9" cy="-3" r="1.5" fill="#bbb"/>
+                <circle cx="-13" cy="1"  r="1.5" fill="#bbb"/>
+                <circle cx="-8"  cy="4"  r="1.5" fill="#bbb"/>
+                <circle cx="-5"  cy="-5" r="1"   fill="#bbb"/>
+                <circle cx="-3"  cy="5"  r="1"   fill="#bbb"/>
+                <circle cx="0" cy="0" r="3" fill="none" stroke="#4a7ba6" stroke-width="1" stroke-dasharray="2,2"/>
+              </g>
+              <text x="117" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" font-style="italic">Small, blunt — confined to stagnation pt.</text>
+              <text x="117" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Opaque · Rough · Brittle</text>
+              <text x="117" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="middle">−15°C to −20°C</text>
+
+              <!-- ====== PANEL 2: Clear Ice ====== -->
+              <g transform="translate(283,135)">
+                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
+                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+                <path d="M 8,-18 C 4,-23 -4,-26 -10,-22 C -18,-16 -20,-8 -18,-2 C -16,4 -10,10 0,0 C -2,-6 0,-13 8,-18 Z"
+                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1.5" opacity="0.85"/>
+                <path d="M 8,14 C 4,20 -5,24 -11,19 C -18,14 -19,6 -17,0 C -14,-5 -8,-8 0,0 C -2,5 0,11 8,14 Z"
+                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1.5" opacity="0.85"/>
+                <line x1="-10" y1="-22" x2="-28" y2="-32" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
+                <text x="-30" y="-38" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Upper horn</text>
+                <line x1="-11" y1="19" x2="-28" y2="30" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
+                <text x="-30" y="43" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Lower horn</text>
+              </g>
+              <text x="350" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-style="italic">Double-horn shape · runs back along surface</text>
+              <text x="350" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Transparent · Dense · Most dangerous</text>
+              <text x="350" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">0°C to −10°C</text>
+
+              <!-- ====== PANEL 3: Mixed Ice ====== -->
+              <g transform="translate(517,135)">
+                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
+                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+                <path d="M 6,-15 C 2,-22 -6,-24 -12,-19 C -19,-13 -19,-5 -15,1 C -12,8 -5,14 4,12 C -1,8 -3,3 -3,0 C -3,-5 -1,-11 6,-15 Z"
+                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1" opacity="0.7"/>
+                <path d="M 0,0 C -2,-7 -8,-9 -12,-7 C -16,-4 -16,0 -13,4 C -10,7 -4,7 0,0 Z"
+                      fill="#d8d8d8" stroke="#999" stroke-width="1"/>
+                <path d="M -12,-7 L -16,-12 L -13,-7" fill="#bbb" stroke="#999" stroke-width="0.8"/>
+                <path d="M -13,4 L -16,9 L -12,4" fill="#bbb" stroke="#999" stroke-width="0.8"/>
+                <circle cx="-10" cy="-4" r="1.5" fill="#bbb"/>
+                <circle cx="-9"  cy="2"  r="1.5" fill="#bbb"/>
+              </g>
+              <text x="583" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#d9a521" text-anchor="middle" font-style="italic">Irregular — rime core, clear extensions</text>
+              <text x="583" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Jagged · Unpredictable shape</text>
+              <text x="583" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#d9a521" text-anchor="middle">−10°C to −15°C</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="698" height="268" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Airfoil leading-edge cross-sections (exaggerated for clarity) showing the three structural ice types. Rime ice forms a small, blunt, opaque deposit at the stagnation point. Clear ice wraps around and forms dangerous "double horns" that dramatically disrupt airflow. Mixed ice combines both types in an irregular, unpredictable shape. (AC 91-51A Table 1; AC 91-74B §4.1.2; FAA-H-8083-28 Ch. 10)</figcaption>
+          </figure>
+        </section>
+
+        <!-- Section: Clear ice — most dangerous -->
+        <section id="clear">
+          <h2>Clear ice — why it's the most dangerous</h2>
+          <p>
+            Clear ice (also called glaze ice) earns the "most dangerous" designation for several compounding reasons that go beyond aerodynamic shape alone. AC 91-74B and AC 91-51A are explicit on this point.
+          </p>
+
+          <div class="compare-table">
+            <div class="compare-col">
+              <h3 class="compare-head">What makes clear ice uniquely dangerous</h3>
+              <dl>
+                <dt>It's nearly invisible</dt>
+                <dd>Clear ice is transparent. It conforms to the airfoil surface and is very difficult to see from the cockpit, especially at night or when viewing from the side. A pilot who visually checks the leading edge may see nothing while inches behind the protected area a ridge of clear ice has already formed.</dd>
+                <dt>The double-horn shape</dt>
+                <dd>As water spreads and freezes on the upper and lower surfaces, it builds up horn-like protrusions at the top and bottom of the leading edge. The double-horn shape dramatically disrupts the airflow around the airfoil — comparable to placing a round bar on the leading edge. Wind tunnel testing has shown lift losses of 30% or more and stall angle of attack reductions of 5–10 degrees with double-horn ice simulations.</dd>
+                <dt>It accumulates faster</dt>
+                <dd>Large supercooled droplets deliver more water per unit time than the small droplets that produce rime ice. Clear ice accumulation rates can be severe — cases of 1–2 inches forming in a few minutes in the right conditions (large droplets near 0°C).</dd>
+                <dt>It's denser and harder to remove</dt>
+                <dd>Rime ice is brittle and relatively easy to shatter with pneumatic de-ice boots. Clear ice is denser, adheres more strongly, and can bridge across an inflated boot — the boot inflates, fails to crack the ice, and deflates while leaving the ice intact.</dd>
+                <dt>It runs back beyond protected areas</dt>
+                <dd>Water flows aft along the surface before freezing, depositing ice behind the protected leading edge. This runback ice forms in an unprotected region where no de-icing system operates. (See the Runback Icing section below.)</dd>
+              </dl>
+            </div>
+            <div class="compare-col">
+              <h3 class="compare-head">Effects on aircraft performance</h3>
+              <dl>
+                <dt>Stall speed increase</dt>
+                <dd>Ice contamination on the leading edge disrupts airflow earlier in the angle-of-attack range. Small amounts of rough ice — as little as 0.25 inches on the leading edge — can raise stall speed by 5–10%. Large double-horn deposits can raise it by 30% or more. Your performance charts assume a clean airframe.</dd>
+                <dt>Reduced CLmax</dt>
+                <dd>The maximum lift coefficient (CLmax) decreases with ice contamination because flow separation occurs at a lower angle of attack. The stall warning system may have been calibrated for a clean wing — it may not activate until the wing has already begun to stall.</dd>
+                <dt>Increased drag</dt>
+                <dd>Even trace icing increases parasitic drag measurably. In severe icing, the total drag increase can exceed the thrust available from the engine.</dd>
+                <dt>Propeller icing</dt>
+                <dd>Ice on the propeller reduces efficiency, increases vibration as ice sheds asymmetrically, and can cause severe imbalance loads. Prop ice that sheds can strike the fuselage or windscreen. (AC 91-74B §4.3)</dd>
+              </dl>
+            </div>
+          </div>
+
+          <p class="callout">
+            <strong>The "clean aircraft concept" (AC 91-74B §5.3):</strong> Any contamination on the lifting surfaces before takeoff — frost, snow, ice, or slush — must be removed before flight. Even thin frost that you can "see through" disrupts the laminar flow pattern. This is a legal requirement under 14 CFR 91.527(b) for IFR operations, not just an advisory.
+          </p>
+        </section>
+
+        <!-- Section: Runback icing -->
+        <section id="runback">
+          <h2>Runback icing</h2>
+          <p>
+            Runback icing is a specific and particularly dangerous form of clear ice that forms <strong>aft of the leading-edge de-ice protected zone</strong>. It is one of the primary mechanisms by which de-iced aircraft still crash due to ice — the crew saw the boots cycling, assumed they were ice-free, and did not know that ice was building aft of where they were looking.
+          </p>
+
+          <h3>How runback ice forms</h3>
+          <p>
+            When a pneumatic de-ice boot inflates and breaks the ice cap, or when thermal anti-icing heats the leading edge, the ice turns to water. That water flows aft along the wing surface under aerodynamic forces. If the OAT is below freezing and the water travels far enough aft, it reaches unheated, unprotected airfoil surface and refreezes. This deposit is called runback ice or ridge ice.
+          </p>
+
+          <h3>Why it is especially dangerous</h3>
+          <ul>
+            <li><strong>It forms where no protection exists.</strong> De-ice boots cover the leading edge — typically 6–10 inches aft of the stagnation point on each surface. Runback ice forms behind this coverage, where no boot inflation will ever reach it.</li>
+            <li><strong>Aft ice is aerodynamically worse than leading-edge ice.</strong> A ridge of ice even half an inch tall, located 20–30% chord back from the leading edge, creates a sharp step in the airflow that triggers early separation. FAA research shows that mid-chord ice ridges can cause catastrophic lift loss at angles of attack well below the clean stall AoA.</li>
+            <li><strong>It is invisible from the cockpit.</strong> Leading-edge ice can sometimes be seen with a flashlight on the wing at night. Runback ice aft of the boot zone cannot be seen in flight without a wing inspection camera.</li>
+            <li><strong>Activating boots too early can make it worse.</strong> If boots are activated before ice has built to a sufficient thickness (typically at least 0.25–0.5 inches), the thin ice cap may not fully break — and can shatter into a rough layer that adheres to the boot surface. AC 91-74B §5.1.1 recommends allowing ice to accumulate to the certified thickness before activating pneumatic boots.</li>
+            <li><strong>SLD dramatically worsens runback.</strong> Supercooled large droplets — from freezing drizzle or freezing rain aloft — impinge on the airfoil much further aft than the design droplet sizes for which de-ice equipment is certified. SLD can form runback deposits 18–24 inches aft of the leading edge, far beyond any protected zone. The 1994 ATR-72 accident at Roselawn, Indiana (NTSB/AAR-96/01) is the seminal SLD runback case: boots were cycling normally while SLD built runback ice aft of coverage, ultimately causing loss of control.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>The key takeaway on runback icing:</strong> Seeing the de-ice system operating normally does not mean the aircraft is ice-free. Runback ice can be accumulating aft of the boots even while the boots are cycling on every interval. If the aircraft is not FIKI-certified and you're in conditions conducive to clear ice or SLD, exit the conditions — don't trust the boots to cover the whole story. (AC 91-74B §4.2)
+          </p>
+        </section>
+
+        <!-- Section: Tailplane icing -->
+        <section id="tailplane">
+          <h2>Tailplane icing — the hidden hazard</h2>
+          <p>
+            The horizontal stabilizer (tailplane) accumulates ice faster than the wing and presents a hazard pattern that is opposite to — and more confusing than — a wing stall. Pilots who understand only wing stalls may respond incorrectly to a tailplane stall and make it fatal. AC 91-74B devotes an entire chapter to this scenario.
+          </p>
+
+          <h3>Why the tailplane ices faster than the wing</h3>
+          <p>
+            The horizontal stabilizer has a <strong>much smaller chord length</strong> than the wing — typically one-quarter to one-third the wing chord. The smaller the chord, the thinner the boundary layer, and the more efficiently the surface collects impinging water droplets. Ice accumulates on the tailplane at a higher rate per unit of surface area than on the wing, often at a 2:1 ratio or greater. (AC 91-74B §4.4)
+          </p>
+
+          <h3>The tailplane as a tail-down force surface</h3>
+          <p>
+            This is the key concept: the horizontal stabilizer does not produce upward lift — it produces a <strong>downward force (tail-down force)</strong> in most flight regimes. The wing's center of lift is typically aft of the aircraft's center of gravity, which creates a nose-down pitching moment. The tailplane counteracts this by pushing the tail up (i.e., producing a downward force on the tail surface), and to do so the stabilizer operates at a slightly negative angle of attack relative to the free airstream.
+          </p>
+          <p>
+            This means ice contamination affects the tailplane differently than it affects the wing:
+          </p>
+          <ul>
+            <li>Wing ice → wing stalls at a lower positive AoA → nose pitches up, then drops as lift is lost</li>
+            <li>Tailplane ice → tailplane stalls at a lower <em>negative</em> AoA → tail pitches up → <strong>nose pitches down</strong> uncontrollably</li>
+          </ul>
+
+          <h3>Symptoms of a tailplane stall</h3>
+          <ul>
+            <li>Sudden, uncommanded pitch-down movement</li>
+            <li>Elevator buffet or vibration (easily confused with wing buffet before a wing stall)</li>
+            <li>Decreased or ineffective elevator authority</li>
+            <li>Abnormal pitch oscillations that cannot be controlled with normal inputs</li>
+            <li>Nose pitching down during flap extension on approach — the classic trigger scenario</li>
+          </ul>
+
+          <p class="callout">
+            <strong>The symptom trap (AC 91-74B §4.4.2):</strong> Elevator buffet before a tailplane stall feels similar to pre-stall buffet from the wing. If a pilot misidentifies it as an impending wing stall, the instinctive response is to push the yoke forward. Pushing forward in a tailplane stall makes it worse. The correct response to tailplane stall is the opposite of the correct response to a wing stall — and the difference depends entirely on understanding the mechanism.
+          </p>
+        </section>
+
+        <!-- Section: Flaps and icing scenario -->
+        <section id="flaps">
+          <h2>The flaps-and-icing scenario</h2>
+          <p>
+            Flap extension is the most common trigger for a tailplane stall in icing conditions. The mechanism is precise and well-documented, and the rule it generates is one of the most important icing rules a pilot can know: <strong>do not extend flaps if you suspect ice contamination on the tailplane.</strong>
+          </p>
+
+          <h3>The mechanism — step by step</h3>
+          <ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2;">
+            <li><strong>Ice accumulates on the tailplane</strong> during the approach in icing conditions. The pilot may not be aware — the tailplane is not visible from the cockpit, and de-ice boots may be cycling normally without clearing all contamination.</li>
+            <li><strong>Flaps are extended</strong> as part of the normal approach checklist. Nothing feels wrong yet.</li>
+            <li><strong>Flap extension increases the wing's nose-down pitching moment.</strong> Wing flaps increase camber and shift the center of lift. The resulting nose-down couple requires the tailplane to generate more tail-down force to maintain level pitch.</li>
+            <li><strong>More tail-down force = higher negative angle of attack on the tail.</strong> The horizontal stabilizer must deflect further into negative lift to balance the increased pitching moment.</li>
+            <li><strong>If ice has already reduced the tailplane's stall margin,</strong> the additional AoA demand from flap extension can push the tail past its stall angle.</li>
+            <li><strong>The tail stalls: the nose pitches violently downward.</strong> The horizontal stabilizer is no longer producing sufficient tail-down force, and the wing's pitching moment goes unchecked.</li>
+          </ol>
+
+          <h3>Recovery from tailplane stall</h3>
+          <p>
+            AC 91-74B §4.4.3 specifies the recovery procedure:
+          </p>
+          <ul>
+            <li><strong>Immediately retract the flaps</strong> to the previous (or a lesser) setting. This reduces the wing's pitching moment and lowers the AoA demand on the tail, allowing it to un-stall.</li>
+            <li><strong>Do not extend flaps further</strong> — this is the instinct that kills: the pilot senses a pitch-down and tries to add flaps to increase lift. This makes the tailplane stall worse.</li>
+            <li><strong>Apply nose-up trim and back pressure</strong> only after the flaps are retracted, as the aircraft allows.</li>
+            <li><strong>Increase airspeed</strong> — a higher airspeed reduces the angle of attack on all surfaces, which helps un-stall the tail.</li>
+            <li><strong>Do not re-extend flaps</strong> until the tailplane has been deiced or the icing environment has been exited.</li>
+          </ul>
+
+          <!-- Diagram: Tailplane icing and flap extension mechanism — redrawn -->
+          <figure class="diagram">
+            <svg viewBox="0 0 740 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tailplane-title">
+              <title id="tailplane-title">Two-panel tailplane icing diagram. Left: stable aircraft, flaps retracted, ice on the horizontal stabilizer — pitch balanced, tail-down force manageable, airflow smooth over the stab. Right: flaps extended — nose-down pitching moment increases, contaminated tail cannot supply required download, tail stalls (separated flow), nose pitches violently downward. Recovery: retract flaps immediately.</title>
+              <rect width="740" height="370" fill="#fffaf0"/>
+
+              <!-- Panel backgrounds -->
+              <rect x="8"   y="8" width="356" height="348" fill="#4a7ba6" opacity="0.03" rx="3"/>
+              <rect x="376" y="8" width="356" height="348" fill="#b53d1f" opacity="0.04" rx="3"/>
+              <line x1="370" y1="12" x2="370" y2="354" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+
+              <!-- Panel headers -->
+              <text x="186" y="27" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">STABLE: FLAPS RETRACTED</text>
+              <text x="554" y="27" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">FLAPS EXTENDED — TAIL STALL</text>
+
+              <!-- ====== PANEL 1: Stable ====== -->
+
+              <!-- Freestream flow arrows P1 -->
+              <g stroke="#4a7ba6" stroke-width="1" fill="none" opacity="0.35">
+                <path d="M 14,128 L 50,128"/><path d="M 14,140 L 50,140"/>
+                <path d="M 14,152 L 50,152"/><path d="M 14,164 L 50,164"/>
+              </g>
+
+              <!-- Fuselage P1 -->
+              <path d="M 55,150 C 58,139 68,133 84,131 L 95,125 L 106,118 L 116,112 L 138,110 L 175,110 L 205,114 L 244,126 L 285,138 L 290,150 L 285,162 L 245,163 L 205,165 L 85,163 C 68,163 58,160 55,150 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- Cockpit window P1 -->
+              <path d="M 106,118 L 116,112 L 138,110 L 141,118 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.8" opacity="0.75"/>
+              <!-- Port wing P1 -->
+              <path d="M 142,110 L 48,95 L 45,104 L 142,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Starboard wing P1 -->
+              <path d="M 142,110 L 222,97 L 224,106 L 144,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Wing struts P1 -->
+              <line x1="80"  y1="163" x2="72"  y2="114" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
+              <line x1="168" y1="163" x2="176" y2="112" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
+              <!-- Vertical fin P1 -->
+              <path d="M 262,130 L 268,102 L 278,105 L 280,128 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Left horizontal stabilizer P1 -->
+              <path d="M 280,150 L 258,142 L 256,148 L 278,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Right horizontal stabilizer P1 -->
+              <path d="M 280,150 L 298,143 L 300,150 L 283,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Prop disk P1 -->
+              <ellipse cx="54" cy="150" rx="3" ry="22" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
+
+              <!-- Ice on left stab LE P1 -->
+              <path d="M 258,142 C 253,138 249,141 250,146 C 251,151 256,152 259,148 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
+              <!-- Ice on right stab LE P1 -->
+              <path d="M 298,143 C 303,139 307,142 306,147 C 305,151 301,151 298,149 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
+              <!-- Ice label P1 -->
+              <text x="270" y="133" font-family="JetBrains Mono, monospace" font-size="8" fill="#888" text-anchor="middle">ice on stab LE</text>
+              <line x1="263" y1="135" x2="259" y2="141" stroke="#888" stroke-width="0.8"/>
+
+              <!-- Smooth attached flow over/under stab P1 -->
+              <g stroke="#4a7ba6" stroke-width="1.2" fill="none" opacity="0.6">
+                <path d="M 248,138 C 264,137 274,138 307,140"/>
+                <path d="M 248,158 C 264,159 274,158 308,156"/>
+              </g>
+              <polygon points="307,139 302,136 302,142" fill="#4a7ba6" opacity="0.6"/>
+              <polygon points="308,155 303,152 303,158" fill="#4a7ba6" opacity="0.6"/>
+              <text x="316" y="137" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" opacity="0.8">smooth</text>
+              <text x="316" y="160" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" opacity="0.8">flow</text>
+
+              <!-- Lift arrow P1 (up, green) -->
+              <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
+                <line x1="145" y1="108" x2="145" y2="74"/>
+                <polygon points="145,68 141,81 149,81"/>
+              </g>
+              <text x="145" y="61" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">L (Lift) ↑</text>
+
+              <!-- CG marker P1 -->
+              <circle cx="172" cy="150" r="7" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
+              <line x1="165" y1="150" x2="179" y2="150" stroke="#0c2541" stroke-width="1.8"/>
+              <line x1="172" y1="143" x2="172" y2="157" stroke="#0c2541" stroke-width="1.8"/>
+              <text x="172" y="139" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541" text-anchor="middle">CG</text>
+
+              <!-- Weight arrow P1 (down, navy) -->
+              <g stroke="#0c2541" stroke-width="2" fill="#0c2541">
+                <line x1="172" y1="165" x2="172" y2="198"/>
+                <polygon points="172,204 168,192 176,192"/>
+              </g>
+              <text x="172" y="215" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">W ↓</text>
+
+              <!-- Moment arm dashed line P1 -->
+              <line x1="145" y1="150" x2="280" y2="150" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
+
+              <!-- Tail download arrow P1 (down, blue) — manageable -->
+              <g stroke="#4a7ba6" stroke-width="2.5" fill="#4a7ba6">
+                <line x1="278" y1="157" x2="278" y2="190"/>
+                <polygon points="278,197 274,184 282,184"/>
+              </g>
+              <text x="278" y="208" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" font-weight="700">T↓</text>
+              <text x="278" y="220" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">(manageable)</text>
+
+              <!-- P1 status text -->
+              <text x="186" y="244" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle">Pitch balanced — tail AoA within stall margin</text>
+              <text x="186" y="257" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Ice present but controlled; flaps retracted</text>
+              <text x="186" y="270" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" text-anchor="middle">Flaps: retracted</text>
+
+
+              <!-- ====== PANEL 2: Tail stall ====== -->
+
+              <!-- Freestream flow arrows P2 -->
+              <g stroke="#4a7ba6" stroke-width="1" fill="none" opacity="0.35">
+                <path d="M 384,128 L 420,128"/><path d="M 384,140 L 420,140"/>
+                <path d="M 384,152 L 420,152"/><path d="M 384,164 L 420,164"/>
+              </g>
+
+              <!-- Fuselage P2 -->
+              <path d="M 425,150 C 428,139 438,133 454,131 L 465,125 L 476,118 L 486,112 L 508,110 L 545,110 L 575,114 L 614,126 L 655,138 L 660,150 L 655,162 L 615,163 L 575,165 L 455,163 C 438,163 428,160 425,150 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- Cockpit window P2 -->
+              <path d="M 476,118 L 486,112 L 508,110 L 511,118 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.8" opacity="0.75"/>
+              <!-- Port wing P2 -->
+              <path d="M 512,110 L 418,95 L 415,104 L 512,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Starboard wing P2 (main section) -->
+              <path d="M 512,110 L 592,97 L 594,106 L 514,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- FLAP surface (inboard TE, ~28° deflection) -->
+              <path d="M 514,115 L 536,113 L 544,134 L 522,135 Z" fill="#e0d8c0" stroke="#b53d1f" stroke-width="2"/>
+              <text x="568" y="153" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" font-weight="600">FLAP ↓</text>
+              <line x1="544" y1="132" x2="565" y2="150" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
+              <!-- Wing struts P2 -->
+              <line x1="450" y1="163" x2="442" y2="114" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
+              <line x1="538" y1="163" x2="546" y2="112" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
+              <!-- Vertical fin P2 -->
+              <path d="M 632,130 L 638,102 L 648,105 L 650,128 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Left horizontal stabilizer P2 -->
+              <path d="M 650,150 L 628,142 L 626,148 L 648,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Right horizontal stabilizer P2 -->
+              <path d="M 650,150 L 668,143 L 670,150 L 653,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Prop disk P2 -->
+              <ellipse cx="424" cy="150" rx="3" ry="22" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
+
+              <!-- Ice on left stab LE P2 -->
+              <path d="M 628,142 C 623,138 619,141 620,146 C 621,151 626,152 629,148 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
+              <!-- Ice on right stab LE P2 -->
+              <path d="M 668,143 C 673,139 677,142 676,147 C 675,151 671,151 668,149 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
+
+              <!-- STALL badge above stab -->
+              <rect x="626" y="124" width="52" height="15" fill="#b53d1f" rx="2"/>
+              <text x="652" y="135" font-family="Anton, sans-serif" font-size="10" fill="#fffaf0" text-anchor="middle" letter-spacing="0.06em">STALL</text>
+              <line x1="650" y1="139" x2="645" y2="141" stroke="#b53d1f" stroke-width="1"/>
+
+              <!-- TURBULENT separated flow at stab P2 -->
+              <g stroke="#b53d1f" fill="none" stroke-width="1.4">
+                <path d="M 634,138 C 639,134 644,141 649,137 C 654,133 659,140 665,136"/>
+                <path d="M 634,143 C 639,139 644,146 649,142 C 654,138 659,145 665,141"/>
+                <path d="M 634,158 C 639,162 644,155 649,159 C 654,163 659,156 665,160"/>
+                <path d="M 634,153 C 639,157 644,150 649,154 C 654,158 659,151 665,155"/>
+              </g>
+              <text x="672" y="140" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">sep.</text>
+              <text x="672" y="150" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">flow</text>
+
+              <!-- Lift arrow P2 (taller = more lift from flaps) -->
+              <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
+                <line x1="515" y1="108" x2="515" y2="66"/>
+                <polygon points="515,60 511,73 519,73"/>
+              </g>
+              <text x="515" y="53" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">L↑↑ (flaps)</text>
+
+              <!-- CG marker P2 -->
+              <circle cx="542" cy="150" r="7" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
+              <line x1="535" y1="150" x2="549" y2="150" stroke="#0c2541" stroke-width="1.8"/>
+              <line x1="542" y1="143" x2="542" y2="157" stroke="#0c2541" stroke-width="1.8"/>
+              <text x="542" y="139" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541" text-anchor="middle">CG</text>
+
+              <!-- Weight arrow P2 (down, navy) -->
+              <g stroke="#0c2541" stroke-width="2" fill="#0c2541">
+                <line x1="542" y1="165" x2="542" y2="198"/>
+                <polygon points="542,204 538,192 546,192"/>
+              </g>
+              <text x="542" y="215" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">W ↓</text>
+
+              <!-- Moment arm dashed line P2 -->
+              <line x1="515" y1="150" x2="648" y2="150" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
+
+              <!-- Nose-down pitching moment arc (increased by flaps) -->
+              <path d="M 490,124 C 490,108 508,100 526,107" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
+              <polygon points="526,107 517,105 520,114" fill="#b53d1f"/>
+              <text x="480" y="98" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">nose-down</text>
+              <text x="480" y="108" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">moment ↑↑</text>
+
+              <!-- Tail download FAILED — dashed + X -->
+              <line x1="648" y1="157" x2="648" y2="176" stroke="#b53d1f" stroke-width="2" stroke-dasharray="3,3"/>
+              <polygon points="648,182 644,170 652,170" fill="#b53d1f" opacity="0.4"/>
+              <line x1="640" y1="160" x2="656" y2="176" stroke="#b53d1f" stroke-width="2.5"/>
+              <line x1="656" y1="160" x2="640" y2="176" stroke="#b53d1f" stroke-width="2.5"/>
+              <text x="648" y="195" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-weight="700">T↓ FAILS</text>
+
+              <!-- Nose-rotation result arc at the aircraft nose -->
+              <path d="M 438,126 C 452,124 460,137 456,152 C 452,165 441,172 430,170" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
+              <polygon points="430,170 440,166 436,175" fill="#b53d1f"/>
+              <text x="466" y="176" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">NOSE</text>
+              <text x="466" y="187" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">PITCHES</text>
+              <text x="466" y="198" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">DOWN ↓</text>
+
+              <!-- P2 warning text -->
+              <text x="554" y="244" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Flaps increase nose-down pitching moment demand</text>
+              <text x="554" y="257" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Contaminated tail cannot supply required tail-down force</text>
+
+              <!-- Recovery box -->
+              <rect x="383" y="270" width="347" height="34" fill="#5d6f3c" opacity="0.1" rx="3"/>
+              <rect x="383" y="270" width="347" height="34" fill="none" stroke="#5d6f3c" stroke-width="1.5" rx="3"/>
+              <text x="556" y="283" font-family="Anton, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.06em">RECOVERY:</text>
+              <text x="556" y="297" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">Retract flaps immediately · Do NOT extend further</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="368" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Tailplane icing and flap extension. Left: flaps retracted — the contaminated horizontal stabilizer is producing a manageable tail-down force (T↓), pitch is balanced, and airflow remains attached over the stab surface. Right: flaps extended — the wing's nose-down pitching moment increases sharply, demanding far more tail-down force from the iced tail. The tail stalls (separated flow shown in red wavy lines, STALL badge), and the nose pitches violently downward (rotation arc at the nose). Force vectors: L=Lift, W=Weight, T↓=Tail-down force, CG=Center of Gravity. Recovery requires immediate flap retraction. (AC 91-74B Ch. 4; FAA-H-8083-28 Ch. 10)</figcaption>
+          </figure>
+
+          <p class="callout">
+            <strong>The rule, stated plainly (AC 91-74B §5.2):</strong> Do not extend flaps to full deflection in icing conditions or when tailplane icing is suspected. If the nose pitches down after flap extension, retract the flaps immediately. Do not mistake tail-stall buffet for pre-wing-stall buffet — the recovery is opposite. A pilot who pushes forward or extends more flaps in response to a tail stall will not recover.
+          </p>
+        </section>
+
+        <!-- Section: Reading icing weather -->
+        <section id="forecasts">
+          <h2>Reading icing forecasts and products</h2>
+          <p>
+            Several weather products specifically address icing. Knowing what each one tells you — and where it comes from — is a checkride topic and an operational necessity for any instrument pilot.
+          </p>
+
+          <h3>AIRMET Zulu (AC 00-45H §7.5)</h3>
+          <p>
+            AIRMET Zulu is issued when moderate icing is expected and a freezing-level forecast is always included regardless of icing activity. Key parameters:
+          </p>
+          <ul>
+            <li>Issued every 6 hours, valid 6 hours, with updates as needed</li>
+            <li>Moderate icing: rate of accumulation that would be hazardous if prolonged</li>
+            <li>Always contains the freezing level: altitude(s) at which temperature is 0°C</li>
+            <li>No AIRMET Zulu does not mean no icing — it means no <em>moderate</em> icing. Trace and light icing are always possible in clouds in freezing temperatures without an advisory</li>
+          </ul>
+
+          <h3>PIREPs (UA / UUA)</h3>
+          <p>
+            Pilot reports are the most operationally current icing information available. Look for the IC field in a PIREP. Intensity codes:
+          </p>
+          <ul>
+            <li><strong>TRACE:</strong> Ice barely perceptible. Accumulation slightly greater than the rate of sublimation. De-icing not required.</li>
+            <li><strong>LGT (Light):</strong> Rate of accumulation may create a problem if flight is prolonged more than one hour. Occasional de-icing required.</li>
+            <li><strong>MOD (Moderate):</strong> Rate of accumulation is a problem if prolonged. Short encounters (15–30 min) are manageable; longer encounters require immediate exit or use of de-icing equipment.</li>
+            <li><strong>SEV (Severe):</strong> Rate of accumulation such that de-icing or anti-icing equipment fails to reduce or control the hazard. Immediate diversion necessary.</li>
+          </ul>
+
+          <p>
+            A PIREP may also note the <strong>ice type</strong> (RIME, CLR, MIXED) and whether <strong>SLD (supercooled large droplets)</strong> were encountered. An SLD PIREP anywhere along your route is an immediate go/no-go flag regardless of the aircraft's FIKI certification, unless specifically certified under 14 CFR Part 25 Appendix O for SLD conditions.
+          </p>
+
+          <h3>Freezing levels and the Graphical Forecast for Aviation (GFA)</h3>
+          <ul>
+            <li>AIRMET Zulu text (always includes the 0°C isotherm altitude)</li>
+            <li>Constant Pressure Charts (winds/temps aloft) — find the 0°C temperature altitude</li>
+            <li>FA (Area Forecast) or GFA — graphical freezing level and icing layer forecasts</li>
+            <li>Icing Severity and SLD products on aviationweather.gov — overlay icing probability, severity, and SLD by altitude and time</li>
+          </ul>
+
+          <p class="callout">
+            <strong>Multiple freezing levels:</strong> In warm front environments, a layer of 0°C to +4°C warm air can exist above a colder surface layer. This creates freezing rain aloft — rain that forms above the warm layer, passes through it as liquid, and becomes supercooled below. Clear ice accumulates rapidly from large supercooled rain drops. In the clouds just below a warm front, expect this condition when the sounding shows a warm layer above the surface cold layer. (AC 00-45H §7.5.3; FAA-H-8083-28 §10.3)
+          </p>
+
+          <h3>Known Icing and legal implications</h3>
+          <p>
+            Under 14 CFR 91.527, a pilot in command operating under IFR may not fly a large or turbine-powered aircraft into known icing conditions unless the aircraft is equipped for flight in known icing. For certificated small aircraft, flying a non-FIKI-certificated aircraft into <em>known icing conditions</em> — meaning conditions where you have received a forecast or PIREP indicating icing — is not permitted. An AIRMET Zulu covering your route makes those conditions "known." The aircraft being certificated for "IFR" and the aircraft being certificated for "flight into known icing" are two entirely different things.
+          </p>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>
+            The examiner's go-to icing questions for PPL, IR, and commercial orals. The temperature range question is nearly universal.
+          </p>
+
+          <details class="qa">
+            <summary>Q: What are the three types of structural ice and what temperature range does each form in?</summary>
+            <p><strong>Clear ice (glaze): 0°C to −10°C.</strong> Large supercooled droplets, freezes slowly, transparent, double-horn shape, most dangerous. <strong>Mixed ice: −10°C to −15°C.</strong> Both small and large droplets, combination of rime and clear properties, irregular shape. <strong>Rime ice: −15°C to −20°C.</strong> Small supercooled droplets, freeze on impact, opaque white, confined to the leading edge stagnation point. (AC 91-51A Table 1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Which type of structural ice is the most dangerous and why?</summary>
+            <p>Clear ice (glaze ice) is the most dangerous. It forms the "double-horn" shape on the airfoil leading edge, dramatically disrupting airflow and reducing CLmax. It is dense, adheres strongly, can bridge over pneumatic de-ice boots without breaking, runs back beyond the protected zone, and is nearly invisible being transparent. A small amount of double-horn clear ice can raise stall speed by 30% or more. (AC 91-74B §4.1.2; FAA-H-8083-28 Ch. 10)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is runback icing and why is it dangerous?</summary>
+            <p>Runback icing forms when melt water from leading-edge de-icing flows aft along the wing surface and refreezes behind the protected zone. It is dangerous because: (1) it forms where no de-icing system operates, (2) aft-chord ice ridges are aerodynamically more destructive than leading-edge ice, (3) it is not visible from the cockpit, and (4) the de-ice boots may show normal operation while runback is accumulating behind them. SLD makes runback dramatically worse because large drops impinge much further aft than standard certification droplet sizes. (AC 91-74B §4.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How does the tailplane collect ice differently than the wing?</summary>
+            <p>The horizontal stabilizer has a much smaller chord than the wing — typically one-quarter to one-third the wing chord. A smaller chord means a thinner boundary layer and a higher collection efficiency for supercooled droplets. Under identical icing conditions, the tailplane accumulates ice faster per unit of surface area than the wing, often at a 2:1 ratio or higher. (AC 91-74B §4.4)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why is extending flaps dangerous if you suspect ice on the tailplane?</summary>
+            <p>Flap extension increases the wing's nose-down pitching moment, which demands more tail-down force (negative lift) from the horizontal stabilizer. Producing more tail-down force requires a higher (more negative) angle of attack on the tail. If ice has already reduced the tailplane's stall margin, the additional AoA demand can push the tail past its stall angle. When the tail stalls, it can no longer provide the required tail-down force — the wing's pitching moment goes unchecked and the nose pitches violently downward. Recovery requires immediate flap retraction. (AC 91-74B §4.4.2–4.4.3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the recovery from a suspected tailplane stall?</summary>
+            <p>Immediately retract the flaps to the previous position or a lesser setting. Do not extend flaps further. Do not confuse tail-stall buffet with pre-wing-stall buffet — the response is opposite. After flap retraction, apply nose-up trim or back pressure as the aircraft allows. Increase airspeed if possible. Do not re-extend flaps until the tailplane ice has been removed or icing conditions have been exited. (AC 91-74B §4.4.3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What does "known icing conditions" mean legally?</summary>
+            <p>Known icing conditions exist when a pilot has received a forecast, PIREP, or other reliable indication that icing is present or expected in the airspace to be flown. An AIRMET Zulu covering your route makes those conditions "known." Flying a non-FIKI aircraft into known icing is prohibited. "IFR certificated" and "certificated for known icing" are not the same thing. (14 CFR 91.527; AC 91-74B §5.0)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the AIRMET product that covers icing? What else does it always include?</summary>
+            <p>AIRMET Zulu. It covers moderate icing for aircraft that lack approved de-icing or anti-icing equipment. It always includes the freezing level — the altitude at which temperature is 0°C — regardless of whether icing is currently active. It is issued every 6 hours and valid for 6 hours. (AC 00-45H §7.5)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why might pneumatic de-ice boots fail to remove clear ice?</summary>
+            <p>Two reasons: boot bridging and early activation. Boot bridging occurs when a thick clear-ice deposit adheres so strongly that when the boot inflates, the ice does not crack — it simply bends slightly and remains attached. Early activation occurs when the pilot activates the boots before ice has built to a sufficient thickness; thin ice may not shatter cleanly and instead forms a rough layer that adheres to the boot surface. AC 91-74B recommends allowing 0.25–0.5 inches of accumulation before activating pneumatic boots, following the aircraft AFM/POH guidance. (AC 91-74B §5.1.1)</p>
+          </details>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>Three conditions: visible moisture, freezing temperature at the surface, aircraft in the cloud.</strong> Remove one and no icing occurs. All three present at once means structural icing is possible.</li>
+              <li><strong>Temperature ranges (know these — AC 91-51A Table 1):</strong> Clear ice 0°C to −10°C. Mixed −10°C to −15°C. Rime −15°C to −20°C. Clear ice is the most dangerous — transparent, double-horn shape, dense, runs back beyond de-ice coverage.</li>
+              <li><strong>Runback ice builds where no boot reaches.</strong> A cycling de-ice boot does not mean the aircraft is ice-free. Clear ice melt water flows aft and refreezes behind the protected zone, creating ridge ice that is aerodynamically more destructive than leading-edge ice — and invisible from the cockpit.</li>
+              <li><strong>The tailplane ices faster than the wing</strong> due to its smaller chord and thinner boundary layer. It operates as a tail-down force surface — its stall is the opposite of a wing stall: the nose pitches DOWN. Tail-stall buffet feels like pre-wing-stall buffet; the recovery is opposite.</li>
+              <li><strong>Never extend flaps with suspected tail icing.</strong> Flap extension increases the nose-down pitching moment and demands more tail-down force from the tail. If the tail is contaminated, this can trigger a tail stall. If the nose pitches down unexpectedly after flap extension: retract flaps immediately. (AC 91-74B §4.4.3)</li>
+              <li><strong>AIRMET Zulu = moderate icing + always includes freezing level.</strong> No Zulu does not mean no icing — it means no moderate icing. Trace and light icing are always possible without an advisory. PIREPs are your best real-time icing data.</li>
+              <li><strong>"IFR certificated" ≠ "FIKI."</strong> Receiving an AIRMET Zulu covering your route creates known icing conditions. A non-FIKI aircraft may not legally enter known icing. Plan an alternate before departure; don't make the go/no-go call from inside the cloud.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="thunderstorm-life-cycle.html" class="concept-nav-link">← Thunderstorm Life Cycle</a>
+          <span class="concept-nav-next">Next concept: Turbulence →</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>
