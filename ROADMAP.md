@@ -23,13 +23,13 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 - [x] Fronts and Pressure Systems
 - [x] Winds Aloft and the Jet Stream
 - [x] Density Altitude
-- [ ] Altimetry (next)
+- [x] Altimetry
 
 ## Phase 3 — Weather Products
 
-- [ ] Weather Charts (after Altimetry)
-- [ ] METAR Decoder
-- [ ] TAF Decoder
+- [x] Weather Charts
+- [x] METAR Decoder
+- [x] TAF Decoder
 - [ ] Weather Product Ladder (reference page; depends on METAR/TAF Decoders)
 - [ ] PIREPs section
 

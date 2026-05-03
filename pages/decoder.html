@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoder — CrosswindWX</title>
+  <title>METAR &amp; TAF Decoder — CrosswindWX</title>
+  <meta name="description" content="Decode any raw METAR or TAF. Field-by-field breakdown, wind compass, cloud layer diagram, flight category, and TAF forecast timeline.">
   <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
@@ -22,23 +23,222 @@
     </div>
   </header>
 
-  <section class="hero">
+  <!-- Hero -->
+  <section class="concept-hero">
     <div class="container">
       <p class="hero-eyebrow">Section 02 / Decoder</p>
-      <h1>Paste a METAR.<br>Get the <span class="accent">picture.</span></h1>
+      <h1>METAR &amp; TAF <span class="accent">Decoder</span></h1>
       <p class="lede">
-        The Decoder will parse raw METARs and TAFs into a plain-English breakdown plus a visual representation — wind arrow over a runway, cloud layers at altitude, visibility ring, precipitation icons. Live data pulled from aviationweather.gov by ICAO code.
+        Paste a raw METAR or TAF and get the plain-English breakdown: every field explained, wind compass, cloud layers, flight category, and — for TAFs — a color-coded forecast timeline.
       </p>
-      <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--sage); text-transform: uppercase; letter-spacing: 0.15em;">Status: scaffolded · Build target: Phase 3</p>
-      <p><a href="../index.html">← Back to home</a></p>
     </div>
   </section>
+
+  <!-- ══════════════════════════════════════════
+       INPUT WRAPPER
+       ══════════════════════════════════════════ -->
+  <div class="decoder-wrapper">
+    <div class="container">
+
+      <!-- Product selector: METAR | TAF -->
+      <div class="product-selector">
+        <button class="product-tab active" data-product="metar">METAR</button>
+        <button class="product-tab" data-product="taf">TAF</button>
+        <span class="product-selector-hint">Current observation · Forecast</span>
+      </div>
+
+      <!-- ── METAR INPUT ── -->
+      <div id="metar-section" class="product-section">
+        <div class="decoder-tabs" role="tablist">
+          <button class="decoder-tab active" data-panel="panel-icao" role="tab">Look up by airport code</button>
+          <button class="decoder-tab" data-panel="panel-paste" role="tab">Paste a METAR</button>
+        </div>
+
+        <div id="panel-icao" class="decoder-panel">
+          <p class="decoder-hint">Enter any ICAO identifier to fetch the current METAR from aviationweather.gov.</p>
+          <p id="icao-file-notice" class="decoder-file-notice" hidden>
+            Live lookup requires the site to be served over HTTP. Right now you're opening the file directly, so fetching is disabled.
+            Switch to the <strong>Paste a METAR</strong> tab — copy any raw METAR from
+            <code>aviationweather.gov</code> and paste it there. Everything else works perfectly.
+          </p>
+          <div class="decoder-input-row">
+            <input id="icao-input" type="text" placeholder="KDFW" maxlength="4"
+              autocomplete="off" autocapitalize="characters" spellcheck="false"
+              aria-label="ICAO airport identifier" class="decoder-text-input icao-input"/>
+            <button id="btn-fetch" class="decoder-btn">Fetch METAR</button>
+          </div>
+          <p class="decoder-examples-hint">Examples: <code>KDFW</code> · <code>KORD</code> · <code>KDEN</code> · <code>EGLL</code> · <code>YSSY</code></p>
+        </div>
+
+        <div id="panel-paste" class="decoder-panel" hidden>
+          <p class="decoder-hint">Paste a raw METAR exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
+          <div class="decoder-input-row decoder-input-row--paste">
+            <textarea id="metar-input" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="METAR KDFW 031753Z 23015G25KT 10SM -RA SCT018 BKN065 OVC090 24/19 A2987 RMK AO2 SLP117"
+              aria-label="Raw METAR input" class="decoder-textarea"></textarea>
+          </div>
+          <div class="decoder-input-row">
+            <button id="btn-decode" class="decoder-btn">Decode</button>
+            <button id="btn-example" class="decoder-btn decoder-btn--secondary">Load example</button>
+          </div>
+        </div>
+
+        <p id="decoder-error" class="decoder-error" hidden aria-live="polite"></p>
+      </div>
+
+      <!-- ── TAF INPUT ── -->
+      <div id="taf-section" class="product-section" hidden>
+        <div class="decoder-tabs" role="tablist">
+          <button class="taf-subtab active" data-panel="taf-panel-icao" role="tab">Look up by airport code</button>
+          <button class="taf-subtab" data-panel="taf-panel-paste" role="tab">Paste a TAF</button>
+        </div>
+
+        <div id="taf-panel-icao" class="taf-subpanel">
+          <p class="decoder-hint">Enter any ICAO identifier to fetch the current TAF from aviationweather.gov.</p>
+          <p id="taf-icao-file-notice" class="decoder-file-notice" hidden>
+            Live lookup requires the site to be served over HTTP. Right now you're opening the file directly, so fetching is disabled.
+            Switch to the <strong>Paste a TAF</strong> tab — copy any raw TAF from
+            <code>aviationweather.gov</code> and paste it there. Everything else works perfectly.
+          </p>
+          <div class="decoder-input-row">
+            <input id="icao-taf-input" type="text" placeholder="KDFW" maxlength="4"
+              autocomplete="off" autocapitalize="characters" spellcheck="false"
+              aria-label="ICAO airport identifier for TAF" class="decoder-text-input icao-input"/>
+            <button id="btn-fetch-taf" class="decoder-btn">Fetch TAF</button>
+          </div>
+          <p class="decoder-examples-hint">Examples: <code>KDFW</code> · <code>KORD</code> · <code>KSFO</code> · <code>EGLL</code></p>
+        </div>
+
+        <div id="taf-panel-paste" class="taf-subpanel" hidden>
+          <p class="decoder-hint">Paste a raw TAF exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
+          <div class="decoder-input-row decoder-input-row--paste">
+            <textarea id="taf-input" rows="4" spellcheck="false" autocomplete="off"
+              placeholder="TAF KDFW 031730Z 0318/0424 23015KT P6SM SCT025 BKN060 FM040000 27015KT P6SM BKN030 TEMPO 0402/0406 5SM -RA BKN015"
+              aria-label="Raw TAF input" class="decoder-textarea"></textarea>
+          </div>
+          <div class="decoder-input-row">
+            <button id="btn-decode-taf" class="decoder-btn">Decode TAF</button>
+            <button id="btn-example-taf" class="decoder-btn decoder-btn--secondary">Load example</button>
+          </div>
+        </div>
+
+        <p id="taf-error" class="decoder-error" hidden aria-live="polite"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       METAR OUTPUT
+       ══════════════════════════════════════════ -->
+  <div id="decoder-output" hidden aria-live="polite">
+    <div class="container">
+
+      <div class="decoder-category-row">
+        <span id="cat-badge" class="cat-badge">VFR</span>
+        <span id="cat-desc" class="cat-desc"></span>
+        <span class="cat-edu-note">Educational use only · Not for flight planning</span>
+      </div>
+
+      <div class="decoder-raw-wrap">
+        <p class="decoder-raw-label">Raw METAR — hover any token for a tooltip</p>
+        <div id="decoded-raw" class="decoder-raw-metar"></div>
+      </div>
+
+      <div class="decoder-main">
+        <div class="decoder-fields-wrap">
+          <p class="decoder-section-label">Field breakdown</p>
+          <div id="decoded-fields" class="decoder-fields"></div>
+        </div>
+
+        <div class="decoder-visuals">
+          <div class="vis-card">
+            <p class="decoder-section-label">Wind</p>
+            <div id="wind-visual"></div>
+            <p id="wind-desc" class="vis-raw"></p>
+          </div>
+          <div class="vis-card">
+            <p class="decoder-section-label">Cloud layers</p>
+            <div id="cloud-visual"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="remarks-section">
+        <p class="decoder-section-label">Remarks (raw)</p>
+        <p id="decoded-remarks" class="decoder-remarks-raw"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAF OUTPUT
+       ══════════════════════════════════════════ -->
+  <div id="taf-output" hidden aria-live="polite">
+    <div class="container">
+
+      <!-- TAF header -->
+      <div class="taf-header-row">
+        <div class="taf-header-left">
+          <span id="taf-station" class="taf-station-id">—</span>
+          <span id="taf-type-badge" class="taf-type-badge">TAF</span>
+        </div>
+        <div class="taf-header-right">
+          <span id="taf-valid" class="taf-header-meta"></span>
+          <span id="taf-issued" class="taf-header-meta taf-issued"></span>
+        </div>
+        <span class="cat-edu-note">Educational use only · Not for flight planning</span>
+      </div>
+
+      <!-- Raw TAF -->
+      <div class="decoder-raw-wrap" style="margin-bottom:2rem;">
+        <p class="decoder-raw-label">Raw TAF</p>
+        <div id="taf-raw" class="decoder-raw-metar" style="white-space:pre-wrap;"></div>
+      </div>
+
+      <!-- Forecast timeline -->
+      <p class="decoder-section-label">Forecast timeline</p>
+      <div id="taf-timeline" class="taf-timeline"></div>
+
+      <!-- Legend -->
+      <div class="taf-legend">
+        <p class="decoder-section-label" style="margin-top:2rem;">Group types</p>
+        <div class="taf-legend-grid">
+          <div><span class="taf-type-label taf-type-base">Base forecast</span> <span class="taf-legend-desc">Prevailing conditions for the entire valid period.</span></div>
+          <div><span class="taf-type-label taf-type-fm">From</span> <span class="taf-legend-desc">Conditions change abruptly and completely at this time.</span></div>
+          <div><span class="taf-type-label taf-type-tempo">Temporarily</span> <span class="taf-legend-desc">Conditions expected for less than half of the indicated period, each occurrence lasting less than 1 hour.</span></div>
+          <div><span class="taf-type-label taf-type-becmg">Becoming</span> <span class="taf-legend-desc">Gradual change — conditions transition over the indicated period. After the period, new conditions persist.</span></div>
+          <div><span class="taf-type-label taf-type-prob30">30% probability</span> <span class="taf-legend-desc">30–39% probability these conditions occur. Not used for thunderstorms or low IFR by NWS convention.</span></div>
+          <div><span class="taf-type-label taf-type-prob40">40% probability</span> <span class="taf-legend-desc">40–49% probability these conditions occur.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <footer>
     <div class="container">
       <span>CrosswindWX · Built for student pilots</span>
-      <span>Not for navigation · Educational use only</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>
+
+  <script src="../js/metar-decoder.js"></script>
+  <script src="../js/taf-decoder.js"></script>
+  <script>
+    // Product tab switching (METAR ↔ TAF)
+    document.querySelectorAll('.product-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const product = tab.dataset.product;
+        document.getElementById('metar-section').hidden = (product !== 'metar');
+        document.getElementById('taf-section').hidden   = (product !== 'taf');
+        document.getElementById('decoder-output').hidden = true;
+        document.getElementById('taf-output').hidden     = true;
+      });
+    });
+  </script>
 </body>
 </html>

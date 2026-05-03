@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Charts — CrosswindWX</title>
+  <meta name="description" content="How to read surface analysis charts, prog charts, and upper-level constant pressure charts. The big-picture weather products that point observations can't replace. For PPL, IR, and commercial checkrides.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Weather Charts</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Products · Graphical weather analysis</p>
+      <h1>Weather <span class="accent">Charts</span></h1>
+      <p class="lede">
+        A METAR tells you what the weather is at one point right now. A weather chart tells you what the entire atmosphere is doing — and where it's going. Surface analysis charts, prog charts, and upper-level charts form the foundation of any serious preflight weather brief. The pilot who skips them is navigating without a map.
+      </p>
+      <!-- [VERIFY] specific ACS sub-element codes against current Private PA, Instrument IR, and Commercial CA ACS documents (April 2024 versions) -->
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K2 · IR.I.B.K2 · CA.I.C.K2</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-45H Ch. 9 &amp; 14 · FAA-H-8083-28 Ch. 14</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~14 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what">What weather charts are</a></li>
+          <li><a href="#why">Why pilots use them</a></li>
+          <li><a href="#surface">Surface Analysis Chart</a></li>
+          <li><a href="#prog">Prog Charts</a></li>
+          <li><a href="#upper">Upper-Level Charts</a></li>
+          <li><a href="#redflags">Red flags</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly scenario</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section 1: What -->
+        <section id="what">
+          <h2>What weather charts are</h2>
+          <p>
+            Weather charts are graphical depictions of atmospheric conditions — either current or forecast — over a broad geographic area. Unlike point observations (METAR, ASOS) or line products (PIREPs, AIRMETs), charts show the <em>synoptic picture</em>: the large-scale pressure patterns, frontal boundaries, and circulation that determine what weather will develop and where it will move.
+          </p>
+          <p>
+            Three chart families matter most for preflight planning:
+          </p>
+          <ul>
+            <li><strong>Surface Analysis Chart</strong> — current conditions. Shows pressure systems, fronts, isobars, and observed weather across the analysis area.</li>
+            <li><strong>Prog Charts</strong> (Prognostic Charts) — forecast. Shows where the surface pattern and significant weather will be at 12, 24, 36, and 48 hours from issuance.</li>
+            <li><strong>Constant Pressure (Upper-Level) Charts</strong> — the atmosphere above the surface. Shows height contours, temperature, wind barbs, and jet stream position at pressure altitudes from 850 mb (~5,000 ft) to 200 mb (~39,000 ft).</li>
+          </ul>
+          <p>
+            All three are graphical products from the NWS/Aviation Weather Center (AWC). They're available at aviationweather.gov and through every major EFB application. (AC 00-45H Ch. 9)
+          </p>
+        </section>
+
+        <!-- Section 2: Why -->
+        <section id="why">
+          <h2>Why pilots use them</h2>
+          <p>
+            The most common weather brief mistake student pilots make is building their decision around point observations alone — checking the METAR at departure and destination, maybe running a SIGMET check, and calling it done. This approach misses the most important question: <em>what is the weather system doing?</em>
+          </p>
+          <p>
+            A surface analysis chart reveals things no METAR can:
+          </p>
+          <ul>
+            <li>Whether a cold front is 200 nm to your west and moving at 30 kt — putting it at your destination in under 7 hours</li>
+            <li>Whether you're departing inside a low-pressure system (expect IFR ceilings, icing, embedded convection) or inside a high (expect good VFR and light winds)</li>
+            <li>Whether the isobars along your route are widely spaced (light winds) or packed tightly (significant wind and possible turbulence)</li>
+          </ul>
+          <p>
+            Prog charts add the dimension of time. A current METAR showing VFR at your destination means nothing if a 24-hr prog chart shows a warm front arriving two hours after your planned arrival. The wise approach: start with the charts to build a mental model of the synoptic situation, then use METARs, TAFs, AIRMETs, and PIREPs to fill in the details.
+          </p>
+          <p class="callout">
+            <strong>The chart-first workflow:</strong> Surface analysis → Prog charts (to understand movement) → Upper-level charts (for altitude selection and en route hazards) → METAR/TAF (to verify the model against current observations) → AIRMETs/SIGMETs (for specific hazards). Working this sequence from large-scale to small-scale prevents the point-observation trap.
+          </p>
+        </section>
+
+        <!-- Section 3: Surface Analysis -->
+        <section id="surface">
+          <h2>Surface Analysis Chart</h2>
+          <p>
+            The surface analysis chart depicts observed surface weather conditions across North America and adjacent waters. It is issued every three hours by the NWS. Each chart is valid at a specific time (the analysis time, not a forecast period).
+          </p>
+
+          <h3>What's on it</h3>
+          <ul>
+            <li><strong>Isobars</strong> — lines of equal sea-level pressure, labeled in millibars (mb) or hectopascals (hPa), contoured at 4 mb intervals. Tightly spaced isobars = strong pressure gradient = strong surface winds. Widely spaced = light winds.</li>
+            <li><strong>High (H) and Low (L) pressure centers</strong> — labeled with central pressure in mb. Winds circulate clockwise around a High in the Northern Hemisphere, counterclockwise around a Low.</li>
+            <li><strong>Frontal boundaries</strong> — coded by type and color (or symbol pattern in monochrome versions). Cold fronts, warm fronts, stationary fronts, and occluded fronts each carry characteristic weather.</li>
+            <li><strong>Precipitation areas</strong> — hatched or stippled regions indicating observed precipitation. Continuous hatching = continuous precipitation; intermittent hatching = showers.</li>
+            <li><strong>Weather symbols</strong> — standard WMO station models showing temperature, dewpoint, sky cover, wind barbs, pressure tendency, and current weather at reporting stations.</li>
+          </ul>
+
+          <!-- SVG: Surface Analysis Chart -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="surface-chart-title">
+              <title id="surface-chart-title">Simplified surface analysis chart showing a High pressure center in the upper right with widely spaced isobars, a Low pressure center in the lower left with tightly packed isobars, a cold front extending southeast from the Low, a warm front extending east from the Low, and a precipitation area near the cold front.</title>
+
+              <!-- Background -->
+              <rect width="700" height="420" fill="#fffaf0"/>
+              <!-- Chart border -->
+              <rect x="10" y="10" width="680" height="400" fill="rgba(74,123,166,0.04)" stroke="#b9a87a" stroke-width="0.8"/>
+
+              <!-- Chart title band -->
+              <rect x="10" y="10" width="680" height="26" fill="#0c2541"/>
+              <text x="350" y="27" font-family="Anton, sans-serif" font-size="11" fill="#f4ecd6" text-anchor="middle" letter-spacing="0.12em">SURFACE ANALYSIS · VALID 1200Z</text>
+
+              <!-- ===== ISOBARS — HIGH side (upper right, widely spaced) ===== -->
+              <!-- 1028 mb center ellipse around H at (530, 130) -->
+              <ellipse cx="530" cy="130" rx="20" ry="14" fill="none" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- 1024 -->
+              <ellipse cx="530" cy="130" rx="60" ry="44" fill="none" stroke="#0c2541" stroke-width="1.2"/>
+              <text x="592" y="133" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541">1024</text>
+              <!-- 1020 -->
+              <ellipse cx="530" cy="130" rx="100" ry="74" fill="none" stroke="#0c2541" stroke-width="1.1"/>
+              <text x="632" y="133" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541">1020</text>
+              <!-- 1016 -->
+              <ellipse cx="530" cy="130" rx="140" ry="108" fill="none" stroke="#0c2541" stroke-width="1"/>
+              <!-- Clip the isobars to chart area -->
+
+              <!-- HIGH label -->
+              <text x="530" y="125" font-family="Anton, sans-serif" font-size="26" fill="#0c2541" text-anchor="middle">H</text>
+              <text x="530" y="143" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="middle">1028</text>
+
+              <!-- Wind flow arrows around H (clockwise, light) -->
+              <g stroke="#4a7ba6" stroke-width="1" fill="none" opacity="0.5">
+                <!-- Top -->
+                <path d="M 510,60 L 550,60" marker-end="url(#arr-blue)"/>
+                <!-- Right -->
+                <path d="M 620,110 L 620,150" marker-end="url(#arr-blue)"/>
+                <!-- Bottom -->
+                <path d="M 550,200 L 510,200" marker-end="url(#arr-blue)"/>
+                <!-- Left -->
+                <path d="M 440,150 L 440,110" marker-end="url(#arr-blue)"/>
+              </g>
+
+              <!-- ===== ISOBARS — LOW side (lower left, tightly packed) ===== -->
+              <!-- 988 mb center at (185, 295) -->
+              <ellipse cx="185" cy="295" rx="16" ry="12" fill="none" stroke="#0c2541" stroke-width="1.3"/>
+              <!-- 992 -->
+              <ellipse cx="185" cy="295" rx="34" ry="26" fill="none" stroke="#0c2541" stroke-width="1.3"/>
+              <!-- 996 -->
+              <ellipse cx="185" cy="295" rx="55" ry="42" fill="none" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- 1000 -->
+              <ellipse cx="185" cy="295" rx="78" ry="58" fill="none" stroke="#0c2541" stroke-width="1.1"/>
+              <text x="96" y="298" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="end">1000</text>
+              <!-- 1004 -->
+              <ellipse cx="185" cy="295" rx="105" ry="78" fill="none" stroke="#0c2541" stroke-width="1"/>
+              <text x="79" y="298" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="end">1004</text>
+
+              <!-- LOW label -->
+              <text x="185" y="290" font-family="Anton, sans-serif" font-size="26" fill="#b53d1f" text-anchor="middle">L</text>
+              <text x="185" y="308" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">988</text>
+
+              <!-- ===== COLD FRONT: from L southeastward ===== -->
+              <!-- Cold front line from (185,295) heading to (480,390) -->
+              <!-- Blue line with triangles pointing SE (direction of movement) -->
+              <line x1="185" y1="295" x2="480" y2="390" stroke="#2a5ba0" stroke-width="2.5"/>
+              <!-- Triangle markers along cold front -->
+              <g fill="#2a5ba0">
+                <!-- Triangle 1 at ~25% -->
+                <polygon points="255,320 248,310 262,312"/>
+                <!-- Triangle 2 at ~50% -->
+                <polygon points="330,345 323,335 337,337"/>
+                <!-- Triangle 3 at ~75% -->
+                <polygon points="405,368 398,358 412,360"/>
+              </g>
+              <!-- Cold front label -->
+              <text x="360" y="345" font-family="Manrope, sans-serif" font-size="9" fill="#2a5ba0" transform="rotate(20,360,345)" font-style="italic">Cold front</text>
+
+              <!-- ===== WARM FRONT: from L eastward ===== -->
+              <!-- Warm front line from (185,295) heading to (460,220) -->
+              <line x1="185" y1="295" x2="460" y2="220" stroke="#b53d1f" stroke-width="2.5"/>
+              <!-- Semicircle markers (on warm/south side, pointing in direction of movement) -->
+              <g fill="#b53d1f" stroke="none">
+                <!-- Bump 1 -->
+                <path d="M 252,274 A 9,9 0 0 1 240,266" stroke="#b53d1f" stroke-width="0" fill="#b53d1f"/>
+                <circle cx="246" cy="270" r="7" fill="#b53d1f" opacity="0.9"/>
+                <!-- Bump 2 -->
+                <circle cx="307" cy="252" r="7" fill="#b53d1f" opacity="0.9"/>
+                <!-- Bump 3 -->
+                <circle cx="368" cy="235" r="7" fill="#b53d1f" opacity="0.9"/>
+              </g>
+              <!-- Warm front label -->
+              <text x="295" y="248" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" transform="rotate(-15,295,248)" font-style="italic">Warm front</text>
+
+              <!-- ===== PRECIPITATION AREA near cold front ===== -->
+              <!-- Hatched region roughly parallel to cold front -->
+              <defs>
+                <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#4a7ba6" stroke-width="1" opacity="0.4"/>
+                </pattern>
+                <clipPath id="chart-clip">
+                  <rect x="10" y="36" width="680" height="374"/>
+                </clipPath>
+                <!-- Arrow marker -->
+                <marker id="arr-blue" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,1 L6,3 L0,5 Z" fill="#4a7ba6"/>
+                </marker>
+              </defs>
+              <polygon points="260,315 310,355 380,380 430,390 390,360 340,335 290,310" fill="url(#hatch)" stroke="#4a7ba6" stroke-width="0.8" opacity="0.7" clip-path="url(#chart-clip)"/>
+              <text x="340" y="375" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle" font-style="italic">Precipitation</text>
+
+              <!-- ===== STATIONARY FRONT (upper portion, across top) ===== -->
+              <!-- Stationary front: alternating blue triangles and red bumps, no net movement -->
+              <line x1="30" y1="170" x2="185" y2="170" stroke="#888" stroke-width="1.5" stroke-dasharray="4,2"/>
+              <!-- Blue triangles (top) -->
+              <g fill="#2a5ba0">
+                <polygon points="60,170 67,162 74,170"/>
+                <polygon points="100,170 107,162 114,170"/>
+                <polygon points="140,170 147,162 154,170"/>
+              </g>
+              <!-- Red bumps (bottom) -->
+              <g fill="#b53d1f">
+                <circle cx="80" cy="174" r="5"/>
+                <circle cx="120" cy="174" r="5"/>
+                <circle cx="160" cy="174" r="5"/>
+              </g>
+              <text x="30" y="192" font-family="Manrope, sans-serif" font-size="9" fill="#555" font-style="italic">Stationary front</text>
+
+              <!-- ===== STATION MODELS (simplified) ===== -->
+              <!-- Station near H: clear, light winds -->
+              <circle cx="470" cy="190" r="7" fill="white" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Wind barb NW 10kt -->
+              <line x1="470" y1="183" x2="465" y2="170" stroke="#0c2541" stroke-width="1.2"/>
+              <line x1="465" y1="170" x2="472" y2="172" stroke="#0c2541" stroke-width="1"/>
+              <text x="482" y="190" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541">58/46</text>
+
+              <!-- Station near front: overcast, winds -->
+              <circle cx="330" cy="310" r="7" fill="#0c2541" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Wind barb S 20kt -->
+              <line x1="330" y1="303" x2="335" y2="290" stroke="#0c2541" stroke-width="1.2"/>
+              <line x1="335" y1="290" x2="342" y2="291" stroke="#0c2541" stroke-width="1"/>
+              <line x1="335" y1="293" x2="341" y2="294" stroke="#0c2541" stroke-width="0.8"/>
+              <text x="342" y="310" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541">52/50</text>
+
+              <!-- ===== LEGEND ===== -->
+              <rect x="535" y="310" width="148" height="88" fill="rgba(255,250,240,0.92)" stroke="#b9a87a" stroke-width="0.8" rx="2"/>
+              <text x="609" y="325" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">LEGEND</text>
+              <!-- Cold front legend -->
+              <line x1="545" y1="338" x2="575" y2="338" stroke="#2a5ba0" stroke-width="2"/>
+              <polygon points="555,338 551,333 558,334" fill="#2a5ba0"/>
+              <text x="580" y="341" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Cold front</text>
+              <!-- Warm front legend -->
+              <line x1="545" y1="355" x2="575" y2="355" stroke="#b53d1f" stroke-width="2"/>
+              <circle cx="558" cy="360" r="5" fill="#b53d1f"/>
+              <text x="580" y="358" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Warm front</text>
+              <!-- Isobar legend -->
+              <line x1="545" y1="372" x2="575" y2="372" stroke="#0c2541" stroke-width="1.2"/>
+              <text x="580" y="375" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Isobar (mb)</text>
+              <!-- Precip legend -->
+              <rect x="545" y="381" width="30" height="10" fill="url(#hatch)" stroke="#4a7ba6" stroke-width="0.8" opacity="0.7"/>
+              <text x="580" y="391" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Precipitation</text>
+
+              <!-- Outer label -->
+              <text x="350" y="408" font-family="Manrope, sans-serif" font-size="8" fill="#888" text-anchor="middle">Simplified — for illustration only</text>
+            </svg>
+            <figcaption>Simplified surface analysis chart. The High (H, 1028 mb) in the upper right has widely spaced isobars, indicating light winds. The Low (L, 988 mb) in the lower left has tightly packed isobars — strong winds and deteriorating weather. The cold front (blue triangles) trails southeast; the warm front (red semicircles) extends east. The hatched area marks precipitation. Actual NWS charts include full station models, troughs, and additional frontal detail.</figcaption>
+          </figure>
+
+          <h3>Reading the pressure gradient</h3>
+          <p>
+            The spacing of isobars is the single most useful quick-read from a surface chart. Isobars close together mean a strong pressure gradient — air accelerates sharply from high to low pressure, producing strong surface winds. As a rule: <strong>if the isobars are as close together as the contour lines on a cliff face, expect significant surface winds.</strong> Widely spaced isobars indicate calm or light winds. (AC 00-45H §9.1)
+          </p>
+          <p>
+            Wind direction at the surface crosses the isobars at roughly 10–15° toward lower pressure (friction effect). At altitude, winds blow nearly parallel to height contours. A trough — an elongated area of low pressure extending from a low center — acts like a mini cold front: it often marks a wind shift, a pressure-tendency change, and sometimes a band of precipitation or convection.
+          </p>
+
+          <h3>Frontal movement</h3>
+          <p>
+            Front speed is plotted as a vector arrow on most NWS surface analyses, or you can estimate it from issuance time vs. forecast prog position. A cold front moving at 30 kt will advance about 360 nm in 12 hours — enough to cross a multi-state route entirely. If the front is labeled with a speed and you know its distance from your planned destination, you can roughly calculate whether it will arrive before or after your planned arrival. If before, plan for the frontal and post-frontal conditions at the destination.
+          </p>
+        </section>
+
+        <!-- Section 4: Prog Charts -->
+        <section id="prog">
+          <h2>Prog Charts (Prognostic Charts)</h2>
+          <p>
+            Prog charts are forecast products — they show where the surface pattern and significant weather are expected to be at a future valid time. The NWS issues Low-Level Significant Weather Prog Charts (surface to FL240) at 12, 24, 36, and 48-hour forecast intervals. The 12 and 24-hr charts are considered the highest reliability; the 36 and 48-hr charts should be treated as trend indicators only. (AC 00-45H §14.1)
+          </p>
+
+          <h3>Two-panel structure</h3>
+          <p>
+            Each prog chart consists of two panels with the same valid time:
+          </p>
+
+          <div class="card-grid card-grid-2" style="margin: 1rem 0 1.6rem;">
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Panel 1 · Top</span>
+              <h3>Surface forecast</h3>
+              <p class="hazard-mnemonic">Where pressure systems and fronts are expected to be at the valid time.</p>
+              <ul class="hazard-list">
+                <li>Shows forecast positions of Highs, Lows, fronts, and troughs</li>
+                <li>Isobars at 4 mb intervals (same symbology as surface analysis)</li>
+                <li>Fronts include speed/direction arrows</li>
+                <li>Use to judge where weather systems will be relative to your route and timing</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Panel 2 · Bottom</span>
+              <h3>Significant weather forecast</h3>
+              <p class="hazard-mnemonic">Where IFR conditions, turbulence, and precipitation are forecast to occur.</p>
+              <ul class="hazard-list">
+                <li>Shaded areas: IFR (ceiling below 1,000 ft and/or visibility below 3 sm)</li>
+                <li>Hatching: MVFR (ceiling 1,000–3,000 ft and/or visibility 3–5 sm)</li>
+                <li>Precipitation symbols: rain (R), snow (S), drizzle (L), freezing (F prefix), showers (W), thunderstorm (T)</li>
+                <li>Echo tops contours where convection is forecast</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3>Valid time vs. issuance time</h3>
+          <p>
+            Always check the valid time, not the issuance time. A 24-hr prog chart issued at 0000Z is valid at 0000Z tomorrow — not "tomorrow morning" in local time. If your flight departs at 1400 local (2000Z), find the prog chart valid closest to your departure and arrival times. Using a chart with a valid time 6 hours stale for flight planning misses the point of the product.
+          </p>
+
+          <p class="callout">
+            <strong>Prog chart accuracy degrades with time.</strong> The 12-hr prog is typically reliable enough for flight planning confidence. The 24-hr chart is good for trend. Beyond 36 hours, treat the chart as a rough scenario, not a plan. If you're looking at a 48-hr prog to decide whether to schedule a flight, what you're really asking is: "Does this weather system look threatening?" That's a valid question — just don't expect the front position to be accurate to 50 nm. (AC 00-45H §14.1.4)
+          </p>
+
+          <h3>Using prog charts operationally</h3>
+          <p>
+            The workflow that catches the most problems: compare the current surface analysis chart against the 12-hr and 24-hr prog. Note what moves, what deepens (or fills), and what fronts cross your route. If a cold front that's currently 300 nm west of your destination will reach it by your arrival time, you're not planning a clear-weather flight — you're planning a pre-frontal or frontal flight. Pull the AIRMET Tango (turbulence), Sierra (IFR/mountain obscuration), and Zulu (icing) for that area, and verify whether the TAFs at departure and destination already reflect the frontal timing.
+          </p>
+        </section>
+
+        <!-- Section 5: Upper-Level Charts -->
+        <section id="upper">
+          <h2>Upper-Level Constant Pressure Charts</h2>
+          <p>
+            Constant pressure charts depict atmospheric conditions at a specific pressure level rather than a specific altitude. Because pressure decreases with altitude and the rate varies with temperature, the same pressure level represents different altitudes in different air masses — which is exactly what makes these charts useful for visualizing large-scale airflow and identifying weather-producing circulation.
+          </p>
+
+          <h3>The five standard levels</h3>
+          <div style="overflow-x: auto; margin: 1rem 0 1.5rem;">
+            <table class="atmo-table" style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Pressure Level</th>
+                  <th>Approx. Altitude</th>
+                  <th>Primary Use</th>
+                  <th>Issued</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>850 mb</strong></td>
+                  <td>~5,000 ft MSL</td>
+                  <td>Low-level moisture, low-level jet, warm/cold advection, icing level indicator</td>
+                  <td>4x daily</td>
+                </tr>
+                <tr>
+                  <td><strong>700 mb</strong></td>
+                  <td>~10,000 ft MSL</td>
+                  <td>Mid-level moisture and lift, precipitation forecasting, turbulence</td>
+                  <td>4x daily</td>
+                </tr>
+                <tr style="background: rgba(74,123,166,0.06);">
+                  <td><strong>500 mb</strong></td>
+                  <td>~18,000 ft MSL</td>
+                  <td>Upper-level trough/ridge pattern; the primary steering level for surface weather systems</td>
+                  <td>4x daily</td>
+                </tr>
+                <tr style="background: rgba(217,165,33,0.06);">
+                  <td><strong>300 mb</strong></td>
+                  <td>~30,000 ft MSL</td>
+                  <td>Jet stream location, CAT zones, high-altitude wind planning</td>
+                  <td>4x daily</td>
+                </tr>
+                <tr>
+                  <td><strong>200 mb</strong></td>
+                  <td>~39,000 ft MSL</td>
+                  <td>Core jet stream winds, turbulence adjacent to jet core</td>
+                  <td>4x daily</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--ink-soft);">Altitudes are approximate and vary with temperature. Standard atmosphere values. (AC 00-45H §9.2)</p>
+
+          <h3>What's plotted</h3>
+          <ul>
+            <li><strong>Height contours</strong> — lines of constant geopotential height (in decameters). Analogous to isobars on a surface chart. Closely spaced contours = strong upper-level winds. Ridges (contours bowing poleward) indicate high pressure aloft; troughs (contours bowing equatorward) indicate low pressure aloft and are associated with rising motion and weather development downstream.</li>
+            <li><strong>Isotherms</strong> — dashed lines of equal temperature at that pressure level. Temperature advection (warm air moving into a region or cold air moving in) is a key indicator of weather development.</li>
+            <li><strong>Wind barbs</strong> — standard station wind barbs showing direction and speed at that level. A full barb = 10 kt, a pennant = 50 kt.</li>
+            <li><strong>Isotachs (on 300 and 200 mb charts)</strong> — lines of equal wind speed, used to locate the jet stream core. Shading typically marks wind speeds exceeding 70, 100, and 150 kt.</li>
+          </ul>
+
+          <h3>The 500 mb chart and surface weather</h3>
+          <p>
+            The 500 mb chart is the most important upper-level product for understanding why surface weather behaves the way it does. Upper-level troughs on the 500 mb chart are the primary mechanism that forces surface low development (cyclogenesis) and steers existing lows. A pronounced 500 mb trough to the west of your route is a reliable indicator that surface conditions will deteriorate over the next 12–24 hours. A building ridge (bowing contours to the north) signals improving conditions.
+          </p>
+          <p>
+            For GA pilots: the 500 mb chart isn't something most student pilots read routinely, but instrument-rated pilots and anyone planning serious cross-country weather briefings should learn to interpret it at a basic level. The pattern on the 500 mb chart is the reason the surface chart looks the way it does. (FAA-H-8083-28 §14)
+          </p>
+        </section>
+
+        <!-- Section 6: Red Flags -->
+        <section id="redflags">
+          <h2>Red flags on weather charts</h2>
+          <p>
+            Weather charts are most useful as a go/no-go tool when you know what patterns to look for. These are the chart features that should trigger a harder look — not automatic no-gos, but signals to pull more information.
+          </p>
+
+          <div class="card-grid card-grid-2" style="margin: 1rem 0 1.8rem;">
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Surface chart red flag</span>
+              <h3>Tightly packed isobars along route</h3>
+              <ul class="hazard-list">
+                <li>Spacing of 2–3° lat/lon between 4 mb isobars typically means 25+ kt surface winds</li>
+                <li>Watch for crosswind component at airports along route</li>
+                <li>Expect turbulence in boundary layer, especially in mountainous terrain</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Surface chart red flag</span>
+              <h3>Deepening low approaching route</h3>
+              <ul class="hazard-list">
+                <li>A low with central pressure dropping more than 1 mb/hr is "bombogenesis" — explosive development</li>
+                <li>Rapid deepening = rapid deterioration in weather over a wide area</li>
+                <li>Winds will strengthen faster than a slowly developing system</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--rust);">
+              <span class="hazard-label">Prog chart red flag</span>
+              <h3>Cold front crossing destination before arrival</h3>
+              <ul class="hazard-list">
+                <li>Pre-frontal: low-level wind shear, IFR possible, convection likely</li>
+                <li>Frontal passage: rapid wind shift, gusty crosswinds, convective activity</li>
+                <li>Post-frontal: improving but initially turbulent, cold advection icing possible</li>
+                <li>Calculate: front speed × hours to arrival = distance front will travel</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--rust);">
+              <span class="hazard-label">Prog chart red flag</span>
+              <h3>IFR shading covering destination</h3>
+              <ul class="hazard-list">
+                <li>IFR shading (ceiling &lt;1,000 ft, vis &lt;3 sm) on the prog valid at your arrival time</li>
+                <li>VFR-only pilots: this is a hard ceiling on that airport unless conditions improve</li>
+                <li>IR pilots: check approaches, alternate requirements, and whether the TAF reflects the forecast</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Upper-level red flag</span>
+              <h3>500 mb trough approaching from the west</h3>
+              <ul class="hazard-list">
+                <li>Troughs on the 500 mb chart steer surface systems and force lift ahead of them</li>
+                <li>Weather typically worsens 12–24 hours ahead of a 500 mb trough passage</li>
+                <li>Combine with surface prog to understand the timing and character of deterioration</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Upper-level red flag</span>
+              <h3>Jet stream core over your planned altitude</h3>
+              <ul class="hazard-list">
+                <li>300 mb jet core winds of 100+ kt at ~30,000 ft will be felt as moderate-to-severe turbulence just above and below the core</li>
+                <li>Isotach gradients (tight spacing on 300/200 mb) indicate sharp wind shear = CAT zones</li>
+                <li>For GA: if the jet is unusually low (250–300 mb at 25,000 ft), expect turbulence above FL200</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section 7: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+
+          <details class="qa">
+            <summary>Q: What is a surface analysis chart and how often is it issued?</summary>
+            <p>A surface analysis chart is a graphical depiction of observed surface weather conditions — pressure systems, fronts, isobars, and precipitation — at a specific valid time. It is issued every three hours by the NWS. It shows current conditions, not a forecast. To understand where the weather will be at your flight time, you use the surface analysis as a baseline and cross-reference it against prog charts. (AC 00-45H §9.1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What do tightly spaced isobars indicate?</summary>
+            <p>Tightly spaced isobars indicate a strong pressure gradient — a large pressure difference over a short horizontal distance. This drives strong surface winds, because air accelerates from high pressure toward low pressure in proportion to the gradient. At the surface, winds cross isobars at 10–15° toward lower pressure due to friction. In the free atmosphere above the friction layer, winds blow nearly parallel to isobars (or height contours aloft). Closely spaced isobars also often correlate with turbulence in mountainous or rough terrain. (AC 00-45H §9.1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What are prog charts and what are the forecast intervals?</summary>
+            <p>Prognostic charts are forecast products showing expected weather at a future valid time. The NWS Low-Level Significant Weather Prog charts are issued for 12, 24, 36, and 48-hour forecast intervals. Each prog has two panels: a surface forecast (fronts, pressure systems, isobars) and a significant weather forecast (IFR/MVFR shading, precipitation symbols, echo tops for convection). The 12 and 24-hr charts are most reliable; the 36 and 48-hr charts should be used for trend only. Always use the <em>valid time</em>, not the issuance time, when matching a prog to your planned flight. (AC 00-45H §14.1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What does the shading on the significant weather panel of a prog chart represent?</summary>
+            <p>Shading (or cross-hatching) on the significant weather panel of a prog chart indicates forecast IFR or MVFR conditions. IFR shading indicates a ceiling below 1,000 ft AGL and/or visibility below 3 statute miles. MVFR hatching indicates a ceiling of 1,000–3,000 ft and/or visibility of 3–5 statute miles. Precipitation is shown using WMO symbols: R (rain), S (snow), T (thunderstorm), L (drizzle), W (showers), with F as a prefix for freezing. (AC 00-45H §14.1.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What does the 500 mb constant pressure chart tell you?</summary>
+            <p>The 500 mb chart (~18,000 ft MSL) shows height contours, temperature, and wind at that pressure level. It is the primary steering level — upper-level troughs and ridges on this chart largely determine where surface weather systems develop and move. A 500 mb trough to the west of a surface low indicates continued deepening and bad weather development; a ridge indicates fair, stable conditions. For GA pilots, the 500 mb chart explains <em>why</em> the surface chart looks the way it does. (FAA-H-8083-28 §14; AC 00-45H §9.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How do you use weather charts in a preflight weather brief?</summary>
+            <p>Start large and work down to the details. (1) Surface analysis chart — identify the current synoptic situation: where are the Highs, Lows, and fronts relative to your route? (2) Prog charts — project forward to your flight time: will a front cross your route or destination before you arrive? Will conditions deteriorate? (3) Upper-level charts — check 300 mb for jet stream position and turbulence risk, 850/700 mb for icing and low-level wind shear. (4) METARs and TAFs — verify point observations against the synoptic picture. (5) AIRMETs and SIGMETs — confirm whether the NWS has already identified the hazards the charts suggested. Charts give you the framework; observations and advisories fill in the detail. (FAA-H-8083-28 §14)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: A cold front is 400 nm west of your destination and moving at 25 kt. Your flight departs in 3 hours and takes 2 hours. Will the front arrive before or after you?</summary>
+            <p>In 5 hours (3 departure + 2 en route), the front will move 25 × 5 = 125 nm eastward. Starting at 400 nm away, it will be at 275 nm from the current destination position — still well to the west. However, this is a simplified calculation. In practice: (1) check the current surface analysis for the exact front position, (2) verify front speed from NWS analysis or prog movement, (3) check the 24-hr prog to confirm expected position, and (4) pull the TAF for the destination to see whether it forecasts frontal passage effects (wind shift, TEMPO conditions). A "probably fine" answer based on math alone is not a complete check.</p>
+          </details>
+        </section>
+
+        <!-- Section 8: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <div class="scenario-box">
+            <p class="scenario-disclaimer">Educational example only — teaching the questions a pilot should ask, not making a flight decision</p>
+
+            <p>
+              <strong>The setup:</strong> VFR cross-country, roughly 280 nm, planned departure at 1400 local (2000Z). The current surface analysis (valid 1800Z) shows a cold front 320 nm to the west-northwest of your destination, moving ESE at 28 kt. The 24-hr prog (valid 1800Z tomorrow) shows the front crossing your destination and extending south along your route. Today's 12-hr prog (valid 0600Z tomorrow) shows the front roughly 80 nm short of your destination, with IFR shading covering your destination and a T (thunderstorm) symbol along the cold front line.
+            </p>
+
+            <p class="scenario-question"><strong>What questions should you be asking?</strong></p>
+
+            <ol class="scenario-questions">
+              <li><strong>Will the front reach my destination during my flight?</strong> The front is 320 nm away at 1800Z. At 28 kt, it travels 28 nm/hr. Your arrival is ~7 hours after the analysis time (2000Z + 2 hr flight = 2200Z, roughly 4 hours after the chart). In 4 hours at 28 kt = 112 nm. Front would be ~208 nm from destination at your arrival time — still well clear. But the 12-hr prog (valid 0600Z) places it ~80 nm away, and the 24-hr prog places it past the destination. This confirms the front arrives sometime between 0600Z and 1800Z tomorrow — after your flight.</li>
+              <li><strong>But what about the pre-frontal environment?</strong> Thunderstorms are plotted along the cold front on the 12-hr prog. Ahead of an active cold front with embedded thunderstorms, VFR conditions can become untenable 100–200 nm in advance due to squall lines, virga, and deteriorating ceilings from advected moisture. Check: is there a Convective SIGMET or AIRMET Tango valid for your route and time?</li>
+              <li><strong>Does the TAF agree with the prog?</strong> Pull the TAF for the destination. If it shows no frontal effects during your arrival window, either the forecaster believes the front timing is later than the prog suggests, or the front will be weaker than expected. A TAF showing TEMPO TSRA at your planned arrival time is a hard signal to delay.</li>
+              <li><strong>What's the contingency?</strong> If the front accelerates, you lose VFR to convection en route with limited alternate options. For a VFR-only pilot, a 2-hour buffer between "front arrives" and "I land" may not be enough if the convective line is 100+ nm wide. The safe plan is to fly this morning (front still 400+ nm away) or delay until the day after frontal passage when skies clear. Flying in the afternoon "just ahead" of an approaching convective line is the scenario that traps pilots.</li>
+            </ol>
+
+            <p class="scenario-takeaway">
+              The charts said "probably fine." The closer look — pre-frontal convection, no TAF confirmation, no alternate plan if the front accelerates — changed the picture. Start with charts, but always verify with observations and advisories before committing.
+            </p>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="altimetry.html" class="concept-nav-link">← Altimetry</a>
+          <span class="concept-nav-next">METAR Decoder coming soon →</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -855,3 +855,516 @@ footer .container {
 .atmo-table tbody tr:last-child td { border-bottom: none; }
 .atmo-table tbody tr:nth-child(even) { background: var(--buff); }
 .atmo-table tbody td:first-child { color: var(--ink-soft); }
+
+/* ============================================
+   METAR Decoder page (pages/decoder.html)
+   ============================================ */
+
+/* ── Input wrapper ── */
+.decoder-wrapper {
+  background: var(--ink);
+  padding: 2rem 0 2.5rem;
+  border-bottom: 3px solid var(--rust);
+}
+
+/* ── Tabs ── */
+.decoder-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(244,236,214,0.2);
+}
+.decoder-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: rgba(244,236,214,0.55);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.6rem 1.4rem 0.6rem 0;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.decoder-tab.active {
+  color: var(--buff);
+  border-bottom-color: var(--rust);
+}
+.decoder-tab:hover { color: var(--buff); }
+
+/* ── Panels ── */
+.decoder-hint {
+  color: rgba(244,236,214,0.65);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+.decoder-input-row {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.decoder-input-row--paste { flex-direction: column; }
+.decoder-text-input {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  background: rgba(244,236,214,0.08);
+  border: 1px solid rgba(244,236,214,0.25);
+  color: var(--buff);
+  padding: 0.6rem 0.9rem;
+  letter-spacing: 0.08em;
+  width: 120px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.decoder-text-input:focus { border-color: var(--sun); }
+.icao-input { text-transform: uppercase; }
+.decoder-textarea {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  background: rgba(244,236,214,0.08);
+  border: 1px solid rgba(244,236,214,0.25);
+  color: var(--buff);
+  padding: 0.8rem 1rem;
+  width: 100%;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  transition: border-color 0.15s;
+}
+.decoder-textarea:focus { border-color: var(--sun); }
+.decoder-btn {
+  background: var(--rust);
+  color: var(--buff);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+  white-space: nowrap;
+}
+.decoder-btn:hover { background: #933018; transform: translate(-1px,-1px); }
+.decoder-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.decoder-btn--secondary {
+  background: transparent;
+  border: 1px solid rgba(244,236,214,0.3);
+  color: rgba(244,236,214,0.7);
+}
+.decoder-btn--secondary:hover { background: rgba(244,236,214,0.1); color: var(--buff); }
+.decoder-examples-hint {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(244,236,214,0.4);
+  margin: 0.7rem 0 0;
+  letter-spacing: 0.06em;
+}
+.decoder-examples-hint code {
+  color: rgba(244,236,214,0.65);
+  background: rgba(244,236,214,0.07);
+  padding: 1px 5px;
+}
+.decoder-error {
+  color: var(--sun);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  margin: 0.8rem 0 0;
+  letter-spacing: 0.04em;
+}
+.decoder-file-notice {
+  background: rgba(217,165,33,0.12);
+  border: 1px solid rgba(217,165,33,0.4);
+  color: rgba(244,236,214,0.75);
+  font-size: 0.88rem;
+  padding: 0.75rem 1rem;
+  margin: 0.8rem 0 0;
+  line-height: 1.5;
+}
+.decoder-file-notice strong { color: var(--sun); }
+.decoder-file-notice code {
+  color: var(--sun);
+  background: rgba(217,165,33,0.15);
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* ── Output section ── */
+#decoder-output { padding: 2.5rem 0 4rem; }
+.decoder-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--rust);
+  margin: 0 0 0.7rem;
+}
+
+/* ── Flight category badge ── */
+.decoder-category-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 1.2rem 1.5rem;
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--sage);
+}
+.cat-badge {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.9rem;
+  color: #fff;
+  border-radius: 2px;
+}
+.cat-vfr  { background: #3a7d44; }
+.cat-mvfr { background: #1a5ba6; }
+.cat-ifr  { background: #b53d1f; }
+.cat-lifr { background: #7b2d8b; }
+.cat-desc {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  flex: 1;
+}
+.cat-edu-note {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--rule);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-left: auto;
+}
+
+/* ── Annotated raw METAR ── */
+.decoder-raw-wrap {
+  margin-bottom: 2rem;
+  padding: 1rem 1.2rem;
+  background: var(--ink);
+  border-radius: 2px;
+}
+.decoder-raw-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(244,236,214,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin: 0 0 0.6rem;
+}
+.decoder-raw-metar {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--buff);
+  line-height: 2;
+  word-break: break-all;
+}
+/* Token color classes */
+.tok { padding: 2px 5px; border-radius: 2px; cursor: help; transition: opacity 0.1s; }
+.tok:hover { opacity: 0.8; }
+.tok-type        { background: rgba(244,236,214,0.12); color: var(--buff); }
+.tok-station     { background: rgba(217,165,33,0.35);  color: var(--buff); font-weight: 600; }
+.tok-time        { background: rgba(93,111,60,0.4);    color: var(--buff); }
+.tok-modifier    { background: rgba(181,61,31,0.35);   color: var(--buff); }
+.tok-wind        { background: rgba(74,123,166,0.55);  color: var(--buff); }
+.tok-wind-var    { background: rgba(74,123,166,0.35);  color: var(--buff); }
+.tok-visibility  { background: rgba(93,111,60,0.45);   color: var(--buff); }
+.tok-rvr         { background: rgba(93,111,60,0.25);   color: var(--buff); }
+.tok-weather     { background: rgba(181,61,31,0.5);    color: var(--buff); }
+.tok-sky         { background: rgba(12,37,65,0.5);     color: var(--buff); }
+.tok-temp        { background: rgba(217,165,33,0.45);  color: var(--buff); }
+.tok-altimeter   { background: rgba(181,61,31,0.35);   color: var(--buff); }
+.tok-remarks-header { background: rgba(244,236,214,0.1); color: rgba(244,236,214,0.5); font-style: italic; }
+.tok-remarks     { background: rgba(244,236,214,0.1);  color: rgba(244,236,214,0.7); }
+
+/* ── Main decoded content layout ── */
+.decoder-main {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .decoder-main { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* ── Field breakdown table ── */
+.decoder-fields-wrap {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1.2rem;
+}
+.decoder-fields { display: flex; flex-direction: column; gap: 0; }
+.field-row {
+  display: grid;
+  grid-template-columns: 140px 130px 1fr;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+.field-row:last-child { border-bottom: none; }
+@media (max-width: 700px) {
+  .field-row { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.6rem 0; }
+}
+.field-token {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sage);
+}
+.field-explanation {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+/* ── Visuals panel ── */
+.decoder-visuals {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.vis-card {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1rem;
+}
+.vis-raw {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--sage);
+  text-align: center;
+  margin: 0.4rem 0 0;
+  letter-spacing: 0.08em;
+}
+.vis-placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+/* ── Remarks ── */
+.remarks-section { margin-top: 2rem; }
+.decoder-remarks-raw {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 0.8rem 1rem;
+  word-break: break-all;
+  margin: 0;
+}
+
+/* ============================================
+   TAF Decoder additions
+   ============================================ */
+
+/* ── TAF sub-tabs: match .decoder-tab styling ── */
+.taf-subtab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: rgba(244,236,214,0.55);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.6rem 1.4rem 0.6rem 0;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.taf-subtab.active { color: var(--buff); border-bottom-color: var(--rust); }
+.taf-subtab:hover { color: var(--buff); }
+
+/* ── Product selector (METAR | TAF) ── */
+.product-selector {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid rgba(244,236,214,0.15);
+}
+.product-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(244,236,214,0.45);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 1.6rem 0.5rem 0;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.product-tab.active { color: var(--buff); border-bottom-color: var(--rust); }
+.product-tab:hover { color: var(--buff); }
+.product-selector-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(244,236,214,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-left: auto;
+}
+
+/* ── TAF output section ── */
+#taf-output { padding: 2.5rem 0 4rem; }
+
+/* ── TAF header ── */
+.taf-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 1.2rem 1.5rem;
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--sky);
+}
+.taf-header-left { display: flex; align-items: center; gap: 0.8rem; }
+.taf-header-right { display: flex; flex-direction: column; gap: 0.2rem; }
+.taf-station-id {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+.taf-type-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--buff);
+  background: var(--sky);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.taf-header-meta {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+.taf-issued { color: var(--sage); font-size: 0.75rem; }
+
+/* ── TAF timeline ── */
+.taf-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.taf-group {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--rule);
+  padding: 0.9rem 1.1rem;
+}
+.taf-group--indent {
+  margin-left: 2rem;
+  border-left-width: 3px;
+  border-left-style: dashed;
+  background: rgba(255,250,240,0.6);
+}
+/* Left-border color by flight category */
+.taf-group--vfr  { border-left-color: #3a7d44; }
+.taf-group--mvfr { border-left-color: #1a5ba6; }
+.taf-group--ifr  { border-left-color: #b53d1f; }
+.taf-group--lifr { border-left-color: #7b2d8b; }
+
+.taf-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+.taf-type-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 2px 7px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+/* Type label colors */
+.taf-type-base   { background: rgba(12,37,65,0.12);   color: var(--ink); }
+.taf-type-fm     { background: rgba(74,123,166,0.18); color: #1a5ba6; }
+.taf-type-tempo  { background: rgba(181,61,31,0.12);  color: var(--rust); }
+.taf-type-becmg  { background: rgba(93,111,60,0.15);  color: var(--sage); }
+.taf-type-prob30 { background: rgba(217,165,33,0.15); color: #8a6200; }
+.taf-type-prob40 { background: rgba(217,165,33,0.2);  color: #8a6200; }
+.taf-type-inter  { background: rgba(74,123,166,0.12); color: #1a5ba6; }
+
+.taf-group-header .cat-badge { font-size: 0.82rem; padding: 1px 7px; }
+.taf-time-range {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+/* ── Condition chips ── */
+.taf-group-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.taf-chip {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+}
+.taf-chip-wind { background: rgba(74,123,166,0.18); color: var(--ink); }
+.taf-chip-vis  { background: rgba(93,111,60,0.18);  color: var(--ink); }
+.taf-chip-wx   { background: rgba(181,61,31,0.18);  color: var(--ink); }
+.taf-chip-sky  { background: rgba(12,37,65,0.12);   color: var(--ink); }
+.taf-chip-ws   { background: rgba(181,61,31,0.25);  color: var(--ink); }
+.taf-chip-empty { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); font-style: italic; }
+
+/* ── Legend ── */
+.taf-legend { margin-top: 0.5rem; }
+.taf-legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 2rem;
+}
+@media (max-width: 700px) { .taf-legend-grid { grid-template-columns: 1fr; } }
+.taf-legend-grid > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.taf-legend-desc { flex: 1; }
