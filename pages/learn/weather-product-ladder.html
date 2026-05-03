@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Product Ladder — CrosswindWX</title>
+  <meta name="description" content="The five-level preflight weather briefing sequence: which products to consult, in what order, and what question each one answers. From synoptic charts down to real-time PIREPs.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Weather Product Ladder</span>
+    </div>
+  </div>
+
+  <!-- ============== Hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Reference · Weather briefing</p>
+      <h1>Weather Product <span class="accent">Ladder</span></h1>
+      <p class="lede">
+        A complete preflight weather brief isn't a list of products to check — it's a sequence. You start with the biggest picture and work down to the most specific. Each level answers one question. Miss a level and you're making a decision with incomplete information.
+      </p>
+      <!-- [VERIFY] ACS sub-element codes against current PA/IR/CA documents (April 2024) -->
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K2 · IR.I.B.K2 · CA.I.C.K2</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-45H · FAA-H-8083-28 Ch. 14 · AIM 7-1</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~10 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar TOC -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#overview">The five levels</a></li>
+          <li><a href="#level1">Level 1 · Synoptic charts</a></li>
+          <li><a href="#level2">Level 2 · Regional forecasts</a></li>
+          <li><a href="#level3">Level 3 · Hazard advisories</a></li>
+          <li><a href="#level4">Level 4 · Airport-specific</a></li>
+          <li><a href="#level5">Level 5 · Real-time en route</a></li>
+          <li><a href="#checklist">Briefing checklist</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article -->
+      <article class="concept-article">
+
+        <!-- Overview diagram -->
+        <section id="overview">
+          <h2>The five levels</h2>
+          <p>
+            Every product in a standard preflight weather brief belongs to one of five levels. Each level is broader in geographic scale and longer in time horizon than the one below it. The goal is to build a mental model of the atmosphere — synoptic situation first, specific hazards and point observations last — before committing to a go or no-go.
+          </p>
+
+          <figure class="diagram">
+            <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ladder-title">
+              <title id="ladder-title">Weather product ladder. Five levels shown as a narrowing funnel from top to bottom. Level 1 Synoptic Charts is widest at top. Level 5 Real-Time En Route is narrowest at bottom. Each level is labeled with its products.</title>
+
+              <rect width="700" height="360" fill="#fffaf0"/>
+
+              <!-- ── Level 1: Synoptic Charts ── -->
+              <rect x="50" y="18" width="600" height="46" fill="#4a7ba6" rx="2"/>
+              <text x="76" y="36" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,236,214,0.7)" letter-spacing="0.14em">LEVEL 01</text>
+              <text x="76" y="52" font-family="Anton,sans-serif" font-size="14" fill="#f4ecd6" letter-spacing="0.04em">SYNOPTIC CHARTS</text>
+              <text x="580" y="46" font-family="Manrope,sans-serif" font-size="9.5" fill="rgba(244,236,214,0.8)" text-anchor="end">Surface Analysis · Prog Charts · Upper-Level Charts</text>
+
+              <!-- connector -->
+              <polygon points="348,66 352,66 352,76 348,76" fill="#b9a87a"/>
+
+              <!-- ── Level 2: Regional Forecasts ── -->
+              <rect x="75" y="78" width="550" height="46" fill="#3a6e8a" rx="2"/>
+              <text x="101" y="96" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,236,214,0.7)" letter-spacing="0.14em">LEVEL 02</text>
+              <text x="101" y="112" font-family="Anton,sans-serif" font-size="14" fill="#f4ecd6" letter-spacing="0.04em">REGIONAL FORECASTS</text>
+              <text x="560" y="106" font-family="Manrope,sans-serif" font-size="9.5" fill="rgba(244,236,214,0.8)" text-anchor="end">GFA · AFD · Winds &amp; Temps Aloft (FB)</text>
+
+              <!-- connector -->
+              <polygon points="348,126 352,126 352,136 348,136" fill="#b9a87a"/>
+
+              <!-- ── Level 3: Hazard Advisories ── -->
+              <rect x="100" y="138" width="500" height="46" fill="#8f3218" rx="2"/>
+              <text x="126" y="156" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,236,214,0.7)" letter-spacing="0.14em">LEVEL 03</text>
+              <text x="126" y="172" font-family="Anton,sans-serif" font-size="14" fill="#f4ecd6" letter-spacing="0.04em">HAZARD ADVISORIES</text>
+              <text x="538" y="166" font-family="Manrope,sans-serif" font-size="9.5" fill="rgba(244,236,214,0.8)" text-anchor="end">SIGMETs · Convective SIGMETs · AIRMETs</text>
+
+              <!-- connector -->
+              <polygon points="348,186 352,186 352,196 348,196" fill="#b9a87a"/>
+
+              <!-- ── Level 4: Airport-Specific ── -->
+              <rect x="125" y="198" width="450" height="46" fill="#4a5e2a" rx="2"/>
+              <text x="151" y="216" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,236,214,0.7)" letter-spacing="0.14em">LEVEL 04</text>
+              <text x="151" y="232" font-family="Anton,sans-serif" font-size="14" fill="#f4ecd6" letter-spacing="0.04em">AIRPORT-SPECIFIC</text>
+              <text x="514" y="226" font-family="Manrope,sans-serif" font-size="9.5" fill="rgba(244,236,214,0.8)" text-anchor="end">METAR · TAF · ATIS</text>
+
+              <!-- connector -->
+              <polygon points="348,246 352,246 352,256 348,256" fill="#b9a87a"/>
+
+              <!-- ── Level 5: Real-Time ── -->
+              <rect x="150" y="258" width="400" height="46" fill="#0c2541" rx="2"/>
+              <text x="176" y="276" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,236,214,0.7)" letter-spacing="0.14em">LEVEL 05</text>
+              <text x="176" y="292" font-family="Anton,sans-serif" font-size="14" fill="#f4ecd6" letter-spacing="0.04em">REAL-TIME EN ROUTE</text>
+              <text x="490" y="286" font-family="Manrope,sans-serif" font-size="9.5" fill="rgba(244,236,214,0.8)" text-anchor="end">PIREPs · NOTAMs</text>
+
+              <!-- Left axis label -->
+              <text x="28" y="185" font-family="Anton,sans-serif" font-size="9" fill="#b9a87a" text-anchor="middle" letter-spacing="0.1em" transform="rotate(-90,28,185)">BIG PICTURE → SPECIFIC</text>
+
+              <!-- Right axis label -->
+              <text x="675" y="185" font-family="Anton,sans-serif" font-size="9" fill="#b9a87a" text-anchor="middle" letter-spacing="0.1em" transform="rotate(90,675,185)">DAYS AHEAD → NOW</text>
+
+              <!-- Bottom note -->
+              <text x="350" y="330" font-family="Manrope,sans-serif" font-size="8.5" fill="#888" text-anchor="middle">Work top to bottom. Each level narrows the picture.</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="698" height="358" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>The five-level weather briefing ladder. Start at Level 1 and work down. Each level is geographically narrower and temporally closer to your departure time than the one above it. Skipping levels is how pilots get surprised.</figcaption>
+          </figure>
+
+          <p>
+            The critical discipline is resisting the impulse to jump straight to the METAR. A METAR showing 10SM and clear at departure doesn't tell you about the cold front 180 nm to your west that will reach your destination in four hours. The synoptic picture answers that question. Do the levels in order.
+          </p>
+        </section>
+
+        <!-- Level 1 -->
+        <section id="level1">
+          <h2>Level 1 · Synoptic Charts</h2>
+          <p class="callout" style="border-left-color: #4a7ba6;">
+            <strong>The question this level answers:</strong> What is the atmosphere doing right now, and where is it going over the next 12–48 hours?
+          </p>
+
+          <div class="ladder-product-row">
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#4a7ba6;">Surface Analysis Chart</span>
+              <ul class="hazard-list">
+                <li>Current positions of Highs, Lows, and fronts across the country</li>
+                <li>Isobar spacing tells you wind strength — tightly packed = strong winds</li>
+                <li>Issued every 3 hours; valid at the analysis time (not a forecast)</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#4a7ba6;">Prog Charts (12/24/36/48hr)</span>
+              <ul class="hazard-list">
+                <li>Where fronts and pressure systems will be at each valid time</li>
+                <li>Lower panel shows IFR/MVFR shading and precipitation symbols</li>
+                <li>12 and 24hr charts are most reliable; treat 36/48hr as trend only</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#4a7ba6;">Upper-Level Charts (300/500mb)</span>
+              <ul class="hazard-list">
+                <li>500mb is the steering level — explains why surface systems move the way they do</li>
+                <li>300mb shows jet stream position and CAT risk zones</li>
+                <li>A 500mb trough approaching from the west means surface deterioration is coming</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            <strong>What to look for:</strong> Any frontal boundary within 400–500 nm of your route, the direction and speed of movement, and whether any low is deepening rapidly. A deepening low means accelerating deterioration. Compare the current surface analysis against the 24hr prog to understand timing.
+          </p>
+
+          <p class="ladder-site-link">
+            CrosswindWX coverage: <a href="weather-charts.html">Weather Charts →</a>
+          </p>
+        </section>
+
+        <!-- Level 2 -->
+        <section id="level2">
+          <h2>Level 2 · Regional Forecasts</h2>
+          <p class="callout" style="border-left-color: #3a6e8a;">
+            <strong>The question this level answers:</strong> What weather conditions are forecast along my specific route, and what are the winds at my planned altitude?
+          </p>
+
+          <div class="ladder-product-row">
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#3a6e8a;">Graphical Forecasts for Aviation (GFA)</span>
+              <ul class="hazard-list">
+                <li>Replaced the text Area Forecast (FA) in 2017 for the contiguous US</li>
+                <li>Interactive graphical tool at aviationweather.gov — clouds, weather, icing, turbulence, winds</li>
+                <li>Time-stepped: step through 3-hourly forecast periods for your departure window</li>
+                <li>Covers surface to FL480 in one interface</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#3a6e8a;">Area Forecast Discussion (AFD)</span>
+              <ul class="hazard-list">
+                <li>The meteorologist's plain-language narrative behind the forecast</li>
+                <li>Explains uncertainty, model disagreements, and forecaster reasoning</li>
+                <li>Invaluable when conditions are marginal — tells you <em>why</em> the forecast looks the way it does and how confident the forecaster is</li>
+                <li>Available per NWS forecast office at weather.gov</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#3a6e8a;">Winds &amp; Temps Aloft (FB)</span>
+              <ul class="hazard-list">
+                <li>Forecast wind direction, speed, and temperature at standard flight levels: 3,000–48,000 ft</li>
+                <li>Issued 4x daily; valid for 6, 12, and 24-hour periods</li>
+                <li>Use for altitude selection, fuel planning, and finding the freezing level</li>
+                <li>Encoding: first 4 digits = wind direction/speed; last 2 digits = temperature (°C)</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            <strong>What to look for:</strong> Icing levels and forecast icing areas in the GFA. Freezing level from the FB — if your planned altitude is near or above the freezing level with visible moisture, review the AIRMETs at Level 3. Read the AFD whenever the GFA shows marginal conditions to understand how much the forecasters trust their own numbers.
+          </p>
+
+          <p class="ladder-site-link">
+            CrosswindWX coverage: <a href="winds-aloft-jet-stream.html">Winds Aloft &amp; Jet Stream →</a>
+          </p>
+        </section>
+
+        <!-- Level 3 -->
+        <section id="level3">
+          <h2>Level 3 · Hazard Advisories</h2>
+          <p class="callout" style="border-left-color: #b53d1f;">
+            <strong>The question this level answers:</strong> Has the NWS already identified a specific hazard along my route or at my destination?
+          </p>
+
+          <div class="ladder-product-row">
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#b53d1f;">SIGMETs</span>
+              <ul class="hazard-list">
+                <li>Significant Meteorological Information — hazardous to <em>all</em> aircraft</li>
+                <li>Covers: severe/extreme turbulence, severe icing, volcanic ash, tropical cyclones, dust/sandstorms reducing vis below 3 sm</li>
+                <li>Valid up to 4 hours (6 hours for hurricanes)</li>
+                <li>A SIGMET on your route is a hard stop for most GA operations — review carefully before continuing</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#b53d1f;">Convective SIGMETs</span>
+              <ul class="hazard-list">
+                <li>Issued for severe or embedded thunderstorms, lines of thunderstorms, and areas of thunderstorms ≥40% coverage with hail ≥¾ inch or tornadoes</li>
+                <li>Valid 2 hours; issued at :55 past each hour and as needed</li>
+                <li>If a Convective SIGMET covers your route, your options are: go around, wait, or cancel</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#b53d1f;">AIRMETs (Sierra · Tango · Zulu)</span>
+              <ul class="hazard-list">
+                <li><strong>Sierra</strong> — IFR conditions (ceiling &lt;1,000 ft / vis &lt;3 sm) or mountain obscuration</li>
+                <li><strong>Tango</strong> — moderate turbulence, sustained surface winds ≥30 kt, non-convective low-level wind shear</li>
+                <li><strong>Zulu</strong> — moderate icing, freezing level</li>
+                <li>Valid 6 hours; updated every 6 hours or as needed</li>
+                <li>Check G-AIRMETs at aviationweather.gov for graphical version</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            <strong>What to look for:</strong> Any SIGMET covering your route is significant regardless of its type. For AIRMETs, Sierra on your destination means potential IFR — check if the TAF (Level 4) already shows this. Zulu covering your altitude and route means icing risk — verify against the GFA and your aircraft's equipment and certification.
+          </p>
+
+          <p class="ladder-site-link">
+            CrosswindWX coverage: <a href="airmets-sigmets.html">AIRMETs &amp; SIGMETs →</a>
+          </p>
+        </section>
+
+        <!-- Level 4 -->
+        <section id="level4">
+          <h2>Level 4 · Airport-Specific</h2>
+          <p class="callout" style="border-left-color: #5d6f3c;">
+            <strong>The question this level answers:</strong> What are conditions at my departure airport right now, and what will conditions be at my destination when I arrive?
+          </p>
+
+          <div class="ladder-product-row">
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#5d6f3c;">METAR / SPECI</span>
+              <ul class="hazard-list">
+                <li>Current observed conditions at the reporting station: wind, visibility, weather, ceiling, temperature/dewpoint, altimeter</li>
+                <li>Routine METARs issued hourly; SPECIs issued when conditions change significantly</li>
+                <li>Always get the most recent METAR — a 45-minute-old METAR during active weather is stale</li>
+                <li>Derive flight category: VFR / MVFR / IFR / LIFR from ceiling and visibility</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#5d6f3c;">TAF</span>
+              <ul class="hazard-list">
+                <li>Terminal Aerodrome Forecast — covers conditions within 5 sm of the airport</li>
+                <li>Valid 24 or 30 hours; issued 4x daily</li>
+                <li>Read each FM, TEMPO, and BECMG group — not just the opening line</li>
+                <li>Cross-check TAF timing against the prog chart: if a front arrives at your destination, the TAF should already show frontal conditions</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#5d6f3c;">ATIS / D-ATIS</span>
+              <ul class="hazard-list">
+                <li>Recorded broadcast of current conditions and active runway/procedures at controlled airports</li>
+                <li>Updated at least hourly and whenever conditions change significantly</li>
+                <li>Note the letter identifier — if it's changed since you copied it, get the new one before calling</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            <strong>What to look for:</strong> Compare the METAR against the TAF — if the METAR shows conditions worse than the TAF forecasted for this hour, the forecast may be behind reality. Temperature/dewpoint spread within 3°C suggests fog risk. Always check the TAF for your planned arrival time, not just the opening group.
+          </p>
+
+          <p class="ladder-site-link">
+            CrosswindWX tools: <a href="../decoder.html">METAR &amp; TAF Decoder →</a>
+          </p>
+        </section>
+
+        <!-- Level 5 -->
+        <section id="level5">
+          <h2>Level 5 · Real-Time En Route</h2>
+          <p class="callout" style="border-left-color: #0c2541;">
+            <strong>The question this level answers:</strong> What are pilots actually experiencing right now along my route — icing, turbulence, restricted visibility, or conditions different from what the forecasts predicted?
+          </p>
+
+          <div class="ladder-product-row">
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#0c2541;">PIREPs (UA / UUA)</span>
+              <ul class="hazard-list">
+                <li>Pilot Weather Reports — real-time observations filed by pilots in the system</li>
+                <li>Routine (UA) and urgent (UUA) types; UUA filed for any unexpected hazardous conditions</li>
+                <li>Report turbulence, icing, cloud tops/bases, visibility, winds at altitude, and other phenomena</li>
+                <li>Coverage is sparse — absence of a PIREP does not mean conditions are fine</li>
+                <li>Check the age: a PIREP filed 2 hours ago in fast-changing conditions has limited value</li>
+              </ul>
+            </div>
+            <div class="ladder-product">
+              <span class="ladder-product-tag" style="background:#0c2541;">NOTAMs</span>
+              <ul class="hazard-list">
+                <li>Notices to Air Missions — operational information about airports, navaids, airspace, and hazards</li>
+                <li>Covers: runway/taxiway closures, NAVAID outages, TFRs, construction, airspace restrictions</li>
+                <li>Check FDC NOTAMs (regulatory, instrument procedures) and local NOTAMs for departure and destination</li>
+                <li>Not weather in the meteorological sense, but essential preflight — a closed runway changes your available distance</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>
+            <strong>What to look for:</strong> Any recent PIREPs showing turbulence or icing at your planned altitude within the past 1–2 hours. A cluster of moderate icing PIREPs at 8,000 ft means the AIRMET Zulu is confirmed by actual aircraft. Urgent PIREPs (UUA) for your route should be treated as seriously as a SIGMET. For NOTAMs, pay particular attention to TFRs and any procedure changes at your destination.
+          </p>
+
+          <p class="ladder-site-link">
+            CrosswindWX coverage: <a href="pireps.html">PIREPs →</a> <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--sage);">(coming soon)</span>
+          </p>
+        </section>
+
+        <!-- Briefing checklist -->
+        <section id="checklist">
+          <h2>Standard briefing checklist</h2>
+          <p>
+            Use this sequence for every cross-country flight. The goal isn't to check every box mechanically — it's to build a coherent mental model of the atmosphere before you commit to a departure.
+          </p>
+
+          <div class="takeaway-box">
+            <ul class="takeaway-list" style="counter-reset: checklist;">
+              <li><strong>Surface Analysis Chart</strong> — Where are the Highs, Lows, and fronts? What's moving toward my route?</li>
+              <li><strong>Prog Charts (12/24hr)</strong> — Will those systems reach my route or destination during my flight window?</li>
+              <li><strong>Upper-Level Charts (500/300mb)</strong> — What's driving the surface pattern? Is the jet stream relevant to my altitude?</li>
+              <li><strong>GFA &amp; Winds Aloft (FB)</strong> — What are forecast conditions along my route? What altitude gives me the best winds? Where's the freezing level?</li>
+              <li><strong>AFD</strong> — If conditions are marginal at any level, read the forecaster's discussion. How confident are they?</li>
+              <li><strong>SIGMETs &amp; Convective SIGMETs</strong> — Is there anything that makes the flight a hard no regardless of other factors?</li>
+              <li><strong>AIRMETs (S/T/Z)</strong> — Are there IFR, turbulence, or icing advisories covering my route or destination?</li>
+              <li><strong>METAR (departure)</strong> — What are conditions right now? Is this consistent with the forecast?</li>
+              <li><strong>TAF (departure &amp; destination)</strong> — What will conditions be during my flight window? Check every group, not just the opening line.</li>
+              <li><strong>PIREPs</strong> — What are pilots reporting en route? Any confirmation or contradiction of the icing/turbulence forecasts?</li>
+              <li><strong>NOTAMs</strong> — Anything operational I need to know at departure or destination?</li>
+            </ul>
+          </div>
+
+          <p style="margin-top:1.2rem;">
+            The whole brief should take 15–20 minutes for a typical cross-country flight. If you find yourself spending 5 minutes and declaring "looks fine," you probably skipped levels. If you find yourself spending 45 minutes unable to decide, the weather is trying to tell you something — and the right answer might simply be to not go.
+          </p>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="weather-charts.html" class="concept-nav-link">← Weather Charts</a>
+          <a href="pireps.html" class="concept-nav-link">PIREPs →</a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

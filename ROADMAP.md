@@ -30,13 +30,13 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 - [x] Weather Charts
 - [x] METAR Decoder
 - [x] TAF Decoder
-- [ ] Weather Product Ladder (reference page; depends on METAR/TAF Decoders)
-- [ ] PIREPs section
+- [x] Weather Product Ladder
+- [x] PIREPs section
 
 ## Phase 4 — Decision-making
 
-- [ ] Wind, Wind Shear, and Mountain Wave (Learn page)
-- [ ] Weather Decision-Making (Learn page — the "how to think" page)
+- [x] Wind, Wind Shear, and Mountain Wave (Learn page)
+- [x] Weather Decision-Making (Learn page — the "how to think" page)
 - [ ] ACS Checkride Mapping (interactive ACS section)
 
 ## Phase 5 — Tools

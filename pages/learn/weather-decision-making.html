@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Decision-Making — CrosswindWX</title>
+  <meta name="description" content="How to structure a weather go/no-go decision. The PAVE and IMSAFE checklists, personal minimums, continuation bias, and how to set in-flight abort criteria before you leave the ground.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Weather Decision-Making</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Decision-making</p>
+      <h1>Weather <span class="accent">Decision-Making</span></h1>
+      <p class="lede">
+        Most weather accidents are not caused by a lack of knowledge — they are caused by a failure to act on knowledge the pilot already had. The NTSB consistently identifies "continued VFR flight into IMC" as a leading fatal accident category. The pilot in those reports was not unaware of the clouds. They knew. They continued anyway. Understanding weather is only half the problem. The other half is building a decision framework that works when you're tired, behind schedule, and your passengers are watching.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.R1–R3 · IR.I.B.R1–R3 · CA.I.C.R1–R3</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> FAA-H-8083-2 (Risk Management) · AC 00-6B · AIM 7-1</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~12 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#why">Why decisions fail</a></li>
+          <li><a href="#pave">The PAVE checklist</a></li>
+          <li><a href="#imsafe">IMSAFE</a></li>
+          <li><a href="#minimums">Personal minimums</a></li>
+          <li><a href="#brief">Briefing into a decision</a></li>
+          <li><a href="#inflight">In-flight decision points</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly scenario</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- ── Section: Why decisions fail ── -->
+        <section id="why">
+          <h2>Why weather decisions fail</h2>
+          <p>
+            Accident investigators rarely find that the pilot who continued into deteriorating weather was uninformed. More commonly, they were informed — and either rationalized the information away, underweighted it against schedule pressure, or planned to reassess later and then didn't. Understanding this failure mode is the first step toward building a decision process that actually prevents it.
+          </p>
+
+          <h3>Continuation bias</h3>
+          <p>
+            Continuation bias is the well-documented human tendency to continue a planned course of action even as new information undermines the plan. It is stronger than most pilots expect and operates below conscious awareness. The further along you are in a flight — fuel spent, passengers committed, destination close — the harder it is to turn around. This is not a character flaw. It is a predictable cognitive pattern that accident-resistant pilots plan around by making their turn-back decisions <em>before</em> they depart, not while airborne.
+          </p>
+
+          <h3>Get-there-itis</h3>
+          <p>
+            Get-there-itis describes the state where completing the flight becomes the goal, overriding the original goal of flying safely. It is fueled by external pressures: a wedding, a meeting, an airline connection, a passenger who has been waiting. The antidote is separating the destination commitment from the flight decision — the meeting doesn't require you to fly, it requires you to arrive. A commercial flight, a rental car, a train: these exist. No professional obligation requires a pilot to continue VFR into IMC.
+          </p>
+
+          <h3>The "it looks okay ahead" trap</h3>
+          <p>
+            VFR pilots flying into IMC report that conditions deteriorated gradually, not suddenly. Each individual decision to continue seemed defensible at the time — the ceiling was still above minimums, the vis was still legal, there were breaks in the overcast. By the time the pilot recognized the situation as unrecoverable, the aircraft was inside a cloud in non-instrument conditions. The gradient of deterioration is the trap, not a single obvious threshold crossing. A pre-set personal minimum prevents the gradient from being a series of individually justifiable compromises.
+          </p>
+        </section>
+
+        <!-- ── Section: PAVE ── -->
+        <section id="pave">
+          <h2>The PAVE checklist</h2>
+          <p>
+            The FAA's Risk Management Handbook introduces the PAVE checklist as a structured way to identify hazards before flight. It forces a pilot to assess all four risk domains, not just the ones that are salient at the time. A weak link in any one quadrant can make a flight inadvisable even when the other three look fine.
+          </p>
+
+          <!-- PAVE diagram -->
+          <figure class="diagram">
+            <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pave-title">
+              <title id="pave-title">PAVE checklist. Four quadrants: Pilot (top left, blue), Aircraft (top right, green), enVironment (bottom left, red), External pressures (bottom right, gold). Each quadrant lists key assessment questions.</title>
+
+              <rect width="700" height="310" fill="#fffaf0"/>
+
+              <!-- ── Pilot (top-left) ── -->
+              <rect x="10" y="10" width="330" height="138" fill="white" stroke="#b9a87a" stroke-width="1"/>
+              <rect x="10" y="10" width="330" height="30" fill="#4a7ba6"/>
+              <text x="26" y="30" font-family="Anton,sans-serif" font-size="13" fill="#f4ecd6" letter-spacing="0.08em">P — PILOT</text>
+              <text x="26" y="58"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Am I legal and current for this flight?</text>
+              <text x="26" y="76"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Am I rested and fit? (IMSAFE)</text>
+              <text x="26" y="94"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Do I have experience in these conditions?</text>
+              <text x="26" y="112" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">What are my personal minimums today?</text>
+              <text x="26" y="130" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Am I making this decision under pressure?</text>
+
+              <!-- ── Aircraft (top-right) ── -->
+              <rect x="360" y="10" width="330" height="138" fill="white" stroke="#b9a87a" stroke-width="1"/>
+              <rect x="360" y="10" width="330" height="30" fill="#5d6f3c"/>
+              <text x="376" y="30" font-family="Anton,sans-serif" font-size="13" fill="#f4ecd6" letter-spacing="0.08em">A — AIRCRAFT</text>
+              <text x="376" y="58"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Is the aircraft airworthy? All squawks resolved?</text>
+              <text x="376" y="76"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Is required equipment operational? (pitot heat, etc.)</text>
+              <text x="376" y="94"  font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Is performance adequate for density altitude?</text>
+              <text x="376" y="112" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Is fuel sufficient with legal + personal reserves?</text>
+              <text x="376" y="130" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Are avionics current and functioning?</text>
+
+              <!-- ── enVironment (bottom-left) ── -->
+              <rect x="10" y="162" width="330" height="138" fill="white" stroke="#b9a87a" stroke-width="1"/>
+              <rect x="10" y="162" width="330" height="30" fill="#8f3218"/>
+              <text x="26" y="182" font-family="Anton,sans-serif" font-size="13" fill="#f4ecd6" letter-spacing="0.08em">V — ENVIRONMENT</text>
+              <text x="26" y="210" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">What is the current and forecast weather?</text>
+              <text x="26" y="228" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Are there AIRMETs, SIGMETs, or PIREPs?</text>
+              <text x="26" y="246" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">What terrain and obstacles are on the route?</text>
+              <text x="26" y="264" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Are NOTAMs or TFRs relevant?</text>
+              <text x="26" y="282" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">What are viable alternates if conditions change?</text>
+
+              <!-- ── External pressures (bottom-right) ── -->
+              <rect x="360" y="162" width="330" height="138" fill="white" stroke="#b9a87a" stroke-width="1"/>
+              <rect x="360" y="162" width="330" height="30" fill="#a07810"/>
+              <text x="376" y="182" font-family="Anton,sans-serif" font-size="13" fill="#f4ecd6" letter-spacing="0.08em">E — EXTERNAL PRESSURES</text>
+              <text x="376" y="210" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Am I facing schedule or passenger pressure?</text>
+              <text x="376" y="228" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Would I make this call with my CFI watching?</text>
+              <text x="376" y="246" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Do I have a committed commitment at the destination?</text>
+              <text x="376" y="264" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">Is there a non-aviation alternative if I cancel?</text>
+              <text x="376" y="282" font-family="Manrope,sans-serif" font-size="11" fill="#2d4360">What is the real cost of saying no today?</text>
+
+              <!-- Center label -->
+              <rect x="305" y="138" width="90" height="30" fill="#f4ecd6"/>
+              <text x="350" y="157" text-anchor="middle" font-family="Anton,sans-serif" font-size="11" fill="#b9a87a" letter-spacing="0.1em">PAVE</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="698" height="308" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>The PAVE checklist — four risk domains to assess before every flight. A weak link in any single quadrant can make a flight inadvisable even when the others are fine. The external pressures quadrant is the one most likely to be skipped, and the one most likely to drive accident decisions.</figcaption>
+          </figure>
+
+          <p>
+            The most commonly skipped quadrant is External Pressures. Pilots who fly professionally, regularly, or with passengers rarely feel comfortable framing their decision explicitly as a reaction to external pressure — but the accident record shows it is present in a significant proportion of weather-related accidents. The PAVE checklist works precisely because it forces the question.
+          </p>
+
+          <p class="callout">
+            <strong>The CFI test:</strong> One of the most reliable personal decision tests is: "Would I make this decision if my CFI were in the right seat?" If the answer is no — if you'd be embarrassed to explain this go decision to someone you respect — that is operationally meaningful information. The reasoning that embarrasses you is usually the reasoning that gets people killed.
+          </p>
+        </section>
+
+        <!-- ── Section: IMSAFE ── -->
+        <section id="imsafe">
+          <h2>IMSAFE — personal fitness</h2>
+          <p>
+            IMSAFE is a self-assessment checklist for the Pilot quadrant of PAVE. It is a quick pre-flight scan for any condition that may impair pilot performance. Unlike the weather, this is one factor entirely within the pilot's control.
+          </p>
+
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">I</span>
+              <h3>Illness</h3>
+              <p>Any symptom — headache, congestion, nausea, dizziness — is a reason to ground yourself. In flight, a blocked Eustachian tube from a head cold can cause severe ear pain during descent. Mild illness on the ground often becomes incapacitating at altitude.</p>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">M</span>
+              <h3>Medication</h3>
+              <p>Many over-the-counter drugs (antihistamines, decongestants, sleep aids, pain relievers) cause drowsiness, blurred vision, or slowed reaction time. If a drug lists "do not operate heavy machinery" as a warning, it applies to an aircraft. When in doubt, consult an AME before flying on medication.</p>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">S</span>
+              <h3>Stress</h3>
+              <p>Significant stress — financial, personal, professional — narrows attentional focus and degrades decision-making. Research shows that even moderate psychological stress reduces working memory capacity. A pilot who is significantly stressed may be technically legal to fly but practically impaired for complex go/no-go decisions.</p>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--rust);">
+              <span class="hazard-label">A</span>
+              <h3>Alcohol</h3>
+              <p>FAA regulations require 8 hours from bottle to throttle and a BAC below 0.04%. The FAA also prohibits flying while "under the influence" — which can apply even after the 8-hour minimum at high BAC levels. The practical standard of many airlines and safety organizations is 12–24 hours. Hangover symptoms (dehydration, fatigue, headache) impair performance independently of residual BAC.</p>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--rust);">
+              <span class="hazard-label">F</span>
+              <h3>Fatigue</h3>
+              <p>Fatigue is one of the most underrated impairment factors in GA aviation. 17–18 hours without sleep produces cognitive impairment equivalent to a BAC of 0.05%. Night flying while fatigued compounds the risk — spatial disorientation, slower scan, reduced ability to recognize subtle weather deterioration. If you're tired, the answer is not more coffee. It's a later departure or an overnight.</p>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">E</span>
+              <h3>Emotion / Eating</h3>
+              <p>Strong emotions — grief, anger, anxiety, excitement — interfere with disciplined decision-making. Some checklists also include eating (Eating): hypoglycemia from skipping meals degrades concentration. Before a flight in marginal conditions, a pilot who is emotionally activated is less able to accurately assess risk — they'll tend to bias toward what they want to do.</p>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ── Section: Personal minimums ── -->
+        <section id="minimums">
+          <h2>Personal minimums</h2>
+          <p>
+            Legal minimums define the floor of what the FAA permits. Personal minimums define the floor of what <em>you</em> should fly in, given your experience, currency, aircraft, and the specific conditions of this flight. These are not the same number, and treating them as the same is a decision that pilots make before accidents.
+          </p>
+
+          <h3>The logic of personal minimums</h3>
+          <p>
+            Legal VFR minimums in Class E airspace below 10,000 ft: 3 SM visibility, 500 ft below clouds, 1,000 ft above clouds, 2,000 ft horizontal. Those numbers were not designed as "safely flyable in any conditions for any pilot" — they were designed as the minimum below which flight is prohibited. A student pilot with 90 hours in a C172 operating at exactly 3 SM and 500-below in marginal VFR is legal and probably terrifying themselves.
+          </p>
+          <p>
+            A useful personal minimums starting point for a VFR student or newly-certificated PPL:
+          </p>
+          <ul>
+            <li><strong>Visibility:</strong> ≥5 SM (legal is 3 SM in Class E below 10,000 ft)</li>
+            <li><strong>Ceiling:</strong> ≥3,000 ft AGL (legal VFR in Class E has no ceiling requirement)</li>
+            <li><strong>Crosswind:</strong> ≤50–60% of demonstrated crosswind component, not the POH max</li>
+            <li><strong>Night VFR:</strong> Only in familiar areas with high confidence in weather stability</li>
+            <li><strong>Forecast deterioration:</strong> If a front is forecast to arrive within 2 hours of your ETA, the flight needs an alternate plan</li>
+          </ul>
+
+          <h3>Setting them when you're calm, not in the cockpit</h3>
+          <p>
+            Personal minimums are most useful when they are set in advance — when you have no flight planned, no passengers waiting, and no investment in any particular outcome. A pilot who sets personal minimums the morning of a flight when the weather is "almost good enough" is negotiating with themselves, and they will lose. Personal minimums set in a clear head, written down, and committed to before any flight is scheduled are far more likely to be honored.
+          </p>
+
+          <h3>The third option: not yet</h3>
+          <p>
+            Most go/no-go framing presents two options. There are three. A front that arrives at 1400Z will have passed by 1700Z. A fog layer that forms overnight at a coastal airport typically burns off by 1100 local. "Not yet" — delay 2–3 hours and reassess — is often the correct answer and the one most difficult to choose under pressure. Building "not yet" explicitly into your decision framework means evaluating whether the conditions are temporarily unflyable rather than permanently so.
+          </p>
+        </section>
+
+        <!-- ── Section: Briefing into a decision ── -->
+        <section id="brief">
+          <h2>Translating the briefing into a decision</h2>
+          <p>
+            A weather brief is not the decision — it is the input to the decision. Many pilots complete a thorough brief and then feel as though the brief itself constitutes a go decision, because nothing individually prohibited the flight. The brief should be translated into explicit answers to specific questions.
+          </p>
+
+          <h3>The sequence</h3>
+          <p>
+            Work the Weather Product Ladder in order — synoptic first, terminal last — and at each level ask: <strong>does this change my plan?</strong>
+          </p>
+          <ul>
+            <li><strong>Level 1 (Synoptic):</strong> Is there a frontal system, deepening low, or upper trough that will affect my route or destination in my flight window? If yes — what is the timing confidence? Is the TAF already accounting for it?</li>
+            <li><strong>Level 2 (Regional):</strong> What does the GFA show at my altitude along my route? Is the AFD expressing confidence or uncertainty? What is the freezing level versus my planned altitude?</li>
+            <li><strong>Level 3 (Hazards):</strong> Is there a SIGMET on my route? Does an AIRMET Sierra or Zulu cover my destination or planned altitude? A SIGMET is not a factor to weigh — it is a stop.</li>
+            <li><strong>Level 4 (Terminal):</strong> Does the TAF show conditions above my personal minimums for my arrival window, including all FM/TEMPO/BECMG groups? Does the departure METAR agree with the TAF forecast for this hour?</li>
+            <li><strong>Level 5 (Real-time):</strong> Do any PIREPs along the route confirm or contradict the forecast? Have I checked NOTAMs for departure and destination?</li>
+          </ul>
+
+          <p class="callout">
+            <strong>The forecast agreement test:</strong> If the METAR at your destination right now is worse than the TAF forecast for this hour, the TAF is already wrong. A TAF that missed the current hour's conditions should not be trusted to accurately predict your arrival window. Pull the AFD to understand why the forecast missed, and reassess.
+          </p>
+
+          <h3>Building a go/no-go statement</h3>
+          <p>
+            At the end of the brief, construct an explicit go/no-go statement — not a feeling, a statement. For example: <em>"Conditions at departure are VFR and above my minimums. The TAF at KORD shows conditions above my minimums through my arrival window. No SIGMETs or AIRMETs cover my route. Two recent PIREPs report smooth air at 8,000 ft. No significant weather is forecast to reach my route before my ETA plus 1 hour reserve. I am go."</em>
+          </p>
+          <p>
+            If you cannot construct that statement without significant hedging or uncertainty, the answer is not go.
+          </p>
+        </section>
+
+        <!-- ── Section: In-flight decision points ── -->
+        <section id="inflight">
+          <h2>In-flight decision points</h2>
+          <p>
+            The best protection against continuation bias is making key decisions before they become urgent. Pre-setting explicit abort criteria means that when you reach the trigger, the decision is already made — you are executing a plan, not making a judgment call under pressure.
+          </p>
+
+          <h3>Set abort criteria before departure</h3>
+          <p>
+            Examples of pre-set in-flight decision rules:
+          </p>
+          <ul>
+            <li><em>"If the ceiling at [reporting station 50 nm from destination] is below [X] when I check at [waypoint], I divert to [alternate]."</em></li>
+            <li><em>"If I cannot reach flight following or ATC for a weather update within 30 minutes of [point], I return to departure."</em></li>
+            <li><em>"If any PIREP reports severe turbulence at my altitude within 60 nm of my current position, I land at the nearest suitable airport."</em></li>
+            <li><em>"If my ETE to destination exceeds [fuel reserve] minus 45 minutes, I land and refuel regardless of weather."</em></li>
+          </ul>
+          <p>
+            These are not made up in the moment — they are written on the kneeboard before engine start. When the trigger is reached, the decision executes.
+          </p>
+
+          <h3>Recognizing the point of no return</h3>
+          <p>
+            Every flight has a point past which turning back becomes more hazardous than continuing — the fuel calculation changes, the weather behind you has deteriorated, or the closest suitable airport is ahead. Know where your point of no return is before you depart, and ensure your abort criteria trigger before you reach it, not after.
+          </p>
+
+          <h3>The 180-degree turn rule</h3>
+          <p>
+            If you are VFR and encounter deteriorating conditions — lowering ceilings, reducing visibility, approaching IMC — the correct action is an immediate, decisive 180-degree turn back to VFR conditions. The accident record of continued VFR into IMC is devastating: spatial disorientation, loss of control, and terrain impact within minutes of entering IMC in an unpracticed pilot. There is no shame in the 180. It is the only correct response when you feel the gradient pulling you toward IMC.
+          </p>
+          <p>
+            The instinct to push forward is powerful. You've already come this far. The destination is close. The cloud is thin, probably. This is the gradient of gradual deterioration in real time. The 180-degree turn rule is not a technique — it is a pre-committed decision that takes the in-the-moment judgment out of it.
+          </p>
+        </section>
+
+        <!-- ── Section: Checkride questions ── -->
+        <section id="checkride">
+          <h2>Checkride questions</h2>
+
+          <details class="qa">
+            <summary>Q: What is the PAVE checklist and what does each letter represent?</summary>
+            <p>PAVE is a preflight risk assessment framework from the FAA Risk Management Handbook. P — Pilot: assess personal fitness, currency, experience, and personal minimums. A — Aircraft: assess airworthiness, equipment, performance, and fuel. V — enVironment: assess weather, terrain, airspace, and alternates. E — External pressures: identify schedule pressure, passenger expectations, or any commitment that may bias the go decision. A weak assessment in any one quadrant can make a flight inadvisable even when the others are satisfactory. (FAA-H-8083-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is IMSAFE and when is it applied?</summary>
+            <p>IMSAFE is a personal fitness checklist applied as part of the Pilot (P) component of PAVE before every flight: Illness, Medication, Stress, Alcohol (8 hours bottle to throttle; BAC below 0.04%), Fatigue, Emotion/Eating. It ensures the pilot evaluates their own fitness independently of aircraft and weather factors. The checklist is useful because individual impairment factors — particularly fatigue and stress — are often rationalized away without a systematic self-check. (FAA-H-8083-2 Ch. 2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What are personal minimums and how do they differ from legal minimums?</summary>
+            <p>Legal minimums are the regulatory floor — the conditions below which flight is prohibited. Personal minimums are self-imposed limits set by the pilot based on their own experience, currency, aircraft capabilities, and the specific flight. They should be more conservative than legal minimums. A newly-certificated PPL flying in Class E airspace at exactly 3 SM visibility and 500 ft below clouds is legal but may be operating far outside their skill margin. Personal minimums should be set in advance, when no flight is planned and no pressure exists, and committed to in writing. (FAA-H-8083-2 Ch. 3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is continuation bias and how does it contribute to weather accidents?</summary>
+            <p>Continuation bias is the tendency to continue a planned course of action even when new information suggests the plan should be changed. It is amplified by investment in the original plan — fuel spent, passengers committed, destination close. In weather accidents, pilots experiencing continuation bias rationalize each deteriorating data point individually rather than integrating the overall picture. The accident record of continued VFR into IMC consistently shows pilots who received clear warning signals and continued anyway. The primary defense is making turn-back decisions before departure as explicit criteria, not in the cockpit when the gradient is pulling forward. (FAA-H-8083-2; NTSB accident analysis)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the correct response when a VFR pilot inadvertently enters IMC?</summary>
+            <p>An immediate 180-degree turn back to the visual conditions behind the aircraft. This is the only reliable response — the accident record for continued flight in IMC by a non-instrument-rated pilot is devastating, with loss of control through spatial disorientation typically occurring within minutes. The pilot should simultaneously declare an emergency with ATC and request vectors to VMC or the nearest airport. Attempting to navigate by instruments without training and currency almost always ends in loss of control. A pre-committed decision to turn at the first sign of deteriorating conditions — before IMC is actually encountered — is far more effective than a reactive judgment call inside a cloud. (AIM 7-1-30; FAA-H-8083-3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What does it mean to "fly the TAF, not the METAR"?</summary>
+            <p>On departure, the METAR at your destination may be favorable, but the TAF forecast is what matters for your arrival — conditions 2–3 hours from now. A pilot who checks the current destination METAR and ignores the TAF for their arrival window may depart into deteriorating conditions they could have anticipated. Conversely, if the current destination METAR is worse than the TAF forecast for this hour, the TAF has already missed the actual conditions — it should not be trusted for the arrival window without a fresh look at the AFD. Always check the TAF for your specific arrival time, reading all FM, TEMPO, and BECMG groups. (AC 00-45H; AIM 7-1-31)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What are in-flight decision points and why should they be set before departure?</summary>
+            <p>In-flight decision points (also called abort criteria or pre-set decision rules) are explicit conditions established before departure that trigger a defined action — divert, return, or land — without requiring a judgment call at the moment of encounter. Examples: "If ceiling at [destination] is below X at waypoint Y, divert to [alternate]." Pre-setting them before departure removes the judgment call from a high-workload, high-pressure environment and eliminates continuation bias from the equation. A decision already made before takeoff executes automatically when the trigger is reached; a decision made in the moment is vulnerable to rationalization. (FAA-H-8083-2 Ch. 5)</p>
+          </details>
+        </section>
+
+        <!-- ── Section: Would-you-fly scenario ── -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <div class="scenario-box">
+            <p class="scenario-disclaimer">Educational example only — this teaches the questions a pilot should ask, not a specific flight decision</p>
+
+            <p>
+              It is Saturday morning. You are a VFR-only PPL with 130 hours, planning a 210 nm cross-country to attend your college friend's wedding rehearsal dinner tonight. The wedding is tomorrow. You have been looking forward to this for months, and your friend is expecting you to fly in. You have not flown in six weeks. The briefing shows the following:
+            </p>
+            <ul>
+              <li>Departure airport: MVFR — 5 SM in light rain, ceiling 2,000 ft broken. Surface analysis shows a warm front 80 nm south, moving north-northeast at 15 kt.</li>
+              <li>En route (middle third): IFR conditions forecast. GFA showing ceilings 600–900 ft, visibility 1–2 SM in mist. AIRMET Sierra active for the middle 90 nm of the route.</li>
+              <li>Destination: VFR — 10 SM clear. "Good weather at the destination" will be the most tempting part of this briefing.</li>
+              <li>TAF at destination: VFR through tonight, then OVC010 possible after midnight as the front arrives.</li>
+              <li>Your personal minimums (set 3 months ago, written on your kneeboard card): 5 SM vis, 3,000 ft ceiling, day VFR only when below 1,500 AGL ceilings.</li>
+            </ul>
+
+            <p class="scenario-question">Walk through the PAVE checklist.</p>
+
+            <ol class="scenario-questions">
+              <li><strong>Pilot:</strong> Six weeks without flying is meaningful currency erosion for a 130-hour PPL. This is a flight to a wedding, with months of emotional investment. You are already experiencing external pressure before the checklist even gets there. IMSAFE passes on the surface, but stress and emotional investment are elevated. Personal minimums say 3,000 ft ceiling — departure is at 2,000 ft broken. Departure alone fails the personal minimums test.</li>
+              <li><strong>Aircraft:</strong> Assume the aircraft is airworthy. No squawks. Performance is adequate. Not an issue on this flight.</li>
+              <li><strong>enVironment:</strong> AIRMET Sierra covering the middle 90 nm of a 210 nm route. That is not a marginal condition on part of the route — it is IFR conditions for nearly half the flight, with ceilings 600–900 ft and visibility 1–2 SM. A VFR pilot in those conditions is inside a cloud. A moving warm front adds timing uncertainty — forecasts for frontal timing routinely vary by 1–3 hours. The front could be earlier.</li>
+              <li><strong>External pressures:</strong> Wedding rehearsal dinner. Months of anticipation. Friend is expecting you to fly in. These are real, but they describe a social commitment, not a safety margin. A rental car from the departure airport can reach a destination 210 nm away in under 4 hours. The wedding is tomorrow — there is time.</li>
+            </ol>
+
+            <p class="scenario-takeaway">
+              <strong>No-go — and it's not close.</strong> This briefing shows VFR departure into deteriorating MVFR, transitioning to IFR for nearly half the route. A VFR-only pilot with 130 hours and six weeks off currency has no instrument skills to draw on. The "good weather at destination" data point is a trap — it makes the deteriorating middle third look like a temporary obstacle rather than an absolute barrier. Personal minimums already say no at departure. AIRMET Sierra says no en route. The external pressure quadrant is maximally loaded. The correct answer is a 7-hour drive or a commercial flight — and that decision should be made before the briefing, not after rationalizing through it.
+            </p>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="wind-shear-mountain-wave.html" class="concept-nav-link">← Wind Shear &amp; Mountain Wave</a>
+          <span class="concept-nav-next">ACS Checkride Mapping coming soon →</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1068,7 +1068,7 @@ footer .container {
 /* Token color classes */
 .tok { padding: 2px 5px; border-radius: 2px; cursor: help; transition: opacity 0.1s; }
 .tok:hover { opacity: 0.8; }
-.tok-type        { background: rgba(244,236,214,0.12); color: var(--buff); }
+.tok-type        { background: rgba(185,168,122,0.42); color: var(--buff); }
 .tok-station     { background: rgba(217,165,33,0.35);  color: var(--buff); font-weight: 600; }
 .tok-time        { background: rgba(93,111,60,0.4);    color: var(--buff); }
 .tok-modifier    { background: rgba(181,61,31,0.35);   color: var(--buff); }
@@ -1080,8 +1080,8 @@ footer .container {
 .tok-sky         { background: rgba(12,37,65,0.5);     color: var(--buff); }
 .tok-temp        { background: rgba(217,165,33,0.45);  color: var(--buff); }
 .tok-altimeter   { background: rgba(181,61,31,0.35);   color: var(--buff); }
-.tok-remarks-header { background: rgba(244,236,214,0.1); color: rgba(244,236,214,0.5); font-style: italic; }
-.tok-remarks     { background: rgba(244,236,214,0.1);  color: rgba(244,236,214,0.7); }
+.tok-remarks-header { background: rgba(100,75,140,0.42); color: var(--buff); font-style: italic; }
+.tok-remarks        { background: rgba(100,75,140,0.28); color: var(--buff); }
 
 /* ── Main decoded content layout ── */
 .decoder-main {
@@ -1368,3 +1368,107 @@ footer .container {
   border-bottom: 1px dotted var(--rule);
 }
 .taf-legend-desc { flex: 1; }
+
+/* ============================================
+   Weather Product Ladder
+   ============================================ */
+
+.ladder-product-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 900px) {
+  .ladder-product-row { grid-template-columns: 1fr; }
+}
+.ladder-product {
+  background: #fffaf0;
+  border: 1px solid var(--rule);
+  padding: 1rem 1rem 0.8rem;
+}
+.ladder-product-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--buff);
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-bottom: 0.6rem;
+}
+.ladder-site-link {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--sage);
+  margin: 1.2rem 0 0;
+  letter-spacing: 0.04em;
+}
+.ladder-site-link a { color: var(--sky); }
+
+/* ============================================
+   PIREPs — annotated example and field display
+   ============================================ */
+
+.pirep-example {
+  background: var(--ink);
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0 0;
+  border-radius: 2px;
+}
+.pirep-raw {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 2;
+  word-break: break-all;
+}
+/* PIREP token color classes */
+.ptok { padding: 2px 4px; border-radius: 2px; white-space: nowrap; }
+.ptok-type    { background: rgba(185,168,122,0.42); color: var(--buff); }
+.ptok-loc     { background: rgba(217,165,33,0.35);  color: var(--buff); }
+.ptok-time    { background: rgba(93,111,60,0.4);    color: var(--buff); }
+.ptok-alt     { background: rgba(74,123,166,0.5);   color: var(--buff); }
+.ptok-acft    { background: rgba(45,110,100,0.5);   color: var(--buff); }
+.ptok-sky     { background: rgba(12,37,65,0.55);    color: var(--buff); }
+.ptok-wx      { background: rgba(181,61,31,0.45);   color: var(--buff); }
+.ptok-temp    { background: rgba(217,165,33,0.4);   color: var(--buff); }
+.ptok-wind    { background: rgba(74,123,166,0.4);   color: var(--buff); }
+.ptok-tb      { background: rgba(181,61,31,0.35);   color: var(--buff); }
+.ptok-ic      { background: rgba(12,37,65,0.4);     color: var(--buff); }
+.ptok-rm      { background: rgba(100,75,140,0.35);  color: var(--buff); }
+
+/* Field breakdown */
+.pirep-fields {
+  border: 1px solid var(--rule);
+  background: #fffaf0;
+  margin-bottom: 1.5rem;
+}
+.pirep-field-row {
+  display: grid;
+  grid-template-columns: 120px 120px 1fr;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.88rem;
+}
+.pirep-field-row--last { border-bottom: none; }
+@media (max-width: 700px) {
+  .pirep-field-row { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.6rem 1rem; }
+}
+.pirep-field-code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.pirep-field-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sage);
+}
+.pirep-field-desc { color: var(--ink-soft); }
