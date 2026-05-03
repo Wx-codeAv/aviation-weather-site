@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altimetry — CrosswindWX</title>
+  <meta name="description" content="How the altimeter works, the five types of altitude, altimeter setting mechanics, and the standard atmosphere worked examples — for PPL, IR, and commercial checkrides.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Altimetry</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Atmospheric measurement</p>
+      <h1>Altimetry</h1>
+      <p class="lede">
+        The altimeter is the most misunderstood instrument in the cockpit — not because it's complicated, but because pilots confuse four different definitions of "altitude" and get the direction of errors backwards. Understanding one simple fact fixes all of it: <em>the altimeter is a barometer</em>. It measures pressure, and your altimeter setting tells it how to convert pressure into feet.
+      </p>
+      <!-- ACS: K3a (Atmospheric composition and stability) covers the standard atmosphere baseline used in altimetry.
+           [VERIFY] specific subcodes against current ACS documents if a more precise sub-element is identified. -->
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3a · IR.I.B.K3a · CA.I.C.K3a</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1c</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> FAA-H-8083-28 · AIM §7-2 · 14 CFR §91.121</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~15 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what">How the altimeter works</a></li>
+          <li><a href="#altitudes">The five altitudes</a></li>
+          <li><a href="#standard">Standard atmosphere chart</a></li>
+          <li><a href="#worked">Worked examples</a></li>
+          <li><a href="#mnemonics">High to low · Low to high</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Decision scenario</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: How the altimeter works -->
+        <section id="what">
+          <h2>How the altimeter works</h2>
+          <p>
+            Inside the altimeter is a stack of sealed, flexible metal capsules called <strong>aneroid wafers</strong>. They are evacuated — the pressure inside them is fixed. The pressure <em>outside</em> them (the cockpit static pressure, which reflects your current altitude) changes as you climb or descend.
+          </p>
+          <p>
+            As you climb, the surrounding pressure drops. The aneroid wafers expand outward. That expansion drives a mechanical linkage that rotates the altimeter's pointers. As you descend, pressure increases, the wafers compress, and the pointers rotate the other way. The altimeter never "knows" your altitude directly — it knows the pressure, and infers altitude using the standard atmosphere as a lookup table.
+          </p>
+          <p>
+            The <strong>Kollsman window</strong> — the small numbered window on the altimeter face — lets you adjust which sea-level pressure the instrument uses as its baseline. Dialing in the current altimeter setting calibrates the instrument so that at the airport, it reads the correct field elevation. As long as the setting matches reality, indicated altitude equals true altitude.
+          </p>
+
+          <!-- Diagram: correct vs wrong altimeter setting -->
+          <figure class="diagram">
+            <svg viewBox="0 0 680 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="altimeter-diagram-title">
+              <title id="altimeter-diagram-title">Two-panel diagram: left shows correct altimeter setting with airplane at 3,000 ft true and 1,500 ft terrain clearance; right shows setting 0.30 Hg too low, airplane at 2,700 ft true while altimeter reads 3,000 ft, with only 1,200 ft clearance</title>
+              <rect width="680" height="370" fill="#fffaf0"/>
+
+              <!-- Panel headers -->
+              <text x="170" y="28" font-family="Anton, sans-serif" font-size="14" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.04em">SETTING CORRECT</text>
+              <text x="510" y="28" font-family="Anton, sans-serif" font-size="14" fill="#b53d1f" text-anchor="middle" letter-spacing="0.04em">SETTING TOO LOW</text>
+              <line x1="340" y1="35" x2="340" y2="345" stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="2,4"/>
+
+              <!-- Scale: 0-4000 ft, y=310 at 0 ft, y=50 at 4000 ft → 0.065 px/ft -->
+
+              <!-- LEFT PANEL (x: 30-320) -->
+              <rect x="30" y="50" width="290" height="260" fill="rgba(74,123,166,0.04)" rx="2"/>
+              <rect x="30" y="310" width="290" height="22" fill="#5d6f3c" rx="2"/>
+
+              <!-- Terrain hill: peak at 1500 ft → y=310-97.5=212 -->
+              <polygon points="75,310 130,212 185,310" fill="#5d6f3c" opacity="0.45"/>
+              <text x="130" y="206" font-family="JetBrains Mono, monospace" font-size="8" fill="#5d6f3c" text-anchor="middle">1,500 ft terrain</text>
+
+              <!-- Altitude reference lines -->
+              <g stroke="#b9a87a" stroke-width="0.4" stroke-dasharray="2,4" opacity="0.5">
+                <line x1="30" y1="245" x2="320" y2="245"/>
+                <line x1="30" y1="180" x2="320" y2="180"/>
+                <line x1="30" y1="115" x2="320" y2="115"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b9a87a" opacity="0.7">
+                <text x="33" y="242">1,000 ft</text>
+                <text x="33" y="177">2,000 ft</text>
+                <text x="33" y="112">3,000 ft</text>
+              </g>
+
+              <!-- Airplane at 3000 ft true: y=115 -->
+              <g transform="translate(240,115)">
+                <polygon points="-20,0 20,0 8,7 -8,7" fill="#0c2541"/>
+                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#0c2541"/>
+                <rect x="-2" y="5" width="4" height="4" fill="#0c2541"/>
+              </g>
+
+              <!-- Labels (correct) -->
+              <rect x="190" y="90" width="125" height="34" fill="#fffaf0" stroke="#5d6f3c" stroke-width="1" rx="2"/>
+              <text x="253" y="105" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="middle" font-weight="700">Reads: 3,000 ft</text>
+              <text x="253" y="118" font-family="Manrope, sans-serif" font-size="8" fill="#5d6f3c" text-anchor="middle">True alt: 3,000 ft ✓</text>
+
+              <!-- Clearance bracket -->
+              <line x1="138" y1="115" x2="138" y2="212" stroke="#5d6f3c" stroke-width="1"/>
+              <line x1="133" y1="115" x2="143" y2="115" stroke="#5d6f3c" stroke-width="1"/>
+              <line x1="133" y1="212" x2="143" y2="212" stroke="#5d6f3c" stroke-width="1"/>
+              <text x="128" y="168" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#5d6f3c" text-anchor="middle" transform="rotate(-90,128,168)">1,500 ft clearance</text>
+
+              <!-- Altimeter setting badge -->
+              <rect x="35" y="316" width="112" height="14" fill="#0c2541" rx="1"/>
+              <text x="91" y="327" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#d9a521" text-anchor="middle">Set: 30.19" Hg ✓</text>
+              <text x="200" y="327" font-family="Manrope, sans-serif" font-size="8" fill="#fffaf0">MSL</text>
+
+              <!-- RIGHT PANEL (x: 360-650) -->
+              <rect x="360" y="50" width="290" height="260" fill="rgba(181,61,31,0.03)" rx="2"/>
+              <rect x="360" y="310" width="290" height="22" fill="#5d6f3c" rx="2"/>
+
+              <!-- Same terrain -->
+              <polygon points="405,310 460,212 515,310" fill="#5d6f3c" opacity="0.45"/>
+              <text x="460" y="206" font-family="JetBrains Mono, monospace" font-size="8" fill="#5d6f3c" text-anchor="middle">1,500 ft terrain</text>
+
+              <!-- Altitude reference lines -->
+              <g stroke="#b9a87a" stroke-width="0.4" stroke-dasharray="2,4" opacity="0.5">
+                <line x1="360" y1="245" x2="650" y2="245"/>
+                <line x1="360" y1="180" x2="650" y2="180"/>
+                <line x1="360" y1="115" x2="650" y2="115"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b9a87a" opacity="0.7">
+                <text x="363" y="242">1,000 ft</text>
+                <text x="363" y="177">2,000 ft</text>
+                <text x="363" y="112">3,000 ft</text>
+              </g>
+
+              <!-- Ghost at 3000 ft indicated: y=115 -->
+              <g transform="translate(565,115)" opacity="0.2">
+                <polygon points="-20,0 20,0 8,7 -8,7" fill="#0c2541"/>
+                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#0c2541"/>
+              </g>
+              <line x1="546" y1="115" x2="584" y2="115" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="3,3"/>
+              <text x="593" y="118" font-family="JetBrains Mono, monospace" font-size="7" fill="#b9a87a">indicated</text>
+
+              <!-- Airplane at 2700 ft true: y=310-175.5=134.5→135 -->
+              <g transform="translate(565,135)">
+                <polygon points="-20,0 20,0 8,7 -8,7" fill="#b53d1f"/>
+                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#b53d1f"/>
+                <rect x="-2" y="5" width="4" height="4" fill="#b53d1f"/>
+              </g>
+
+              <!-- Gap bracket: 300 ft (y=115 to y=135) -->
+              <line x1="550" y1="115" x2="550" y2="135" stroke="#b53d1f" stroke-width="1.5"/>
+              <line x1="545" y1="115" x2="555" y2="115" stroke="#b53d1f" stroke-width="1.5"/>
+              <line x1="545" y1="135" x2="555" y2="135" stroke="#b53d1f" stroke-width="1.5"/>
+              <text x="548" y="127" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b53d1f" text-anchor="end">300 ft</text>
+              <text x="548" y="137" font-family="JetBrains Mono, monospace" font-size="7" fill="#b53d1f" text-anchor="end">below</text>
+
+              <!-- Labels (wrong) -->
+              <rect x="360" y="88" width="135" height="52" fill="rgba(181,61,31,0.07)" stroke="#b53d1f" stroke-width="1" rx="2"/>
+              <text x="428" y="103" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="middle" font-weight="700">Reads: 3,000 ft</text>
+              <text x="428" y="116" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">True alt: 2,700 ft ✗</text>
+              <text x="428" y="129" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f" text-anchor="middle" font-style="italic">300 ft below where you think</text>
+
+              <!-- Reduced clearance bracket -->
+              <line x1="468" y1="135" x2="468" y2="212" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="463" y1="135" x2="473" y2="135" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="463" y1="212" x2="473" y2="212" stroke="#b53d1f" stroke-width="1"/>
+              <text x="458" y="178" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b53d1f" text-anchor="middle" transform="rotate(-90,458,178)">1,200 ft clearance</text>
+
+              <!-- Altimeter setting badge (wrong) -->
+              <rect x="365" y="316" width="112" height="14" fill="#b53d1f" rx="1"/>
+              <text x="421" y="327" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#fffaf0" text-anchor="middle">Set: 29.92" Hg ✗</text>
+              <text x="530" y="327" font-family="Manrope, sans-serif" font-size="8" fill="#fffaf0">MSL</text>
+            </svg>
+            <figcaption>Left: correct setting — indicated altitude matches true altitude, terrain clearance is as planned. Right: the Kollsman is 0.30"Hg too low (flew from high to low pressure without updating) — the altimeter reads 3,000 ft but the aircraft is at 2,700 ft true. Terrain clearance is 300 ft less than the pilot believes. Near mountainous terrain, this kills people.</figcaption>
+          </figure>
+
+          <p class="callout">
+            <strong>14 CFR §91.121 requirement:</strong> Below 18,000 ft MSL, set the altimeter to the current reported setting from a station along the route and within 100 nm. Above 18,000 ft (Class A airspace), all aircraft use 29.92"Hg — they fly "flight levels" referenced to a common baseline, not local pressure.
+          </p>
+        </section>
+
+        <!-- Section: The five altitudes -->
+        <section id="altitudes">
+          <h2>The five altitudes</h2>
+          <p>
+            Five terms, each with a specific definition. DPEs test them directly — get them clean and separate.
+          </p>
+
+          <div class="card-grid card-grid-3" style="margin: 1.2rem 0 1.8rem;">
+
+            <article class="hazard-card" style="border-top-color: #0c2541;">
+              <span class="hazard-label">01 · Indicated</span>
+              <h3>Indicated Altitude</h3>
+              <p class="hazard-mnemonic">What the altimeter reads with your current setting dialed in.</p>
+              <ul class="hazard-list">
+                <li>The number on the gauge — what you report to ATC</li>
+                <li>Equals true altitude only if the setting is current and accurate</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">02 · True</span>
+              <h3>True Altitude</h3>
+              <p class="hazard-mnemonic">Your actual height above mean sea level (MSL).</p>
+              <ul class="hazard-list">
+                <li>Used for terrain and obstacle clearance calculations</li>
+                <li>Equals indicated altitude only when the setting is correct</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">03 · Pressure</span>
+              <h3>Pressure Altitude</h3>
+              <p class="hazard-mnemonic">Altitude when the altimeter is set to 29.92"Hg.</p>
+              <ul class="hazard-list">
+                <li>Used for performance calculations (step 1 of density altitude)</li>
+                <li>Used in Class A airspace — all aircraft reference the same baseline</li>
+                <li>PA = field elevation + (29.92 − current setting) × 1,000</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top-color: #5d6f3c;">
+              <span class="hazard-label">04 · Density</span>
+              <h3>Density Altitude</h3>
+              <p class="hazard-mnemonic">Pressure altitude corrected for non-standard temperature.</p>
+              <ul class="hazard-list">
+                <li>What the aircraft "feels" — determines actual performance</li>
+                <li>Covered in full on the <a href="density-altitude.html">Density Altitude page</a></li>
+                <li>DA = PA + 120 × (OAT − ISA temp at that PA)</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top-color: #b9a87a;">
+              <span class="hazard-label">05 · Absolute</span>
+              <h3>Absolute Altitude</h3>
+              <p class="hazard-mnemonic">Your actual height above ground level (AGL).</p>
+              <ul class="hazard-list">
+                <li>True altitude minus the terrain elevation directly below you</li>
+                <li>Not shown on the altimeter — calculated from sectional chart elevations</li>
+                <li>Critical for low-level flight, obstacle clearance, airspace floors</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <p>
+            A useful sequence: <strong>Indicated → True → Pressure → Density → Absolute.</strong> Each builds on the previous. Indicated is the raw gauge. True corrects for setting error. Pressure standardizes the baseline to 29.92. Density adds temperature correction. Absolute anchors everything to the ground below you.
+          </p>
+        </section>
+
+        <!-- Section: Standard atmosphere chart -->
+        <section id="standard">
+          <h2>The standard atmosphere chart</h2>
+          <p>
+            The altimeter does its job by assuming the standard atmosphere — a model of how pressure varies with altitude. The key relationship near sea level: <strong>pressure drops approximately 1"Hg per 1,000 ft.</strong>
+          </p>
+          <p>
+            This table is the lookup table for every altimeter problem on a written exam. Know how to use it in both directions — altitude from pressure and pressure from altitude.
+          </p>
+
+          <table class="atmo-table">
+            <thead>
+              <tr><th>Altitude (ft MSL)</th><th>Pressure ("Hg)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>4,000</td><td>25.84</td></tr>
+              <tr><td>3,000</td><td>26.82</td></tr>
+              <tr><td>2,000</td><td>27.82</td></tr>
+              <tr><td>1,500</td><td>28.33</td></tr>
+              <tr><td>1,250</td><td>28.59</td></tr>
+              <tr><td>1,000</td><td>28.86</td></tr>
+              <tr><td>750</td><td>29.12</td></tr>
+              <tr><td>500</td><td>29.38</td></tr>
+              <tr><td>250</td><td>29.65</td></tr>
+              <tr><td><strong>0 (sea level)</strong></td><td><strong>29.92</strong></td></tr>
+              <tr><td>−250</td><td>30.19</td></tr>
+              <tr><td>−500</td><td>30.47</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            The negative-altitude rows represent <em>virtual</em> reference points. If you dial in 30.19"Hg, the altimeter is treating today's sea-level pressure as if sea level were 250 ft below the standard reference — accounting for the fact that today's pressure is above-standard. No airplane flies at −250 ft; it's just the math of how the instrument scales its reading.
+          </p>
+          <p class="callout">
+            <strong>Standard atmosphere baseline (FAA-H-8083-28):</strong> Sea-level temperature 15°C, pressure 29.92"Hg (1013.2 mb), lapse rate 2°C per 1,000 ft. These three numbers show up on every performance chart, altimeter design, and density altitude formula in aviation. Memorize them.
+          </p>
+        </section>
+
+        <!-- Section: Worked examples (migrated from Stability & Lapse Rates) -->
+        <section id="worked">
+          <h2>Worked examples</h2>
+          <p>
+            Three question types appear on every WX exam and checkride oral. Know how to solve all three using the standard atmosphere chart.
+          </p>
+
+          <h3 style="margin-top: 1.4rem;">Question type 1 — find the station pressure</h3>
+          <p>Given altimeter setting and field elevation, find the actual pressure at the field.</p>
+
+          <div class="scenario-box">
+            <p><strong>Worked Example 1:</strong> Altimeter setting is 30.19"Hg. Field elevation is 1,500 ft. What's the station pressure at the field?</p>
+            <ol class="scenario-questions">
+              <li><strong>Look up the altimeter setting on the chart.</strong> 30.19"Hg corresponds to −250 ft.</li>
+              <li><strong>Add the chart altitude of the altimeter setting to the field elevation.</strong> 1,500 + (−250) = 1,250 ft.</li>
+              <li><strong>Look up the pressure at 1,250 ft on the chart.</strong> 28.59"Hg.</li>
+            </ol>
+            <p class="scenario-takeaway"><strong>Answer: 28.59"Hg.</strong></p>
+          </div>
+
+          <h3 style="margin-top: 1.4rem;">Question type 2 — find the altimeter setting</h3>
+          <p>Reverse: given station pressure and field elevation, find the altimeter setting.</p>
+
+          <div class="scenario-box">
+            <p><strong>Worked Example 2:</strong> Station pressure at the airport is 29.12"Hg. Field elevation is 1,000 ft. What's the altimeter setting?</p>
+            <ol class="scenario-questions">
+              <li><strong>Look up the station pressure on the chart.</strong> 29.12"Hg corresponds to 750 ft.</li>
+              <li><strong>Subtract the field elevation from that chart altitude.</strong> 750 − 1,000 = −250 ft.</li>
+              <li><strong>Look up the pressure at −250 ft on the chart.</strong> 30.19"Hg.</li>
+            </ol>
+            <p class="scenario-takeaway"><strong>Answer: 30.19"Hg.</strong></p>
+          </div>
+
+          <h3 style="margin-top: 1.4rem;">Question type 3 — true altitude vs. indicated altitude</h3>
+          <p>The altimeter setting changes (or you fly into different pressure without updating it). The arithmetic is simple — the trap is the <em>direction</em>.</p>
+
+          <div class="scenario-box">
+            <p><strong>Worked Example 3:</strong> You're on final approach to an airport with a field elevation of 700 ft. The correct altimeter setting is 30.15"Hg. Your copilot accidentally changes the Kollsman window to 29.85"Hg. The altimeter now reads 700 ft. What is your true altitude?</p>
+            <ol class="scenario-questions">
+              <li><strong>Find the difference.</strong> 30.15 − 29.85 = 0.30"Hg.</li>
+              <li><strong>Convert to feet.</strong> 0.30 × 1,000 = 300 ft error.</li>
+              <li><strong>Determine direction.</strong> The new setting (29.85) is lower than the correct setting (30.15). A setting that is too low makes the altimeter under-read — it thinks the aircraft is lower than it really is — so the airplane is <em>higher</em> than the reading.</li>
+              <li><strong>Apply.</strong> Altimeter reads 700 ft. True altitude = 700 + 300 = <strong>1,000 ft.</strong></li>
+            </ol>
+            <p class="scenario-takeaway"><strong>Answer: 1,000 ft.</strong> The airplane is 300 ft above the runway, not on it. A pilot who trusts the altimeter will flare 300 ft too high.</p>
+          </div>
+
+          <p class="callout">
+            <strong>The direction trap in one sentence:</strong> if the Kollsman setting is <em>lower</em> than reality, the altimeter <em>under-reads</em> — the airplane is higher than the gauge says. If the setting is <em>higher</em> than reality, the altimeter <em>over-reads</em> — the airplane is lower than the gauge says. Students get this backwards because "higher/lower setting" and "higher/lower reading" seem like they should go together, and they don't.
+          </p>
+        </section>
+
+        <!-- Section: Mnemonics -->
+        <section id="mnemonics">
+          <h2>High to low · Low to high</h2>
+          <p>
+            The classic pilot mnemonics encode the direction rule. Get the image and you won't forget it.
+          </p>
+
+          <p style="text-align: center; font-family: var(--font-display); font-size: 1.25rem; padding: 0.9rem 1.2rem; background: var(--ink); color: var(--buff); letter-spacing: 0.04em; margin: 1.2rem 0;">
+            "From high to low, look out below."
+          </p>
+          <p>
+            When you fly from a region of <em>higher</em> pressure into a region of <em>lower</em> pressure without updating the setting, the altimeter reads <strong>higher than your true altitude</strong>. The airplane is actually <em>lower</em> than indicated. Near terrain or on an approach, this is the dangerous direction — you think you have clearance you don't have.
+          </p>
+
+          <p style="text-align: center; font-family: var(--font-display); font-size: 1.25rem; padding: 0.9rem 1.2rem; background: var(--sage); color: var(--buff); letter-spacing: 0.04em; margin: 1.2rem 0;">
+            "From low to high, clear the sky."
+          </p>
+          <p>
+            When you fly from <em>lower</em> pressure into <em>higher</em> pressure without updating, the altimeter reads <strong>lower than your true altitude</strong>. The airplane is actually <em>higher</em> than indicated. You won't hit terrain, but you could bust an assigned altitude going up.
+          </p>
+
+          <p>
+            The same mnemonic applies to temperature. <strong>Cold air is denser than standard — the altitude scale compresses — so the altimeter over-reads and the airplane is lower than indicated.</strong> Flying from warm air into cold air is "high to low, look out below": your true altitude is lower than indicated. Flying from cold air into warm air is "low to high, clear the sky": your true altitude is higher than indicated. (AIM §7-3-1, Cold Temperature Barometric Altimeter Errors)
+          </p>
+        </section>
+
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+
+          <div class="card-grid card-grid-3">
+            <article class="hazard-card" style="border-top-color: #0c2541;">
+              <span class="hazard-label">METAR</span>
+              <h3>Altimeter Setting Field</h3>
+              <p class="hazard-mnemonic">The <code>A</code> group in every METAR.</p>
+              <ul class="hazard-list">
+                <li>Format: <code>A2992</code> = 29.92"Hg</li>
+                <li>4-digit value; implied decimal after first two digits</li>
+                <li>Example: <code>A3015</code> = 30.15"Hg</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top-color: #5d6f3c;">
+              <span class="hazard-label">ATIS / D-ATIS</span>
+              <h3>Airport Information Broadcasts</h3>
+              <p class="hazard-mnemonic">Altimeter setting announced in every broadcast.</p>
+              <ul class="hazard-list">
+                <li>Updated approximately hourly with each new observation</li>
+                <li>Required before calling approach at a towered airport</li>
+                <li>Confirm the setting when checking in with ATC</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top-color: #d9a521;">
+              <span class="hazard-label">ASOS / AWOS</span>
+              <h3>Automated Stations</h3>
+              <p class="hazard-mnemonic">Continuous broadcasts at non-towered airports.</p>
+              <ul class="hazard-list">
+                <li>Frequency listed in Chart Supplement and on sectional charts</li>
+                <li>Call 10–15 nm out at non-towered airports to get current setting</li>
+                <li>AWOS may update less frequently than ASOS</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+
+          <div class="card-grid card-grid-3">
+            <article class="hazard-card hazard-zulu">
+              <span class="hazard-label">Red flag 01</span>
+              <h3>Rapid Pressure Change Along Route</h3>
+              <ul class="hazard-list">
+                <li>A fast-moving front or strong low can drop pressure 0.5"Hg or more in a few hours — a 500 ft error if not updated</li>
+                <li>Cross-country routes crossing pressure systems without mid-route ATIS updates</li>
+                <li>Fix: update the Kollsman at every ASOS call, ATC check-in, or ATIS within 100 nm</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Red flag 02</span>
+              <h3>Approach with Stale Setting</h3>
+              <ul class="hazard-list">
+                <li>A wrong altimeter setting shifts every altitude in the approach procedure — including MDA and DA — by the error amount</li>
+                <li>Especially dangerous at airports with minimal terrain clearance margins</li>
+                <li>Always obtain the current ATIS or ASOS setting before beginning an approach</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">Red flag 03</span>
+              <h3>Mountain Terrain + Pressure Drop</h3>
+              <ul class="hazard-list">
+                <li>"High to low, look out below" is most dangerous where terrain clearance is already tight</li>
+                <li>A 1.00"Hg error = 1,000 ft of altitude error — a significant margin near a ridge</li>
+                <li>Quick check: True alt ≈ Indicated + (correct setting − current Kollsman) × 1,000</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+
+          <details class="qa">
+            <summary>Q: What is an altimeter setting and why do you need it?</summary>
+            <p>An altimeter setting is the current sea-level pressure at a nearby reporting station, published in inches of mercury. It is dialed into the Kollsman window to calibrate the altimeter so that on the ground at the airport, the instrument reads the correct field elevation. Without a current setting, the altimeter measures the right <em>change</em> in pressure as you climb and descend, but its absolute reference is wrong — the reading is offset by whatever amount the actual sea-level pressure differs from standard 29.92"Hg. (FAA-H-8083-28)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Name and define the five types of altitude.</summary>
+            <p><strong>Indicated:</strong> what the altimeter reads with the current setting dialed in — the number you report to ATC. <strong>True:</strong> actual height above MSL — what matters for terrain clearance. <strong>Pressure:</strong> altitude with altimeter set to 29.92"Hg; used for performance calculations and Class A airspace. <strong>Density:</strong> pressure altitude corrected for non-standard temperature; governs actual aircraft performance. <strong>Absolute:</strong> height above ground level (AGL), computed by subtracting terrain elevation from true altitude. (FAA-H-8083-28)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Explain "high to low, look out below."</summary>
+            <p>When flying from a region of higher atmospheric pressure into a region of lower pressure — or when your Kollsman setting is higher than the actual current sea-level pressure — the altimeter reads <em>higher</em> than your true altitude. The airplane is actually lower than indicated. The mnemonic: flying high-to-low in pressure, look out below for terrain, because the altimeter is lying on the dangerous side. The mirror case — "low to high, clear the sky" — puts you higher than indicated, safer for terrain but risks an altitude bust upward. (AIM §7-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Altimeter setting is 30.19"Hg, field elevation is 1,500 ft. What is the station pressure?</summary>
+            <p>Look up 30.19"Hg on the standard atmosphere chart → corresponds to −250 ft. Add to field elevation: 1,500 + (−250) = 1,250 ft. Look up 1,250 ft on the chart → <strong>28.59"Hg</strong>. The station pressure is lower than the altimeter setting because the field is 1,500 ft above sea level — the column of air above the field is shorter, so there is less weight pressing down.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Station pressure is 29.12"Hg, field elevation is 1,000 ft. What altimeter setting makes the altimeter read correctly?</summary>
+            <p>Look up 29.12"Hg on the chart → corresponds to 750 ft. Subtract field elevation: 750 − 1,000 = −250 ft. Look up −250 ft on the chart → <strong>30.19"Hg</strong>. Setting the Kollsman to 30.19 tells the altimeter that today's sea level is at −250 ft on the standard scale — which is the correct virtual reference for today's above-standard pressure. On the ground, the altimeter will then read 1,000 ft.</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Correct setting is 30.15"Hg, pilot sets 29.85"Hg, altimeter reads 700 ft. What is the true altitude?</summary>
+            <p>Difference: 30.15 − 29.85 = 0.30"Hg → 300 ft error. The setting is too low, so the altimeter under-reads — the airplane is higher than indicated. True altitude: 700 + 300 = <strong>1,000 ft</strong>. The pilot who trusts the altimeter will flare 300 ft too high on final. Note: if the question were reversed (setting too high), the airplane would be lower than indicated — the dangerous direction near terrain.</p>
+          </details>
+
+          <!-- TODO: additional checkride question to be added by project author -->
+          <details class="qa">
+            <summary>Q: [Placeholder — additional question to be added]</summary>
+            <p>[TODO: project author has additional content to add here.]</p>
+          </details>
+
+        </section>
+
+        <!-- Section: Decision scenario -->
+        <section id="scenario">
+          <h2>Decision scenario</h2>
+          <p class="scenario-disclaimer">
+            <strong>Educational example only.</strong> Not for real flight planning. Real go/no-go decisions require official sources, current data, and your own pilot-in-command judgment.
+          </p>
+
+          <div class="scenario-box">
+            <p class="scenario-setup">
+              <strong>The setup:</strong> Cross-country VFR flight from a coastal airport (departure altimeter setting 30.15"Hg) over a 200 nm route that crosses a range of hills peaking at 3,800 ft MSL. Planned cruise altitude: 5,500 ft. Two hours in, you haven't updated the setting. You pick up ASOS 60 nm ahead: it reports 29.65"Hg. The hills are 30 nm ahead.
+            </p>
+
+            <p class="scenario-question"><strong>What questions should you be asking?</strong></p>
+
+            <ol class="scenario-questions">
+              <li><strong>How wrong is my altimeter right now?</strong> Setting changed from 30.15 to 29.65 — a drop of 0.50"Hg. That's 500 ft. Flying high-to-low, the altimeter over-reads — you're at 5,500 − 500 = <strong>5,000 ft true altitude</strong>, not 5,500.</li>
+              <li><strong>Do I have adequate terrain clearance?</strong> Hills peak at 3,800 ft MSL. True altitude 5,000 ft gives 1,200 ft of actual clearance — not the 1,700 ft the altimeter implied. VFR minimums don't enforce a specific number here, but your planned and assumed margin was significantly wrong.</li>
+              <li><strong>What do I do now?</strong> Update the Kollsman to 29.65"Hg immediately. The altimeter will drop to approximately 5,000 ft — your actual true altitude. If 5,000 ft gives insufficient margin over the hills ahead, climb <em>before</em> reaching the terrain, not while crossing it.</li>
+              <li><strong>What does this tell me about cross-country procedure?</strong> Update the altimeter setting at every opportunity. A 0.50"Hg error may be irrelevant over flat terrain — it is not irrelevant over mountains. The faster the pressure is changing, the more frequently you need a new setting.</li>
+            </ol>
+
+            <p class="scenario-takeaway">
+              The altimeter gave you a false sense of clearance. The fix is procedural: stay current on altimeter settings throughout the flight, not just at departure and arrival.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>The altimeter is a barometer.</strong> It measures pressure, not altitude. The Kollsman window tells it what sea-level pressure to assume. Accuracy depends entirely on how current that setting is.</li>
+              <li><strong>Five altitudes, one to fly.</strong> Indicated for ATC. True for terrain clearance. Pressure for performance calculations. Density for actual aircraft capability. Absolute (AGL) for obstacle and airspace floors.</li>
+              <li><strong>Standard atmosphere: 29.92"Hg / 15°C / 2°C per 1,000 ft.</strong> Every altimeter problem uses this as the reference. Memorize the chart (or at least the key entries near sea level) and work the two-step: look up the setting, add or subtract field elevation.</li>
+              <li><strong>"High to low, look out below."</strong> Pressure drops along the route → altimeter over-reads → you are lower than indicated. This is the dangerous direction. Update before reaching terrain.</li>
+              <li><strong>14 CFR §91.121 requires updates within 100 nm.</strong> Get a new setting from any station along the route whenever you're in range. On an approach, always use the current ATIS or ASOS — never fly an approach with a stale setting.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="density-altitude.html" class="concept-nav-link">← Density Altitude</a>
+          <span class="concept-nav-next">Weather Charts coming soon →</span>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

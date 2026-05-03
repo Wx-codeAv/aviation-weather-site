@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Density Altitude — CrosswindWX</title>
+  <meta name="description" content="What density altitude is and how to calculate it. Effects on engine power, takeoff roll, and climb rate. Real-world scenarios at hot and high-elevation airports. For PPL, IR, and commercial checkrides.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Density Altitude</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Performance planning</p>
+      <h1>Density <span class="accent">Altitude</span></h1>
+      <p class="lede">
+        Density altitude is the number that kills pilots who ignore it and humiliates those who underestimate it. On a hot summer afternoon at a high-elevation airport, your aircraft's engine, propeller, and wings are all operating as if they were thousands of feet higher than the field elevation suggests. The aircraft doesn't know what the altimeter says — it only knows how many air molecules it's working with. At 11,000 ft density altitude, a Cessna 172 that normally climbs at 700 fpm is producing less than 200. At 14,000 ft density altitude, it may not climb at all.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3c · IR.I.B.K3 · CA.I.C.K3c</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1d · .R2a</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-6B Ch. 11 · FAA-H-8083-25 §10 · FAA-H-8083-1</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~13 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#what">What density altitude is</a></li>
+          <li><a href="#calculation">How to calculate it</a></li>
+          <li><a href="#chart">Density altitude chart</a></li>
+          <li><a href="#performance">Effects on performance</a></li>
+          <li><a href="#humidity">Humidity's role</a></li>
+          <li><a href="#scenarios">Real-world scenarios</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: What DA is -->
+        <section id="what">
+          <h2>What density altitude is</h2>
+          <p>
+            <strong>Density altitude is pressure altitude corrected for non-standard temperature.</strong> More precisely, it is the altitude in the International Standard Atmosphere (ISA) at which the air density equals the actual air density at your location. It is an index of air density expressed in altitude units — not a reading from your altimeter.
+          </p>
+          <p>
+            Air density is reduced by three factors:
+          </p>
+
+          <div class="card-grid card-grid-3" style="margin: 1.2rem 0 1.8rem;">
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Factor 01</span>
+              <h3>Altitude</h3>
+              <p class="hazard-mnemonic">Higher altitude = lower atmospheric pressure = fewer air molecules per cubic foot.</p>
+              <ul class="hazard-list">
+                <li>The standard atmosphere loses ~1 inHg per 1,000 ft near sea level</li>
+                <li>A field at 8,000 ft MSL has roughly 75% of sea-level air density on a standard day</li>
+                <li>Captured by <em>pressure altitude</em> when altimeter is set to 29.92</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-tango">
+              <span class="hazard-label">Factor 02 · Most Controllable</span>
+              <h3>Temperature</h3>
+              <p class="hazard-mnemonic">Higher temperature = air expands = fewer molecules per cubic foot.</p>
+              <ul class="hazard-list">
+                <li>The difference between a cold morning and a hot afternoon at the same airport changes density altitude by thousands of feet</li>
+                <li>Standard sea-level temperature: 15°C (59°F) — anything higher increases DA</li>
+                <li>Every 1°C above standard adds ~120 ft of density altitude</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sage);">
+              <span class="hazard-label">Factor 03</span>
+              <h3>Humidity</h3>
+              <p class="hazard-mnemonic">Water vapor is lighter than dry air — high humidity reduces density.</p>
+              <ul class="hazard-list">
+                <li>Water vapor (H₂O, molecular weight 18) displaces heavier nitrogen and oxygen (avg. molecular weight 29)</li>
+                <li>Effect is modest but real — can add 200–500 ft to effective DA in very humid tropical air</li>
+                <li>Not captured in standard DA calculations — actual performance may be slightly worse than computed</li>
+              </ul>
+            </article>
+          </div>
+
+          <p>
+            The key insight: <strong>your aircraft's engine, propeller, and wings all respond to air density — not to what the altimeter reads.</strong> On a standard day, density altitude equals pressure altitude, which roughly equals field elevation at typical altimeter settings. On a hot day, density altitude can be 3,000–5,000 ft higher than field elevation. The aircraft doesn't know the altimeter setting. It only knows how many air molecules it's ingesting and flowing over its surfaces.
+          </p>
+
+          <p class="callout">
+            <strong>The standard atmosphere baseline:</strong> The ISA defines standard conditions as 29.92 inHg and 15°C (59°F) at sea level, with temperature decreasing at 2°C per 1,000 ft. On a standard day at a sea-level airport, density altitude = pressure altitude = 0 ft. All aircraft performance charts assume ISA conditions unless otherwise noted. A hot day at a low-elevation airport can produce a higher density altitude than a cold day at a high-elevation airport. (FAA-H-8083-25 §10-2)
+          </p>
+        </section>
+
+        <!-- Section: How to calculate it -->
+        <section id="calculation">
+          <h2>How to calculate density altitude</h2>
+          <p>
+            The calculation has four steps. Steps 1 and 2 give you pressure altitude; steps 3 and 4 give you density altitude. Work through them in order.
+          </p>
+
+          <h3>Step 1 — Calculate pressure altitude</h3>
+          <p>
+            Pressure altitude is the altitude your altimeter reads when set to 29.92 inHg. If you can set your altimeter to 29.92 and read it, you have pressure altitude directly. If not, use the formula:
+          </p>
+          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.95rem; padding: 0.9rem 1.3rem; margin: 0.8rem 0 1.2rem; border-radius: 2px; line-height: 1.9;">
+            PA = Field Elevation + (29.92 − Altimeter Setting) × 1,000
+          </div>
+          <p>
+            Each 0.01 inHg below 29.92 adds ~10 ft to PA. A setting of 29.62 (0.30 below standard) adds 300 ft to field elevation for PA. A setting <em>above</em> 29.92 subtracts from PA.
+          </p>
+
+          <h3>Step 2 — Find the ISA temperature at that pressure altitude</h3>
+          <p>
+            The standard atmosphere temperature decreases 2°C per 1,000 ft from a sea-level base of 15°C:
+          </p>
+          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.95rem; padding: 0.9rem 1.3rem; margin: 0.8rem 0 1.2rem; border-radius: 2px; line-height: 1.9;">
+            ISA Temp (°C) = 15 − (2 × Pressure Altitude in thousands of feet)
+          </div>
+          <p>
+            Examples: At 5,000 ft PA: ISA = 15 − 10 = 5°C. At 8,000 ft PA: ISA = 15 − 16 = −1°C. At sea level: ISA = 15°C.
+          </p>
+
+          <h3>Step 3 — Find the temperature deviation</h3>
+          <p>
+            Subtract ISA temperature from actual OAT. A positive result means you are above standard temperature — adverse conditions.
+          </p>
+          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.95rem; padding: 0.9rem 1.3rem; margin: 0.8rem 0 1.2rem; border-radius: 2px; line-height: 1.9;">
+            ΔT = OAT − ISA Temp
+          </div>
+
+          <h3>Step 4 — Calculate density altitude</h3>
+          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.95rem; padding: 0.9rem 1.3rem; margin: 0.8rem 0 0.8rem; border-radius: 2px; line-height: 1.9;">
+            DA = PA + (120 × ΔT)
+          </div>
+          <p>
+            The factor of 120 ft/°C is the slope of the standard atmosphere density-altitude relationship — valid across the altitude range of most GA operations.
+          </p>
+
+          <h3>Worked example — Las Vegas (KLAS) in summer</h3>
+          <div style="background: #fffaf0; border: 1px solid var(--rule); padding: 1.3rem 1.5rem; margin: 1rem 0 1.5rem;">
+            <p style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rust); margin: 0 0 0.8rem;">WORKED EXAMPLE · KLAS JUNE AFTERNOON</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem 2rem; font-size: 0.92rem;">
+              <div>
+                <p style="color: var(--sage); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; margin: 0 0 0.2rem;">GIVEN</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">Field elevation: <strong>2,180 ft MSL</strong></p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">OAT: <strong>40°C (104°F)</strong></p>
+                <p style="margin: 0; color: var(--ink);">Altimeter setting: <strong>29.82 inHg</strong></p>
+              </div>
+              <div>
+                <p style="color: var(--sage); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; margin: 0 0 0.2rem;">CALCULATE</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">PA = 2,180 + (29.92−29.82)×1,000 = <strong>2,280 ft</strong></p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">ISA = 15 − (2 × 2.28) = <strong>10.4°C</strong></p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">ΔT = 40 − 10.4 = <strong>+29.6°C</strong></p>
+                <p style="margin: 0; color: var(--rust); font-weight: 700;">DA = 2,280 + (120 × 29.6) = <strong>5,832 ft</strong></p>
+              </div>
+            </div>
+            <p style="margin: 0.8rem 0 0; font-size: 0.88rem; color: var(--ink-soft);">Las Vegas is a 2,180 ft airport that performs like a nearly 6,000 ft airport on a summer afternoon. Pilots who don't calculate density altitude before departing Las Vegas in June are doing preflight planning at the wrong airport.</p>
+          </div>
+
+          <h3>Rule of thumb</h3>
+          <p>
+            For quick mental math: <strong>each 1°C above ISA standard temperature adds approximately 120 ft of density altitude.</strong> On a day that is 25°C above standard, density altitude exceeds pressure altitude by 3,000 ft. This rule is accurate enough for a go/no-go sanity check but use the chart or full formula for actual performance planning.
+          </p>
+        </section>
+
+        <!-- Section: Density altitude chart -->
+        <section id="chart">
+          <h2>Density altitude chart</h2>
+          <p>
+            The graphical method uses a chart with OAT on the horizontal axis and pressure altitude on the vertical axis. Diagonal lines represent constant density altitudes. Find your OAT, go up to your pressure altitude, then read the density altitude from the nearest contour line. This is the method used in most POH performance charts.
+          </p>
+
+          <figure class="diagram">
+            <svg viewBox="0 0 740 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="da-chart-title">
+              <title id="da-chart-title">Density altitude chart. Horizontal axis shows outside air temperature from 0 to 45 degrees C. Vertical axis shows pressure altitude from 0 to 10,000 feet. Diagonal lines represent density altitude contours at 2,000 foot intervals from 2,000 to 12,000 feet. An ISA standard conditions line runs from lower left to upper right. A worked example point is marked at OAT 30 degrees C and pressure altitude 7,620 feet, reading approximately 11,200 feet density altitude.</title>
+              <rect width="740" height="400" fill="#fffaf0"/>
+
+              <!-- Plot area background -->
+              <rect x="100" y="40" width="600" height="290" fill="rgba(74,123,166,0.03)"/>
+
+              <!-- DA zone shading: above ISA is adverse (right of ISA line) -->
+              <!-- ISA line goes from (100,112) to (300,330); shade area to the right -->
+              <polygon points="300,330 700,330 700,134 300,330" fill="rgba(181,61,31,0.04)"/>
+              <polygon points="300,330 100,330 100,112 300,330" fill="rgba(74,123,166,0.04)"/>
+
+              <!-- Grid lines: pressure altitude every 2000 ft -->
+              <g stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="3,5" opacity="0.6">
+                <!-- PA=2000 → y=330-58=272 -->
+                <line x1="100" y1="272" x2="700" y2="272"/>
+                <!-- PA=4000 → y=330-116=214 -->
+                <line x1="100" y1="214" x2="700" y2="214"/>
+                <!-- PA=6000 → y=330-174=156 -->
+                <line x1="100" y1="156" x2="700" y2="156"/>
+                <!-- PA=8000 → y=330-232=98 -->
+                <line x1="100" y1="98" x2="700" y2="98"/>
+                <!-- PA=10000 → y=330-290=40 -->
+                <line x1="100" y1="40" x2="700" y2="40"/>
+              </g>
+
+              <!-- Grid lines: OAT every 10°C -->
+              <g stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="3,5" opacity="0.6">
+                <!-- OAT=10 → x=100+133=233 -->
+                <line x1="233" y1="40" x2="233" y2="330"/>
+                <!-- OAT=20 → x=100+267=367 -->
+                <line x1="367" y1="40" x2="367" y2="330"/>
+                <!-- OAT=30 → x=100+400=500 -->
+                <line x1="500" y1="40" x2="500" y2="330"/>
+                <!-- OAT=40 → x=100+533=633 -->
+                <line x1="633" y1="40" x2="633" y2="330"/>
+              </g>
+
+              <!-- ===== DENSITY ALTITUDE CONTOUR LINES ===== -->
+              <!-- DA=2000: (100,241) to (522,330) -->
+              <line x1="100" y1="241" x2="522" y2="330" stroke="#5d6f3c" stroke-width="1.5"/>
+              <!-- DA=4000: (100,194) to (700,321) -->
+              <line x1="100" y1="194" x2="700" y2="321" stroke="#5d6f3c" stroke-width="1.5"/>
+              <!-- DA=6000: (100,147) to (700,274) -->
+              <line x1="100" y1="147" x2="700" y2="274" stroke="#5d6f3c" stroke-width="1.5"/>
+              <!-- DA=8000: (100,101) to (700,227) -->
+              <line x1="100" y1="101" x2="700" y2="227" stroke="#d9a521" stroke-width="1.8"/>
+              <!-- DA=10000: (100,54) to (700,180) -->
+              <line x1="100" y1="54" x2="700" y2="180" stroke="#b53d1f" stroke-width="1.8"/>
+              <!-- DA=12000: (256,40) to (700,134) -->
+              <line x1="256" y1="40" x2="700" y2="134" stroke="#b53d1f" stroke-width="1.8" stroke-dasharray="6,3"/>
+
+              <!-- DA contour labels (right edge) -->
+              <text x="706" y="325" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c">2,000</text>
+              <text x="706" y="278" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c">4,000</text>
+              <text x="706" y="231" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c">6,000</text>
+              <text x="706" y="184" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#d9a521" font-weight="600">8,000</text>
+              <text x="706" y="137" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" font-weight="600">10,000</text>
+              <text x="706" y="99" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" font-weight="600">12,000</text>
+              <!-- DA label header -->
+              <text x="724" y="200" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em" transform="rotate(90,724,200)">DENSITY ALT (ft)</text>
+
+              <!-- ===== ISA STANDARD LINE ===== -->
+              <!-- From (100,112) at PA=7500/OAT=0°C to (300,330) at PA=0/OAT=15°C -->
+              <line x1="100" y1="112" x2="300" y2="330" stroke="#4a7ba6" stroke-width="2" stroke-dasharray="8,4"/>
+              <text x="180" y="238" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" transform="rotate(-45,180,238)" text-anchor="middle" font-style="italic">ISA standard</text>
+              <!-- Arrow indicating "above standard" side -->
+              <text x="420" y="288" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle" opacity="0.7">← above standard temperature</text>
+
+              <!-- ===== WORKED EXAMPLE: Aspen, OAT=30°C, PA=7,620 ft ===== -->
+              <!-- x=500, y=330-7620×0.029=109 ≈ 109 -->
+              <!-- Dotted crosshairs -->
+              <line x1="100" y1="109" x2="500" y2="109" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+              <line x1="500" y1="330" x2="500" y2="109" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+              <!-- Point -->
+              <circle cx="500" cy="109" r="5" fill="#b53d1f" stroke="#fffaf0" stroke-width="1.5"/>
+              <!-- Label box -->
+              <rect x="504" y="82" width="145" height="40" fill="rgba(181,61,31,0.1)" stroke="#b53d1f" stroke-width="1" rx="2"/>
+              <text x="577" y="95" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.04em">EXAMPLE: KASN</text>
+              <text x="577" y="107" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">OAT 30°C, PA 7,620 ft</text>
+              <text x="577" y="118" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" text-anchor="middle" font-weight="600">DA ≈ 11,200 ft</text>
+
+              <!-- ===== AXES ===== -->
+              <!-- X axis -->
+              <line x1="100" y1="330" x2="700" y2="330" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- Y axis -->
+              <line x1="100" y1="40" x2="100" y2="330" stroke="#0c2541" stroke-width="1.5"/>
+
+              <!-- X axis ticks and labels (OAT) -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="middle">
+                <line x1="100" y1="330" x2="100" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="100" y="348">0°C</text>
+                <text x="100" y="358" fill="#5d6f3c" font-size="8">32°F</text>
+
+                <line x1="233" y1="330" x2="233" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="233" y="348">10°C</text>
+                <text x="233" y="358" fill="#5d6f3c" font-size="8">50°F</text>
+
+                <line x1="367" y1="330" x2="367" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="367" y="348">20°C</text>
+                <text x="367" y="358" fill="#5d6f3c" font-size="8">68°F</text>
+
+                <line x1="500" y1="330" x2="500" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="500" y="348">30°C</text>
+                <text x="500" y="358" fill="#5d6f3c" font-size="8">86°F</text>
+
+                <line x1="633" y1="330" x2="633" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="633" y="348">40°C</text>
+                <text x="633" y="358" fill="#5d6f3c" font-size="8">104°F</text>
+
+                <line x1="700" y1="330" x2="700" y2="336" stroke="#0c2541" stroke-width="1"/>
+                <text x="700" y="348">45°C</text>
+                <text x="700" y="358" fill="#5d6f3c" font-size="8">113°F</text>
+              </g>
+
+              <!-- Y axis ticks and labels (PA) -->
+              <g font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="end">
+                <line x1="100" y1="330" x2="94" y2="330" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="333">0</text>
+
+                <line x1="100" y1="272" x2="94" y2="272" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="275">2,000</text>
+
+                <line x1="100" y1="214" x2="94" y2="214" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="217">4,000</text>
+
+                <line x1="100" y1="156" x2="94" y2="156" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="159">6,000</text>
+
+                <line x1="100" y1="98" x2="94" y2="98" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="101">8,000</text>
+
+                <line x1="100" y1="40" x2="94" y2="40" stroke="#0c2541" stroke-width="1"/>
+                <text x="90" y="43">10,000</text>
+              </g>
+
+              <!-- Axis titles -->
+              <text x="400" y="378" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">OUTSIDE AIR TEMPERATURE</text>
+              <text x="20" y="185" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em" transform="rotate(-90,20,185)">PRESSURE ALTITUDE (ft)</text>
+
+              <!-- Warning band for DA ≥ 8,000 -->
+              <rect x="100" y="40" width="600" height="187" fill="rgba(181,61,31,0.03)"/>
+              <text x="700" y="240" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f" text-anchor="end" opacity="0.7">← significant performance impact</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="398" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Density altitude chart. Enter at the bottom with outside air temperature; go straight up to your pressure altitude; read density altitude from the diagonal contour lines. The dashed blue ISA line shows standard-day conditions — points to the right are above-standard temperature (higher DA). Green contours (2,000–6,000 ft) indicate moderate impact; yellow and red contours (8,000–12,000 ft) indicate significant performance degradation. Example: Aspen, CO (KASN) at 30°C OAT and PA 7,620 ft reads approximately 11,200 ft density altitude.</figcaption>
+          </figure>
+        </section>
+
+        <!-- Section: Performance effects -->
+        <section id="performance">
+          <h2>Effects on aircraft performance</h2>
+          <p>
+            Density altitude degrades performance through three simultaneous mechanisms — engine, propeller, and aerodynamic — that compound each other. The resulting numbers are not intuitive until you've worked through them once.
+          </p>
+
+          <h3>1. Engine power (normally aspirated)</h3>
+          <p>
+            A normally aspirated (non-turbocharged) piston engine ingests a fixed volume of air per revolution. At high density altitude, that same volume contains fewer air molecules — less oxygen — so less fuel can be burned, and less power is produced. At full throttle, power output is roughly proportional to air density, which is proportional to atmospheric pressure.
+          </p>
+          <ul>
+            <li>At sea level, standard day: 100% rated power available at full throttle</li>
+            <li>At 5,000 ft DA: roughly 83% of rated power</li>
+            <li>At 8,000 ft DA: roughly 74% of rated power</li>
+            <li>At 12,000 ft DA: roughly 63% of rated power</li>
+          </ul>
+          <p>
+            A turbocharged engine maintains manifold pressure by compressing incoming air, so it can sustain near-rated power up to its <strong>critical altitude</strong> (the altitude above which the turbocharger can no longer maintain a specified manifold pressure). Above the critical altitude, a turbocharged engine loses power like a normally aspirated one. Turbonormalized engines maintain sea-level pressure to their critical altitude; turbocharged engines may actually maintain higher-than-sea-level manifold pressure at low altitude if the controller allows it.
+          </p>
+
+          <h3>2. Propeller thrust</h3>
+          <p>
+            A propeller blade is an airfoil. At high density altitude, the propeller generates less thrust for the same RPM because the mass of air accelerated per revolution is reduced. Additionally, a fixed-pitch propeller set for cruise efficiency at low altitude will be operating at an <strong>overpitched</strong> condition at a high-DA airport — the engine reaches full throttle before reaching the expected RPM, further reducing power development. (This is one reason high-altitude airports benefit from constant-speed propellers, which optimize pitch to maintain on-speed RPM.)
+          </p>
+
+          <h3>3. Aerodynamic lift — higher TAS, longer ground roll</h3>
+          <p>
+            The wings generate lift based on the air density and the true airspeed (TAS). To achieve the same lift at high density altitude, TAS must be higher. Your airspeed indicator reads indicated airspeed (IAS), which is based on the pressure difference between pitot and static ports — it is proportional to the actual dynamic pressure and therefore to the actual aerodynamic forces. This means:
+          </p>
+          <ul>
+            <li><strong>Rotate and liftoff still occur at the same indicated airspeed (Vr, Vlof).</strong> This is correct — you need the same IAS to generate sufficient lift regardless of density altitude.</li>
+            <li><strong>But the same IAS corresponds to a higher TAS at high density altitude.</strong> At 8,000 ft DA, the TAS at rotation is roughly 14–15% higher than at sea level for the same IAS. A C172 rotating at 55 kt IAS at sea level is moving at ~55 kt TAS. At 8,000 ft DA, 55 kt IAS corresponds to approximately 63 kt TAS.</li>
+            <li><strong>Higher TAS means more runway required to accelerate to rotation speed.</strong> The takeoff roll increases because the aircraft must travel further (at higher ground speed) to reach the required TAS. This compounds with the engine power reduction: less thrust available, more ground speed required, dramatically longer takeoff roll.</li>
+          </ul>
+
+          <h3>Quantitative takeoff impact</h3>
+          <div style="overflow-x: auto; margin: 1rem 0 1.5rem;">
+            <table class="atmo-table" style="max-width: 100%; width: 100%;">
+              <thead>
+                <tr>
+                  <th>Density Altitude</th>
+                  <th>Engine Power (NA)</th>
+                  <th>Typical C172 Ground Roll</th>
+                  <th>50-ft Obstacle Distance</th>
+                  <th>Typical Rate of Climb</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sea level</td>
+                  <td>100%</td>
+                  <td>~900 ft</td>
+                  <td>~1,550 ft</td>
+                  <td>~730 fpm</td>
+                </tr>
+                <tr>
+                  <td>4,000 ft</td>
+                  <td>~87%</td>
+                  <td>~1,200 ft</td>
+                  <td>~2,200 ft</td>
+                  <td>~530 fpm</td>
+                </tr>
+                <tr style="background: rgba(217,165,33,0.08);">
+                  <td>8,000 ft</td>
+                  <td>~74%</td>
+                  <td>~1,700 ft</td>
+                  <td>~3,200 ft</td>
+                  <td>~330 fpm</td>
+                </tr>
+                <tr style="background: rgba(181,61,31,0.07);">
+                  <td>10,000 ft</td>
+                  <td>~68%</td>
+                  <td>~2,200 ft</td>
+                  <td>~4,400 ft</td>
+                  <td>~200 fpm</td>
+                </tr>
+                <tr style="background: rgba(181,61,31,0.12);">
+                  <td>12,000 ft</td>
+                  <td>~63%</td>
+                  <td>~2,900 ft</td>
+                  <td>~6,200+ ft</td>
+                  <td>&lt;100 fpm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--ink-soft);">Approximate values for a C172SP at max gross weight. Actual values depend on aircraft, weight, wind, and runway surface. Always use the actual aircraft POH performance charts for departure planning — these figures illustrate the trend, not a substitute for POH data.</p>
+
+          <p class="callout">
+            <strong>The "impossible" departure scenario:</strong> If the POH performance chart shows that your required takeoff distance exceeds the available runway, or that the single-engine climb gradient in a twin is below the required obstacle clearance gradient, the departure is not permissible at that density altitude and weight. Reducing weight is the primary tool available — fuel, baggage, and passengers. Departing at night or early morning when temperatures are lowest is the second. Waiting for conditions to improve is always an option. Departing anyway is not. (FAA-H-8083-1 §5)
+          </p>
+        </section>
+
+        <!-- Section: Humidity -->
+        <section id="humidity">
+          <h2>Humidity's role</h2>
+          <p>
+            Humidity is the least intuitive of the three density-altitude factors because it seems like "heavier" wet air should be denser — but the opposite is true.
+          </p>
+          <p>
+            Air is a mixture of gases. Dry air is predominantly nitrogen (N₂, molecular weight 28) and oxygen (O₂, molecular weight 32), with a blended average molecular weight of approximately 29 g/mol. Water vapor (H₂O) has a molecular weight of only 18 g/mol. When water vapor molecules replace nitrogen and oxygen molecules in a fixed volume of air, the overall density of that air decreases — lighter molecules have taken the place of heavier ones.
+          </p>
+          <p>
+            The practical magnitude: at a dewpoint of 70°F (21°C) and temperature of 90°F (32°C), the humidity effect adds roughly 200–500 ft to the density altitude calculated by the standard formula. This is real but modest compared to the temperature and altitude effects. The standard density altitude formula does not account for humidity — it assumes dry air. In very humid conditions (Gulf Coast summer, tropical airports), actual performance may be slightly worse than the formula predicts.
+          </p>
+          <p>
+            <strong>Rule for planning:</strong> Do not add a fixed humidity correction to your density altitude calculation — the effect is too variable and the standard formula is what the POH performance charts are based on. Instead, treat the standard DA calculation as the minimum estimate; if conditions are very humid, plan conservatively. High humidity is an additional argument for using the more conservative end of your performance estimates.
+          </p>
+        </section>
+
+        <!-- Section: Scenarios -->
+        <section id="scenarios">
+          <h2>Real-world scenarios</h2>
+          <p>
+            Density altitude accidents follow a consistent pattern: the pilot computes nothing, or computes incorrectly, and discovers the problem on the takeoff roll when it's too late. The three airport scenarios below are representative of real conditions that regularly kill GA pilots.
+          </p>
+
+          <h3>Scenario A — Mountain airport in summer (Aspen, CO)</h3>
+          <div style="background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin: 0.8rem 0 1.4rem;">
+            <p style="margin: 0 0 0.5rem; font-size: 0.92rem; color: var(--ink);"><strong>KASN (Aspen):</strong> Field elevation 7,820 ft · Short runways (7,004 ft longest) · Surrounded by terrain</p>
+            <p style="margin: 0 0 0.5rem; font-size: 0.92rem; color: var(--ink);">July afternoon: OAT 30°C (86°F) · Altimeter 29.62 inHg (low pressure day)</p>
+            <p style="margin: 0; font-size: 0.92rem; color: var(--ink);">PA = 7,820 + (29.92−29.62)×1,000 = <strong>8,120 ft</strong> · ISA = 15−16.2 = −1.2°C · ΔT = +31.2°C</p>
+            <p style="margin: 0.3rem 0 0; font-size: 0.95rem; color: var(--rust); font-weight: 700;">DA = 8,120 + (120×31.2) = <strong>~11,860 ft</strong></p>
+          </div>
+          <p>
+            A C172 operating at 11,860 ft density altitude has roughly 64% of sea-level power and a climb rate below 150 fpm. The runway is 7,004 ft with a valley wall immediately beyond the departure end. Numerous accidents at Aspen and similar mountain airports follow the same sequence: heavy aircraft, hot afternoon, short runway, inadequate climb rate after liftoff. The departure is often "possible" — the aircraft gets airborne — but the climb rate is insufficient to clear terrain, or a loss of engine power on departure leaves no options.
+          </p>
+
+          <h3>Scenario B — Low-elevation desert airport (Phoenix / Las Vegas)</h3>
+          <p>
+            Pilots familiar with low-elevation airports in the eastern U.S. often fail to compute density altitude when operating in the desert Southwest because the field elevation is modest. Phoenix Sky Harbor (KPHX) is at 1,135 ft MSL — barely 1,000 ft. On a typical July afternoon (OAT 43°C/109°F, altimeter 29.92):
+          </p>
+          <div style="background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin: 0.8rem 0 1.4rem;">
+            <p style="margin: 0 0 0.3rem; font-size: 0.92rem; color: var(--ink);">PA = 1,135 ft · ISA at 1,135 ft = 15−2.27 = 12.73°C · ΔT = 43−12.73 = +30.27°C</p>
+            <p style="margin: 0; font-size: 0.95rem; color: var(--rust); font-weight: 700;">DA = 1,135 + (120×30.27) = <strong>~4,770 ft</strong></p>
+          </div>
+          <p>
+            Phoenix is effectively a 4,800 ft airport on a summer afternoon — not extreme, but enough to meaningfully extend takeoff roll and reduce climb rate in an underpowered or heavily loaded aircraft. For a light aircraft at maximum gross weight, this is the difference between a comfortable departure and one that uses the full runway length.
+          </p>
+
+          <h3>Scenario C — The "it felt fine last time" trap</h3>
+          <p>
+            A pilot operated the same aircraft out of the same mountain airport in the spring (cool temperatures, low density altitude) without incident. Returning in August with a full load of passengers on a hot afternoon, they apply the same "it worked before" reasoning. The conditions are fundamentally different — density altitude may be 4,000–5,000 ft higher than the spring visit — but the runway looks the same. The aircraft begins the takeoff roll and the pilot notices it's slower to accelerate than usual; the departure end of the runway approaches rapidly. This scenario accounts for a disproportionate share of density altitude accidents.
+          </p>
+          <p>
+            <strong>The checklist item that prevents this:</strong> compute density altitude before every departure at a high-elevation or hot-weather airport, regardless of how many successful departures you have from the same location. Use the POH performance charts with the actual density altitude, actual weight, and actual wind. If the numbers don't support the departure, the departure doesn't happen.
+          </p>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+
+          <details class="qa">
+            <summary>Q: What is density altitude?</summary>
+            <p>Density altitude is pressure altitude corrected for non-standard temperature — it is the altitude in the standard atmosphere at which the air density equals the actual air density at your location. High density altitude means thin air and reduced aircraft performance. On a standard day, density altitude equals pressure altitude. For every 1°C the actual OAT exceeds the ISA standard temperature for that pressure altitude, density altitude increases by approximately 120 ft. (FAA-H-8083-25 §10-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How do you calculate density altitude?</summary>
+            <p>Four steps: (1) Calculate pressure altitude — field elevation plus (29.92 minus altimeter setting) times 1,000. (2) Calculate ISA temperature at that pressure altitude — 15°C minus 2°C per thousand feet of PA. (3) Find the temperature deviation — OAT minus ISA temp. (4) DA = PA + (120 × temperature deviation). Alternatively, read the DA directly from the density altitude chart using PA and OAT as inputs. (FAA-H-8083-25 §10-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the ISA standard temperature at 6,000 ft?</summary>
+            <p>ISA temperature = 15°C − (2°C × 6) = 15 − 12 = <strong>3°C</strong>. The standard lapse rate in the troposphere is 2°C per 1,000 ft. Sea-level standard temperature is 15°C (59°F). Memorize the formula: ISA (°C) = 15 − 2 × (altitude in thousands of feet). (FAA-H-8083-25 §10-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How does high density altitude affect a normally aspirated engine?</summary>
+            <p>A normally aspirated engine ingests a fixed volume of air per cycle. At high density altitude, that volume contains fewer air molecules — less oxygen — so less fuel can be burned per cycle. Power output drops roughly in proportion to air density. At 8,000 ft density altitude, a normally aspirated engine produces approximately 74% of its sea-level rated power at full throttle. The engine makes full intake noise and feels like it's working, but the actual horsepower and thrust are significantly reduced. (FAA-H-8083-25 §10-4)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why does density altitude affect takeoff roll even though rotation still occurs at the same indicated airspeed?</summary>
+            <p>Indicated airspeed is based on dynamic pressure, which measures the aerodynamic forces on the wing regardless of altitude. Rotation occurs at the same IAS because the wing needs the same aerodynamic force to lift off. However, at high density altitude, the same IAS corresponds to a higher <em>true airspeed</em> (TAS) — roughly 2% more TAS per 1,000 ft. More TAS means higher groundspeed at rotation, which means more runway is required to accelerate to that groundspeed. This combines with reduced engine power and propeller efficiency, both of which slow acceleration. The result: dramatically longer takeoff ground rolls at high density altitude even though the rotation IAS is unchanged. (FAA-H-8083-25 §10-5)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Does humidity increase or decrease density altitude? Why?</summary>
+            <p>Humidity <em>increases</em> density altitude — humid air is less dense than dry air at the same temperature and pressure. This is counterintuitive. Water vapor (H₂O, molecular weight 18) is lighter than the nitrogen and oxygen it displaces in a fixed volume of air (average molecular weight ~29). When moisture content is high, more of the air volume is occupied by lighter water vapor molecules, reducing overall density. The standard density altitude formula assumes dry air; actual performance in high humidity may be slightly worse than calculated. The effect is modest (typically 200–500 ft) but is an additional margin of conservatism. (AC 00-6B §11; FAA-H-8083-25 §10-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: You're departing a 5,500 ft elevation airport. OAT is 35°C, altimeter setting is 29.62. What is the approximate density altitude?</summary>
+            <p>Step 1: PA = 5,500 + (29.92 − 29.62) × 1,000 = 5,500 + 300 = <strong>5,800 ft</strong>. Step 2: ISA at 5,800 ft = 15 − (2 × 5.8) = 15 − 11.6 = <strong>3.4°C</strong>. Step 3: ΔT = 35 − 3.4 = <strong>31.6°C</strong>. Step 4: DA = 5,800 + (120 × 31.6) = 5,800 + 3,792 = <strong>~9,600 ft</strong>. Performance should be planned as if at 9,600 ft on a standard day.</p>
+          </details>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>Density altitude is not on any instrument.</strong> Your altimeter reads pressure altitude (with 29.92 set), not density altitude. Temperature is the variable that separates them — and the variable you have no control over in flight.</li>
+              <li><strong>The formula: DA = PA + 120 × (OAT − ISA).</strong> Where ISA = 15 − 2 × (PA in thousands of feet). Each degree Celsius above standard adds ~120 ft to density altitude. On a day 30°C above standard, DA exceeds PA by 3,600 ft.</li>
+              <li><strong>Three systems all degrade simultaneously.</strong> High DA costs you engine power (less oxygen per cylinder), propeller thrust (less air mass per revolution), and increases ground roll (higher TAS required at same rotation IAS). The effects compound — it's not one degradation, it's three stacked on top of each other.</li>
+              <li><strong>Low elevation does not mean low density altitude.</strong> Phoenix at 1,135 ft behaves like a 4,800 ft airport on a July afternoon. The elevation printed on the sectional is irrelevant to performance — calculate DA for the actual conditions.</li>
+              <li><strong>Humid air is less dense than dry air at the same conditions.</strong> Water vapor is lighter than the nitrogen and oxygen it displaces. The standard DA formula assumes dry air; actual performance in high humidity is marginally worse. Add conservatism, not a fixed correction.</li>
+              <li><strong>Use the POH performance charts.</strong> The density altitude formula gives you the input; the POH charts give you the output (takeoff roll, obstacle clearance distance, rate of climb). If the numbers don't support the departure at your actual DA and weight, the answer is to reduce weight or wait — not to hope for the best.</li>
+              <li><strong>"It worked last time" is not a density altitude calculation.</strong> The same airport on a different day at a different temperature is a different departure. Calculate for today's conditions, today's weight, and today's aircraft.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="winds-aloft-jet-stream.html" class="concept-nav-link">← Winds Aloft &amp; Jet Stream</a>
+          <a href="altimetry.html" class="concept-nav-link">Altimetry →</a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

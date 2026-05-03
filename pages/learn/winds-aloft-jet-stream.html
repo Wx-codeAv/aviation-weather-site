@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Winds Aloft &amp; the Jet Stream — CrosswindWX</title>
+  <meta name="description" content="Decoding the FB winds and temperatures aloft forecast — including the high-wind encoding trap. The polar jet stream, CAT zones, tropopause, and how to use winds aloft for altitude selection and fuel planning.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Winds Aloft &amp; the Jet Stream</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Upper-level weather</p>
+      <h1>Winds Aloft &amp; the <span class="accent">Jet Stream</span></h1>
+      <p class="lede">
+        The winds at altitude are not a slight variation on the surface wind — they are a completely different phenomenon with speeds that can top 200 knots and directions that have nothing to do with what's on the ground. Misreading a winds aloft forecast can leave you with 30 extra minutes of fuel burn and a headwind you didn't plan for. Getting it right means selecting the altitude that cuts an hour off your trip, correctly identifying the freezing level before departure, and knowing exactly where the jet stream's invisible CAT zones are sitting on your route. The examiner will ask you to decode an FB entry. The instrument student will use this product every preflight.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K2f · IR.I.B.K2e,f · CA.I.C.K2e,f</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-45H §4 · AC 00-6B Ch. 14 · FAA-H-8083-25 §12-20</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~14 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#overview">What the FB is</a></li>
+          <li><a href="#format">Format &amp; decoding</a></li>
+          <li><a href="#encoding">Three encoding rules</a></li>
+          <li><a href="#jetstream">The jet stream</a></li>
+          <li><a href="#tropopause">The tropopause</a></li>
+          <li><a href="#planning">Using winds aloft</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: What the FB is -->
+        <section id="overview">
+          <h2>What the FB is</h2>
+          <p>
+            The <strong>Winds and Temperatures Aloft Forecast (FB)</strong> is the text product that gives forecast wind direction, wind speed, and air temperature at specific altitudes above selected stations across the U.S. It is issued twice daily (based on 00Z and 12Z model runs) and comes in three valid-time versions: 6-hour, 12-hour, and 24-hour forecasts. The National Weather Service produces it; it's accessed through aviationweather.gov and most EFB apps.
+          </p>
+          <p>
+            The product has two primary uses: planning which altitude to fly (to find the best headwind–tailwind–altitude tradeoff), and finding the freezing level (the altitude at which temperature crosses 0°C). Both uses require being able to decode the alphanumeric encoding correctly — including the traps.
+          </p>
+
+          <h3>Forecast altitudes</h3>
+          <p>
+            The FB covers these standard altitudes: <strong>3,000 · 6,000 · 9,000 · 12,000 · 18,000 · 24,000 · 30,000 · 34,000 · 39,000 ft MSL</strong>, with some products extending to 45,000 and 53,000 ft for high-altitude planning. Two built-in limitations matter for preflight:
+          </p>
+          <ul>
+            <li><strong>No wind reported within 1,500 ft of station elevation.</strong> High-elevation stations (Denver, Albuquerque, Salt Lake City) have blank entries at the lowest altitude levels — the forecast model doesn't produce reliable surface-layer winds. A blank entry doesn't mean calm; it means the level is too close to terrain at that station to be meaningful.</li>
+            <li><strong>No temperature reported at 3,000 ft MSL.</strong> Temperature is provided starting at 6,000 ft.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>FB vs. GFA winds:</strong> The text FB gives numeric values you can directly plan against. The Graphical Forecast for Aviation (GFA) on aviationweather.gov offers the same data as wind barb overlays at selectable altitude slices — useful for seeing the big picture (where the jet stream axis is, which way the wind gradient is running) but the FB numbers are what you use for actual groundspeed calculations. Use both: GFA for situational awareness, FB for the numbers.
+          </p>
+        </section>
+
+        <!-- Section: Format and decoding -->
+        <section id="format">
+          <h2>Format &amp; decoding</h2>
+          <p>
+            Each wind/temperature entry is encoded as a <strong>4-digit group</strong> (wind only, used at 3,000 ft) or a <strong>6- to 7-character group</strong> (wind plus temperature, used at 6,000 ft and above). The structure:
+          </p>
+
+          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.88rem; padding: 1rem 1.2rem; margin: 1rem 0 1.4rem; line-height: 1.9; border-radius: 2px;">
+            <span style="color: var(--sun); letter-spacing: 0.1em;">DD</span><span style="color: #a8d8a8; letter-spacing: 0.1em;">SS</span><span style="color: #f9cfc6; letter-spacing: 0.1em;">±TT</span>
+            <br>
+            <span style="color: var(--sun);">DD</span> = wind direction in tens of degrees (23 = 230°)
+            <br>
+            <span style="color: #a8d8a8;">SS</span> = wind speed in knots (18 = 18 kt)
+            <br>
+            <span style="color: #f9cfc6;">±TT</span> = temperature in °C (+03 = +3°C · -14 = -14°C)
+          </div>
+
+          <p>
+            A worked example — the kind of entry an examiner puts in front of you:
+          </p>
+
+          <div style="overflow-x: auto; margin: 1rem 0 1.8rem;">
+            <table class="atmo-table" style="max-width: 100%; width: 100%;">
+              <thead>
+                <tr>
+                  <th colspan="5" style="text-align: left; font-family: var(--font-mono); letter-spacing: 0.06em;">
+                    FD WINDS/TEMPS ALOFT FORECAST · DATA BASED ON 121200Z · VALID 121800Z<br>
+                    TEMPS NEG ABV 24000
+                  </th>
+                </tr>
+                <tr>
+                  <th>Alt</th>
+                  <th>Encoded</th>
+                  <th>Direction</th>
+                  <th>Speed</th>
+                  <th>Temp (°C)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>3,000 ft</td>
+                  <td><code>2313</code></td>
+                  <td>230°</td>
+                  <td>13 kt</td>
+                  <td>— (not reported)</td>
+                </tr>
+                <tr>
+                  <td>6,000 ft</td>
+                  <td><code>2318+03</code></td>
+                  <td>230°</td>
+                  <td>18 kt</td>
+                  <td>+3°C</td>
+                </tr>
+                <tr>
+                  <td>9,000 ft</td>
+                  <td><code>2724-01</code></td>
+                  <td>270°</td>
+                  <td>24 kt</td>
+                  <td>−1°C  ← freezing level near here</td>
+                </tr>
+                <tr>
+                  <td>12,000 ft</td>
+                  <td><code>2836-08</code></td>
+                  <td>280°</td>
+                  <td>36 kt</td>
+                  <td>−8°C</td>
+                </tr>
+                <tr>
+                  <td>18,000 ft</td>
+                  <td><code>2945-22</code></td>
+                  <td>290°</td>
+                  <td>45 kt</td>
+                  <td>−22°C</td>
+                </tr>
+                <tr>
+                  <td>24,000 ft</td>
+                  <td><code>3054-35</code></td>
+                  <td>300°</td>
+                  <td>54 kt</td>
+                  <td>−35°C</td>
+                </tr>
+                <tr style="background: rgba(181,61,31,0.07);">
+                  <td>30,000 ft</td>
+                  <td><code>306648</code></td>
+                  <td>300°</td>
+                  <td>66 kt</td>
+                  <td>−48°C  ← negative implied (TEMPS NEG ABV 24000)</td>
+                </tr>
+                <tr style="background: rgba(181,61,31,0.07);">
+                  <td>34,000 ft</td>
+                  <td><code>307254</code></td>
+                  <td>300°</td>
+                  <td>72 kt</td>
+                  <td>−54°C</td>
+                </tr>
+                <tr style="background: rgba(181,61,31,0.07);">
+                  <td>39,000 ft</td>
+                  <td><code>308059</code></td>
+                  <td>300°</td>
+                  <td>80 kt</td>
+                  <td>−59°C</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            Notice the header line: <strong>TEMPS NEG ABV 24000.</strong> At FL240 and above, all temperatures are below freezing. To save space in the encoded group, the negative sign is dropped — the two-digit temperature number is understood to be negative. At 30,000 ft, the "48" in <code>306648</code> means −48°C, not +48°C. Missing this turns a coherent temperature profile into nonsense.
+          </p>
+        </section>
+
+        <!-- Section: Three encoding rules -->
+        <section id="encoding">
+          <h2>Three encoding rules you must know</h2>
+
+          <h3>Rule 1 — Calm or light and variable (< 5 kt)</h3>
+          <p>
+            Encoded as <strong><code>9900</code></strong> with no temperature appended. The "99" in the direction field is the flag that tells you this is not a real wind direction. If you try to decode 990° as a direction — or 00 as a speed — you'll get nonsense. When you see 9900, the answer is: winds are calm or less than 5 kt at that altitude.
+          </p>
+
+          <h3>Rule 2 — Wind speed ≥ 100 knots (the high-wind encoding trap)</h3>
+          <p>
+            This is the encoding rule that produces the most exam errors. When forecast wind speed is <strong>100 knots or greater:</strong>
+          </p>
+          <ul>
+            <li><strong>Add 50 to the two-digit direction group</strong> (the direction in tens of degrees)</li>
+            <li><strong>Subtract 100 from the speed</strong> (so a two-digit speed remains)</li>
+          </ul>
+
+          <div style="border: 2px solid var(--rust); border-radius: 4px; background: #fffaf0; padding: 1.2rem 1.4rem; margin: 1rem 0 1.4rem;">
+            <p style="font-family: var(--font-display); font-size: 0.9rem; letter-spacing: 0.08em; color: var(--rust); margin: 0 0 0.8rem;">HIGH-WIND ENCODING — WORKED EXAMPLE</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--sage); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.1em;">Actual wind</p>
+                <p style="margin: 0; color: var(--ink);">From <strong>250°</strong> at <strong>135 kt</strong>, −52°C</p>
+              </div>
+              <div>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--sage); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.1em;">Encoding steps</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">Direction: 25 + 50 = <strong>75</strong></p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">Speed: 135 − 100 = <strong>35</strong></p>
+                <p style="margin: 0; font-family: var(--font-mono); font-size: 1rem; color: var(--rust);">→ encoded: <strong>753552</strong></p>
+              </div>
+              <div>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--sage); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.1em;">Decoding steps</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">First two digits 75 ≥ 50 → high-wind flag</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">Direction: 75 − 50 = 25 → <strong>250°</strong></p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">Speed: 35 + 100 = <strong>135 kt</strong></p>
+                <p style="margin: 0; color: var(--ink);">Temp: 52 → implied negative = <strong>−52°C</strong></p>
+              </div>
+              <div>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--sage); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.1em;">The trap</p>
+                <p style="margin: 0; color: var(--rust);">Decoded as <code>7535</code> without recognizing the high-wind flag: 750° direction (impossible) and 35 kt speed. Any direction encoding > 36 (360°) is the high-wind flag. Subtract 50 and add 100 to speed.</p>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            The practical trigger: <strong>any time the first two digits of the encoded wind group are 45 or higher, you are looking at a high-wind encoding.</strong> (Direction codes run 01–36 for 010°–360°; 37–49 are not valid directions and don't appear; 50–86 are the high-wind codes for 010°–360°; the range 87–99 is not used for direction, with 99 reserved for calm.) In practice, encountering a first-two-digit value above 36 is the reliable flag.
+          </p>
+
+          <h3>Rule 3 — Maximum reportable speed</h3>
+          <p>
+            Wind speeds of 200 knots or greater are encoded as <strong>199 kt</strong> — the maximum value the format can represent after the high-wind encoding rules are applied. A forecast showing 199 kt means "200 kt or higher." This is rare outside of extreme jet stream events but appears occasionally in winter at high altitudes over the central and eastern U.S.
+          </p>
+        </section>
+
+        <!-- Section: The jet stream -->
+        <section id="jetstream">
+          <h2>The jet stream</h2>
+          <p>
+            The jet stream is a narrow, fast-moving ribbon of air typically located near the tropopause, driven by large horizontal temperature gradients in the upper atmosphere. Where warm tropical air and cold polar air meet at altitude, the temperature contrast generates a pressure gradient that accelerates upper-level winds into a concentrated band — the jet. In the Northern Hemisphere the jet flows primarily west to east, following a wavy path (Rossby waves) that migrates north and south with the seasons.
+          </p>
+
+          <h3>The two North American jets</h3>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.2rem 0 1.8rem;">
+            <article class="hazard-card" style="border-top: 4px solid var(--sky);">
+              <span class="hazard-label">Primary</span>
+              <h3>Polar Jet Stream</h3>
+              <p class="hazard-mnemonic">The boundary between polar and mid-latitude air masses at altitude.</p>
+              <ul class="hazard-list">
+                <li><strong>Altitude:</strong> ~FL250–FL400, varies widely</li>
+                <li><strong>Typical speed:</strong> 50–150 kt; 200+ kt in winter</li>
+                <li><strong>Winter:</strong> Dips far south, affecting the contiguous U.S.; strongest winds</li>
+                <li><strong>Summer:</strong> Retreats to Canada; weaker; more zonal (straight east-west)</li>
+                <li><strong>Significance:</strong> Drives surface cyclone development; associated with cold fronts; primary source of CAT for domestic flights</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid var(--sun);">
+              <span class="hazard-label">Secondary</span>
+              <h3>Subtropical Jet Stream</h3>
+              <p class="hazard-mnemonic">The boundary between tropical and subtropical air at higher altitude.</p>
+              <ul class="hazard-list">
+                <li><strong>Altitude:</strong> ~FL350–FL450</li>
+                <li><strong>Typical speed:</strong> 50–100 kt; strongest in winter</li>
+                <li><strong>Position:</strong> More stable at ~25–35°N latitude; less wavy than the polar jet</li>
+                <li><strong>Summer:</strong> Weakens significantly or retreats poleward</li>
+                <li><strong>Significance:</strong> Relevant for transcontinental flights at high altitude; CAT hazard near its core; less influence on surface weather than the polar jet</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3>Jet stream structure and CAT zones</h3>
+          <p>
+            The jet stream is not a uniform pipe of fast air. It has a complex three-dimensional structure with distinct zones that matter for flight planning:
+          </p>
+          <ul>
+            <li><strong>Jet core:</strong> The fastest air — concentrated in a ribbon typically 100–300 miles wide and 3,000–5,000 ft deep. Paradoxically, the core itself is often the smoothest part because the wind is fast but relatively uniform. Flying directly in the core provides maximum tailwind with moderate CAT risk.</li>
+            <li><strong>Lateral flanks (north and south edges):</strong> The transition from the fast jet core to the slower surrounding air creates intense horizontal wind shear. These flanks are the primary locations for Kelvin-Helmholtz instability and CAT. The shear zone on the poleward (north) flank is typically stronger than the equatorward (south) flank.</li>
+            <li><strong>Jet entrance and exit regions:</strong> Where the jet is accelerating (entrance) and decelerating (exit), the horizontal divergence and convergence patterns drive vertical motion in the troposphere below. The exit region is associated with maximum CAT risk and with surface cyclone development. Flying through a jet exit region at altitude means maximum CAT probability.</li>
+            <li><strong>Vertical shear zones:</strong> Above and below the jet core, wind speeds change rapidly over a few thousand feet. CAT can develop in these layers even away from the lateral flanks.</li>
+          </ul>
+
+          <!-- Jet stream cross-section SVG -->
+          <figure class="diagram">
+            <svg viewBox="0 0 740 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="jet-title">
+              <title id="jet-title">Jet stream vertical cross-section. The diagram shows altitude on the vertical axis from surface to FL380. On the horizontal axis, left is subtropical/equatorial and right is polar. The tropopause boundary slopes downward from left to right — high in the subtropics, lower toward the poles. The jet stream core sits at the tropopause break point, shown as a dense oval. CAT zones are shaded in orange-red on the poleward flank, above, and below the jet core. A surface cold front is shown beneath the jet core. Altitude reference lines are marked at FL100, FL200, and FL300.</title>
+              <rect width="740" height="330" fill="#fffaf0"/>
+
+              <!-- Background sky layers -->
+              <rect x="0" y="0"   width="740" height="290" fill="rgba(74,123,166,0.04)"/>
+
+              <!-- Stratosphere label -->
+              <text x="370" y="18" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em" opacity="0.6">STRATOSPHERE</text>
+
+              <!-- Altitude reference lines and labels -->
+              <!-- FL380 = y=20, FL0 = y=290; scale = 270px / 38000ft -->
+              <!-- FL100 = 290 - (10000/38000)*270 = 290 - 71 = 219 -->
+              <!-- FL200 = 290 - (20000/38000)*270 = 290 - 142 = 148 -->
+              <!-- FL300 = 290 - (30000/38000)*270 = 290 - 213 = 77 -->
+              <g stroke="#b9a87a" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.5">
+                <line x1="60" y1="219" x2="730" y2="219"/>
+                <line x1="60" y1="148" x2="730" y2="148"/>
+                <line x1="60" y1="77"  x2="730" y2="77"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b9a87a" opacity="0.9">
+                <text x="12" y="222">FL100</text>
+                <text x="12" y="151">FL200</text>
+                <text x="12" y="80">FL300</text>
+              </g>
+
+              <!-- Ground / Surface -->
+              <rect x="0" y="290" width="740" height="40" fill="#d4c99a" opacity="0.5"/>
+              <line x1="0" y1="290" x2="740" y2="290" stroke="#b9a87a" stroke-width="1.5"/>
+
+              <!-- Axis labels -->
+              <text x="100" y="316" font-family="Anton, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">SUBTROPICS</text>
+              <text x="620" y="316" font-family="Anton, sans-serif" font-size="10" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">POLAR</text>
+              <text x="370" y="328" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541" text-anchor="middle" opacity="0.7">← equatorward · · · · · · poleward →</text>
+
+              <!-- Tropopause boundary -->
+              <!-- Subtropical tropopause at FL380ish (y≈20), polar tropopause at FL250ish (y≈106) -->
+              <!-- Curved line from (80, 24) through break at (420, 60) to (680, 112) -->
+              <path d="M 80,24 C 200,26 320,30 390,50 C 430,65 440,82 480,100 C 540,125 620,130 690,134"
+                    fill="none" stroke="#0c2541" stroke-width="2" stroke-dasharray="8,4"/>
+              <text x="200" y="16" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="middle">Tropopause</text>
+              <text x="200" y="26" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="middle">~FL350–380 (subtropics)</text>
+              <text x="650" y="122" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#0c2541" text-anchor="middle">~FL250–280 (polar)</text>
+
+              <!-- Troposphere label -->
+              <text x="370" y="240" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em" opacity="0.35">TROPOSPHERE</text>
+
+              <!-- Warm air (left / subtropical) -->
+              <text x="120" y="190" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Warm</text>
+              <text x="120" y="202" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">subtropical</text>
+              <text x="120" y="214" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">air</text>
+
+              <!-- Cold air (right / polar) -->
+              <text x="638" y="200" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle">Cold</text>
+              <text x="638" y="212" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle">polar air</text>
+
+              <!-- Temperature gradient arrows -->
+              <g opacity="0.3">
+                <text x="370" y="186" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541" text-anchor="middle">temperature gradient →</text>
+                <line x1="200" y1="192" x2="560" y2="192" stroke="#0c2541" stroke-width="0.8"/>
+                <polygon points="560,192 553,189 553,195" fill="#0c2541"/>
+              </g>
+
+              <!-- CAT zone — above jet core -->
+              <ellipse cx="420" cy="42" rx="90" ry="16"
+                       fill="rgba(181,61,31,0.18)" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3"/>
+
+              <!-- CAT zone — poleward flank (right side of jet) -->
+              <ellipse cx="490" cy="72" rx="80" ry="22"
+                       fill="rgba(181,61,31,0.18)" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3"/>
+
+              <!-- CAT zone — below jet core / equatorward flank -->
+              <ellipse cx="390" cy="84" rx="65" ry="18"
+                       fill="rgba(181,61,31,0.12)" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3"/>
+
+              <!-- CAT labels -->
+              <text x="420" y="40" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CAT</text>
+              <text x="502" y="70" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CAT</text>
+              <text x="390" y="82" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CAT</text>
+
+              <!-- Jet stream core oval -->
+              <ellipse cx="420" cy="62" rx="52" ry="22"
+                       fill="rgba(93,111,60,0.25)" stroke="#5d6f3c" stroke-width="2.5"/>
+              <!-- Jet core velocity arrows -->
+              <g fill="#5d6f3c" stroke="#5d6f3c" stroke-width="2">
+                <line x1="382" y1="62" x2="456" y2="62"/>
+                <polygon points="456,62 446,57 446,67"/>
+              </g>
+              <text x="420" y="58" font-family="Anton, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.06em">JET CORE</text>
+              <text x="420" y="70" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle">50–200+ kt</text>
+
+              <!-- Isotach lines (wind speed contours) surrounding the jet -->
+              <path d="M 300,62 C 310,35 370,24 420,24 C 470,24 530,35 540,62 C 530,89 470,100 420,100 C 370,100 310,89 300,62 Z"
+                    fill="none" stroke="#5d6f3c" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.35"/>
+              <path d="M 230,62 C 248,18 340,6 420,6 C 500,6 592,18 610,62 C 592,106 500,118 420,118 C 340,118 248,106 230,62 Z"
+                    fill="none" stroke="#5d6f3c" stroke-width="0.6" stroke-dasharray="3,5" opacity="0.2"/>
+              <text x="558" y="50" font-family="Manrope, sans-serif" font-size="7.5" fill="#5d6f3c" opacity="0.7" font-style="italic">isotachs</text>
+
+              <!-- Surface cold front (below jet) -->
+              <line x1="410" y1="290" x2="560" y2="290" stroke="#4a7ba6" stroke-width="2.5"/>
+              <g fill="#4a7ba6">
+                <polygon points="430,290 422,278 438,278"/>
+                <polygon points="455,290 447,278 463,278"/>
+                <polygon points="480,290 472,278 488,278"/>
+                <polygon points="505,290 497,278 513,278"/>
+                <polygon points="530,290 522,278 538,278"/>
+              </g>
+              <text x="480" y="270" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle" font-style="italic">Cold front anchored below jet</text>
+
+              <!-- Jet to front connecting arrow -->
+              <line x1="425" y1="84" x2="440" y2="278" stroke="#0c2541" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
+
+              <!-- CAT extent annotation -->
+              <line x1="310" y1="100" x2="590" y2="100" stroke="#b53d1f" stroke-width="0.8"/>
+              <line x1="310" y1="97"  x2="310" y2="103" stroke="#b53d1f" stroke-width="0.8"/>
+              <line x1="590" y1="97"  x2="590" y2="103" stroke="#b53d1f" stroke-width="0.8"/>
+              <text x="450" y="112" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">CAT risk extends 100–200 nm from jet axis</text>
+
+              <!-- Y-axis label -->
+              <text x="8" y="165" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541" text-anchor="middle" transform="rotate(-90,8,165)">ALTITUDE</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="328" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Jet stream vertical cross-section (equatorward left, poleward right). The tropopause dips from ~FL350–380 in the subtropics to ~FL250–280 at polar latitudes. The jet stream core (green oval) sits at the tropopause break, with strongest winds concentrated in the core. CAT zones (orange-red shaded ellipses) surround the jet core on its flanks, above, and below — especially on the poleward (right) side. CAT risk extends 100–200 nm from the jet axis. A surface cold front is anchored in the troposphere beneath the jet stream. Isotachs (dashed green lines) show decreasing wind speed outward from the core. (AC 00-6B Ch. 14; FAA-H-8083-25 §12-20)</figcaption>
+          </figure>
+
+          <h3>Seasonal position and speed</h3>
+          <ul>
+            <li><strong>Winter:</strong> The polar jet dips into the lower 48 states and can reach speeds of 150–200+ kt over the central U.S. Trans-Pacific winds can exceed 200 kt. Westbound trans-continental flights can add 3–5 hours of flight time. Turbulence (CAT) associated with the winter jet is at its most intense.</li>
+            <li><strong>Summer:</strong> The polar jet retreats to Canada and weakens substantially (often 50–80 kt). Surface cyclone development slows accordingly. CAT hazard at domestic cruise altitudes decreases significantly but does not disappear — the subtropical jet can still produce moderate CAT even in summer over the southern U.S.</li>
+            <li><strong>Identifying the jet on the winds aloft:</strong> When the FB shows winds increasing dramatically between two adjacent altitudes at the same station, and shifting to a strong westerly component, the jet stream is near. Cross-reference with the 300 mb or 250 mb constant pressure chart on aviationweather.gov — tight isotachs on that chart mark the jet axis precisely.</li>
+          </ul>
+        </section>
+
+        <!-- Section: Tropopause -->
+        <section id="tropopause">
+          <h2>The tropopause</h2>
+          <p>
+            The <strong>tropopause</strong> is the boundary between the troposphere — the layer where weather occurs and temperature decreases with altitude — and the stratosphere, where temperature stops falling and begins rising. This thermal structure makes the tropopause a natural ceiling for convection and a critical reference for upper-level aviation planning.
+          </p>
+
+          <h3>Altitude variations</h3>
+          <ul>
+            <li><strong>Tropics (~0–20°N/S latitude):</strong> ~55,000–60,000 ft MSL. The troposphere is deep because intense solar heating drives vigorous convection high into the atmosphere.</li>
+            <li><strong>Mid-latitudes (~30–60°N/S, where most U.S. aviation operates):</strong> ~35,000–45,000 ft MSL. Variable with season and synoptic pattern — higher in summer, lower in winter, lower in the polar air mass behind a cold front.</li>
+            <li><strong>Poles:</strong> ~25,000–30,000 ft MSL. The shallow troposphere over polar regions is the reason arctic air masses have cold temperatures throughout a relatively shallow layer.</li>
+          </ul>
+
+          <h3>Why the tropopause matters to pilots</h3>
+          <ul>
+            <li><strong>Thunderstorm anvil top:</strong> When a cumulonimbus top reaches the tropopause, it can no longer rise through the stable stratosphere and spreads horizontally — forming the classic anvil shape. A thunderstorm whose top has spread out into an anvil has reached the tropopause. The anvil extends downwind of the storm. The height of the tropopause determines how tall a storm can grow; very tall storms (70,000+ ft anvil tops in tropical regions) signal extreme convective energy.</li>
+            <li><strong>CAT and tropopause folds:</strong> In the exit region of a jet stream, the tropopause dips downward (a "tropopause fold"), allowing stratospheric air — which is dry, cold, and has very high wind shear potential — to intrude into the upper troposphere. These fold regions are associated with the most intense CAT and with surface cyclone development. A tropopause fold is sometimes visible on water vapor satellite as a dark, dry intrusion in the upper-level moisture field.</li>
+            <li><strong>Aircraft performance at high altitude:</strong> Temperature inversions at and above the tropopause affect aircraft climb performance. Jets operating near their service ceiling are operating close to the tropopause; a lower-than-normal tropopause (common in polar air masses) can degrade ceiling performance.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>Above the tropopause — temperatures are always negative:</strong> This is why the FB header says "TEMPS NEG ABV 24000" for standard mid-latitude conditions. FL240 is approximately where temperatures transition from the possibility of being positive or negative to being always negative for mid-latitude mid-continent stations. At high-elevation western stations or in a cold air mass, the "always negative" level may be even lower. The encoding convention exists because the forecast model knows this — the minus sign is simply dropped above that level to save space.
+          </p>
+        </section>
+
+        <!-- Section: Using winds aloft -->
+        <section id="planning">
+          <h2>Using winds aloft in flight planning</h2>
+
+          <h3>Altitude selection — the real use case</h3>
+          <p>
+            The winds aloft forecast is primarily a tool for <strong>comparing the wind component along track at different altitudes</strong> and choosing the altitude that minimizes headwind (or maximizes tailwind) while staying within your aircraft's performance envelope and airspace constraints.
+          </p>
+          <p>
+            The process, done quickly in preflight:
+          </p>
+          <ol style="margin: 0.8rem 0 1.2rem; padding-left: 1.4rem; line-height: 2.1;">
+            <li><strong>Extract the forecast winds at candidate altitudes</strong> from the FB for stations along your route. Use the nearest station to your route, or bracket with two if you're between stations.</li>
+            <li><strong>Calculate the headwind/tailwind component</strong> for each altitude: the component = wind speed × cos(angle between wind direction and your course). Most pilots eyeball this — if the wind is within 30° of your course direction, it's essentially a direct component.</li>
+            <li><strong>Calculate estimated groundspeed and ETE</strong> at each altitude. A faster groundspeed at the cost of higher fuel flow may or may not be a net win — calculate both ETE and estimated fuel burned.</li>
+            <li><strong>Check temperature and icing risk.</strong> If the temperature column shows 0°C near your candidate altitude and you'll be in IMC, icing becomes a planning factor.</li>
+            <li><strong>Cross-check against airspace and regulations.</strong> VFR hemispheric altitude rules (FAR 91.159), oxygen requirements above FL125 (14 CFR 91.211), and RVSM airspace (FL290–FL410) all constrain altitude selection.</li>
+          </ol>
+
+          <h3>Finding the freezing level</h3>
+          <p>
+            The freezing level — the altitude at which OAT crosses 0°C — is directly readable from the temperature column of the FB. Look for the altitude at which the sign changes from positive to negative. In the example table above (9,000 ft: −1°C, 6,000 ft: +3°C), the freezing level is between 6,000 and 9,000 ft MSL — interpolate to about 8,500 ft for a preliminary estimate.
+          </p>
+          <p>
+            This matters for:
+          </p>
+          <ul>
+            <li><strong>Icing risk in IMC:</strong> Flying in clouds at or below the freezing level where liquid water droplets exist is the condition for structural icing. Temperature alone doesn't cause icing — you need visible moisture too — but knowing where 0°C is tells you the lowest altitude at which you're guaranteed to be above the freezing level in any cloud layer.</li>
+            <li><strong>Multiple freezing levels:</strong> In warm-front situations, a warm layer aloft may exist above a cold surface layer, creating two altitude bands with temperatures above 0°C separated by a band below 0°C. The FB temperature column shows this as a temperature profile that goes positive-negative-positive with altitude — the signature of a temperature inversion with freezing rain potential.</li>
+            <li><strong>Density altitude calculation:</strong> The temperature at your planned cruise altitude directly feeds into density altitude. If the FB shows +15°C at 8,000 ft (well above standard), your density altitude will be significantly higher than pressure altitude — affecting engine and aircraft performance.</li>
+          </ul>
+
+          <h3>Crosswind en-route and fuel reserve</h3>
+          <p>
+            Upper-level winds rarely align perfectly with your course. A strong crosswind component at altitude produces drift that must be corrected with a wind correction angle (WCA), which slightly increases the distance flown per unit of ground track covered — a marginal but nonzero fuel factor on long flights.
+          </p>
+          <p>
+            More important: when actual in-flight groundspeed differs significantly from your planned groundspeed (because the winds aloft were different from forecast), <strong>update your fuel burn estimate and fuel state calculation</strong>. If you planned for 120 kt groundspeed and you're seeing 95 kt, your planned ETE and fuel burn are both wrong. The standard rule: if you're burning fuel faster than planned or the ETA is significantly later than planned, recalculate your fuel-to-destination and fuel-to-alternate before you're past the point of no return.
+          </p>
+
+          <p class="callout">
+            <strong>The "best winds" altitude is not always the right altitude:</strong> At very high altitudes (above FL200 for a piston aircraft), the increased true airspeed from lower air density may or may not overcome the added fuel burn rate. For a turbocharged piston, there is a "sweet spot" where the combination of tailwind component and TAS advantage is maximized — usually 10,000–14,000 ft on most cross-country missions. For a normally aspirated aircraft, the power loss above 8,000–10,000 ft starts to erode the gains from any tailwind. Work the numbers rather than assuming "fly higher, fly faster."
+          </p>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>
+            Winds aloft questions on PPL and instrument orals focus on decoding the FB format — particularly the high-wind encoding rule — and the practical use of the product in planning.
+          </p>
+
+          <details class="qa">
+            <summary>Q: How do you decode a winds aloft forecast entry? What does "2318+03" mean?</summary>
+            <p>"2318+03" decodes as: wind from <strong>230°</strong> at <strong>18 knots</strong>, temperature <strong>+3°C</strong>. The first two digits (23) are the direction in tens of degrees (23 × 10 = 230°). The next two digits (18) are the speed in knots. The last portion (+03) is the temperature in degrees Celsius. (AC 00-45H §4.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What does "9900" in a winds aloft forecast mean?</summary>
+            <p>"9900" means the winds are calm or light and variable — less than 5 knots. The "99" in the direction field is a flag; it is not a direction. No temperature is appended to a 9900 group. (AC 00-45H §4.2.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the high-wind encoding rule in the FB forecast? How do you decode "7535-52"?</summary>
+            <p>When forecast winds are 100 knots or greater, <strong>50 is added to the direction group</strong> and <strong>100 is subtracted from the speed</strong> to keep both values in two-digit format. Any direction group of 50 or above is the flag. To decode "7535-52": the first two digits (75) are ≥ 50, so subtract 50 → 25 → wind from <strong>250°</strong>; add 100 to the speed (35) → <strong>135 kt</strong>; temperature: −52°C. The common exam trap is decoding "7535" as 750° direction and 35 kt — the impossible direction is the giveaway that you've missed the high-wind flag. (AC 00-45H §4.2.3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Why are temperatures not included in a 3,000 ft winds aloft entry?</summary>
+            <p>By convention, temperature is not reported at the 3,000 ft level in the FB winds aloft forecast. Temperature reporting begins at 6,000 ft. The 3,000 ft entry is a 4-digit wind-only group. Additionally, no wind is reported within 1,500 ft of station elevation — so high-elevation stations will show blank entries at the lowest altitude levels, not because winds are calm, but because the level is too close to the terrain to be meaningful. (AC 00-45H §4.2.1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: The winds aloft forecast header says "TEMPS NEG ABV 24000." What does that mean for decoding the temperature?</summary>
+            <p>At FL240 and above, all temperatures are below freezing, so the negative sign is dropped to save space in the encoded format. A temperature value of "52" at 30,000 ft means −52°C, not +52°C. The header tells you to apply this convention to all temperature values at 24,000 ft and higher in that forecast. If you ignore this rule and read temperatures as positive at high altitude, you'll conclude the atmosphere is far warmer aloft than it actually is — a significant error for icing analysis and aircraft performance planning. (AC 00-45H §4.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Where is clear-air turbulence (CAT) most likely relative to the jet stream?</summary>
+            <p>CAT is most likely on the <strong>lateral flanks of the jet stream</strong> — especially the poleward (north) flank — and in the <strong>jet exit region</strong> where the jet is decelerating. It also occurs above and below the jet core where vertical wind shear is greatest. CAT risk extends 100–200 nm from the jet axis. The jet core itself is often smoother than its flanks despite the high wind speed, because the wind within the core is relatively uniform. The exit region and poleward flank are the highest-probability zones for severe CAT. (AC 00-6B Ch. 14; FAA-H-8083-25 §12-17)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How do you find the freezing level from a winds aloft forecast?</summary>
+            <p>Look for the altitude at which the temperature column changes sign from positive to negative. In a standard winds aloft forecast, find the entries where temperature goes from, for example, +3°C at 6,000 ft to −1°C at 9,000 ft — the freezing level is between those two altitudes (approximately 8,500 ft by interpolation). This is the altitude above which structural icing becomes possible in any cloud or visible moisture. Also check for a temperature inversion signature (positive-negative-positive with altitude), which indicates warm layer aloft with freezing rain potential below it. (AC 00-45H §4; AC 91-74B §3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the maximum wind speed the FB format can encode?</summary>
+            <p>199 knots. When forecast winds reach 200 knots or greater, the format encodes them as 199 kt (the maximum two-digit speed after subtracting 100 in the high-wind convention). An entry showing 199 kt means "200 knots or higher." This occurs in extreme jet stream events — primarily over the Pacific and central U.S. in mid-winter — and is rare at domestic altitudes but can be seen at FL390 and above on trans-Pacific routes. (AC 00-45H §4.2.3)</p>
+          </details>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>The FB format: DDSS±TT.</strong> Two-digit direction in tens of degrees, two-digit speed in knots, signed temperature in °C. No temperature at 3,000 ft. Blank entries at a station mean the altitude is within 1,500 ft of terrain — not calm winds.</li>
+              <li><strong>"9900" = calm or light and variable (less than 5 kt).</strong> The 99 is a flag, not a direction. Never try to decode it as a wind direction.</li>
+              <li><strong>High-wind encoding: first two digits ≥ 50 means speed ≥ 100 kt.</strong> Subtract 50 from the direction group, add 100 to the speed. "7535" → 250° at 135 kt, not 750° at 35 kt. Any impossible direction value (above 36) is the trigger to apply this rule.</li>
+              <li><strong>"TEMPS NEG ABV 24000" means the minus sign is dropped at FL240+.</strong> A temperature of "52" at 30,000 ft is −52°C. Missing this makes every high-altitude temperature analysis wrong.</li>
+              <li><strong>CAT is most intense on the poleward flank and in the exit region of the jet stream.</strong> The core is often smoother than the flanks. CAT risk extends 100–200 nm from the jet axis. In winter, the polar jet can sit over the contiguous U.S. at FL300–FL380 with 150–200 kt winds and severe CAT zones on both flanks.</li>
+              <li><strong>The freezing level is in the temperature column.</strong> Find where sign changes from positive to negative. A positive-negative-positive temperature profile with altitude means a warm layer aloft — freezing rain risk below the upper cold layer. This is the most dangerous icing setup and it appears directly in the FB numbers.</li>
+              <li><strong>Use winds aloft to select altitude, not just check winds.</strong> Compare headwind/tailwind component and ETE at each candidate altitude. The "best winds" altitude is not always right — for a normally aspirated piston, power loss above 8,000–10,000 ft may erase any tailwind gain. Work the numbers.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="fronts-pressure-systems.html" class="concept-nav-link">← Fronts &amp; Pressure Systems</a>
+          <a href="density-altitude.html" class="concept-nav-link">Density Altitude →</a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -66,7 +66,6 @@
           <li><a href="#conditional">Conditional instability</a></li>
           <li><a href="#worked-elrs">Worked ELR examples</a></li>
           <li><a href="#skewt">A first look at skew-T</a></li>
-          <li><a href="#altimeter">Altitude &amp; altimeter settings</a></li>
           <li><a href="#operational">What it means in the airplane</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
           <li><a href="#scenario">Decision scenario</a></li>
@@ -748,110 +747,6 @@
           </p>
         </section>
 
-        <!-- Section: Altimeter -->
-        <section id="altimeter">
-          <h2>Altitude &amp; altimeter settings</h2>
-          <p>
-            This is the topic students struggle with most in WX 301 — even the tutors get tripped up. The math itself is easy. The hard part is getting the <em>direction</em> right: when you change the altimeter setting, does the altimeter read higher or lower than your true altitude? That's the part we'll spend the most time on.
-          </p>
-          <p>
-            First, the basics. An altimeter is a barometer. It measures the pressure of the air around it and, using the standard atmosphere, converts that pressure into an altitude reading. The <strong>altimeter setting</strong> in the cockpit (the Kollsman window) calibrates the altimeter so that at the airport, the altimeter reads the airport's true elevation.
-          </p>
-          <p>
-            Today's atmosphere isn't standard. The pressure at sea level might be 30.19"Hg today instead of the standard 29.92"Hg. The altimeter setting accounts for this difference. As long as it matches reality, the altimeter reads correctly.
-          </p>
-
-          <h3 style="margin-top: 1.4rem;">The standard atmosphere chart</h3>
-          <p>This chart is the lookup table for every altimeter problem you'll see. Memorize the structure: as altitude goes up, pressure goes down by roughly 1"Hg per 1,000 ft.</p>
-
-          <table class="atmo-table">
-            <thead>
-              <tr><th>Altitude (ft MSL)</th><th>Pressure ("Hg)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>4,000</td><td>25.84</td></tr>
-              <tr><td>3,000</td><td>26.82</td></tr>
-              <tr><td>2,000</td><td>27.82</td></tr>
-              <tr><td>1,500</td><td>28.33</td></tr>
-              <tr><td>1,250</td><td>28.59</td></tr>
-              <tr><td>1,000</td><td>28.86</td></tr>
-              <tr><td>750</td><td>29.12</td></tr>
-              <tr><td>500</td><td>29.38</td></tr>
-              <tr><td>250</td><td>29.65</td></tr>
-              <tr><td>0 (sea level)</td><td>29.92</td></tr>
-              <tr><td>-250</td><td>30.19</td></tr>
-              <tr><td>-500</td><td>30.47</td></tr>
-            </tbody>
-          </table>
-
-          <h3 style="margin-top: 1.4rem;">Question type 1 — find the station pressure</h3>
-          <p>You're given the altimeter setting and the field elevation. Find the actual pressure at the field.</p>
-
-          <div class="scenario-box">
-            <p><strong>Worked Example 1:</strong> Altimeter setting is 30.19"Hg. Field elevation is 1,500 ft. What's the station pressure at the field?</p>
-            <ol class="scenario-questions">
-              <li><strong>Look up the altimeter setting on the chart.</strong> 30.19"Hg corresponds to -250 ft.</li>
-              <li><strong>Add the chart altitude of the altimeter setting to the field elevation.</strong> 1,500 + (-250) = 1,250 ft.</li>
-              <li><strong>Look up the pressure at 1,250 ft on the chart.</strong> 28.59"Hg.</li>
-            </ol>
-            <p class="scenario-takeaway"><strong>Answer: 28.59"Hg.</strong></p>
-          </div>
-
-          <h3 style="margin-top: 1.4rem;">Question type 2 — find the altimeter setting</h3>
-          <p>Reverse direction. You're given the station pressure and the field elevation. Find the altimeter setting that would give a correct altitude reading.</p>
-
-          <div class="scenario-box">
-            <p><strong>Worked Example 2:</strong> Station pressure at the airport is 29.12"Hg. Field elevation is 1,000 ft. What's the altimeter setting?</p>
-            <ol class="scenario-questions">
-              <li><strong>Look up the station pressure on the chart.</strong> 29.12"Hg corresponds to 750 ft.</li>
-              <li><strong>Subtract the field elevation from that chart altitude.</strong> 750 − 1,000 = -250 ft.</li>
-              <li><strong>Look up the pressure at -250 ft on the chart.</strong> 30.19"Hg.</li>
-            </ol>
-            <p class="scenario-takeaway"><strong>Answer: 30.19"Hg.</strong></p>
-          </div>
-
-          <h3 style="margin-top: 1.4rem;">Question type 3 — true altitude vs. indicated altitude</h3>
-          <p>This is the question that breaks people. You change the altimeter setting (or fly into a new pressure region without updating it), and now your altimeter reading no longer matches your true altitude. The arithmetic is simple. The trap is the <em>direction</em> — does the altimeter read too high or too low?</p>
-
-          <p>The rule of thumb every pilot is taught:</p>
-          <p style="text-align: center; font-family: var(--font-display); font-size: 1.2rem; padding: 0.8rem; background: var(--ink); color: var(--buff); letter-spacing: 0.04em;">
-            "From high to low, look out below."
-          </p>
-          <p>
-            Translation: when you fly from a region of <em>higher</em> pressure into a region of <em>lower</em> pressure (or when your altimeter setting is changed to a lower value than reality), your <strong>altimeter reads higher than your true altitude</strong> — meaning the airplane is actually <em>lower</em> than the altimeter says. Bad news if you're near terrain.
-          </p>
-          <p>The mirror version, less catchy but worth knowing:</p>
-          <p style="text-align: center; font-family: var(--font-display); font-size: 1.2rem; padding: 0.8rem; background: var(--sage); color: var(--buff); letter-spacing: 0.04em;">
-            "From low to high, clear the sky."
-          </p>
-          <p>
-            When the altimeter setting is changed to a <em>higher</em> value than reality (or you fly into higher pressure), the altimeter reads lower than your true altitude — the airplane is actually <em>higher</em> than indicated. Safer, but you might bust an assigned altitude going up.
-          </p>
-
-          <p>The conversion factor: <strong>1"Hg ≈ 1,000 ft of altitude</strong>.</p>
-
-          <div class="scenario-box">
-            <p><strong>Worked Example 3:</strong> You're on final approach to an airport with a field elevation of 700 ft. The correct altimeter setting is 30.15"Hg. Your friend, distracted, accidentally changes the Kollsman window to 29.85"Hg. The altimeter now reads 700 ft (the airport elevation). What is your true altitude?</p>
-
-            <ol class="scenario-questions">
-              <li><strong>Find the difference between the two altimeter settings.</strong> 30.15 − 29.85 = 0.30"Hg.</li>
-              <li><strong>Convert to feet.</strong> 0.30"Hg × 1,000 ft/"Hg = 300 ft. The altimeter is now off by 300 ft. The remaining question is which direction.</li>
-              <li><strong>Apply the rule of thumb.</strong> The setting was changed from a higher value (30.15) to a lower value (29.85). That's "high to low" — so the airplane is actually <em>lower</em> than the altimeter is reading? <em>No</em> — be careful. The rule of thumb describes what happens when the altimeter setting <em>becomes incorrect by being too low</em>. Here, the new setting (29.85) is lower than the correct setting (30.15), which means the altimeter is now <strong>under-reading</strong>. Read the altimeter as the airplane's "perceived" altitude — it perceives itself to be lower than it really is.</li>
-              <li><strong>Apply the direction.</strong> Altimeter reads 700 ft. True altitude is <em>higher</em> than the reading by 300 ft. True altitude = 700 + 300 = <strong>1,000 ft.</strong></li>
-            </ol>
-
-            <p class="scenario-takeaway"><strong>Answer: 1,000 ft.</strong> The airplane is 300 ft above the runway, not on it. If the pilot trusted the altimeter and continued the approach, they'd touch down 300 ft early — except the airplane isn't actually there yet, so they'd land short.</p>
-          </div>
-
-          <p class="callout">
-            <strong>The direction trap, in one sentence:</strong> if the altimeter setting in the Kollsman is <em>lower</em> than reality, the altimeter <em>under-reads</em> — the airplane is higher than the gauge says. If the setting is <em>higher</em> than reality, the altimeter <em>over-reads</em> — the airplane is lower than the gauge says.
-          </p>
-
-          <p>
-            The reason students get this backwards: the question can be phrased in two equivalent ways. "What is your true altitude?" and "Is your indicated altitude higher or lower than your true altitude?" are asking the same thing from different angles, and the verbal direction flips. Always re-read the question after computing the magnitude — make sure you're answering what was actually asked.
-          </p>
-        </section>
-
         <!-- Section: Operational implications -->
         <section id="operational">
           <h2>What it means in the airplane</h2>
@@ -972,7 +867,7 @@
               <li><strong>Three lapse rates, two purposes.</strong> DALR (10°C/km) and MALR (~6°C/km) describe how a parcel cools. ELR is what the atmosphere is actually doing today. Compare them.</li>
               <li><strong>The 6-10 rule.</strong> ELR &gt; 10°C/km = absolutely unstable. ELR &lt; 6°C/km = absolutely stable. Between 6 and 10 = conditionally unstable (most common in real atmosphere).</li>
               <li><strong>Standard atmosphere reference.</strong> 15°C / 29.92"Hg / 1013.2 mb at sea level, 2°C/1,000 ft lapse rate. Memorize these.</li>
-              <li><strong>Altimeter problems use the standard atmosphere chart.</strong> The altimeter setting represents a "virtual sea-level pressure." Look up its chart altitude, then add or subtract field elevation to find what you need.</li>
+              <li><strong>Altimetry is a separate topic.</strong> The standard atmosphere chart, Kollsman window mechanics, and three worked altimeter problems are now covered on the dedicated <a href="altimetry.html">Altimetry page</a>.</li>
               <li><strong>Operational fingerprints.</strong> Stable = smooth, layered clouds, poor vis, steady precip. Unstable = bumpy, vertical clouds, good vis, showery precip. The clouds tell you what the atmosphere is doing.</li>
             </ul>
           </div>

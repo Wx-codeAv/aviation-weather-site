@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fronts &amp; Pressure Systems — CrosswindWX</title>
+  <meta name="description" content="Cold fronts, warm fronts, stationary and occluded fronts. High and low pressure circulation. The before/during/after weather sequence for each frontal type — what your examiner expects you to know cold.">
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../learn.html">Learn</a></li>
+          <li><a href="../decoder.html">Decoder</a></li>
+          <li><a href="../navlog.html">Nav Log</a></li>
+          <li><a href="../acs.html">ACS</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Breadcrumb ============== -->
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="../../index.html">Home</a>
+      <span class="breadcrumb-sep">→</span>
+      <a href="../learn.html">Learn</a>
+      <span class="breadcrumb-sep">→</span>
+      <span>Fronts &amp; Pressure Systems</span>
+    </div>
+  </div>
+
+  <!-- ============== Concept hero ============== -->
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Concept · Synoptic weather</p>
+      <h1>Fronts &amp; Pressure <span class="accent">Systems</span></h1>
+      <p class="lede">
+        Almost every significant aviation weather hazard — thunderstorms, icing, IFR conditions, low-level wind shear — occurs in the context of a front or a pressure system. Understanding the mechanism tells you what to expect before you need a PIREP to confirm it. A pilot who can read a surface analysis chart and recite the weather sequence for a passing cold or warm front is not guessing about departure conditions — they already know what the next six hours look like and which products to check.
+      </p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3a · IR.I.B.K3a · CA.I.C.K3a</span>
+        <span class="concept-meta-item"><strong>Risk:</strong> .R1b · .R1c · .R1d</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-6B · FAA-H-8083-25 · AC 00-45H §6</span>
+        <span class="concept-meta-item"><strong>Read time:</strong> ~15 min</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Body content ============== -->
+  <main class="concept-body">
+    <div class="container concept-grid">
+
+      <!-- Sidebar nav -->
+      <aside class="concept-toc">
+        <p class="toc-label">On this page</p>
+        <ol>
+          <li><a href="#pressure">Pressure systems</a></li>
+          <li><a href="#airmasses">Air masses</a></li>
+          <li><a href="#cold">Cold fronts</a></li>
+          <li><a href="#warm">Warm fronts</a></li>
+          <li><a href="#stationary">Stationary fronts</a></li>
+          <li><a href="#occluded">Occluded fronts</a></li>
+          <li><a href="#dryline">Dryline</a></li>
+          <li><a href="#comparison">Cold vs. warm — comparison</a></li>
+          <li><a href="#surface">Surface analysis chart</a></li>
+          <li><a href="#planning">Flight planning with fronts</a></li>
+          <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#takeaway">Pilot takeaway</a></li>
+        </ol>
+      </aside>
+
+      <!-- Article body -->
+      <article class="concept-article">
+
+        <!-- Section: Pressure systems -->
+        <section id="pressure">
+          <h2>Pressure systems</h2>
+          <p>
+            Surface weather is organized around areas of relatively high and low pressure. The pressure difference between these areas drives wind; the direction that wind flows is modified by the Coriolis effect into the circulation patterns pilots read on a surface analysis chart.
+          </p>
+
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+
+            <article class="hazard-card hazard-sierra">
+              <span class="hazard-label">High Pressure · Anticyclone</span>
+              <h3>The "H" on the chart</h3>
+              <p class="hazard-mnemonic">Descending, diverging air. Generally stable and clear.</p>
+              <ul class="hazard-list">
+                <li><strong>Circulation (NH):</strong> Clockwise at the surface; air spirals outward</li>
+                <li><strong>Vertical motion:</strong> Subsiding (sinking) air suppresses cloud development</li>
+                <li><strong>Weather:</strong> Generally fair, good visibility; lowest cloud cover</li>
+                <li><strong>Caution:</strong> Surface-based inversions trap moisture → radiation fog and smoke at night and early morning; can still be IFR below 1,000 ft AGL even in a high</li>
+                <li><strong>Winds:</strong> Light and variable near the center (col); stronger toward edges</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card hazard-zulu">
+              <span class="hazard-label">Low Pressure · Cyclone</span>
+              <h3>The "L" on the chart</h3>
+              <p class="hazard-mnemonic">Rising, converging air. Instability, clouds, precipitation.</p>
+              <ul class="hazard-list">
+                <li><strong>Circulation (NH):</strong> Counterclockwise at the surface; air spirals inward</li>
+                <li><strong>Vertical motion:</strong> Converging air must rise — cools adiabatically → condensation → clouds and precipitation</li>
+                <li><strong>Weather:</strong> Clouds, precipitation, reduced visibility, often IFR</li>
+                <li><strong>Fronts:</strong> Cold and warm fronts extend outward from the low's center as the system organizes</li>
+                <li><strong>Winds:</strong> Strong and gusty near the center; direction shifts as system passes</li>
+              </ul>
+            </article>
+
+          </div>
+
+          <h3>Buys Ballot's Law</h3>
+          <p>
+            A practical rule for locating pressure systems from wind alone: <strong>in the Northern Hemisphere, stand with your back to the wind. Low pressure is to your left; high pressure is to your right.</strong> If the surface wind is from the south, the low is to your east and the high is to your west. This holds because surface friction turns wind slightly inward toward the low in the friction layer below ~2,000 ft AGL.
+          </p>
+
+          <h3>Pressure tendency and frontal approach</h3>
+          <p>
+            The pressure tendency — how fast and in which direction pressure is changing — tells you how quickly conditions will change:
+          </p>
+          <ul>
+            <li><strong>Steadily falling pressure:</strong> A front or low is approaching. The faster it falls, the faster the deterioration. A drop of 4+ hPa (mb) in 3 hours is a significant, rapid fall — expect major change within 12 hours.</li>
+            <li><strong>Steady pressure:</strong> Conditions are stable for the short term. In a high, this is fine. In IMC, it means conditions may persist.</li>
+            <li><strong>Rising pressure:</strong> A front has passed or a high is building — expect improving conditions. A sharp rise after a cold frontal passage is the best indicator that post-frontal clearing has arrived.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>Why pressure and altitude interact:</strong> An altimeter set to current local altimeter setting reads altitude correctly under the existing pressure. When flying from high to low pressure (toward a low) without updating the altimeter, the aircraft is <em>lower</em> than indicated — "from high to low, look out below." Conversely, flying from low to high pressure without updating puts you higher than indicated. Always update the altimeter with the current setting at each reporting station. (FAA-H-8083-25 §8-4)
+          </p>
+        </section>
+
+        <!-- Section: Air masses -->
+        <section id="airmasses">
+          <h2>Air masses</h2>
+          <p>
+            A front is the boundary between two air masses — large bodies of air with relatively uniform temperature and moisture through a horizontal extent. Air masses acquire their characteristics from the surface over which they form (their <strong>source region</strong>): continental source regions produce dry air masses; maritime source regions produce moist ones. Polar source regions produce cold air masses; tropical ones produce warm ones.
+          </p>
+
+          <div style="overflow-x: auto; margin: 1rem 0 1.5rem;">
+            <table class="atmo-table" style="max-width: 100%; width: 100%;">
+              <thead>
+                <tr>
+                  <th>Designation</th>
+                  <th>Source</th>
+                  <th>Temperature</th>
+                  <th>Moisture</th>
+                  <th>Typical U.S. Weather</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>cP</strong> (continental Polar)</td>
+                  <td>Canada / Alaska</td>
+                  <td>Cold</td>
+                  <td>Dry</td>
+                  <td>Clear, cold post-frontal air; good visibility; low dewpoints</td>
+                </tr>
+                <tr>
+                  <td><strong>cA</strong> (continental Arctic)</td>
+                  <td>Arctic / Siberia</td>
+                  <td>Very cold</td>
+                  <td>Very dry</td>
+                  <td>Extreme cold outbreaks; severe icing over Great Lakes (lake-effect snow)</td>
+                </tr>
+                <tr>
+                  <td><strong>mP</strong> (maritime Polar)</td>
+                  <td>N. Pacific / N. Atlantic</td>
+                  <td>Cool</td>
+                  <td>Moist</td>
+                  <td>Stratus, drizzle, low IFR; common on the West Coast</td>
+                </tr>
+                <tr>
+                  <td><strong>mT</strong> (maritime Tropical)</td>
+                  <td>Gulf of Mexico / Caribbean</td>
+                  <td>Warm</td>
+                  <td>Very moist</td>
+                  <td>Thunderstorms, haze, summer heat; primary moisture source for U.S. convection</td>
+                </tr>
+                <tr>
+                  <td><strong>cT</strong> (continental Tropical)</td>
+                  <td>Mexican plateau / SW desert</td>
+                  <td>Hot</td>
+                  <td>Dry</td>
+                  <td>Hot, dry, hazy; fair-weather cumulus; less common in aviation weather</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            The intensity of frontal weather is largely determined by the <strong>contrast between the two air masses</strong> at the boundary. A cP air mass meeting an mT air mass (cold, dry Canadian air encountering warm, moist Gulf air) produces the most intense fronts — sharp temperature contrasts, strong pressure gradients, and violent thunderstorms. A front between two similar air masses (mP vs. mT in summer) is weak, with gradual weather changes.
+          </p>
+        </section>
+
+        <!-- Section: Cold fronts -->
+        <section id="cold">
+          <h2>Cold fronts</h2>
+          <p>
+            A cold front is the leading edge of an advancing cold air mass that is displacing a warmer air mass at the surface. The cold air is denser and undercuts the warm air, forcing it steeply upward. This steep forced ascent is why cold fronts produce more intense, more violent weather than warm fronts — but over a narrower geographic area and for a shorter duration.
+          </p>
+
+          <h3>Physical structure</h3>
+          <ul>
+            <li><strong>Slope:</strong> Steep — approximately 1:50 to 1:100 (1 mile of vertical rise per 50–100 miles of horizontal distance). The warm air is rapidly undercut and forced upward at a steep angle.</li>
+            <li><strong>Speed:</strong> Cold fronts typically move at 20–35 kt (sometimes 50+ kt in winter). The fast movement means that the entire frontal passage — from first deterioration to post-frontal clearing — can occur in 1–3 hours.</li>
+            <li><strong>Width:</strong> The active weather band is narrow — typically 50–100 nm wide ahead of and along the surface front. Post-frontal clearing follows quickly.</li>
+          </ul>
+
+          <h3>The weather sequence</h3>
+          <p><strong>Well ahead of the front (200+ nm):</strong></p>
+          <ul>
+            <li>Warm sector: scattered Cu or Sc, good visibility, warm temperatures, southerly winds</li>
+            <li>Pressure beginning a slow fall; dewpoints elevated from the humid warm sector</li>
+          </ul>
+          <p><strong>Approaching the front (0–100 nm ahead):</strong></p>
+          <ul>
+            <li>Winds back toward the southeast, increase in speed</li>
+            <li>Altocumulus castellanus (ACC) may appear — a sign of instability in the mid-levels</li>
+            <li>Pressure falling more rapidly; barometric tendency shows rapid fall</li>
+            <li>Towering cumulus and cumulonimbus development ahead of and along the front</li>
+            <li><strong>Pre-frontal squall line:</strong> A line of severe thunderstorms can develop 50–200 nm ahead of a fast-moving cold front, in the zone where warm-sector instability is greatest and upper-level divergence supports convective development. This is the most dangerous part of the cold front scenario — you may be 150 nm ahead of the surface front and already in severe convective conditions.</li>
+          </ul>
+          <p><strong>At the front (frontal passage):</strong></p>
+          <ul>
+            <li>Sudden wind shift: typically backs to the northwest or west (in the U.S.)</li>
+            <li>Temperature drops sharply — sometimes 10–20°F in minutes</li>
+            <li>Heavy rain, hail, possible thunderstorms; severe turbulence in and near cells</li>
+            <li>Lowest visibility at the surface front; ceiling near zero in heavy precipitation</li>
+            <li>Pressure begins to rise; altimeter setting rises</li>
+          </ul>
+          <p><strong>Behind the front (post-frontal):</strong></p>
+          <ul>
+            <li>Skies clear rapidly; visibility excellent (low dewpoints, clean, cold cP air)</li>
+            <li>Temperature markedly colder; strong NW winds; gusty and potentially turbulent</li>
+            <li>Pressure rising steadily; barometric tendency shows steady rise</li>
+            <li>Scattered Cu congestus possible in the cold, unstable post-frontal air</li>
+            <li>Icing likely in any remaining clouds (cold temperatures + any remaining moisture)</li>
+          </ul>
+
+          <!-- Cold front cross-section SVG -->
+          <figure class="diagram">
+            <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cf-title">
+              <title id="cf-title">Cold front cross-section. A steep frontal surface rises from the ground at center-left toward the upper-right. Cold air occupies the left side (post-frontal). Warm air occupies the right side (pre-frontal). Near the front in the warm air, cumulonimbus and towering cumulus produce heavy rain and thunderstorms. A squall line is visible further ahead. Cold air behind the front shows clearing skies with scattered cumulus. Arrows show the direction of frontal movement (rightward) and wind shifts.</title>
+              <rect width="740" height="300" fill="#fffaf0"/>
+
+              <!-- Sky -->
+              <rect x="0" y="0" width="740" height="240" fill="rgba(74,123,166,0.03)"/>
+
+              <!-- Cold air fill (behind front) -->
+              <path d="M 0,240 L 370,240 L 260,0 L 0,0 Z" fill="rgba(74,123,166,0.06)"/>
+              <!-- Warm air fill (ahead of front) -->
+              <path d="M 370,240 L 740,240 L 740,0 L 260,0 Z" fill="rgba(181,61,31,0.04)"/>
+
+              <!-- Ground -->
+              <rect x="0" y="240" width="740" height="60" fill="#d4c99a" opacity="0.4"/>
+              <line x1="0" y1="240" x2="740" y2="240" stroke="#b9a87a" stroke-width="1.5"/>
+
+              <!-- Frontal surface (steep slope) -->
+              <line x1="370" y1="240" x2="258" y2="30" stroke="#4a7ba6" stroke-width="2.5"/>
+
+              <!-- Cold front triangles along the surface (bottom half of line) -->
+              <g fill="#4a7ba6">
+                <polygon points="370,240 362,222 378,222"/>
+                <polygon points="350,206 342,188 358,188"/>
+                <polygon points="330,172 322,154 338,154"/>
+                <polygon points="310,138 302,120 318,120"/>
+                <polygon points="290,104 282,86 298,86"/>
+                <polygon points="270,70 262,52 278,52"/>
+              </g>
+
+              <!-- Slope label -->
+              <text x="284" y="150" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" transform="rotate(-55, 284, 150)" text-anchor="middle">SLOPE ~1:50–100</text>
+
+              <!-- ===== COLD AIR side (left) ===== -->
+              <text x="130" y="22" font-family="Anton, sans-serif" font-size="12" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">COLD AIR · POST-FRONTAL</text>
+
+              <!-- Post-frontal cumulus (small, scattered) -->
+              <!-- Cu 1 -->
+              <ellipse cx="80" cy="190" rx="28" ry="14" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <ellipse cx="92" cy="180" rx="18" ry="11" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <ellipse cx="70" cy="183" rx="15" ry="10" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <!-- Cu 2 -->
+              <ellipse cx="200" cy="194" rx="24" ry="12" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <ellipse cx="210" cy="185" rx="16" ry="10" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+
+              <!-- Post-frontal wind arrow (NW) -->
+              <g fill="#4a7ba6" stroke="#4a7ba6" stroke-width="1.5">
+                <line x1="130" y1="130" x2="160" y2="155"/>
+                <polygon points="160,155 148,148 155,139"/>
+              </g>
+              <text x="112" y="128" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">NW</text>
+              <text x="106" y="139" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">WIND</text>
+
+              <!-- Post-frontal status labels -->
+              <text x="130" y="222" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle">Clearing rapidly · Cold · Good VIS</text>
+              <text x="130" y="234" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" text-anchor="middle">Pressure: rising</text>
+
+              <!-- ===== WARM AIR side (right) ===== -->
+              <text x="570" y="22" font-family="Anton, sans-serif" font-size="12" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">WARM AIR · PRE-FRONTAL</text>
+
+              <!-- Pre-frontal CB (right at front ~410) -->
+              <!-- CB base -->
+              <rect x="395" y="160" width="50" height="70" fill="rgba(180,190,210,0.85)" stroke="#0c2541" stroke-width="1"/>
+              <!-- CB tower -->
+              <rect x="402" y="75" width="36" height="90" fill="rgba(160,175,200,0.9)" stroke="#0c2541" stroke-width="1"/>
+              <!-- CB anvil top -->
+              <path d="M 380,75 C 390,60 420,55 440,60 C 460,55 490,60 500,75 L 485,80 C 470,68 450,65 420,68 C 400,65 395,72 380,75 Z"
+                    fill="rgba(210,220,230,0.9)" stroke="#0c2541" stroke-width="1"/>
+              <!-- Rain from CB -->
+              <g stroke="#4a7ba6" stroke-width="1" opacity="0.7">
+                <line x1="405" y1="230" x2="402" y2="240"/>
+                <line x1="413" y1="228" x2="410" y2="240"/>
+                <line x1="421" y1="229" x2="418" y2="240"/>
+                <line x1="429" y1="228" x2="426" y2="240"/>
+                <line x1="437" y1="229" x2="434" y2="240"/>
+              </g>
+              <text x="420" y="272" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CB · HEAVY RAIN</text>
+              <text x="420" y="283" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">thunder · hail possible</text>
+
+              <!-- TCU (mid ~490) -->
+              <rect x="480" y="130" width="35" height="100" fill="rgba(195,205,220,0.8)" stroke="#777" stroke-width="0.8"/>
+              <ellipse cx="497" cy="128" rx="22" ry="14" fill="rgba(200,210,225,0.85)" stroke="#777" stroke-width="0.8"/>
+              <ellipse cx="510" cy="133" rx="14" ry="10" fill="rgba(200,210,225,0.8)" stroke="#777" stroke-width="0.8"/>
+              <ellipse cx="484" cy="134" rx="12" ry="9" fill="rgba(200,210,225,0.8)" stroke="#777" stroke-width="0.8"/>
+              <text x="520" y="148" font-family="Manrope, sans-serif" font-size="8" fill="#777">TCu</text>
+
+              <!-- Squall line indicator (~570) -->
+              <line x1="570" y1="50" x2="570" y2="240" stroke="#b53d1f" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+              <text x="574" y="64" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">POSSIBLE</text>
+              <text x="574" y="75" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">PRE-FRONTAL</text>
+              <text x="574" y="86" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">SQUALL LINE</text>
+              <text x="574" y="97" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">50–200 nm ahead</text>
+
+              <!-- Far warm sector Cu (right ~650) -->
+              <ellipse cx="640" cy="196" rx="26" ry="13" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <ellipse cx="652" cy="187" rx="18" ry="11" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <ellipse cx="632" cy="189" rx="14" ry="10" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+
+              <!-- Pre-frontal wind arrow (SE → SW) -->
+              <g fill="#b53d1f" stroke="#b53d1f" stroke-width="1.5">
+                <line x1="620" y1="148" x2="592" y2="165"/>
+                <polygon points="592,165 600,155 604,166"/>
+              </g>
+              <text x="628" y="142" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">S/SW</text>
+              <text x="622" y="153" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">WIND</text>
+
+              <!-- Warm sector status labels -->
+              <text x="650" y="222" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle">Warm · hazy · humid</text>
+              <text x="650" y="234" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">Pressure: falling</text>
+
+              <!-- Movement arrow -->
+              <g fill="#0c2541" stroke="#0c2541" stroke-width="2">
+                <line x1="340" y1="266" x2="406" y2="266"/>
+                <polygon points="406,266 396,261 396,271"/>
+              </g>
+              <text x="373" y="282" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
+
+              <!-- Weather band bracket -->
+              <line x1="380" y1="290" x2="560" y2="290" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="380" y1="286" x2="380" y2="294" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="560" y1="286" x2="560" y2="294" stroke="#b53d1f" stroke-width="1"/>
+              <text x="470" y="299" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">Active wx band · ~50–100 nm</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="298" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Cold front cross-section (view looking north; front moving eastward, left to right). The steep frontal surface undercuts the warm air, forcing it rapidly upward. Near the front in the warm air: cumulonimbus with heavy rain, thunder, and hail. A pre-frontal squall line may develop 50–200 nm ahead. Post-frontal air (left) clears rapidly with excellent visibility, cold temperatures, and northwest winds. The active weather band is typically 50–100 nm wide. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-7)</figcaption>
+          </figure>
+
+          <p class="callout">
+            <strong>Fast-moving cold fronts and embedded thunderstorms:</strong> A cold front moving at 35 kt can overtake a VFR cross-country flight if the departure timing is poor. The pre-frontal squall line is the most dangerous element — it is not directly at the surface front position on the chart, it is ahead of it by 50–200 nm. Checking only the surface analysis chart without looking at radar and SIGMET for squall-line activity is incomplete preflight planning. A convective SIGMET covering your route means convective conditions exist <em>now</em> regardless of where the surface front symbol appears. (AC 00-6B §9.3)
+          </p>
+        </section>
+
+        <!-- Section: Warm fronts -->
+        <section id="warm">
+          <h2>Warm fronts</h2>
+          <p>
+            A warm front is the leading edge of an advancing warm air mass. Unlike the violent undercutting of a cold front, the lighter warm air overruns the retreating cold air along a <strong>very gradual slope</strong>. The result is the opposite of a cold front in almost every way: slower-moving, wider weather band, lower but less intense precipitation, extensive IFR conditions stretching hundreds of miles ahead of the surface front, and a gradual rather than abrupt transition.
+          </p>
+
+          <h3>Physical structure</h3>
+          <ul>
+            <li><strong>Slope:</strong> Very gradual — approximately 1:100 to 1:300 (1 mile vertical per 100–300 miles horizontal). The warm air glides up and over the cold air mass at a shallow angle.</li>
+            <li><strong>Speed:</strong> Slow — typically 10–20 kt. This means the extended cloud and precipitation deck can cover a stationary area for 12–24 hours or more.</li>
+            <li><strong>Width:</strong> The weather band can extend 200–500+ nm ahead of the surface front position. When you encounter the first cirrus, the surface front may still be 300 nm away.</li>
+          </ul>
+
+          <h3>The cloud sequence — the signature of a warm front</h3>
+          <p>
+            The characteristic warm front cloud sequence, encountered from far ahead of the front to the front itself, is one of the most important patterns in aviation meteorology. Reading this sequence in the sky tells you a warm front is approaching and approximately how far away it is:
+          </p>
+          <ol>
+            <li><strong>Cirrus (Ci) — 200–400 nm ahead:</strong> High, thin, wispy clouds. The first indication. If the cirrus is thickening and lowering as you watch it, a warm front is almost certainly approaching. A notable visual: cirrus in a warm-front approach often produces a <strong>halo around the sun or moon</strong> when a Cs veil exists — caused by ice-crystal refraction in the Cs deck.</li>
+            <li><strong>Cirrostratus (Cs) — 150–300 nm ahead:</strong> A thin, high, sheet-like veil of cirrus that gives the sky a milky appearance. Sun and moon halos form in this layer. Still predominantly VMC but deteriorating.</li>
+            <li><strong>Altostratus (As) — 100–200 nm ahead:</strong> A gray, sheet-like mid-level cloud deck. The sun appears as through frosted glass; shadows disappear. Tops can reach FL 200+. Light precipitation begins — snow or ice pellets at altitude, rain at the surface. Ceiling begins to lower; VFR becoming marginal or MVFR.</li>
+            <li><strong>Nimbostratus (Ns) — 50–100 nm ahead:</strong> A thick, dark gray precipitating layer. Continuous rain or snow. IFR conditions — low ceilings, reduced visibility in continuous drizzle. No thunder, but the precipitation is persistent and extensive. This is where most general aviation pilots encounter inadvertent IMC in warm frontal systems.</li>
+            <li><strong>Stratus / Fog — at and just ahead of the surface front:</strong> Low stratus and ground fog form as the rain evaporates into the cold surface air and saturates it. This is the zone of worst conditions — fog and low stratus can reduce visibility to near zero and bring ceilings to the surface.</li>
+          </ol>
+
+          <h3>Freezing rain hazard</h3>
+          <p>
+            In warm frontal systems in the cold season, the atmosphere often has a <strong>warm layer aloft sandwiched between cold air above and below</strong>. Rain that forms in the warm layer above can remain as liquid as it falls through the elevated warm layer, then enter the sub-freezing surface air and become supercooled — creating <strong>freezing rain or freezing drizzle</strong> at the surface and on aircraft at low altitudes. This is the most dangerous icing condition in aviation. (See also: Aircraft Icing — multiple freezing levels.) The zone of maximum freezing rain risk is just ahead of the warm front surface position, typically in the 1,000–5,000 ft layer over cold surface air. (AC 00-6B §9.2)
+          </p>
+
+          <!-- Warm front cross-section SVG -->
+          <figure class="diagram">
+            <svg viewBox="0 0 740 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wf-title">
+              <title id="wf-title">Warm front cross-section. A very gentle frontal slope extends from the surface front position far to the left over the cold air. From left to right in the cold air: cirrus, then cirrostratus giving way to altostratus, then nimbostratus with continuous rain, then stratus and fog at the surface front. The warm sector to the right has scattered cumulus and fair weather. Distance labels show the cloud types extend 200–400 nm ahead of the surface front.</title>
+              <rect width="740" height="290" fill="#fffaf0"/>
+
+              <!-- Sky background -->
+              <rect x="0" y="0" width="740" height="232" fill="rgba(74,123,166,0.03)"/>
+
+              <!-- Cold air fill (left) -->
+              <path d="M 0,232 L 530,232 L 110,0 L 0,0 Z" fill="rgba(74,123,166,0.05)"/>
+              <!-- Warm air fill (right) -->
+              <path d="M 530,232 L 740,232 L 740,0 L 110,0 Z" fill="rgba(181,61,31,0.04)"/>
+
+              <!-- Ground -->
+              <rect x="0" y="232" width="740" height="58" fill="#d4c99a" opacity="0.4"/>
+              <line x1="0" y1="232" x2="740" y2="232" stroke="#b9a87a" stroke-width="1.5"/>
+
+              <!-- Frontal surface (gentle slope) -->
+              <line x1="530" y1="232" x2="108" y2="30" stroke="#b53d1f" stroke-width="2.5"/>
+
+              <!-- Warm front semicircles along the line -->
+              <g fill="#b53d1f">
+                <!-- Semicircles at ~3 points along the slope, pointing in direction warm air advances (rightward = upward-right from cold air side) -->
+                <path d="M 530,232 A 10,10 0 0 1 510,232" stroke="#b53d1f" stroke-width="1"/>
+                <ellipse cx="520" cy="232" rx="10" ry="6" fill="#b53d1f"/>
+                <ellipse cx="476" cy="210" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,476,210)"/>
+                <ellipse cx="430" cy="186" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,430,186)"/>
+                <ellipse cx="384" cy="162" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,384,162)"/>
+                <ellipse cx="338" cy="138" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,338,138)"/>
+                <ellipse cx="292" cy="114" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,292,114)"/>
+                <ellipse cx="246" cy="90" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,246,90)"/>
+                <ellipse cx="200" cy="66" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,200,66)"/>
+                <ellipse cx="154" cy="42" rx="9" ry="5.5" fill="#b53d1f" transform="rotate(-60,154,42)"/>
+              </g>
+
+              <!-- Slope label -->
+              <text x="275" y="200" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" transform="rotate(-22,275,200)" text-anchor="middle">SLOPE ~1:100–300</text>
+
+              <!-- Panel labels -->
+              <text x="250" y="16" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">COLD AIR · PRE-FRONTAL</text>
+              <text x="640" y="16" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">WARM SECTOR</text>
+
+              <!-- ======= COLD AIR CLOUDS (left to right = far ahead → surface front) ======= -->
+
+              <!-- 1. CIRRUS (~x=30-120, high) -->
+              <g stroke="#4a7ba6" stroke-width="1" opacity="0.55" fill="none">
+                <path d="M 28,46 C 36,42 44,44 52,40"/>
+                <path d="M 56,40 C 62,37 68,39 76,35"/>
+                <path d="M 40,53 C 50,49 58,51 68,47"/>
+                <path d="M 75,44 C 82,41 90,43 100,38"/>
+                <path d="M 50,62 C 60,58 70,60 82,56"/>
+              </g>
+              <text x="62" y="78" font-family="Anton, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">Ci</text>
+              <text x="62" y="88" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">300–400 nm</text>
+              <text x="62" y="97" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">ahead</text>
+
+              <!-- 2. CIRROSTRATUS (~x=110-210, high sheet) -->
+              <rect x="108" y="36" width="105" height="20" fill="rgba(200,215,235,0.5)" stroke="#4a7ba6" stroke-width="0.8" rx="4"/>
+              <text x="162" y="70" font-family="Anton, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">Cs</text>
+              <text x="162" y="80" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">Halo possible</text>
+              <text x="162" y="89" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">200–300 nm</text>
+
+              <!-- 3. ALTOSTRATUS (~x=210-360, mid-level) -->
+              <rect x="208" y="72" width="155" height="28" fill="rgba(180,195,215,0.6)" stroke="#4a7ba6" stroke-width="1" rx="3"/>
+              <!-- As base -->
+              <rect x="208" y="95" width="155" height="10" fill="rgba(165,180,205,0.5)" rx="2"/>
+              <text x="287" y="118" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" letter-spacing="0.05em">As</text>
+              <text x="287" y="128" font-family="Manrope, sans-serif" font-size="7.5" fill="#0c2541" text-anchor="middle">Sun diffuse · MVFR</text>
+              <text x="287" y="137" font-family="Manrope, sans-serif" font-size="7.5" fill="#0c2541" text-anchor="middle">100–200 nm ahead</text>
+
+              <!-- 4. NIMBOSTRATUS (~x=358-500, low-mid) -->
+              <rect x="356" y="110" width="148" height="65" fill="rgba(140,155,175,0.65)" stroke="#0c2541" stroke-width="1" rx="3"/>
+              <!-- Ns base ragged -->
+              <path d="M 356,172 C 366,168 374,174 384,170 C 394,166 402,172 412,168 C 422,164 430,170 440,166 C 450,162 458,168 468,164 C 478,160 488,166 500,162 L 504,175 L 356,175 Z"
+                    fill="rgba(120,135,155,0.7)"/>
+              <!-- Rain streaks from Ns -->
+              <g stroke="#4a7ba6" stroke-width="1" opacity="0.75">
+                <line x1="370" y1="175" x2="367" y2="190"/>
+                <line x1="382" y1="175" x2="379" y2="190"/>
+                <line x1="394" y1="175" x2="391" y2="190"/>
+                <line x1="406" y1="175" x2="403" y2="190"/>
+                <line x1="418" y1="175" x2="415" y2="190"/>
+                <line x1="430" y1="175" x2="427" y2="190"/>
+                <line x1="442" y1="175" x2="439" y2="190"/>
+                <line x1="454" y1="175" x2="451" y2="190"/>
+                <line x1="466" y1="175" x2="463" y2="190"/>
+                <line x1="478" y1="175" x2="475" y2="190"/>
+                <line x1="490" y1="175" x2="487" y2="190"/>
+              </g>
+              <text x="430" y="208" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" letter-spacing="0.05em">Ns · Continuous rain</text>
+              <text x="430" y="219" font-family="Manrope, sans-serif" font-size="7.5" fill="#0c2541" text-anchor="middle">IFR · 50–100 nm ahead</text>
+
+              <!-- 5. STRATUS / FOG (~x=498-530, at surface front) -->
+              <rect x="497" y="192" width="36" height="40" fill="rgba(180,190,200,0.7)" stroke="#777" stroke-width="0.8" rx="2"/>
+              <text x="515" y="244" font-family="Anton, sans-serif" font-size="8" fill="#777" text-anchor="middle">St/Fog</text>
+              <text x="515" y="254" font-family="Manrope, sans-serif" font-size="7.5" fill="#777" text-anchor="middle">IFR/LIFR</text>
+              <text x="515" y="263" font-family="Manrope, sans-serif" font-size="7.5" fill="#777" text-anchor="middle">At surface front</text>
+
+              <!-- ===== WARM SECTOR (right) ===== -->
+              <!-- Warm sector scattered Cu -->
+              <ellipse cx="620" cy="194" rx="28" ry="13" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <ellipse cx="634" cy="184" rx="20" ry="12" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <ellipse cx="612" cy="186" rx="16" ry="11" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+
+              <!-- Warm sector wind arrow -->
+              <g fill="#b53d1f" stroke="#b53d1f" stroke-width="1.5">
+                <line x1="660" y1="145" x2="634" y2="162"/>
+                <polygon points="634,162 641,153 646,163"/>
+              </g>
+              <text x="668" y="140" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">SW</text>
+              <text x="662" y="151" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">WIND</text>
+
+              <!-- Warm sector labels -->
+              <text x="638" y="215" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle">Warm · humid</text>
+              <text x="638" y="226" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">Pressure: leveling</text>
+
+              <!-- Cold air E wind arrow (pre-frontal) -->
+              <g fill="#4a7ba6" stroke="#4a7ba6" stroke-width="1.5">
+                <line x1="148" y1="152" x2="178" y2="152"/>
+                <polygon points="178,152 169,148 169,156"/>
+              </g>
+              <text x="116" y="156" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">E/NE</text>
+              <text x="110" y="166" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">WIND</text>
+
+              <!-- Freezing rain zone annotation -->
+              <rect x="455" y="150" width="78" height="34" fill="rgba(181,61,31,0.1)" stroke="#b53d1f" stroke-width="1" rx="2"/>
+              <text x="494" y="162" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle" letter-spacing="0.04em">FZRA RISK</text>
+              <text x="494" y="174" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f" text-anchor="middle">Warm layer aloft</text>
+              <text x="494" y="183" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f" text-anchor="middle">+ cold surface air</text>
+
+              <!-- Movement arrow -->
+              <g fill="#0c2541" stroke="#0c2541" stroke-width="2">
+                <line x1="494" y1="252" x2="556" y2="252"/>
+                <polygon points="556,252 546,247 546,257"/>
+              </g>
+              <text x="525" y="267" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
+
+              <!-- Distance bracket for cold air cloud zone -->
+              <line x1="30" y1="280" x2="530" y2="280" stroke="#4a7ba6" stroke-width="1"/>
+              <line x1="30" y1="276" x2="30" y2="284" stroke="#4a7ba6" stroke-width="1"/>
+              <line x1="530" y1="276" x2="530" y2="284" stroke="#4a7ba6" stroke-width="1"/>
+              <text x="280" y="289" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" text-anchor="middle">Cloud &amp; wx deck: 300–500+ nm ahead of surface front</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="288" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>Warm front cross-section (front moving rightward). The very gentle slope means the approaching warm air glides over the cold air, producing a cloud deck that stretches 300–500 nm ahead of the surface front position. Cloud sequence from far ahead to near the surface: Cirrus → Cirrostratus (halo) → Altostratus → Nimbostratus (continuous rain, IFR) → Stratus/Fog (LIFR at surface front). Freezing rain risk exists where a warm layer aloft overlies cold surface air near the front. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-8)</figcaption>
+          </figure>
+
+          <p class="callout">
+            <strong>Warm fronts and inadvertent IMC:</strong> The gradual deterioration of a warm front is a trap. Pilots who check conditions at departure — MVFR or marginal VFR 200+ nm from the front — discover IFR conditions progressively en route as the cloud deck lowers ahead of the surface front. Unlike a cold front that passes in hours, a warm front can hold a region in IFR for 24–48 hours. If the destination is ahead of a slow-moving warm front, plan for the IFR conditions to persist at the destination through arrival time, not just at departure time. (AC 00-6B §9.2)
+          </p>
+        </section>
+
+        <!-- Section: Stationary fronts -->
+        <section id="stationary">
+          <h2>Stationary fronts</h2>
+          <p>
+            A stationary front is a frontal boundary where neither air mass is advancing — the front has stalled. The weather associated with it resembles a warm front, but because it doesn't move, the deteriorated conditions persist over the same area for an extended period. Continuous precipitation — sometimes for 2–3 days — is the defining hazard.
+          </p>
+          <ul>
+            <li><strong>Chart symbol:</strong> Alternating blue triangles (cold side) and red semicircles (warm side) on opposite sides of the frontal line.</li>
+            <li><strong>Movement:</strong> Less than 5 kt net movement in either direction. May oscillate slightly.</li>
+            <li><strong>Weather:</strong> Low ceilings, continuous drizzle or rain, IFR along and ahead of the boundary. The duration of the poor conditions is the primary hazard — not the intensity.</li>
+            <li><strong>Flooding risk:</strong> Slow-moving or stationary fronts are the primary cause of widespread flooding — the same geographic area receives continuous precipitation for days. Flooding TAFs and flash flood watches are common in stationary front situations.</li>
+            <li><strong>Planning implication:</strong> There is no "wait it out for an hour" with a stationary front. If the destination is under a stationary front, plan for IFR conditions to persist through your arrival window. Check the 24-hour forecast trend for any sign of frontal movement.</li>
+          </ul>
+        </section>
+
+        <!-- Section: Occluded fronts -->
+        <section id="occluded">
+          <h2>Occluded fronts</h2>
+          <p>
+            An occluded front forms when a fast-moving cold front overtakes a warm front. The cold front lifts the warm air mass completely off the surface, leaving the coldest air in contact with the surface. Occluded fronts represent a maturing low pressure system — they are associated with the most developed and complex weather in mid-latitude cyclone systems.
+          </p>
+
+          <h3>Cold-type vs. warm-type occlusion</h3>
+          <div class="compare-table">
+            <div class="compare-col">
+              <h3 class="compare-head">Cold-Type Occlusion</h3>
+              <dl>
+                <dt>Air mass arrangement</dt>
+                <dd>Air behind the occluded front is colder than the air ahead of it. (Most common in the central and eastern U.S.)</dd>
+                <dt>Mechanism</dt>
+                <dd>The advancing cold air mass is colder than the pre-existing cold air ahead of the warm front. The new cold air undercuts both the warm air and the existing cold air.</dd>
+                <dt>Weather</dt>
+                <dd>Cold-type frontal weather: showers, convective activity, rapid pressure changes. Can include embedded thunderstorms.</dd>
+              </dl>
+            </div>
+            <div class="compare-col">
+              <h3 class="compare-head">Warm-Type Occlusion</h3>
+              <dl>
+                <dt>Air mass arrangement</dt>
+                <dd>Air behind the occluded front is warmer than the air ahead of it. (More common on the Pacific Coast.)</dd>
+                <dt>Mechanism</dt>
+                <dd>The advancing air mass is less cold than the pre-existing cold air ahead of the warm front. The advancing air rides up and over the pre-existing cold air.</dd>
+                <dt>Weather</dt>
+                <dd>Warm-type frontal weather: extensive stratus, drizzle, IFR conditions, lighter winds. Similar to a warm front but in a more complex system.</dd>
+              </dl>
+            </div>
+          </div>
+
+          <p>
+            In both cases, the occlusion means the warm air is aloft — not at the surface. The surface weather is a combination of cold-front and warm-front elements, with cold temperatures, prolonged precipitation, and complex cloud decks. The <strong>chart symbol</strong> is a solid purple line with alternating triangles and semicircles on the same side, pointing in the direction of movement.
+          </p>
+        </section>
+
+        <!-- Section: Dryline -->
+        <section id="dryline">
+          <h2>Dryline</h2>
+          <p>
+            A dryline is a boundary separating a moist maritime tropical (mT) air mass to the east from a hot, dry continental air mass to the west — usually continental Tropical (cT) air from the Mexican plateau and southwest desert. It is <strong>not a front in the traditional sense</strong>: there is little or no temperature contrast across it. The defining characteristic is a sharp dewpoint gradient — the dewpoint can drop 30–40°F across a distance of 10–20 miles. This moisture boundary is invisible to the naked eye and unannounced by the usual frontal weather clues. Its aviation significance comes entirely from one hazard: it is the primary trigger for the most violent convective weather in the continental United States.
+          </p>
+
+          <h3>Where and when drylines form</h3>
+          <p>
+            Drylines are a Great Plains phenomenon. They form when dry, hot air from the southwest is advected eastward across the Rockies and onto the plains while moist Gulf of Mexico air flows northward at the surface. The two air masses meet along a north-south oriented boundary that is typically located somewhere between west Texas and Oklahoma in the morning.
+          </p>
+          <ul>
+            <li><strong>Season:</strong> Most active in spring and early summer — April through June — when the contrast between Gulf moisture and southwest desert heat is greatest. Less common in winter when the mT flow is weaker.</li>
+            <li><strong>Typical location:</strong> From the Texas Panhandle through western Oklahoma and Kansas in the morning; eastern Texas and central Oklahoma by late afternoon.</li>
+            <li><strong>States most affected:</strong> Texas, Oklahoma, Kansas, Nebraska — the classic tornado alley. A dryline-triggered supercell in this region is a regular feature of spring weather.</li>
+          </ul>
+
+          <h3>Diurnal (daily) movement</h3>
+          <p>
+            Unlike fronts, which move with the synoptic wind pattern, the dryline's position is heavily driven by the diurnal (daily) heating cycle:
+          </p>
+          <ul>
+            <li><strong>Morning:</strong> The dryline is furthest west, often near the New Mexico–Texas border or the Texas Panhandle. Surface heating has not yet mixed the boundary layer enough to push the dry air eastward.</li>
+            <li><strong>Afternoon (peak heating, ~1400–1800 local):</strong> As surface heating deepens the convective mixing layer over the dry, hot terrain to the west, the dry air is mixed down to the surface and the dryline surges eastward — sometimes 100–200 miles during the day. This is when the dryline is most active as a convective trigger.</li>
+            <li><strong>Evening / overnight:</strong> Surface heating weakens, the mixing layer collapses, and the dryline retrogrades back toward the west. It may become diffuse or hard to identify. Existing thunderstorms often continue through the night even as the boundary weakens.</li>
+          </ul>
+
+          <h3>Why drylines trigger violent convection</h3>
+          <p>
+            The dryline generates thunderstorms through two reinforcing mechanisms:
+          </p>
+          <ul>
+            <li><strong>Convergence at the boundary:</strong> The eastward-surging dry air and the westward-resisting moist air create a convergence zone along the dryline. Converging surface air must rise — and on a spring afternoon with a moist, unstable boundary layer to the east, a small forced lift is all it takes to push air past its level of free convection (LFC) and into explosive vertical development.</li>
+            <li><strong>Extreme CAPE in the moist sector:</strong> The mT air to the east of the dryline is warm and very moist (surface dewpoints of 60–70°F are common). The dry air to the west is hot but much less moist. The combination produces an atmosphere with enormous convective available potential energy (CAPE) immediately to the east of the boundary. Values of 3,000–5,000 J/kg CAPE are common in dryline environments — enough to produce violent supercells with 60,000-ft tops, large hail, and tornadoes.</li>
+          </ul>
+
+          <h3>The triple point — maximum convective threat</h3>
+          <p>
+            The most intense convection in a classic severe weather setup often initiates at the <strong>triple point</strong>: the junction where the dryline meets a cold front and a warm front (or another boundary). At the triple point, atmospheric forcing from multiple boundaries converges simultaneously. The combination of cold-front lifting, dryline convergence, and the high-CAPE moist sector creates the environment most favorable for discrete supercell formation. Tornadoes are disproportionately concentrated near triple points in historical severe weather data.
+          </p>
+
+          <h3>The chart symbol and reading the dryline</h3>
+          <p>
+            On a surface analysis chart, the dryline is depicted as an <strong>orange-brown line with hollow (unfilled) semicircles</strong> pointing toward the moist air side (east). It is labeled on WPC charts when prominent. Key indicators on observations:
+          </p>
+          <ul>
+            <li><strong>Dewpoint contrast:</strong> Station models on opposite sides of the dryline show dramatically different dewpoints — 65°F on the moist side, 25°F on the dry side — at similar temperatures.</li>
+            <li><strong>Wind shift:</strong> Surface winds ahead (east) of the dryline are typically southerly (moist Gulf inflow); behind (west) are westerly or southwesterly (dry, hot downslope flow). This wind shift can be subtle compared to a frontal passage but is visible on closely-spaced observations.</li>
+            <li><strong>Radar:</strong> A developing dryline often shows a thin reflectivity line (fine line) on radar before any precipitation develops — caused by insects and birds lofted into the convergent zone. This fine line appears 30–60 minutes before the first convective echoes and is a direct nowcasting tool for where initiation will occur.</li>
+          </ul>
+
+          <h3>Key distinction from fronts</h3>
+          <p>
+            The critical conceptual difference: fronts are defined by a temperature contrast between air masses. A dryline has little or no temperature contrast — temperatures may actually be warmer on the dry (west) side due to afternoon heating over the high desert. The contrast is purely in moisture content. This means a pilot flying west across the dryline in the morning may notice nothing — no cloud change, no wind shift, no temperature change — and then be completely surprised by the explosive thunderstorm development that begins hours later when heating peaks. On a VFR cross-country toward convective country in spring, identify the dryline position on the morning surface analysis and track its forecasted afternoon position on the prog charts before departure.
+          </p>
+
+          <p class="callout">
+            <strong>Practical rule:</strong> If the surface analysis chart shows a dryline within 200 nm of your planned afternoon route in the central plains during April–June, check the convective outlook (SPC Day 1 or Day 2 product) for any tornado, large hail, or damaging wind threat. A slight risk or higher covering your route is a strong go/no-go flag. The dryline's afternoon eastward surge can bring the convective initiation zone to you even if you planned to stay well east of its morning position. (AC 00-6B §9.5; FAA-H-8083-25 §12-11)
+          </p>
+        </section>
+
+        <!-- Section: Comparison table -->
+        <section id="comparison">
+          <h2>Cold vs. warm front — the comparison table</h2>
+          <p>
+            The examiner will almost certainly ask you to compare cold and warm front weather. This table covers every parameter. Know it cold — or at least understand the mechanism behind each row so you can derive the answer even if you can't recall it verbatim.
+          </p>
+
+          <div style="overflow-x: auto; margin: 1.5rem 0 2rem;">
+            <table class="atmo-table" style="max-width: 100%; width: 100%;">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th style="color: #c5ddf0;">Cold Front</th>
+                  <th style="color: #f9cfc6;">Warm Front</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Slope</strong></td>
+                  <td>Steep: ~1:50–100</td>
+                  <td>Gentle: ~1:100–300</td>
+                </tr>
+                <tr>
+                  <td><strong>Speed</strong></td>
+                  <td>Fast: 20–35 kt (faster in winter)</td>
+                  <td>Slow: 10–20 kt</td>
+                </tr>
+                <tr>
+                  <td><strong>Weather band width</strong></td>
+                  <td>Narrow: 50–100 nm</td>
+                  <td>Wide: 200–500+ nm</td>
+                </tr>
+                <tr>
+                  <td><strong>Cloud types</strong></td>
+                  <td>CB, TCu, Cu — cumuliform</td>
+                  <td>Ci → Cs → As → Ns → St/Fog — stratiform</td>
+                </tr>
+                <tr>
+                  <td><strong>Precipitation</strong></td>
+                  <td>Heavy showers, thunderstorms, hail; brief</td>
+                  <td>Continuous drizzle/rain; prolonged</td>
+                </tr>
+                <tr>
+                  <td><strong>Visibility</strong></td>
+                  <td>Poor at front; excellent after passage</td>
+                  <td>Poor for hours/days; fog and drizzle</td>
+                </tr>
+                <tr>
+                  <td><strong>Ceiling</strong></td>
+                  <td>Low at front; high after passage</td>
+                  <td>Lowers gradually; IFR for extended period</td>
+                </tr>
+                <tr>
+                  <td><strong>Wind — before</strong></td>
+                  <td>Southerly, backing to SE as front nears</td>
+                  <td>Easterly to NE (cold air ahead)</td>
+                </tr>
+                <tr>
+                  <td><strong>Wind — after passage</strong></td>
+                  <td>Shifts sharply to NW/W (veering)</td>
+                  <td>Shifts to SW/S (veering, gradual)</td>
+                </tr>
+                <tr>
+                  <td><strong>Temperature — before</strong></td>
+                  <td>Warm, humid</td>
+                  <td>Cold, surface temperature falls slowly</td>
+                </tr>
+                <tr>
+                  <td><strong>Temperature — after passage</strong></td>
+                  <td>Drops sharply (10–20°F possible)</td>
+                  <td>Rises gradually (warm sector arrives)</td>
+                </tr>
+                <tr>
+                  <td><strong>Pressure — before</strong></td>
+                  <td>Falling (moderate rate)</td>
+                  <td>Falling (slow, steady)</td>
+                </tr>
+                <tr>
+                  <td><strong>Pressure — at/after passage</strong></td>
+                  <td>Rises sharply after frontal passage</td>
+                  <td>Steadies or rises slowly</td>
+                </tr>
+                <tr>
+                  <td><strong>Dewpoint — after passage</strong></td>
+                  <td>Drops (dry cP air)</td>
+                  <td>Rises (warm, moist air arrives)</td>
+                </tr>
+                <tr>
+                  <td><strong>Turbulence</strong></td>
+                  <td>Moderate to severe; brief at front</td>
+                  <td>Light to moderate; extended duration</td>
+                </tr>
+                <tr>
+                  <td><strong>Icing</strong></td>
+                  <td>Mainly in CB; possible in post-frontal clouds</td>
+                  <td>Freezing rain/drizzle possible; extensive layer icing in As/Ns</td>
+                </tr>
+                <tr>
+                  <td><strong>Pre-frontal hazard</strong></td>
+                  <td>Squall line 50–200 nm ahead</td>
+                  <td>IFR 200–400 nm ahead; Ci halo at 300 nm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section: Surface analysis chart -->
+        <section id="surface">
+          <h2>Reading the surface analysis chart</h2>
+          <p>
+            The surface analysis chart is the primary map product for understanding the current state of synoptic-scale weather. Issued by the Weather Prediction Center (WPC) every 3 hours, it shows the positions of fronts, pressure systems, and isobars at the time of analysis. Knowing how to read it quickly is a basic weather literacy skill for any pilot flying cross-country.
+          </p>
+
+          <h3>Frontal symbols — the decoder</h3>
+
+          <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin: 1rem 0 1.5rem;">
+            <article class="hazard-card" style="border-top: 4px solid #4a7ba6;">
+              <span class="hazard-label">Symbol 01</span>
+              <h3>Cold Front</h3>
+              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #4a7ba6; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">▶▶▶▶▶</div>
+              <ul class="hazard-list">
+                <li>Solid blue line with filled blue triangles</li>
+                <li>Triangles point in the direction the front is moving</li>
+                <li>Arrow or absence of one indicates the current movement direction</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid #b53d1f;">
+              <span class="hazard-label">Symbol 02</span>
+              <h3>Warm Front</h3>
+              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #b53d1f; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">●●●●●</div>
+              <ul class="hazard-list">
+                <li>Solid red line with filled red semicircles</li>
+                <li>Semicircles point in the direction the warm air is advancing (direction of frontal movement)</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid #5d6f3c;">
+              <span class="hazard-label">Symbol 03</span>
+              <h3>Stationary Front</h3>
+              <div style="font-family: var(--font-mono); font-size: 1.2rem; margin: 0.5rem 0 0.7rem;">
+                <span style="color:#4a7ba6;">▶</span><span style="color:#b53d1f;">●</span><span style="color:#4a7ba6;">▶</span><span style="color:#b53d1f;">●</span>
+              </div>
+              <ul class="hazard-list">
+                <li>Alternating blue triangles and red semicircles on <em>opposite</em> sides of the line</li>
+                <li>Triangles point one way; semicircles point the other — the front isn't moving in either direction</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid #7b5aa6;">
+              <span class="hazard-label">Symbol 04</span>
+              <h3>Occluded Front</h3>
+              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #7b5aa6; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">◆◆◆◆◆</div>
+              <ul class="hazard-list">
+                <li>Solid purple line with alternating triangles and semicircles on the <em>same</em> side</li>
+                <li>Points in the direction of frontal movement</li>
+              </ul>
+            </article>
+
+            <article class="hazard-card" style="border-top: 4px solid #a07830;">
+              <span class="hazard-label">Symbol 05</span>
+              <h3>Dryline</h3>
+              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #a07830; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">○ ○ ○ ○ ○</div>
+              <ul class="hazard-list">
+                <li>Orange-brown line with <em>hollow</em> (unfilled) semicircles pointing toward the moist air (east)</li>
+                <li>Not a front: marks a moisture boundary, not a temperature contrast</li>
+                <li>Labeled on WPC surface analysis charts when prominent</li>
+                <li>Station model contrast: high dewpoints east, low dewpoints west</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3>What else the chart shows</h3>
+          <ul>
+            <li><strong>Isobars:</strong> Lines of equal sea-level pressure, labeled in millibars (mb) or hectopascals (hPa). Closely spaced isobars indicate a strong pressure gradient and strong winds. Wind flow is approximately parallel to the isobars (slightly inward toward lows due to friction). Standard analysis contour interval: 4 mb.</li>
+            <li><strong>High and Low centers:</strong> Labeled H and L with the central pressure value. Multiple closed isobar rings around an H or L indicate an intense system.</li>
+            <li><strong>Surface observations:</strong> Station model plots at observation sites showing temperature, dewpoint, wind, sky cover, and current weather. You can verify the chart analysis against raw observations.</li>
+            <li><strong>Troughs:</strong> An elongated area of low pressure extending from a low center — not a front but a region of cyclonic flow and often increased weather activity. Chart symbol: dashed line.</li>
+          </ul>
+
+          <p class="callout">
+            <strong>Surface analysis vs. radar:</strong> The surface analysis chart is an <em>analysis</em> — it shows where things <em>were</em> at the time of observation, which may be 1–3 hours ago. A cold front on the chart is where the front was at analysis time, not now. Use radar and satellite to locate the current frontal position — the surface analysis chart shows the organized synoptic context around which you interpret the current radar picture. (AC 00-45H §6.1)
+          </p>
+        </section>
+
+        <!-- Section: Flight planning with fronts -->
+        <section id="planning">
+          <h2>Flight planning with fronts</h2>
+          <p>
+            Most significant weather decisions on cross-country flights come down to: where is the front, how fast is it moving, and where will it be at my destination ETA? These questions have answers if you work through them systematically with the right products.
+          </p>
+
+          <h3>The planning workflow</h3>
+          <ol style="margin: 1rem 0 1.5rem; padding-left: 1.5rem; line-height: 2.1;">
+            <li><strong>Identify frontal positions from the most recent surface analysis chart.</strong> Note front type, orientation, and distance to your route.</li>
+            <li><strong>Determine frontal speed and forecast position.</strong> The Prog Charts (12-hour and 24-hour surface prognosis) show the forecast frontal position at those valid times. Compare to the current analysis chart to estimate movement rate.</li>
+            <li><strong>Check AIRMET and SIGMET coverage.</strong> AIRMETs Sierra (IFR/mountain obscuration), Tango (turbulence/LLWS), and Zulu (icing) cover the specific hazards associated with frontal systems. A SIGMET covering your route is a hard go/no-go flag for the hazard listed.</li>
+            <li><strong>Check PIREPs along the route.</strong> Current conditions from other pilots — especially icing, turbulence, and ceilings — are the best real-time supplement to model-based forecasts.</li>
+            <li><strong>Review the METARs and TAFs at departure, destination, and alternates.</strong> The TAF horizon (24–30 hours) should bracket your entire planned flight. For warm fronts, extend your look-ahead — IFR can persist well beyond the normal TAF window.</li>
+            <li><strong>Check radar and satellite for current convective activity.</strong> Pre-frontal squall lines are not on the surface analysis chart — they are on radar. If the radar shows a line of red and magenta ahead of the charted front, plan around it.</li>
+          </ol>
+
+          <h3>Specific frontal scenarios</h3>
+          <p><strong>Departing ahead of a cold front:</strong></p>
+          <ul>
+            <li>If the front arrives at your destination before you do, you are flying into deteriorating conditions with nowhere to go. Calculate when the front arrives (distance ÷ speed) and compare to your ETA.</li>
+            <li>Pre-frontal squall lines can be 150 nm ahead of the surface front. Get the radar picture, not just the surface analysis.</li>
+            <li>Leave with enough fuel to divert if the front accelerates.</li>
+          </ul>
+          <p><strong>Flying behind a cold front:</strong></p>
+          <ul>
+            <li>Generally favorable — clear, cold post-frontal air. But watch for: post-frontal icing in any remaining clouds (cold temps + residual moisture), strong northwesterly winds and mechanical turbulence, and lowered density altitudes increasing takeoff/climb performance requirements in cold air.</li>
+          </ul>
+          <p><strong>Approaching a warm front:</strong></p>
+          <ul>
+            <li>The IFR conditions at the destination may be 24–48 hours away from improving. "Pushing through" IFR warm-front weather is a leading cause of inadvertent IMC accidents for non-instrument-rated pilots.</li>
+            <li>For IFR flight: the icing risk in warm-front layer clouds (As/Ns) is significant. Freezing rain below the warm layer is the most dangerous icing scenario in the system. Have alternates ahead of and behind the front.</li>
+          </ul>
+        </section>
+
+        <!-- Section: Checkride questions -->
+        <section id="checkride">
+          <h2>Checkride questions you'll actually be asked</h2>
+          <p>
+            Front and pressure system questions are universal across PPL, IR, and commercial orals. The comparison between cold and warm fronts is the most commonly tested topic.
+          </p>
+
+          <details class="qa">
+            <summary>Q: What is the difference in slope between a cold front and a warm front?</summary>
+            <p>A cold front has a steep slope, approximately 1:50 to 1:100 (1 mile vertical rise per 50–100 miles horizontal). A warm front has a gentle slope, approximately 1:100 to 1:300. The steep slope of the cold front forces warm air upward rapidly, producing cumulonimbus and violent weather in a narrow band. The gentle warm front slope means warm air rises slowly over a much wider area, producing stratiform clouds and precipitation stretching hundreds of miles ahead of the surface front position. (AC 00-6B Ch. 9)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Which type of front moves faster — cold or warm?</summary>
+            <p>Cold fronts move faster — typically 20–35 kt (sometimes 50+ kt in winter). Warm fronts typically move at 10–20 kt. Cold fronts move faster because the advancing cold air is denser and displaces warm air more aggressively. This also means cold fronts have shorter-duration but more intense weather at any given location, while warm fronts produce longer-duration IFR with more gradual deterioration and improvement. (FAA-H-8083-25 §12-7)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: Describe the cloud sequence as a warm front approaches.</summary>
+            <p>From far ahead to near the surface front: Cirrus (200–400 nm ahead; thin, high, wispy — first indicator) → Cirrostratus (150–300 nm; high sheet, causes sun/moon halo) → Altostratus (100–200 nm; gray sheet, sun appears diffuse, MVFR developing) → Nimbostratus (50–100 nm; continuous rain, IFR, low ceilings) → Stratus and Fog (at the surface front; LIFR possible, fog and drizzle). The sequence Ci → Cs → As → Ns → St/Fog is the textbook answer. (AC 00-6B §9.2; FAA-H-8083-25 §12-8)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the pre-frontal squall line and where does it form?</summary>
+            <p>A squall line is a line of thunderstorms that develops ahead of a fast-moving cold front — typically 50–200 nm ahead of the surface front position. It forms in the zone where warm-sector instability is maximum and upper-level divergence supports strong convective development. It is not visible on the surface analysis chart as a frontal symbol — it only appears on radar. The squall line can be more intense than the frontal thunderstorms themselves and arrives well before the surface front. Checking only the surface analysis chart without current radar misses this hazard. (AC 00-6B §9.3.1)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What wind shift occurs when a cold front passes?</summary>
+            <p>Ahead of a cold front (in the warm sector), winds are typically southerly to southwesterly. As the front approaches, winds back to the southeast. At frontal passage, there is a <strong>sudden, often sharp wind shift to the northwest or west</strong> — a veering shift (clockwise in the Northern Hemisphere). The temperature drops rapidly, the pressure begins to rise, and the skies begin to clear behind the front. The sharp wind shift is one of the easiest ways to confirm that a cold front has passed a surface observation site. (AC 00-6B §9.3; FAA-H-8083-25 §12-7)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is an occluded front and how does it form?</summary>
+            <p>An occluded front forms when a cold front overtakes a warm front — the faster cold front lifts the warm air completely off the surface. The coldest air is now at the surface in contact with the pre-existing cold air ahead of the warm front. A cold-type occlusion (most common in the U.S.) has colder air behind the occluded front than ahead; a warm-type occlusion (more common on the West Coast) has warmer air behind. Occluded fronts represent a maturing low pressure system and bring complex weather combining cold and warm frontal elements — prolonged precipitation, icing, and potential embedded convection. Chart symbol: solid purple line with alternating triangles and semicircles on the same side. (AC 00-6B §9.4)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is Buys Ballot's Law?</summary>
+            <p>In the Northern Hemisphere, stand with your back to the wind and low pressure is to your left, high pressure is to your right. The wind circulates counterclockwise around lows and clockwise around highs in the Northern Hemisphere, modified by friction near the surface. Buys Ballot's Law provides a way to determine the relative position of pressure systems directly from observed surface wind. (FAA-H-8083-25 §12-2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is the freezing rain risk near a warm front and why does it occur?</summary>
+            <p>Near a warm front in the cold season, a warm layer aloft (part of the advancing warm air mass) overlies a cold surface air layer. Rain forms above the warm layer and falls as liquid through the elevated warm layer; it then enters the cold surface air below and becomes supercooled — creating freezing rain or freezing drizzle. This produces the most intense structural icing in aviation because supercooled rain droplets are large, accretion is rapid, and the ice formed (clear/glaze ice) is dense and adheres strongly. The zone of maximum risk is in the 1,000–5,000 ft layer immediately ahead of the surface warm front position. (AC 00-6B §9.2.4; AC 91-74B §3)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: How are fronts depicted on a surface analysis chart?</summary>
+            <p>Cold front: solid blue line with filled blue triangles pointing in the direction of movement. Warm front: solid red line with filled red semicircles pointing in the direction of movement. Stationary front: alternating blue triangles and red semicircles on opposite sides of the line. Occluded front: solid purple line with alternating triangles and semicircles on the same side. Dryline: orange-brown line with hollow (unfilled) semicircles pointing toward the moist air side — marks a moisture boundary, not a temperature front. The H and L symbols mark pressure centers; isobars (4-mb intervals) show the pressure pattern around those centers. (AC 00-45H §6.2)</p>
+          </details>
+
+          <details class="qa">
+            <summary>Q: What is a dryline and why is it a significant aviation hazard?</summary>
+            <p>A dryline is a boundary separating moist maritime tropical (mT) air to the east from hot, dry continental air (cT) to the west. Unlike a front, there is little or no temperature contrast across it — the defining characteristic is a sharp dewpoint gradient (dewpoints can drop 30–40°F over 10–20 miles). It is primarily a Great Plains phenomenon, most active in spring and early summer (April–June). The aviation hazard is severe convective weather: the dryline provides the low-level convergence needed to initiate convection into a very high-CAPE environment created by the moist mT air to its east. Supercell thunderstorms and tornadoes are frequently triggered along the dryline, especially at the triple point where it intersects a cold front. The dryline surges eastward in the afternoon as surface heating peaks and retrogrades west overnight. Chart symbol: orange-brown line with hollow semicircles pointing east (toward moist air). (AC 00-6B §9.5; FAA-H-8083-25 §12-11)</p>
+          </details>
+        </section>
+
+        <!-- Section: Pilot takeaway -->
+        <section id="takeaway">
+          <h2>Pilot takeaway</h2>
+          <div class="takeaway-box">
+            <ul class="takeaway-list">
+              <li><strong>High pressure = clockwise, stable, generally clear. Low pressure = counterclockwise, rising air, clouds and precip.</strong> Falling pressure means a front or low is approaching. A rapid 4+ mb fall in 3 hours means major change within 12 hours. Flying from high to low without updating the altimeter puts you lower than indicated — "from high to low, look out below."</li>
+              <li><strong>Cold front: steep slope, fast-moving, narrow intense weather band.</strong> Weather is violent but brief — cumulonimbus, heavy rain, thunder, hail, sharp wind shift to NW. Pre-frontal squall line is the hidden hazard — 50–200 nm ahead and not on the surface analysis chart. Check radar before departure, not just the synoptic chart.</li>
+              <li><strong>Warm front: gentle slope, slow-moving, wide deteriorating weather band.</strong> The cloud sequence — Ci → Cs → As → Ns → St/Fog — extends 300–500 nm ahead of the surface front. If you see cirrus thickening to the south, IFR is a day away. Conditions persist for 12–48 hours. "Pushing through" warm-front IFR in a VFR aircraft is how pilots end up in inadvertent IMC.</li>
+              <li><strong>Freezing rain is the worst icing scenario and it's a warm front phenomenon.</strong> Warm layer aloft + cold surface air = supercooled rain droplets = rapid clear ice accumulation. Maximum risk in the 1,000–5,000 ft layer just ahead of the surface warm front. AIRMET Zulu plus warm front = do not enter IMC unless in a FIKI aircraft with a full escape plan.</li>
+              <li><strong>Stationary fronts: the weather doesn't move either.</strong> IFR conditions can persist for 2–3 days over the same area. There is no "wait an hour" strategy. Plan for the front to be there when you arrive unless the 24-hour prog shows confirmed movement.</li>
+              <li><strong>Occluded front = cold + warm front characteristics, mature low pressure.</strong> Complex weather: prolonged precip, icing, possible embedded convection. Chart symbol: purple line with alternating triangles and semicircles on the same side.</li>
+              <li><strong>A dryline is not a front — it's a moisture boundary.</strong> No temperature contrast, no cloud changes crossing it, no obvious visual cue. Primary hazard: it triggers violent supercell thunderstorms and tornadoes by initiating convection into extremely high-CAPE mT air to its east. Great Plains, April–June, peaks in the afternoon as the boundary surges 100–200 miles eastward. Check the SPC convective outlook whenever a dryline is within 200 nm of your afternoon route in central plains spring weather. Chart symbol: orange-brown line with hollow semicircles pointing east (toward moist air).</li>
+              <li><strong>The surface analysis chart is an analysis, not a nowcast.</strong> It shows where the front was 1–3 hours ago. Combine it with current radar (for squall line/convection position), satellite (for cloud tops and frontal cloud edge), and PIREPs (for actual conditions) to locate where things are right now.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Bottom nav -->
+        <nav class="concept-nav-bottom">
+          <a href="turbulence.html" class="concept-nav-link">← Turbulence</a>
+          <a href="winds-aloft-jet-stream.html" class="concept-nav-link">Winds Aloft &amp; Jet Stream →</a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX · Built for student pilots</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+
+</body>
+</html>
