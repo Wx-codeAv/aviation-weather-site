@@ -37,7 +37,7 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 
 - [x] Wind, Wind Shear, and Mountain Wave (Learn page)
 - [x] Weather Decision-Making (Learn page — the "how to think" page)
-- [ ] ACS Checkride Mapping (interactive ACS section)
+- [x] ACS Checkride Mapping (interactive ACS section)
 
 ## Phase 5 — Tools
 

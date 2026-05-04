@@ -3,8 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACS — CrosswindWX</title>
+  <title>ACS Weather Mapping — CrosswindWX</title>
+  <meta name="description" content="Weather-related ACS task elements for Private, Instrument, and Commercial checkrides. Search by topic, see the standard, jump to the explainer.">
   <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .acs-section { padding: 3rem 0 5rem; }
+
+    .acs-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #acs-search {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      border: 1.5px solid var(--rule);
+      border-radius: 4px;
+      background: white;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #acs-search:focus { border-color: var(--sky); }
+    #acs-search::placeholder { color: #b9a87a; }
+
+    .acs-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .acs-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .filter-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+    }
+
+    .filter-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    .filter-btn {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border: 1.5px solid var(--rule);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--sky); color: var(--sky); }
+    .filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--buff); }
+
+    .acs-cert-note {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1rem;
+      background: rgba(255,255,255,0.5);
+    }
+    .acs-cert-note strong { color: var(--ink); }
+
+    .acs-count {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--sage);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Grid */
+    .acs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .acs-card {
+      background: white;
+      border-radius: 6px;
+      border: 1px solid var(--rule);
+      border-left: 4px solid var(--sky);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: box-shadow 0.15s;
+    }
+    .acs-card:hover { box-shadow: 0 2px 12px rgba(12,37,65,0.08); }
+    .acs-card.type-knowledge { border-left-color: var(--sky); }
+    .acs-card.type-risk      { border-left-color: var(--rust); }
+    .acs-card.type-skills    { border-left-color: var(--sage); }
+
+    /* Group/parent cards span full width and have a tinted background */
+    .acs-card.is-group {
+      grid-column: 1 / -1;
+      background: var(--buff-dark);
+    }
+
+    .acs-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .acs-card-code {
+      font-family: var(--font-mono);
+      font-size: 0.77rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+    }
+
+    .acs-type-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+    .badge-knowledge { background: rgba(74,123,166,0.12); color: var(--sky); }
+    .badge-risk      { background: rgba(181,61,31,0.10); color: var(--rust); }
+    .badge-skills    { background: rgba(93,111,60,0.12); color: var(--sage); }
+
+    .acs-card-label {
+      font-weight: 700;
+      font-size: 0.93rem;
+      color: var(--ink);
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .acs-card-desc {
+      font-size: 0.86rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin: 0;
+      flex: 1;
+    }
+
+    .acs-card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.15rem;
+      align-items: center;
+    }
+
+    .acs-learn-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--sky);
+      border-bottom: 1px solid currentColor;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .acs-learn-link:hover { color: var(--rust); }
+    .acs-learn-sep {
+      color: var(--rule);
+      font-size: 0.78rem;
+    }
+
+    .acs-card-note {
+      font-family: var(--font-mono);
+      font-size: 0.71rem;
+      color: var(--sage);
+      border-top: 1px solid var(--rule);
+      padding-top: 0.45rem;
+      margin-top: 0.1rem;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--rule);
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 640px) {
+      .acs-grid { grid-template-columns: 1fr; }
+      .acs-card.is-group { grid-column: auto; }
+      .acs-filter-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,23 +222,431 @@
     </div>
   </header>
 
-  <section class="hero">
+  <section class="concept-hero">
     <div class="container">
       <p class="hero-eyebrow">Section 04 / ACS</p>
       <h1>The standard,<br>looked up <span class="accent">fast.</span></h1>
       <p class="lede">
-        The weather-related ACS task elements for Private, Instrument, and Commercial. Search by topic, see what the standard requires, jump straight to the relevant explainer. No more PDF-scrolling at 11 PM the night before.
+        Every weather-related ACS task element for Private, Instrument, and Commercial checkrides. Search by topic — see exactly what the standard requires, then jump to the explainer. No more PDF-scrolling at 11 PM.
       </p>
-      <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--sage); text-transform: uppercase; letter-spacing: 0.15em;">Status: scaffolded · Build target: Phase 5</p>
-      <p><a href="../index.html">← Back to home</a></p>
+      <div class="concept-meta">
+        <span class="concept-meta-item"><strong>Standard:</strong> ACS April 2024 (effective May 31, 2024)</span>
+        <span class="concept-meta-item"><strong>Area:</strong> Task C / Weather Information (Private &amp; Commercial) · Task B / Weather Information (Instrument)</span>
+        <span class="concept-meta-item"><strong>Applies to:</strong> Private · Instrument · Commercial</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="acs-section">
+    <div class="container">
+
+      <div class="acs-controls">
+        <input type="search" id="acs-search"
+          placeholder="Search by topic, code, or keyword — e.g. thunderstorms, METAR, icing…">
+        <div class="acs-filter-row">
+          <div class="acs-filter-group">
+            <span class="filter-label">Cert</span>
+            <div class="filter-btns" id="cert-filter">
+              <button class="filter-btn active" data-cert="private">Private (PA)</button>
+              <button class="filter-btn" data-cert="instrument">Instrument (IRA)</button>
+              <button class="filter-btn" data-cert="commercial">Commercial (CA)</button>
+            </div>
+          </div>
+          <div class="acs-filter-group">
+            <span class="filter-label">Type</span>
+            <div class="filter-btns" id="type-filter">
+              <button class="filter-btn active" data-type="all">All</button>
+              <button class="filter-btn" data-type="knowledge">Knowledge</button>
+              <button class="filter-btn" data-type="risk">Risk</button>
+              <button class="filter-btn" data-type="skills">Skills</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="acs-cert-note" id="acs-cert-note">
+        Showing codes for <strong>Private Pilot (PA.I.C)</strong>. Core weather content is identical across all three ratings — only the prefix and task letter change.
+      </p>
+
+      <p class="acs-count" id="acs-count"></p>
+
+      <div class="acs-grid" id="acs-grid"></div>
+
     </div>
   </section>
 
   <footer>
     <div class="container">
       <span>CrosswindWX · Built for student pilots</span>
-      <span>Not for navigation · Educational use only</span>
+      <span>ACS April 2024 · Not for navigation · Educational use only</span>
     </div>
   </footer>
+
+  <script>
+    const TASKS = [
+
+      // ── Knowledge ─────────────────────────────────────────────────────────
+
+      {
+        id: "K1", type: "knowledge",
+        label: "Weather data sources",
+        desc: "Sources of weather data (e.g., National Weather Service, Flight Service) for flight planning purposes.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }]
+      },
+
+      {
+        id: "K2", type: "knowledge", isGroup: true,
+        label: "Acceptable weather products — overview",
+        desc: "Acceptable weather products and resources required for preflight planning, current and forecast weather for departure, en route, and arrival phases of flight.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }],
+        note: "Evaluator must assess at least three sub-elements (K2a–K2g)."
+      },
+      {
+        id: "K2a", type: "knowledge", parentId: "K2",
+        label: "METARs, SPECIs, and PIREPs",
+        desc: "Airport Observations (METAR and SPECI) and Pilot Observations (PIREP).",
+        links: [
+          { href: "decoder.html", label: "METAR & TAF Decoder" },
+          { href: "learn/pireps.html", label: "PIREPs" }
+        ]
+      },
+      {
+        id: "K2b", type: "knowledge", parentId: "K2",
+        label: "Surface Analysis Chart and CVA",
+        desc: "Surface Analysis Chart, Ceiling and Visibility Chart (CVA).",
+        links: [{ href: "learn/weather-charts.html", label: "Weather Charts" }]
+      },
+      {
+        id: "K2c", type: "knowledge", parentId: "K2",
+        label: "Terminal Aerodrome Forecasts (TAF)",
+        desc: "Terminal Aerodrome Forecasts (TAF).",
+        links: [{ href: "decoder.html", label: "METAR & TAF Decoder" }]
+      },
+      {
+        id: "K2d", type: "knowledge", parentId: "K2",
+        label: "Graphical Forecasts for Aviation (GFA)",
+        desc: "Graphical Forecasts for Aviation (GFA).",
+        links: [{ href: "learn/weather-charts.html", label: "Weather Charts" }]
+      },
+      {
+        id: "K2e", type: "knowledge", parentId: "K2",
+        label: "Wind and Temperature Aloft Forecast (FB)",
+        desc: "Wind and Temperature Aloft Forecast (FB).",
+        links: [{ href: "learn/winds-aloft-jet-stream.html", label: "Winds Aloft & Jet Stream" }]
+      },
+      {
+        id: "K2f", type: "knowledge", parentId: "K2",
+        label: "Convective Outlook (AC)",
+        desc: "Convective Outlook (AC).",
+        links: [{ href: "learn/weather-charts.html", label: "Weather Charts" }]
+      },
+      {
+        id: "K2g", type: "knowledge", parentId: "K2",
+        label: "AIRMETs, SIGMETs, and Convective SIGMETs",
+        desc: "Inflight Aviation Weather Advisories including Airmen's Meteorological Information (AIRMET), Significant Meteorological Information (SIGMET), and Convective SIGMET.",
+        links: [{ href: "learn/airmets-sigmets.html", label: "AIRMETs & SIGMETs" }]
+      },
+
+      {
+        id: "K3", type: "knowledge", isGroup: true,
+        label: "Meteorology — overview",
+        desc: "Meteorology applicable to the departure, en route, alternate, and destination — expected climate and hazardous conditions. (VFR/VMC for Private and Commercial; IFR conditions for Instrument.)",
+        links: [],
+        note: "Evaluator must assess at least three sub-elements (K3a–K3l)."
+      },
+      {
+        id: "K3a", type: "knowledge", parentId: "K3",
+        label: "Atmospheric composition and stability",
+        desc: "Atmospheric composition and stability.",
+        links: [{ href: "learn/stability-lapse-rates.html", label: "Stability & Lapse Rates" }]
+      },
+      {
+        id: "K3b", type: "knowledge", parentId: "K3",
+        label: "Wind — windshear and mountain wave",
+        desc: "Wind (e.g., windshear, mountain wave, factors affecting wind, etc.).",
+        links: [
+          { href: "learn/wind-shear-mountain-wave.html", label: "Wind Shear & Mountain Wave" },
+          { href: "learn/winds-aloft-jet-stream.html", label: "Winds Aloft & Jet Stream" }
+        ]
+      },
+      {
+        id: "K3c", type: "knowledge", parentId: "K3",
+        label: "Temperature and heat exchange",
+        desc: "Temperature and heat exchange.",
+        links: [{ href: "learn/stability-lapse-rates.html", label: "Stability & Lapse Rates" }]
+      },
+      {
+        id: "K3d", type: "knowledge", parentId: "K3",
+        label: "Moisture and precipitation",
+        desc: "Moisture/precipitation.",
+        links: [
+          { href: "learn/fog-formation.html", label: "Fog Formation" },
+          { href: "learn/thunderstorm-life-cycle.html", label: "Thunderstorm Life Cycle" }
+        ]
+      },
+      {
+        id: "K3e", type: "knowledge", parentId: "K3",
+        label: "Weather systems — air masses and fronts",
+        desc: "Weather system formation, including air masses and fronts.",
+        links: [{ href: "learn/fronts-pressure-systems.html", label: "Fronts & Pressure Systems" }]
+      },
+      {
+        id: "K3f", type: "knowledge", parentId: "K3",
+        label: "Clouds",
+        desc: "Clouds.",
+        links: [{ href: "learn/stability-lapse-rates.html", label: "Stability & Lapse Rates" }]
+      },
+      {
+        id: "K3g", type: "knowledge", parentId: "K3",
+        label: "Turbulence",
+        desc: "Turbulence.",
+        links: [{ href: "learn/turbulence.html", label: "Turbulence" }]
+      },
+      {
+        id: "K3h", type: "knowledge", parentId: "K3",
+        label: "Thunderstorms and microbursts",
+        desc: "Thunderstorms and microbursts.",
+        links: [{ href: "learn/thunderstorm-life-cycle.html", label: "Thunderstorm Life Cycle" }]
+      },
+      {
+        id: "K3i", type: "knowledge", parentId: "K3",
+        label: "Icing and freezing level",
+        desc: "Icing and freezing level information.",
+        links: [{ href: "learn/icing.html", label: "Aircraft Icing" }]
+      },
+      {
+        id: "K3j", type: "knowledge", parentId: "K3",
+        label: "Fog and mist",
+        desc: "Fog/mist.",
+        links: [{ href: "learn/fog-formation.html", label: "Fog Formation" }]
+      },
+      {
+        id: "K3k", type: "knowledge", parentId: "K3",
+        label: "Frost",
+        desc: "Frost.",
+        links: [{ href: "learn/fog-formation.html", label: "Fog Formation" }],
+        note: "[VERIFY] Confirm the Fog Formation page covers frost adequately as a distinct hazard."
+      },
+      {
+        id: "K3l", type: "knowledge", parentId: "K3",
+        label: "Obstructions to visibility",
+        desc: "Obstructions to visibility (e.g., smoke, haze, volcanic ash, etc.).",
+        links: [],
+        note: "No dedicated Learn page yet. Covered in passing in AIRMETs & SIGMETs context."
+      },
+
+      {
+        id: "K4", type: "knowledge",
+        label: "Flight deck digital weather displays",
+        desc: "Flight deck instrument displays of digital weather and aeronautical information.",
+        links: [],
+        note: "No dedicated Learn page yet."
+      },
+
+      // ── Risk Management ───────────────────────────────────────────────────
+
+      {
+        id: "R1", type: "risk", isGroup: true,
+        label: "Go/no-go and continue/divert decisions",
+        desc: "Making the go/no-go and continue/divert decisions.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }]
+      },
+      {
+        id: "R1a", type: "risk", parentId: "R1",
+        label: "When diversion is prudent",
+        desc: "Circumstances that would make diversion prudent.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }]
+      },
+      {
+        id: "R1b", type: "risk", parentId: "R1",
+        label: "Personal weather minimums",
+        desc: "Personal weather minimums.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }]
+      },
+      {
+        id: "R1c", type: "risk", parentId: "R1",
+        label: "Hazardous conditions — icing and turbulence aloft",
+        desc: "Hazardous weather conditions, including known or forecast icing or turbulence aloft.",
+        links: [
+          { href: "learn/icing.html", label: "Aircraft Icing" },
+          { href: "learn/turbulence.html", label: "Turbulence" }
+        ]
+      },
+
+      {
+        id: "R2", type: "risk", isGroup: true,
+        label: "Use and limitations of weather tools",
+        desc: "Use and limitations of installed onboard weather equipment, aviation weather reports and forecasts, and inflight weather resources.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }]
+      },
+      {
+        id: "R2a", type: "risk", parentId: "R2",
+        label: "Installed onboard weather equipment",
+        desc: "Installed onboard weather equipment — use and limitations.",
+        links: [],
+        note: "No dedicated Learn page yet."
+      },
+      {
+        id: "R2b", type: "risk", parentId: "R2",
+        label: "Aviation weather reports and forecasts",
+        desc: "Aviation weather reports and forecasts — use and limitations.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }]
+      },
+      {
+        id: "R2c", type: "risk", parentId: "R2",
+        label: "Inflight weather resources",
+        desc: "Inflight weather resources — use and limitations.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }]
+      },
+
+      // ── Skills ────────────────────────────────────────────────────────────
+
+      {
+        id: "S1", type: "skills",
+        label: "Obtain an adequate weather briefing",
+        desc: "Use available aviation weather resources to obtain an adequate weather briefing.",
+        links: [{ href: "learn/weather-product-ladder.html", label: "Weather Product Ladder" }]
+      },
+      {
+        id: "S2", type: "skills",
+        label: "Analyze at least three K3 conditions",
+        desc: "Analyze the implications of at least three of the conditions listed in K3a through K3l, using actual weather or weather conditions provided by the evaluator.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }]
+      },
+      {
+        id: "S3", type: "skills",
+        label: "Make a go/no-go decision",
+        desc: "Correlate weather information to make a go/no-go decision.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }]
+      },
+
+      {
+        id: "S4", type: "skills", certsOnly: ["instrument"],
+        label: "Determine alternate airport requirement",
+        desc: "Determine whether an alternate airport is required, and, if required, whether the selected alternate airport meets regulatory requirements.",
+        links: [{ href: "learn/weather-decision-making.html", label: "Weather Decision-Making" }],
+        note: "Instrument Rating only (IR.I.B.S4). Not required for Private or Commercial weather task."
+      }
+    ];
+
+    const TYPE_LABELS = { knowledge: "Knowledge", risk: "Risk", skills: "Skills" };
+    const CERT_PREFIXES = {
+      private:    "PA.I.C",
+      instrument: "IR.I.B",
+      commercial: "CA.I.C"
+    };
+    const CERT_LABELS = {
+      private:    "Private Pilot (PA.I.C)",
+      instrument: "Instrument Rating (IR.I.B)",
+      commercial: "Commercial Pilot (CA.I.C)"
+    };
+
+    let activeCert = "private";
+    let activeType = "all";
+    let searchQuery = "";
+
+    function taskCode(id) {
+      return CERT_PREFIXES[activeCert] + "." + id;
+    }
+
+    function matchesFilter(task) {
+      if (task.certsOnly && !task.certsOnly.includes(activeCert)) return false;
+      if (activeType !== "all" && task.type !== activeType) return false;
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      const haystack = [
+        task.id,
+        taskCode(task.id),
+        task.label,
+        task.desc,
+        task.note || "",
+        ...(task.links || []).map(l => l.label)
+      ].join(" ").toLowerCase();
+      return haystack.includes(q);
+    }
+
+    function renderCards() {
+      const grid = document.getElementById("acs-grid");
+      const countEl = document.getElementById("acs-count");
+      const noteEl = document.getElementById("acs-cert-note");
+      const filtered = TASKS.filter(matchesFilter);
+
+      const irNote = activeCert === "instrument"
+        ? " Instrument weather is <strong>Task B</strong> (IR.I.B), not Task C — and includes an extra skill (S4) for alternate airport requirements."
+        : "";
+      noteEl.innerHTML = "Showing codes for <strong>" + CERT_LABELS[activeCert] + "</strong>." + irNote +
+        " Core weather content is identical across all three ratings — only the prefix and task letter change.";
+
+      countEl.textContent = "Showing " + filtered.length + " of " + TASKS.length + " task elements";
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p class="no-results">No tasks match "' + searchQuery + '"</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(function(task) {
+        const code = taskCode(task.id);
+        const cardClasses = [
+          "acs-card",
+          "type-" + task.type,
+          task.isGroup ? "is-group" : ""
+        ].filter(Boolean).join(" ");
+
+        let linksHtml = "";
+        if (task.links && task.links.length > 0) {
+          linksHtml = '<div class="acs-card-footer">' +
+            task.links.map(function(l, i) {
+              const sep = i > 0 ? '<span class="acs-learn-sep">·</span>' : "";
+              return sep + '<a class="acs-learn-link" href="' + l.href + '">→ ' + l.label + '</a>';
+            }).join("") +
+          "</div>";
+        }
+
+        const noteHtml = task.note
+          ? '<p class="acs-card-note">' + task.note + "</p>"
+          : "";
+
+        return '<div class="' + cardClasses + '">' +
+          '<div class="acs-card-header">' +
+            '<span class="acs-card-code">' + code + "</span>" +
+            '<span class="acs-type-badge badge-' + task.type + '">' + TYPE_LABELS[task.type] + "</span>" +
+          "</div>" +
+          '<p class="acs-card-label">' + task.label + "</p>" +
+          '<p class="acs-card-desc">' + task.desc + "</p>" +
+          linksHtml +
+          noteHtml +
+        "</div>";
+      }).join("");
+    }
+
+    document.getElementById("cert-filter").addEventListener("click", function(e) {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn) return;
+      activeCert = btn.dataset.cert;
+      document.querySelectorAll("#cert-filter .filter-btn").forEach(function(b) {
+        b.classList.remove("active");
+      });
+      btn.classList.add("active");
+      renderCards();
+    });
+
+    document.getElementById("type-filter").addEventListener("click", function(e) {
+      const btn = e.target.closest(".filter-btn");
+      if (!btn) return;
+      activeType = btn.dataset.type;
+      document.querySelectorAll("#type-filter .filter-btn").forEach(function(b) {
+        b.classList.remove("active");
+      });
+      btn.classList.add("active");
+      renderCards();
+    });
+
+    document.getElementById("acs-search").addEventListener("input", function(e) {
+      searchQuery = e.target.value.trim();
+      renderCards();
+    });
+
+    renderCards();
+  </script>
 </body>
 </html>
