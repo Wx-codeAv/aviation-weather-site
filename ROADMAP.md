@@ -41,7 +41,8 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 
 ## Phase 5 — Tools
 
-- [ ] Personal Minimums Builder
+- [x] Personal Minimums Builder
+- [x] Crosswind Calculator
 - [ ] Nav Log Helper (with weather integration)
 
 ## Stretch goals — long-term, not committed

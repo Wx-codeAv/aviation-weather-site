@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crosswind Calculator — CrosswindWX</title>
+  <meta name="description" content="Enter METAR wind and a runway number to see headwind and crosswind components visualized as a live wind triangle. Compare two runways and understand the math.">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .cw-hero {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .cw-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.5vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0.005em;
+      margin-bottom: 1rem;
+    }
+    .cw-hero .lede { font-size: 1.1rem; max-width: 58ch; margin: 0; }
+
+    .cw-main { padding: 3rem 0 4rem; }
+    .cw-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 860px) { .cw-layout { grid-template-columns: 1fr; } }
+
+    .cw-inputs-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+    .cw-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1.4rem 1.6rem; }
+    .cw-card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+      margin: 0 0 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .cw-source {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sage);
+      font-weight: normal;
+    }
+    .cw-field { margin-bottom: 1rem; }
+    .cw-field:last-child { margin-bottom: 0; }
+    .cw-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sage);
+      margin-bottom: 0.4rem;
+    }
+    .cw-unit { color: var(--rule); font-size: 0.68rem; }
+
+    .cw-inputs-panel input[type="number"] {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      background: var(--buff);
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      padding: 0.55rem 0.8rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s;
+      -moz-appearance: textfield;
+    }
+    .cw-inputs-panel input[type="number"]::-webkit-inner-spin-button,
+    .cw-inputs-panel input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .cw-inputs-panel input[type="number"]:focus { border-color: var(--sky); }
+
+    .cw-dir-row { display: flex; gap: 0.7rem; align-items: center; }
+    .cw-dir-row input[type="number"] { flex: 1; width: auto; }
+    .cw-vrb-label {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--ink);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .cw-rwy-row { display: flex; align-items: center; gap: 0.5rem; }
+    .cw-rwy-prefix {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.06em;
+    }
+    .cw-rwy-row input[type="number"] { width: 90px; flex: none; }
+
+    .cw-error {
+      background: rgba(181,61,31,0.08);
+      border-left: 3px solid var(--rust);
+      padding: 0.7rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--rust);
+    }
+
+    .cw-diagram-panel { position: sticky; top: 90px; }
+    @media (max-width: 860px) { .cw-diagram-panel { position: static; } }
+
+    .cw-svg-wrap { background: #fffaf0; border: 1px solid var(--rule); margin-bottom: 1rem; }
+    .cw-svg-wrap svg { display: block; width: 100%; height: auto; }
+    .cw-svg-caption {
+      font-size: 0.83rem;
+      color: var(--ink-soft);
+      font-style: italic;
+      padding: 0.6rem 1rem;
+      border-top: 1px dashed var(--rule);
+      background: var(--buff);
+      margin: 0;
+    }
+
+    .cw-result-card { background: var(--ink); color: var(--buff); padding: 1.4rem 1.6rem; }
+    .cw-result-rwy {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--sun);
+      margin: 0 0 1rem;
+    }
+    .cw-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
+    .cw-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(244,236,214,0.6);
+      margin-bottom: 0.2rem;
+    }
+    .cw-stat-value {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: 0.02em;
+      color: var(--buff);
+      line-height: 1;
+    }
+    .cw-stat-value.zero { color: rgba(244,236,214,0.3); font-size: 1.6rem; }
+    .cw-stat-sub { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; margin-top: 0.2rem; }
+    .side-left  { color: var(--sky); }
+    .side-right { color: var(--sun); }
+    .cw-tail-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: var(--rust);
+      color: var(--buff);
+      padding: 1px 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .cw-gust-row {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(244,236,214,0.15);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+    }
+    .cw-gust-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(244,236,214,0.45);
+      margin-bottom: 0.15rem;
+    }
+    .cw-gust-value { font-family: var(--font-mono); font-size: 0.95rem; color: rgba(244,236,214,0.8); }
+
+    .cw-callouts { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .edu-note {
+      background: var(--buff-dark);
+      border-left: 3px solid var(--sky);
+      padding: 0.9rem 1.2rem;
+      font-size: 0.95rem;
+    }
+    .edu-note strong { color: var(--ink); }
+
+    .callout-danger {
+      background: rgba(181,61,31,0.06);
+      border: 2px solid var(--rust);
+      padding: 1.2rem 1.5rem;
+    }
+    .callout-danger-head {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--rust);
+      letter-spacing: 0.02em;
+      margin: 0 0 0.5rem;
+    }
+    .callout-danger p { margin: 0; color: var(--ink); font-size: 0.95rem; }
+
+    .cw-compare-section { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
+    .cw-compare-heading {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.02em;
+      margin: 0 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--ink);
+      display: inline-block;
+    }
+    .cw-compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fffaf0;
+      border: 1px solid var(--rule);
+      font-size: 0.95rem;
+    }
+    .cw-compare-table th {
+      background: var(--ink);
+      color: var(--buff);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      padding: 0.65rem 1.2rem;
+      text-align: left;
+    }
+    .cw-compare-table th:first-child {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(12,37,65,0.9);
+    }
+    .cw-compare-table td { padding: 0.65rem 1.2rem; border-bottom: 1px solid var(--rule); color: var(--ink); }
+    .cw-compare-table tr:last-child td { border-bottom: none; }
+    .cw-row-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+    }
+    .cmp-big { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); }
+    .cmp-big.tail { color: var(--rust); }
+    .cmp-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); margin-left: 0.3rem; }
+    .cw-compare-note { font-size: 0.85rem; color: var(--ink-soft); font-style: italic; margin-top: 0.6rem; }
+
+    .cw-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 4rem 0; }
+    .cw-edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 3rem; }
+    @media (max-width: 860px) { .cw-edu-grid { grid-template-columns: 1fr; } }
+    .cw-edu-block { border-left: 3px solid var(--rule); padding-left: 1.4rem; }
+    .cw-edu-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--rust);
+      margin: 0 0 0.5rem;
+    }
+    .cw-edu-block h3 { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.02em; margin: 0 0 0.8rem; }
+    .cw-edu-block p { font-size: 0.92rem; margin: 0 0 0.8rem; }
+    .cw-edu-block p:last-child { margin-bottom: 0; }
+
+    .demo-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.8rem; }
+    .demo-table th {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sage);
+      text-align: left;
+      padding: 0.3rem 0.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .demo-table td { padding: 0.35rem 0.5rem; border-bottom: 1px dotted var(--rule); color: var(--ink); }
+    .demo-table tr:last-child td { border-bottom: none; }
+    .demo-kt { font-family: var(--font-mono); color: var(--rust); font-weight: 600; }
+
+    .acs-note {
+      margin-top: 2.5rem;
+      padding: 1rem 1.2rem;
+      background: var(--buff-dark);
+      border-left: 3px solid var(--sun);
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+    }
+    .acs-note strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <!-- ============== Header ============== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="learn.html">Learn</a></li>
+          <li><a href="decoder.html">Decoder</a></li>
+          <li><a href="navlog.html">Nav Log</a></li>
+          <li><a href="acs.html">ACS</a></li>
+          <li class="nav-dropdown">
+            <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
+            <ul class="nav-dropdown-menu">
+              <li><a href="minimums.html">Minimums</a></li>
+              <li><a href="crosswind.html">Crosswind</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== Hero ============== -->
+  <section class="cw-hero">
+    <div class="container">
+      <p class="hero-eyebrow">Tool · Wind components</p>
+      <h1>Crosswind <span class="accent">Calculator</span></h1>
+      <p class="lede">Enter METAR wind and a runway number. See headwind and crosswind components, watch the wind triangle update live, and compare two runways before you decide.</p>
+    </div>
+  </section>
+
+  <!-- ============== Calculator ============== -->
+  <section class="cw-main">
+    <div class="container">
+      <div class="cw-layout">
+
+        <!-- Left: inputs -->
+        <div class="cw-inputs-panel">
+
+          <div class="cw-card">
+            <h3 class="cw-card-title">Wind <span class="cw-source">from METAR · degrees TRUE</span></h3>
+
+            <div class="cw-field">
+              <label class="cw-label" for="cw-dir">Direction <span class="cw-unit">° TRUE</span></label>
+              <div class="cw-dir-row">
+                <input type="number" id="cw-dir" min="0" max="360" placeholder="e.g. 270" oninput="compute()">
+                <label class="cw-vrb-label">
+                  <input type="checkbox" id="cw-vrb" onchange="compute()"> VRB
+                </label>
+              </div>
+            </div>
+
+            <div class="cw-field">
+              <label class="cw-label" for="cw-speed">Speed <span class="cw-unit">knots</span></label>
+              <input type="number" id="cw-speed" min="0" max="200" placeholder="e.g. 15" oninput="compute()">
+            </div>
+
+            <div class="cw-field">
+              <label class="cw-label" for="cw-gusts">Gusts <span class="cw-unit">knots · optional</span></label>
+              <input type="number" id="cw-gusts" min="0" max="200" placeholder="leave blank if steady" oninput="compute()">
+            </div>
+          </div>
+
+          <div class="cw-card">
+            <h3 class="cw-card-title">Runway <span class="cw-source">magnetic</span></h3>
+
+            <div class="cw-field">
+              <label class="cw-label" for="cw-rwy1">Runway 1</label>
+              <div class="cw-rwy-row">
+                <span class="cw-rwy-prefix">RWY</span>
+                <input type="number" id="cw-rwy1" min="1" max="36" placeholder="27" oninput="compute()">
+              </div>
+            </div>
+
+            <div class="cw-field">
+              <label class="cw-label" for="cw-rwy2">Runway 2 <span class="cw-unit">optional · comparison</span></label>
+              <div class="cw-rwy-row">
+                <span class="cw-rwy-prefix">RWY</span>
+                <input type="number" id="cw-rwy2" min="1" max="36" placeholder="18" oninput="compute()">
+              </div>
+            </div>
+          </div>
+
+          <div id="cw-error" class="cw-error" style="display:none"></div>
+
+        </div>
+
+        <!-- Right: diagram + result -->
+        <div class="cw-diagram-panel">
+          <div class="cw-svg-wrap">
+            <svg id="cw-svg" viewBox="0 0 460 280" role="img" aria-label="Wind component diagram"></svg>
+            <p class="cw-svg-caption" id="cw-caption">Enter wind speed and a runway number to see the diagram.</p>
+          </div>
+          <div id="cw-result" class="cw-result-card" style="display:none"></div>
+        </div>
+
+      </div><!-- /cw-layout -->
+
+      <!-- Callouts -->
+      <div class="cw-callouts">
+        <div id="cw-calm" class="edu-note" style="display:none">
+          <strong>Calm wind (00000KT).</strong> No crosswind component — any runway is equally favorable from a wind perspective. Choose based on runway length, obstructions, and traffic pattern.
+        </div>
+        <div id="cw-vrb" class="edu-note" style="display:none">
+          <strong>Variable wind (VRB).</strong> The wind is shifting direction and no single crosswind component can be computed. METARs report VRB when winds are light (typically below 6 kt) and too variable to characterize, or during gusty convective conditions. Plan for a crosswind from any direction.
+        </div>
+        <div id="cw-tail" class="callout-danger" style="display:none"></div>
+      </div>
+
+      <!-- Comparison table -->
+      <div id="cw-compare" class="cw-compare-section" style="display:none">
+        <h3 class="cw-compare-heading">Runway comparison</h3>
+        <table class="cw-compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th id="cmp-h1">RWY —</th>
+              <th id="cmp-h2">RWY —</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cw-row-label">Headwind</td>
+              <td id="cmp-hw1">—</td>
+              <td id="cmp-hw2">—</td>
+            </tr>
+            <tr>
+              <td class="cw-row-label">Crosswind</td>
+              <td id="cmp-cw1">—</td>
+              <td id="cmp-cw2">—</td>
+            </tr>
+            <tr id="cmp-gust-row" style="display:none">
+              <td class="cw-row-label">Gust crosswind</td>
+              <td id="cmp-gcw1">—</td>
+              <td id="cmp-gcw2">—</td>
+            </tr>
+            <tr>
+              <td class="cw-row-label">Tailwind?</td>
+              <td id="cmp-tail1">—</td>
+              <td id="cmp-tail2">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="cw-compare-note">The diagram shows RWY 1. Both runways use the same METAR wind — only the angle between wind and heading changes.</p>
+      </div>
+
+    </div><!-- /container -->
+  </section>
+
+  <!-- ============== Educational section ============== -->
+  <section class="cw-edu">
+    <div class="container">
+      <div class="cw-edu-grid">
+
+        <div class="cw-edu-block">
+          <p class="cw-edu-eyebrow">Why it works</p>
+          <h3>The wind triangle</h3>
+          <p>The wind vector can be split into two perpendicular components using basic trigonometry. θ is the angle between the wind direction and the runway heading:</p>
+          <p><strong>Crosswind = wind speed × sin(θ)</strong><br><strong>Headwind = wind speed × cos(θ)</strong></p>
+          <p>At θ = 0° (wind straight down the runway), sin(0°) = 0 — no crosswind, all headwind. At θ = 90° (wind exactly perpendicular), sin(90°) = 1 — all crosswind, no headwind. The diagram makes this visible: the wind vector, headwind arrow, and crosswind arrow form a right triangle on every entry.</p>
+        </div>
+
+        <div class="cw-edu-block">
+          <p class="cw-edu-eyebrow">The number students get wrong</p>
+          <h3>True vs. magnetic</h3>
+          <p>METARs report wind direction in <strong>degrees true</strong>. Runway numbers are <strong>magnetic</strong> — RWY 27 is approximately 270° magnetic, not true. At most U.S. airports the difference (magnetic variation) is 5–20°.</p>
+          <p>This calculator uses METAR wind (true) directly against the runway heading (magnetic). For student training decisions the resulting error is small and acceptable. For formal flight planning, look up local magnetic variation on your sectional chart and apply it before computing.</p>
+          <p>On the checkride, examiners want to know you understand this distinction exists — not that you can calculate variation from memory.</p>
+        </div>
+
+        <div class="cw-edu-block">
+          <p class="cw-edu-eyebrow">Know your aircraft</p>
+          <h3>Demonstrated crosswind component</h3>
+          <p>Every POH includes a "demonstrated crosswind component" — the maximum crosswind the test pilot documented during certification. This is <em>not</em> a legal limit. The FAA does not publish a crosswind limit for light training aircraft.</p>
+          <table class="demo-table">
+            <thead>
+              <tr><th>Aircraft</th><th>Demonstrated</th><th>Source</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Cessna 152</td><td class="demo-kt">12 kt</td><td>POH §5</td></tr>
+              <tr><td>Cessna 172S</td><td class="demo-kt">15 kt</td><td>POH §5</td></tr>
+              <tr><td>Piper PA-28-161</td><td class="demo-kt">17 kt</td><td>POH §5</td></tr>
+              <tr><td>Piper PA-28-181</td><td class="demo-kt">17 kt</td><td>POH §5</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0.8rem;font-size:0.85rem;color:var(--ink-soft);font-style:italic;">Your proficiency, currency, runway surface, and CFI guidance set the practical limit — not the POH number alone.</p>
+        </div>
+
+        <div class="cw-edu-block">
+          <p class="cw-edu-eyebrow">Checkride connection</p>
+          <h3>Risk management, not math</h3>
+          <p>The ACS (PA.I.F — Preflight Assessment, Risk Management) expects you to select the most suitable runway as part of preflight decision-making. The crosswind component is one input. Runway length, slope, surface condition, obstructions, and traffic pattern are others.</p>
+          <p>The key ACS principle: <strong>show your reasoning, not just your answer.</strong> An examiner asking about runway selection wants to hear you work through the wind angle, your aircraft's demonstrated value, your own currency, and what you'd do if conditions change on final.</p>
+          <p>This tool shows components. The go/no-go decision is yours.</p>
+          <p><a href="acs.html">See the full ACS mapping →</a></p>
+        </div>
+
+      </div>
+
+      <div class="acs-note">
+        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, April 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-11 and AC 00-45H §3.1.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Footer ============== -->
+  <footer>
+    <div class="container">
+      <span>CrosswindWX</span>
+      <span>For training use only — verify all data with official sources before flight</span>
+    </div>
+  </footer>
+
+<script>
+// ── SVG constants ──
+const CX = 230, CY = 140;   // center of diagram (aircraft on runway)
+const MAX_ARROW = 88;        // max arrow length px
+const MIN_DRAW  = 0.3;       // minimum kt to bother drawing an arrow
+
+// ── Colors ──
+const RUST = '#b53d1f', SAGE = '#5d6f3c', SKY = '#4a7ba6', SUN = '#d9a521', INK = '#0c2541';
+
+// ── Main compute ──
+function compute() {
+  const vrb    = document.getElementById('cw-vrb').checked;
+  const dirRaw = document.getElementById('cw-dir').value.trim();
+  const spdRaw = document.getElementById('cw-speed').value.trim();
+  const gstRaw = document.getElementById('cw-gusts').value.trim();
+  const r1Raw  = document.getElementById('cw-rwy1').value.trim();
+  const r2Raw  = document.getElementById('cw-rwy2').value.trim();
+
+  hide('cw-calm'); hide('cw-vrb'); hide('cw-tail');
+  hide('cw-compare'); hide('cw-error'); hide('cw-result');
+
+  // VRB
+  if (vrb) {
+    drawRunway(parseRwy(r1Raw));
+    setCaption('Variable wind — crosswind component cannot be computed.');
+    show('cw-vrb');
+    return;
+  }
+
+  // Speed required
+  if (spdRaw === '') { drawRunway(parseRwy(r1Raw)); return; }
+  const speed = parseFloat(spdRaw);
+  if (isNaN(speed) || speed < 0) { return showErr('Wind speed must be 0 or greater.'); }
+
+  // Calm
+  if (speed === 0) {
+    drawRunway(parseRwy(r1Raw));
+    setCaption('Calm wind — no crosswind component.');
+    show('cw-calm');
+    return;
+  }
+
+  // Direction required
+  if (dirRaw === '') { drawRunway(parseRwy(r1Raw)); return; }
+  const dir = parseFloat(dirRaw);
+  if (isNaN(dir) || dir < 0 || dir > 360) { return showErr('Wind direction must be 0–360°.'); }
+
+  // Gusts (optional)
+  let gusts = 0;
+  if (gstRaw !== '') {
+    gusts = parseFloat(gstRaw);
+    if (isNaN(gusts) || gusts < 0) { return showErr('Gust speed must be 0 or greater.'); }
+  }
+
+  // Runway 1 required
+  if (r1Raw === '') { drawRunway(null); return; }
+  const rwy1 = parseInt(r1Raw, 10);
+  if (isNaN(rwy1) || rwy1 < 1 || rwy1 > 36) { return showErr('Runway 1 must be 01–36.'); }
+
+  // Runway 2 optional
+  let rwy2 = null;
+  if (r2Raw !== '') {
+    const r2n = parseInt(r2Raw, 10);
+    if (isNaN(r2n) || r2n < 1 || r2n > 36) { return showErr('Runway 2 must be 01–36.'); }
+    rwy2 = r2n;
+  }
+
+  // Compute
+  const r1 = calc(dir, speed, gusts, rwy1);
+  const r2 = rwy2 !== null ? calc(dir, speed, gusts, rwy2) : null;
+
+  drawSVG(r1, speed, gusts);
+  setCaption(`RWY ${pad(rwy1)} — θ = ${Math.round(Math.abs(r1.ad))}° off runway heading`);
+  renderResult(r1);
+  show('cw-result');
+
+  if (r1.tail) { renderTailWarn(r1, 1); show('cw-tail'); }
+
+  if (r2) {
+    renderCompare(r1, r2, gusts > 0);
+    show('cw-compare');
+    if (r2.tail && !r1.tail) { renderTailWarn(r2, 2); show('cw-tail'); }
+  }
+}
+
+// ── Component math ──
+function calc(windDir, speed, gusts, rwyNum) {
+  const rwyHdg = rwyNum === 36 ? 360 : rwyNum * 10;
+  let ad = rwyHdg - windDir;
+  while (ad >  180) ad -= 360;
+  while (ad < -180) ad += 360;
+  const rad = ad * Math.PI / 180;
+  const hw  = speed * Math.cos(rad);   // + = headwind, − = tailwind
+  const cw  = speed * Math.sin(rad);   // + = from right, − = from left
+
+  let gHw = null, gCw = null;
+  if (gusts > 0) {
+    gHw = gusts * Math.cos(rad);
+    gCw = gusts * Math.sin(rad);
+  }
+  return {
+    rwyNum, rwyHdg, ad, rad, hw, cw,
+    hwAbs: Math.abs(hw), cwAbs: Math.abs(cw),
+    side: cw < -0.05 ? 'LEFT' : cw > 0.05 ? 'RIGHT' : 'DIRECT',
+    tail: hw < -0.05,
+    gHw, gCw,
+    gHwAbs: gHw !== null ? Math.abs(gHw) : null,
+    gCwAbs: gCw !== null ? Math.abs(gCw) : null,
+    gTail: gHw !== null ? gHw < -0.05 : false,
+  };
+}
+
+// ── SVG helpers ──
+function pad(n)  { return String(n).padStart(2, '0'); }
+function recip(n){ return ((n + 17) % 36) + 1; }
+function parseRwy(raw) {
+  const n = parseInt(raw, 10);
+  return (!isNaN(n) && n >= 1 && n <= 36) ? n : null;
+}
+
+function runwayBase(rwyNum) {
+  const rl = rwyNum ? pad(rwyNum) : '—';
+  const rr = rwyNum ? pad(recip(rwyNum)) : '—';
+  return `
+    <text x="230" y="22" text-anchor="middle"
+      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}" letter-spacing="0.1em">PORT · L</text>
+    <text x="230" y="268" text-anchor="middle"
+      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}" letter-spacing="0.1em">STBD · R</text>
+    <rect x="70" y="132" width="320" height="16" fill="#9e9480" rx="1"/>
+    <line x1="84" y1="140" x2="376" y2="140"
+      stroke="#fff" stroke-width="1.5" stroke-dasharray="14,10" stroke-linecap="round"/>
+    <text x="42" y="140" text-anchor="middle" dominant-baseline="middle"
+      font-family="Anton,Impact,sans-serif" font-size="15" fill="${INK}">${rr}</text>
+    <text x="418" y="140" text-anchor="middle" dominant-baseline="middle"
+      font-family="Anton,Impact,sans-serif" font-size="15" fill="${INK}">${rl}</text>
+    <polygon points="390,140 381,135 381,145" fill="${INK}" opacity="0.35"/>`;
+}
+
+function drawRunway(rwyNum) {
+  document.getElementById('cw-svg').innerHTML = runwayBase(rwyNum);
+}
+
+function drawSVG(r, speed, gusts) {
+  const { hw, cw, cwAbs, hwAbs, gHw, gCw, rwyNum, ad } = r;
+  const maxSpd = Math.max(speed, gusts || 0, 1);
+  const scale  = Math.min(MAX_ARROW / maxSpd, 5.5);
+
+  // Key points
+  const tipX  = CX - hw * scale;           // wind vector tip
+  const tipY  = CY - cw * scale;
+  const hwEndX = tipX;                      // headwind end (same x as tip — shared corner)
+  const hwEndY = CY;
+
+  // Gust tip
+  let gTipX = null, gTipY = null;
+  if (gusts > 0 && gHw !== null) {
+    gTipX = CX - gHw * scale;
+    gTipY = CY - gCw * scale;
+  }
+
+  const defs = `<defs>
+    <marker id="aw" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="${RUST}"/></marker>
+    <marker id="ag" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="${RUST}" opacity="0.4"/></marker>
+    <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="${SKY}"/></marker>
+    <marker id="at" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="${SUN}"/></marker>
+    <marker id="ac" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="${SAGE}"/></marker>
+  </defs>`;
+
+  // Gust arrow (behind wind arrow)
+  let gustSVG = '';
+  if (gTipX !== null) {
+    const gLen = Math.hypot(gTipX - CX, gTipY - CY);
+    if (gLen > 4) {
+      // Label near the gust tip, offset to the side of the tip
+      const gla = gTipX < CX ? 'end' : 'start';
+      const glx = gTipX + (gTipX < CX ? -6 : 6);
+      const gly = gTipY < CY ? gTipY - 8 : gTipY + 16;
+      gustSVG = `
+      <line x1="${CX}" y1="${CY}" x2="${gTipX}" y2="${gTipY}"
+        stroke="${RUST}" stroke-width="1.8" stroke-opacity="0.4"
+        stroke-dasharray="5,4" marker-end="url(#ag)"/>
+      <text x="${glx}" y="${gly}" text-anchor="${gla}"
+        font-family="JetBrains Mono,monospace" font-size="9" fill="${RUST}" opacity="0.55">${Math.round(gusts)} kt gust</text>`;
+    }
+  }
+
+  // Wind vector
+  const windLen = Math.hypot(tipX - CX, tipY - CY);
+  let windSVG = '';
+  if (windLen > 4) {
+    const mx = (CX + tipX) / 2, my = (CY + tipY) / 2;
+    const dx = tipX - CX, dy = tipY - CY;
+    const l  = Math.hypot(dx, dy);
+    const ox = l > 0.1 ? (-dy / l) * 20 : 20;
+    const oy = l > 0.1 ? ( dx / l) * 20 : 0;
+    windSVG = `
+    <line x1="${CX}" y1="${CY}" x2="${tipX}" y2="${tipY}"
+      stroke="${RUST}" stroke-width="2.5" marker-end="url(#aw)"/>
+    <text x="${mx + ox}" y="${my + oy}" text-anchor="middle" dominant-baseline="middle"
+      font-family="JetBrains Mono,monospace" font-size="10" fill="${RUST}">${Math.round(speed)} kt</text>`;
+  }
+
+  // Headwind / tailwind component
+  let hwSVG = '';
+  if (hwAbs > MIN_DRAW) {
+    const isTail  = hw < -0.05;
+    const hwColor = isTail ? SUN : SKY;
+    const hwMark  = isTail ? 'at' : 'ah';
+    // Label at 70% along the HW arrow, well clear of the runway surface
+    const hwLX = CX + 0.7 * (hwEndX - CX);
+    const hwLY = cw <= 0 ? CY - 26 : CY + 28;
+    hwSVG = `
+    <line x1="${CX}" y1="${CY}" x2="${hwEndX}" y2="${hwEndY}"
+      stroke="${hwColor}" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#${hwMark})"/>
+    <text x="${hwLX}" y="${hwLY}" text-anchor="middle"
+      font-family="JetBrains Mono,monospace" font-size="10" fill="${hwColor}">${Math.round(hwAbs)} kt</text>`;
+  }
+
+  // Crosswind component
+  let cwSVG = '';
+  if (cwAbs > MIN_DRAW) {
+    // Label anchored at the TIP of the CW arrow, offset sideways — away from the crowded center
+    const cwLX     = hwEndX >= CX - 5 ? hwEndX - 20 : hwEndX + 20;
+    const cwAnchor = hwEndX >= CX - 5 ? 'end' : 'start';
+    const cwSide   = r.side === 'DIRECT' ? '' : r.side;
+    const cwLY     = tipY < CY ? tipY - 8 : tipY + 16;
+    cwSVG = `
+    <line x1="${hwEndX}" y1="${CY}" x2="${hwEndX}" y2="${tipY}"
+      stroke="${SAGE}" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ac)"/>
+    <text x="${cwLX}" y="${cwLY}" text-anchor="${cwAnchor}"
+      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}">${Math.round(cwAbs)} kt ${cwSide}</text>`;
+  }
+
+  // Right-angle mark at the shared corner (hwEndX, CY)
+  let raMark = '';
+  if (hwAbs > MIN_DRAW && cwAbs > MIN_DRAW) {
+    const sq   = 7;
+    const hdir = hw >= 0 ? sq : -sq;  // toward CX from hwEndX
+    const vdir = cw < 0  ? sq : -sq;  // toward tipY from CY
+    raMark = `<path d="M${hwEndX},${CY + vdir} L${hwEndX + hdir},${CY + vdir} L${hwEndX + hdir},${CY}"
+      fill="none" stroke="${INK}" stroke-width="1.2" opacity="0.45"/>`;
+  }
+
+  // Angle label (top-right area, away from arrows)
+  const angleLbl = `<text x="400" y="42" text-anchor="end"
+    font-family="JetBrains Mono,monospace" font-size="10" fill="${INK}" opacity="0.6">θ = ${Math.round(Math.abs(ad))}°</text>`;
+
+  document.getElementById('cw-svg').innerHTML =
+    defs + runwayBase(rwyNum) + gustSVG + windSVG + hwSVG + cwSVG + raMark + angleLbl;
+}
+
+// ── Result card ──
+function renderResult(r) {
+  const hwClass = r.hwAbs < 0.1 ? ' zero' : '';
+  const cwClass = r.cwAbs < 0.1 ? ' zero' : '';
+  const hwType  = r.tail ? 'TAILWIND' : 'HEADWIND';
+  const tailTag = r.tail ? `<span class="cw-tail-tag">⚠ Tailwind</span>` : '';
+  const sideClass = r.side === 'LEFT' ? 'side-left' : r.side === 'RIGHT' ? 'side-right' : '';
+  const sideTxt   = r.side === 'DIRECT' ? '' : `<div class="cw-stat-sub ${sideClass}">${r.side}</div>`;
+
+  let gustHTML = '';
+  if (r.gCwAbs !== null) {
+    gustHTML = `<div class="cw-gust-row">
+      <div>
+        <div class="cw-gust-label">Gust ${r.gTail ? 'tailwind' : 'headwind'}</div>
+        <div class="cw-gust-value">${Math.round(r.gHwAbs)} kt</div>
+      </div>
+      <div>
+        <div class="cw-gust-label">Gust crosswind</div>
+        <div class="cw-gust-value">${Math.round(r.gCwAbs)} kt ${r.side}</div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('cw-result').innerHTML = `
+    <div class="cw-result-rwy">RWY ${pad(r.rwyNum)} · ${r.rwyHdg}° magnetic</div>
+    <div class="cw-stats">
+      <div>
+        <div class="cw-stat-label">${hwType}</div>
+        <div class="cw-stat-value${hwClass}">${Math.round(r.hwAbs)} <small style="font-size:1rem;opacity:0.6">kt</small></div>
+        ${tailTag}
+      </div>
+      <div>
+        <div class="cw-stat-label">Crosswind</div>
+        <div class="cw-stat-value${cwClass}">${Math.round(r.cwAbs)} <small style="font-size:1rem;opacity:0.6">kt</small></div>
+        ${sideTxt}
+      </div>
+    </div>
+    ${gustHTML}`;
+}
+
+// ── Tailwind warning ──
+function renderTailWarn(r, slot) {
+  const which = slot === 2 ? `RWY ${pad(r.rwyNum)} (comparison runway)` : `RWY ${pad(r.rwyNum)}`;
+  document.getElementById('cw-tail').innerHTML = `
+    <p class="callout-danger-head">⚠ Tailwind — ${which}</p>
+    <p>The wind angle on ${which} puts the wind behind the aircraft. Takeoff and landing distances increase significantly — ground speed is higher at rotation and touchdown, stopping distance grows, and obstacle clearance margins shrink. Most POH performance tables assume a headwind or calm; many list tailwind limits of 10 kt or less. Check your POH tailwind limitations and consider the other runway or waiting for conditions to shift.</p>`;
+}
+
+// ── Comparison table ──
+function renderCompare(r1, r2, hasGusts) {
+  document.getElementById('cmp-h1').textContent = `RWY ${pad(r1.rwyNum)}`;
+  document.getElementById('cmp-h2').textContent = `RWY ${pad(r2.rwyNum)}`;
+  document.getElementById('cmp-hw1').innerHTML  = cell(r1.hwAbs, r1.tail ? 'TAIL' : 'hw', r1.tail);
+  document.getElementById('cmp-hw2').innerHTML  = cell(r2.hwAbs, r2.tail ? 'TAIL' : 'hw', r2.tail);
+  document.getElementById('cmp-cw1').innerHTML  = cell(r1.cwAbs, r1.side);
+  document.getElementById('cmp-cw2').innerHTML  = cell(r2.cwAbs, r2.side);
+  document.getElementById('cmp-tail1').textContent = r1.tail ? '⚠ Yes' : 'No';
+  document.getElementById('cmp-tail2').textContent = r2.tail ? '⚠ Yes' : 'No';
+  if (r1.tail) document.getElementById('cmp-tail1').style.color = RUST;
+  if (r2.tail) document.getElementById('cmp-tail2').style.color = RUST;
+
+  const gustRow = document.getElementById('cmp-gust-row');
+  if (hasGusts && r1.gCwAbs !== null) {
+    document.getElementById('cmp-gcw1').innerHTML = cell(r1.gCwAbs, r1.side + ' gust');
+    document.getElementById('cmp-gcw2').innerHTML = cell(r2.gCwAbs, r2.side + ' gust');
+    gustRow.style.display = '';
+  } else {
+    gustRow.style.display = 'none';
+  }
+}
+function cell(val, sub, isTail) {
+  const cls = isTail ? ' tail' : '';
+  return `<span class="cmp-big${cls}">${Math.round(val)}</span><span class="cmp-sub">kt ${sub}</span>`;
+}
+
+// ── Utilities ──
+function show(id) { document.getElementById(id).style.display = ''; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+function setCaption(txt) { document.getElementById('cw-caption').textContent = txt; }
+function showErr(msg) {
+  const el = document.getElementById('cw-error');
+  el.textContent = msg;
+  el.style.display = '';
+}
+
+// ── Init ──
+drawRunway(null);
+</script>
+</body>
+</html>
