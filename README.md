@@ -2,6 +2,10 @@
 
 An aviation weather site that translates the dense, cryptic weather products pilots are required to interpret into clear, visual explanations. Built by a CFI-track student and meteorology tutor for the people who sit across the table during ACS oral exams and freeze when asked what a TAF actually says.
 
+## Live site
+
+Coming soon — domain not yet purchased.
+
 ## Why this exists
 
 This site has two goals:
@@ -15,7 +19,11 @@ CrosswindWX does that translation, and tries to make the underlying meteorology 
 
 ## Who's building this
 
-Built by a private pilot with an instrument rating, currently working toward commercial, with a minor in meteorology and experience tutoring weather lab at university. End goal: fly for NOAA.
+Built by Samuel McDowell — private pilot with an instrument rating, currently working toward commercial, with a minor in meteorology and experience tutoring weather lab at university. End goal: fly for NOAA.
+
+## Disclaimer
+
+Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources.
 
 ## Planned sections
 
@@ -52,15 +60,12 @@ The site is plain HTML/CSS/JS — no build step, no frameworks. To view it:
 
 For a slightly nicer dev experience, install the **Live Server** extension in VS Code. Right-click `index.html` and pick "Open with Live Server" — the page will auto-reload as you save changes.
 
-## Saving your work between sessions
-
-I (Claude) lose access to these files between conversations. To keep working on this:
-
-- **Easiest:** Download the project zip after each session, keep it on your computer, and upload it back next time.
-- **Better (recommended):** Set up a free GitHub account and push this folder as a repo. Then you can `git clone` it anywhere, deploy it free via GitHub Pages, and have a real version history. We'll do this together early in the roadmap.
-
 ## Tech stack
 
 - **HTML/CSS/JS** — vanilla, no frameworks. You'll learn the actual web platform before any abstractions.
 - **Data sources** — NOAA Aviation Weather Center (aviationweather.gov) provides free APIs for METARs, TAFs, PIREPs, winds aloft, and more. No API keys required for most endpoints.
 - **Hosting (eventually)** — GitHub Pages or Netlify, both free.
+
+## License
+
+License TBD — to be decided before the repo goes public. Code will likely be MIT; content license may differ. Do not add a LICENSE file until this is confirmed.

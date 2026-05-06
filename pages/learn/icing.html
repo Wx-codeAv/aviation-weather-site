@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -61,6 +61,8 @@
       <aside class="concept-toc">
         <p class="toc-label">On this page</p>
         <ol>
+          <li><a href="#what">What it is</a></li>
+          <li><a href="#why">Why pilots care</a></li>
           <li><a href="#conditions">Three conditions for icing</a></li>
           <li><a href="#types">Ice types &amp; temperature ranges</a></li>
           <li><a href="#clear">Clear ice — most dangerous</a></li>
@@ -68,13 +70,37 @@
           <li><a href="#tailplane">Tailplane icing</a></li>
           <li><a href="#flaps">The flaps-and-icing scenario</a></li>
           <li><a href="#forecasts">Reading icing forecasts</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
 
       <!-- Article body -->
       <article class="concept-article">
+
+        <!-- Section: What it is -->
+        <section id="what">
+          <h2>What structural icing is</h2>
+          <p>
+            <strong>Structural icing</strong> is the accumulation of ice on aircraft surfaces during flight. It forms when an aircraft flies through supercooled water droplets — liquid water that remains liquid below 0°C because it has no nucleus to freeze around — and those droplets freeze on contact with the airframe.
+          </p>
+          <p>
+            Ice can accumulate on wings, horizontal stabilizer, propeller, pitot tube, carburetor, and any other exposed surface. Even a small accumulation disrupts airflow, increases drag, adds weight, and reduces lift. The affected surfaces are no longer the shape the manufacturer designed — they're a different, less efficient shape that stalls at a higher speed and produces less lift at every angle of attack. (FAA-H-8083-28 Ch. 10)
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            Ice is insidious because it degrades performance before the pilot notices anything wrong. A 0.5-inch layer of clear ice on the leading edge can increase stall speed by 30% or more, reduce lift coefficient by up to 50%, and increase drag by 100%. An aircraft in those conditions may not be able to maintain altitude even at full power, and the stall warning may activate at the same time the aircraft actually stalls.
+          </p>
+          <p>
+            For VFR pilots, icing is a particularly dangerous trap because it forces flight into IMC (clouds are where the supercooled droplets are) to escape — and most light GA aircraft cannot legally or safely operate in icing conditions. The correct decision is made on the ground, before departure.
+          </p>
+        </section>
 
         <!-- Section: Three conditions -->
         <section id="conditions">
@@ -694,6 +720,61 @@
           </p>
         </section>
 
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>AIRMET Zulu on your route</h3>
+              <ul class="hazard-list">
+                <li>AIRMET Zulu means moderate icing is forecast for aircraft without approved de-icing equipment</li>
+                <li>An active Zulu makes conditions "known icing" — a non-FIKI aircraft may not legally enter them (14 CFR 91.527)</li>
+                <li>Zulu always includes the freezing level — that altitude is where icing begins, not where it's worst</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Temperature between 0°C and −20°C in visible moisture</h3>
+              <ul class="hazard-list">
+                <li>This is the prime icing window — most supercooled liquid water exists in this range</li>
+                <li>0°C to −10°C produces the worst clear ice; −15°C to −20°C produces rime</li>
+                <li>Check the FB for freezing level and temperature at your planned altitude before every IFR flight</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>PIREPs reporting MOD ICG at your altitude</h3>
+              <ul class="hazard-list">
+                <li>Moderate icing PIREPs (MOD ICG) within the last 1–2 hours are more reliable than any forecast</li>
+                <li>A PIREP cluster reporting icing along your route confirms what the AIRMET forecast predicted</li>
+                <li>Absence of icing PIREPs does not mean no icing — traffic may simply be sparse</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Warm layer aloft visible in FB temperature profile</h3>
+              <ul class="hazard-list">
+                <li>A positive-negative-positive temperature profile with altitude (warm over cold) means freezing rain potential</li>
+                <li>Rain forming above the warm layer falls through it as liquid, then enters the cold surface layer and becomes supercooled — the most dangerous icing scenario in aviation</li>
+                <li>Maximum risk in the 1,000–5,000 ft layer just ahead of a surface warm front (AC 91-74B §3)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Stratus layer at freezing temperatures</h3>
+              <ul class="hazard-list">
+                <li>Stratiform cloud layers at 0°C to −10°C contain large supercooled droplets — conditions for rapid clear ice formation</li>
+                <li>A cloud layer that looks benign on the GFA may be an efficient icing layer if the temperature is in range</li>
+                <li>Always cross-check the GFA icing overlay against the FB temperature profile before an IFR departure</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Unexpected performance degradation in cloud</h3>
+              <ul class="hazard-list">
+                <li>If you need more power than usual to maintain altitude, or the stall warning activates at an unusual airspeed — suspect ice even if you didn't see accumulation</li>
+                <li>Ice on the tailplane may cause an unusual nose-down pitch with flap extension — do not add more flaps</li>
+                <li>Exit the icing layer immediately: climb above, descend below, or divert. Do not wait and see. (AC 91-74B §5.2)</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -747,6 +828,35 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            You're an instrument-rated private pilot flying a non-FIKI Cessna 172 on an IFR flight plan. Your route takes you through a cloud layer between 4,000 and 9,000 ft MSL. Current OAT at 6,000 ft (from the FB) is −3°C. The GFA shows light to moderate icing in the layer. AIRMET Zulu is active for your route with the freezing level at 3,500 ft MSL. A PIREP filed 45 minutes ago by a Cessna at 7,000 ft reports light icing, rapidly becoming moderate.
+          </p>
+          <p>You're 20 nm into the layer, on top is at 9,500 ft (above your aircraft's service ceiling for the weight), and you're in IMC with visible ice beginning to accumulate on the leading edge.</p>
+
+          <details class="qa">
+            <summary>Option A: Continue — light icing is manageable and on top is only 3,500 ft above you.</summary>
+            <p><strong>High risk.</strong> The AIRMET Zulu has already made conditions "known icing" — you're legally in an icing environment in a non-FIKI aircraft. The recent PIREP shows conditions worsening to moderate. "On top is only 3,500 ft above" assumes your aircraft can climb 3,500 ft through a moderate icing layer — in a Cessna 172 with ice already accumulating, that climb performance is degrading in real time. Continuing is a compounding error chain. (14 CFR 91.527; AC 91-74B §5.2)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: Declare an emergency and request an immediate descent to below the freezing level.</summary>
+            <p><strong>Declaring an emergency is appropriate if the situation is deteriorating.  </strong> Below 3,500 ft MSL the temperature is above freezing — ice will stop accumulating and may begin to shed. The question is whether the descent profile (through 5,500 ft of cloud with accumulating ice) is manageable. Declaring an emergency gets ATC resources working for you immediately. There is no professional or regulatory penalty for declaring an emergency when safety is genuinely at risk. If the situation is still early, a priority request (not yet an emergency) for descent to below the freezing level is appropriate first. (AIM 6-3-1)</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: Turn 180° and track back the way you came to exit the layer laterally.</summary>
+            <p><strong>A reasonable escape option.</strong> You know conditions 20 nm behind you were survivable — you flew through them. A 180° reversal exits the icing layer through an already-traversed path. This is particularly valid if the ice accumulation is still light and you have performance remaining. Coordinate the turn with ATC (you're on an IFR flight plan in IMC) and declare your intentions immediately. (AIM 7-1-14)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: The right decision was on the ground — cancel before departure when AIRMET Zulu was active.</summary>
+            <p><strong>Correct — and the lesson of the scenario.</strong> An AIRMET Zulu for your route, a recent PIREP showing moderate icing, and a non-FIKI aircraft is a preflight no-go. The legal threshold (known icing conditions) was crossed before you filed. Options B and C are now reactive damage control. The icing decision — for a non-FIKI aircraft — must be made before engine start, not at 6,000 ft in IMC. (AC 91-74B §5; 14 CFR 91.527)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -776,7 +886,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -68,6 +68,8 @@
           <li><a href="#worked-elrs">Worked ELR examples</a></li>
           <li><a href="#skewt">A first look at skew-T</a></li>
           <li><a href="#operational">What it means in the airplane</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
           <li><a href="#scenario">Decision scenario</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
@@ -793,6 +795,80 @@
           </p>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>Skew-T / Log-P Diagram</h3>
+              <p class="hazard-mnemonic">The primary tool for reading atmospheric stability directly from a sounding.</p>
+              <ul class="hazard-list">
+                <li>Temperature (solid) and dewpoint (dashed) plotted on skewed axes against log-pressure altitude</li>
+                <li>Spread between the temperature and dewpoint lines shows moisture at each level; where they meet = cloud base</li>
+                <li>The distance between the temperature line and the DALR/SALR tells you stability — parcel warmer than environment = unstable</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA (Graphical Forecasts for Aviation)</h3>
+              <p class="hazard-mnemonic">Shows where the atmosphere is expected to be unstable (convection, icing, turbulence) during your flight window.</p>
+              <ul class="hazard-list">
+                <li>Convective overlay identifies areas of forecast convective development — a proxy for atmospheric instability</li>
+                <li>Turbulence and icing overlays show where unstable or saturated layers are forecast</li>
+                <li>Step through 3-hourly time slices to see how stability evolves through your flight window</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>SPC Convective Outlook / Sounding Data</h3>
+              <p class="hazard-mnemonic">CAPE values and stability indices from upper-air soundings tell forecasters how explosive the atmosphere is.</p>
+              <ul class="hazard-list">
+                <li>High CAPE (≥1,500 J/kg) = strongly unstable environment; severe thunderstorm potential</li>
+                <li>SPC maps CAPE values geographically — useful for understanding which areas along a route have the highest instability</li>
+                <li>The SPC sounding climatology tool shows actual upper-air soundings near your route</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Area Forecast Discussion (AFD)</h3>
+              <p class="hazard-mnemonic">The NWS forecaster's narrative about stability and convective potential.</p>
+              <ul class="hazard-list">
+                <li>AFD will explicitly mention "capping inversion," "CAPE," "lapse rates," and "triggering mechanisms" when stability is a flight-planning factor</li>
+                <li>Read when the GFA or SPC shows marginal conditions — the AFD explains whether the forecaster thinks convection will fire</li>
+                <li>Available at weather.gov per forecast office area</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>High CAPE + lifting mechanism in afternoon</h3>
+              <ul class="hazard-list">
+                <li>CAPE ≥1,500 J/kg with a surface boundary or frontal passage = organized severe thunderstorm potential</li>
+                <li>Check the SPC day 1 outlook: a Slight or greater risk in your area means the atmosphere has the energy to produce severe storms if triggered</li>
+                <li>The absence of current radar doesn't matter if CAPE is high and a trigger is forecast for your flight window</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Steep lapse rate + high moisture</h3>
+              <ul class="hazard-list">
+                <li>A steep ELR (close to or exceeding the DALR of 3°C/1,000 ft) means lifted parcels will be buoyant rapidly — the atmosphere will support vigorous convection</li>
+                <li>Combine with high surface dewpoints (≥60°F) and you have the thermal and moisture energy needed for deep convection</li>
+                <li>This environment won't necessarily produce thunderstorms without a trigger — but when a trigger arrives (cold front, surface heating), development can be explosive</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Surface inversion at departure — ceilings not lifting</h3>
+              <ul class="hazard-list">
+                <li>A stable surface inversion traps moisture, smoke, and low cloud — fog and stratus won't burn off until the inversion breaks</li>
+                <li>If the TAF shows ceilings improving by 10:00 AM but the sky is still OVC 500 at 10:30, the inversion is persisting longer than forecast</li>
+                <li>Do not plan on an inversion burning off on schedule — wait for actual observation improvement before departing</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -887,7 +963,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

@@ -101,16 +101,20 @@ Every Learn page should cite the K (and where applicable, R) sub-element it cove
 | Learn page | K sub-element(s) | R sub-element(s) |
 |------------|------------------|------------------|
 | AIRMETs &amp; SIGMETs | K2g | R1c |
-| Stability &amp; Lapse Rates | K3a | R1c |
+| Aircraft Icing | K3i | R1c |
+| Altimetry | K2a, K3c | R1c |
+| Density Altitude | K3a, K3c | R1a, R1c |
 | Fog Formation | K3j | R1a, R1b |
-| Thunderstorms &amp; Microbursts | K3h | R1a, R1c |
-| Icing &amp; Freezing Levels | K3i | R1c |
+| Fronts &amp; Pressure Systems | K3e | R1a |
+| PIREPs | K2a | R1c |
+| Stability &amp; Lapse Rates | K3a | R1c |
+| Thunderstorm Life Cycle | K3h | R1a, R1c |
 | Turbulence | K3g | R1c |
-| Fronts &amp; Air Masses | K3e | R1a |
-| Clouds (future) | K3f | — |
-| Wind &amp; Wind Shear (future) | K3b | R1c |
-| Frost (future) | K3k | R1a |
-| Obstructions to Visibility (future) | K3l | R1a |
+| Weather Charts | K2b, K2d, K2f | R1a, R1c |
+| Weather Decision-Making | K3 | R1a, R1b, R1c |
+| Weather Product Ladder | K1, K2 | R1b, R1c |
+| Wind Shear &amp; Mountain Wave | K3b | R1c |
+| Winds Aloft &amp; the Jet Stream | K2e, K3b | R1c |
 
 ## Citation pattern on Learn pages
 

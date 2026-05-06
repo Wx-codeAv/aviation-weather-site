@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -60,12 +60,14 @@
       <aside class="concept-toc">
         <p class="toc-label">On this page</p>
         <ol>
+          <li><a href="#what">What it is</a></li>
           <li><a href="#why">Why decisions fail</a></li>
           <li><a href="#pave">The PAVE checklist</a></li>
           <li><a href="#imsafe">IMSAFE</a></li>
           <li><a href="#minimums">Personal minimums</a></li>
           <li><a href="#brief">Briefing into a decision</a></li>
           <li><a href="#inflight">In-flight decision points</a></li>
+          <li><a href="#redflags">Red flags in your own thinking</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
           <li><a href="#scenario">Would-You-Fly scenario</a></li>
         </ol>
@@ -73,6 +75,17 @@
 
       <!-- Article body -->
       <article class="concept-article">
+
+        <!-- Section: What it is -->
+        <section id="what">
+          <h2>What weather decision-making is</h2>
+          <p>
+            Weather decision-making is the process of evaluating meteorological information and translating it into a safe go/no-go decision before and during a flight. Unlike other aspects of aviation where checklists produce clear pass/fail outcomes, weather decisions involve genuine uncertainty — forecasts are probabilistic, conditions change, and the information available at preflight is always incomplete.
+          </p>
+          <p>
+            The FAA ACS holds pilots responsible not just for reading weather products correctly, but for applying sound aeronautical decision-making (ADM) in the face of that uncertainty. Understanding <em>why</em> pilots make bad weather decisions is as important as knowing the weather products themselves — because the information was usually available. The failure was in how it was processed. (FAA-H-8083-25 §17)
+          </p>
+        </section>
 
         <!-- ── Section: Why decisions fail ── -->
         <section id="why">
@@ -318,6 +331,64 @@
           </p>
         </section>
 
+        <!-- Section: Red flags in your own thinking -->
+        <section id="redflags">
+          <h2>Red flags in your own thinking</h2>
+          <p>
+            These are not weather red flags — they are cognitive warning signs. If you recognize any of these in yourself during preflight or en route, stop and deliberately re-examine the decision before continuing.
+          </p>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>"We can make it"</h3>
+              <ul class="hazard-list">
+                <li>This phrase almost always appears after you've already rationalized away a concern — it's the summary of continuation bias, not the result of analysis</li>
+                <li>Ask: "make it" based on what specific data? What's the margin? What's the consequence if the forecast is off by 20%?</li>
+                <li>A decision made to make the flight work is categorically different from a decision that the flight is safe (FAA-H-8083-25 §17-3)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>The trip has a hard deadline</h3>
+              <ul class="hazard-list">
+                <li>A meeting, wedding, airline connection, or waiting passenger is the most common external pressure that pushes pilots into marginal conditions</li>
+                <li>The moment the destination commitment becomes more important than the flight decision, the decision framework has been corrupted</li>
+                <li>Explicitly separate the question "Do I need to be there?" from "Is this flight safe?" — they have different answers that don't interact</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Conditions have changed but you haven't updated the brief</h3>
+              <ul class="hazard-list">
+                <li>A weather brief from 3 hours ago for a flight that's been delayed is not a weather brief — it's a historical document</li>
+                <li>Any delay longer than 1 hour in marginal or changing conditions requires a fresh brief</li>
+                <li>The brief should be as close to departure as possible; conditions can change faster than the forecast cycle in active weather environments</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>You've already said no once and talked yourself back in</h3>
+              <ul class="hazard-list">
+                <li>The first instinct to say no is usually the correct risk assessment — it happens before rationalization begins</li>
+                <li>If you initially thought the flight shouldn't go, then convinced yourself it would be fine, examine whether the new information is actually better data or just optimistic interpretation of the same data</li>
+                <li>The second "yes" after an initial "no" should require explicitly better information, not just more time thinking about it</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Someone in the aircraft is concerned</h3>
+              <ul class="hazard-list">
+                <li>A passenger who expresses concern about the weather has no meteorological training — and may still be picking up on something real</li>
+                <li>"My passenger was nervous and I continued anyway" appears in accident reports with uncomfortable regularity</li>
+                <li>A concerned passenger is not a reason to cancel, but is a reason to pause and explicitly re-examine your own confidence level before continuing</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>"Other pilots are flying it"</h3>
+              <ul class="hazard-list">
+                <li>The fact that other aircraft are airborne is not a data point about the safety of your specific flight — different aircraft types, equipment, ratings, experience, and routes are all variables</li>
+                <li>Confirmation bias: you notice the aircraft that departed safely; you don't notice the ones that diverted, declared emergencies, or had unreported encounters</li>
+                <li>Your go/no-go decision is based on your aircraft, your skills, your route, and your weather brief — not on what someone else is doing</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- ── Section: Checkride questions ── -->
         <section id="checkride">
           <h2>Checkride questions</h2>
@@ -403,7 +474,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

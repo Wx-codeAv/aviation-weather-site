@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -67,7 +67,9 @@
           <li><a href="#performance">Effects on performance</a></li>
           <li><a href="#humidity">Humidity's role</a></li>
           <li><a href="#scenarios">Real-world scenarios</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
@@ -510,6 +512,37 @@
           </p>
         </section>
 
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>Temperature well above ISA standard at field elevation</h3>
+              <ul class="hazard-list">
+                <li>ISA standard temperature at sea level is 15°C; it decreases 2°C per 1,000 ft. For a 5,000 ft airport, ISA standard is 5°C. If it's 35°C, you have a +30°C deviation — adding roughly 3,000 ft of density altitude penalty</li>
+                <li>A density altitude of 8,000 ft at a 5,000 ft airport means your aircraft performs as if it were at 8,000 ft MSL — runway required, climb rate, and obstacle clearance all reflect that</li>
+                <li>Always compute density altitude before any departure at a high-elevation or hot-weather airport (FAA-H-8083-28 Ch. 4)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Density altitude chart shows performance outside POH data</h3>
+              <ul class="hazard-list">
+                <li>If the computed density altitude is beyond the range of your POH performance charts, you are operating outside tested data — a serious limitation</li>
+                <li>Many normally aspirated aircraft POH performance charts end at 8,000–10,000 ft density altitude; above those values, extrapolation is unreliable</li>
+                <li>If density altitude exceeds your POH chart range, the departure should not happen unless you have additional data or substantial runway margin</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>High-elevation airport + short runway + obstacles</h3>
+              <ul class="hazard-list">
+                <li>Density altitude reduces climb rate and increases takeoff distance simultaneously — a compound problem at obstacle-rich mountain airports</li>
+                <li>Runway remaining after liftoff doesn't matter; obstacle clearance in the first 500 ft of climb does — check the climb gradient from the POH at the actual density altitude</li>
+                <li>The "it felt fine last time" trap: summer temperatures at a mountain airport you flew in spring produce dramatically higher density altitude even at the same field elevation</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -550,6 +583,35 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            You're flying a normally aspirated Cessna 172S (max gross weight 2,550 lb) out of a mountain airport in Colorado — elevation 6,800 ft MSL. It's a July afternoon: OAT is 32°C (90°F), altimeter 29.85 inHg. The runway is 5,200 ft long with a 50-ft obstacle 500 ft past the departure end. You're loaded to 2,480 lb (97% of gross). Your POH shows sea-level ground roll of 960 ft and 50-ft obstacle clearance distance of 1,755 ft.
+          </p>
+          <p>First, you compute: Pressure altitude = 6,800 + (29.92 − 29.85) × 1,000 = 6,870 ft. Density altitude = 6,870 + 120 × (32 − 3.4) ≈ 6,870 + 3,432 ≈ <strong>10,300 ft DA</strong>. You look at your POH charts — they only go to 8,000 ft density altitude.</p>
+
+          <details class="qa">
+            <summary>Option A: The POH charts only go to 8,000 ft, but you've taken off here before — go.</summary>
+            <p><strong>High risk.</strong> "I've done it before" is one of the most dangerous phrases in aviation density altitude accidents. Previous successful departures were at different conditions — different temperatures, different weights, different density altitudes. Today's 10,300 ft DA is 2,300 ft beyond your POH data range. You are extrapolating performance into untested territory. The NTSB accident files are full of mountain departures by experienced pilots who had successfully departed the same airport many times before. (FAA-H-8083-3 §17-5)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: Reduce weight — offload 200 lb of baggage and try again.</summary>
+            <p><strong>Better — but compute the new numbers before committing.</strong> Reducing weight by 200 lb helps, but density altitude is a function of atmospheric conditions (temperature, pressure), not aircraft weight. Removing weight reduces required runway — it does not change the density altitude or your POH's data limit. You're still at 10,300 ft DA with charts ending at 8,000 ft. Weight reduction is a valid mitigation tool but should be combined with a full performance calculation showing actual margin, not just "it should be lighter, so it should be fine."</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: Wait until early morning when temperatures drop to 12°C and recompute.</summary>
+            <p><strong>Correct decision framework.</strong> At 12°C (instead of 32°C), density altitude drops by roughly 120 × (32 − 12) = 2,400 ft — bringing it down to approximately 7,900 ft DA, within your POH chart range. Early morning departures at mountain airports are standard practice for exactly this reason. Temperature follows a predictable diurnal cycle — solar heating drives afternoon density altitude spikes that are largely gone by 0600–0800 local. Cool, dense morning air is when performance-limited aircraft safely depart high-elevation airports. (FAA-H-8083-28 Ch. 4)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: Depart at full gross with a no-flap takeoff — flaps reduce climb rate.</summary>
+            <p><strong>This is not a correct density altitude mitigation technique.</strong> The POH takeoff procedure specifies the flap setting for obstacle clearance. Deviating from the POH procedure without manufacturer data supporting it introduces a new unknown into an already marginal situation. The POH exists specifically to give you tested performance data — modifying the procedure means the published numbers no longer apply. If the published POH procedure with the actual conditions doesn't show adequate clearance margin, the departure should not happen. (FAA-H-8083-3 §11)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -579,7 +641,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

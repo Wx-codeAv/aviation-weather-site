@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -68,6 +68,7 @@
           <li><a href="#additional">Frontal fog &amp; freezing fog</a></li>
           <li><a href="#predict">Predicting fog from observations</a></li>
           <li><a href="#burnoff">Why fog burns off (or doesn't)</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
           <li><a href="#scenario">Decision scenario</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
@@ -665,6 +666,61 @@
           </p>
         </section>
 
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>T/Td spread ≤3°C at destination</h3>
+              <ul class="hazard-list">
+                <li>A temperature/dewpoint spread of 3°C or less means the atmosphere is near saturation — fog formation is possible with minimal additional cooling</li>
+                <li>Check the trend: if the spread is narrowing in the METAR observations, saturation is approaching, not receding</li>
+                <li>At night or early morning with clear skies and light winds, a 3°C spread means radiation fog is likely (FAA-H-8083-28 Ch. 10)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>LIFR or IFR in fog at destination/departure</h3>
+              <ul class="hazard-list">
+                <li>METAR reporting FG (visibility below 5/8 SM) or BR (mist, 5/8–6 SM) means fog is active — departure or arrival in these conditions is a VFR no-go</li>
+                <li>Check the TAF for the burnoff timing: does it match the radiation fog burnoff mechanism (solar heating), or is it advection fog dependent on a wind shift?</li>
+                <li>Advection fog does not have a reliable burnoff time — it persists as long as the wind maintains the moisture flux from the ocean or lake</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Clear skies + light winds + high humidity overnight</h3>
+              <ul class="hazard-list">
+                <li>This is the radiation fog setup — maximum radiative cooling without cloud insulation, minimum wind to prevent mixing</li>
+                <li>If tonight's forecast has clear skies, winds under 5 kt, and a T/Td spread under 5°C by midnight, expect fog at or before dawn</li>
+                <li>A TAF that shows "fog clearing by 0900" depends on solar heating doing its job — cloud cover, rain, or late-season sun angles can delay or prevent clearing</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Onshore flow from ocean or large lake</h3>
+              <ul class="hazard-list">
+                <li>Advection fog forms when warm, moist air moves over a colder surface — persistent onshore flow at coastal or Great Lakes airports keeps the fog source active</li>
+                <li>Unlike radiation fog, advection fog can form at any time of day and doesn't burn off with solar heating</li>
+                <li>Check METAR trends at upwind stations: if they're reporting fog and the wind is bringing air from them to your airport, you will also get fog</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>FZFG (freezing fog) reported</h3>
+              <ul class="hazard-list">
+                <li>Freezing fog deposits rime ice on every exposed surface — aircraft, runway, taxiway — at temperatures below 0°C</li>
+                <li>A METAR reporting FZFG means the runway may have invisible rime deposits even if it was treated earlier</li>
+                <li>All structural icing rules apply: non-FIKI aircraft should not operate in freezing fog (14 CFR 91.527)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Forecast improvement not happening on schedule</h3>
+              <ul class="hazard-list">
+                <li>If the TAF said fog lifting by 0900 and it's 0945 with no change, the mechanism hasn't worked — do not assume it will clear "any minute now"</li>
+                <li>Request an updated METAR and check adjacent stations: if they've cleared and you haven't, clearing may be imminent; if they haven't, the whole area is still fogged in</li>
+                <li>Land or hold with actual fuel reserves — not with time pressure driving a descent through fog below minimums</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -775,7 +831,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

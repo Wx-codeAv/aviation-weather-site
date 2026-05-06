@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -66,6 +66,7 @@
           <li><a href="#airmet-types">The three AIRMETs</a></li>
           <li><a href="#vs-sigmet">AIRMET vs SIGMET</a></li>
           <li><a href="#convective">Convective SIGMETs</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
           <li><a href="#scenario">Decision scenario</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
@@ -227,6 +228,61 @@
           </p>
         </section>
 
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>Any SIGMET on your route</h3>
+              <ul class="hazard-list">
+                <li>A SIGMET means conditions are hazardous to <em>all</em> aircraft — not just light aircraft or unpressurized piston aircraft</li>
+                <li>Severe or extreme turbulence, severe icing, volcanic ash, or tropical cyclone SIGMETs are go/no-go items: either route around the hazard area or cancel</li>
+                <li>SIGMETs are valid up to 4 hours (6 hours for hurricanes) — check issuance time against your planned departure and arrival (AC 00-45H §7.5)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Convective SIGMET on your route</h3>
+              <ul class="hazard-list">
+                <li>A Convective SIGMET implies severe turbulence, severe icing, and LLWS even if those are not separately listed</li>
+                <li>Valid only 2 hours — but cells evolve faster than the advisory cycle; always check current radar alongside the SIGMET text</li>
+                <li>Your options are: divert around the area, hold on the ground, or cancel. There is no "proceed through" option for a Convective SIGMET</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>AIRMET Zulu covering your altitude and route</h3>
+              <ul class="hazard-list">
+                <li>Moderate icing forecast for non-FIKI aircraft — an active Zulu creates "known icing conditions" legally</li>
+                <li>Non-FIKI aircraft may not enter known icing conditions — this is not advisory, it is a legal prohibition (14 CFR 91.527)</li>
+                <li>Zulu always includes the freezing level — that altitude tells you where the icing threat begins, not where it's worst</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>AIRMET Sierra at destination</h3>
+              <ul class="hazard-list">
+                <li>IFR conditions (ceiling &lt;1,000 ft / vis &lt;3 SM) or mountain obscuration forecast in your destination area</li>
+                <li>Cross-check the TAF: if the TAF already shows IFR and the Sierra confirms it, the picture is consistent — conditions are bad and likely to persist</li>
+                <li>If the METAR shows worse conditions than the TAF forecasted, the Sierra is already confirmed and the TAF forecast may be too optimistic</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>AIRMET Tango near mountainous terrain</h3>
+              <ul class="hazard-list">
+                <li>Tango in a mountain wave environment means moderate turbulence with a potential for severe in the rotor zone — the moderate label understates the risk in complex terrain</li>
+                <li>Sustained surface winds ≥30 kt over terrain (also part of Tango criteria) signal strong wave activity even without an explicit wave call</li>
+                <li>Slow to Va before entering any mountain wave area covered by AIRMET Tango (AC 00-45H §7.5)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>G-AIRMET not matching text AIRMET</h3>
+              <ul class="hazard-list">
+                <li>The Graphical AIRMET (G-AIRMET) on aviationweather.gov may show a different hazard boundary than the text AIRMET — the G-AIRMET updates more frequently and is generally more current</li>
+                <li>When in doubt, use the boundary that shows the greater hazard area — and check issuance times on both</li>
+                <li>G-AIRMETs are issued every 3 hours between regular 6-hour cycles, making them the most current hazard advisory product available (AC 00-45H §7.5.4)</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -323,7 +379,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

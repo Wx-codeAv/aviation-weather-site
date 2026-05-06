@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -60,19 +60,46 @@
       <aside class="concept-toc">
         <p class="toc-label">On this page</p>
         <ol>
+          <li><a href="#what">What it is</a></li>
+          <li><a href="#why">Why pilots care</a></li>
           <li><a href="#ingredients">Three ingredients</a></li>
           <li><a href="#stages">The three stages</a></li>
           <li><a href="#mature">Mature stage — in depth</a></li>
           <li><a href="#types">Thunderstorm types</a></li>
           <li><a href="#radar">Reading radar</a></li>
           <li><a href="#avoidance">Avoidance rules</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
 
       <!-- Article body -->
       <article class="concept-article">
+
+        <!-- Section: What it is -->
+        <section id="what">
+          <h2>What a thunderstorm is</h2>
+          <p>
+            A <strong>thunderstorm</strong> is an organized convective system powered by latent heat release. When moist air is lifted past the lifting condensation level (LCL) and the level of free convection (LFC), condensation releases enough heat to make the air parcel buoyant — it accelerates upward on its own. The result is a towering cumulonimbus with a distinctive anvil top, capable of extending from near the surface to the tropopause (30,000–60,000 ft).
+          </p>
+          <p>
+            Every thunderstorm goes through three stages — cumulus, mature, and dissipating — each with a distinct hazard profile. The transition from cumulus to mature can take as little as 15–20 minutes. By the time a storm looks threatening from the ground, the most dangerous phase is already present or seconds away. (FAA-H-8083-28 Ch. 13)
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            Thunderstorms produce every major aviation weather hazard simultaneously: severe turbulence, structural icing, large hail, lightning, microbursts, low-level wind shear, and gust fronts. No other weather phenomenon concentrates this many lethal hazards in one system. They are the leading cause of weather-related fatal accidents in GA aviation.
+          </p>
+          <p>
+            The central challenge is that thunderstorms are not static — they build, move, merge, and dissipate unpredictably. A gap between cells that looks navigable on the ground can close in under ten minutes. The only reliable strategy is distance and early conservative decision-making while options remain open.
+          </p>
+        </section>
 
         <!-- Section: Three ingredients -->
         <section id="ingredients">
@@ -537,6 +564,104 @@
           </p>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>Convective SIGMETs</h3>
+              <p class="hazard-mnemonic">The highest-priority convective hazard advisory.</p>
+              <ul class="hazard-list">
+                <li>Issued for severe or embedded thunderstorms, squall lines, and areas of thunderstorms ≥40% coverage with hail or tornadoes</li>
+                <li>Valid 2 hours; issued at :55 past each hour plus special issuances as needed</li>
+                <li>A Convective SIGMET on your route is a go/no-go item — your options are go around, wait, or cancel</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>SPC Convective Outlook</h3>
+              <p class="hazard-mnemonic">Strategic 1–8 day forecast of severe weather potential.</p>
+              <ul class="hazard-list">
+                <li>Storm Prediction Center issues Day 1/2/3 outlooks categorizing severe weather risk: Marginal → Slight → Enhanced → Moderate → High</li>
+                <li>A Slight or greater risk in your route area is a planning trigger — not a no-go by itself, but means detailed monitoring is required</li>
+                <li>Available at spc.noaa.gov and through most EFB apps</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Radar (NEXRAD)</h3>
+              <p class="hazard-mnemonic">Current reflectivity showing precipitation intensity and cell location.</p>
+              <ul class="hazard-list">
+                <li>VIP Level 3+ (yellow/orange) indicates heavy precipitation; Level 5–6 (red/magenta) indicates extreme convection with hail</li>
+                <li>In-cockpit Nexrad (via ADS-B or datalink) is 5–15 minutes old — use for strategic routing, not real-time cell avoidance</li>
+                <li>Radar cannot see inside dry thunderstorms (common in the high desert) or tornado debris — high reflectivity is serious, but absence of high reflectivity isn't a clearance</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA &amp; AIRMETs / PIREPs</h3>
+              <p class="hazard-mnemonic">Forecast hazard zones and real-time pilot reports near convection.</p>
+              <ul class="hazard-list">
+                <li>GFA convective and icing overlays show where NWS forecasters expect convective activity during your flight window</li>
+                <li>PIREPs near active convection are the most operationally current turbulence data available — check for urgent PIREPs (UUA) on your route</li>
+                <li>No PIREPs does not mean smooth — traffic near thunderstorms is sparse by design</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>All three ingredients present</h3>
+              <ul class="hazard-list">
+                <li>Surface dewpoints ≥55°F, afternoon surface heating or frontal boundary, and a steep lapse rate or high CAPE value mean thunderstorms are likely, not just possible</li>
+                <li>A capping inversion can suppress development until it breaks — then convection can be explosive</li>
+                <li>If all three are present and a cap break is forecast, plan for storms regardless of current radar</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Cumulus rapidly building past 25,000 ft</h3>
+              <ul class="hazard-list">
+                <li>A towering cumulus that's growing visibly is transitioning to the mature stage — the 15-minute window to alter course is already closing</li>
+                <li>If you can see a TCu growing from the cockpit, the threat is much closer than it appears</li>
+                <li>Do not fly toward building cumulus. Turn now.</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Convective SIGMET active on route</h3>
+              <ul class="hazard-list">
+                <li>This is a hard stop for most GA operations — not a "plan around" item</li>
+                <li>The SIGMET covers where the hazard is, not where it will be — cells may have moved since issuance</li>
+                <li>Divert, hold, or cancel: these are the only options when a Convective SIGMET is on your route</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Cell gaps narrower than 40 nm</h3>
+              <ul class="hazard-list">
+                <li>The FAA recommends 20 nm lateral clearance from any severe cell — gaps must be ≥40 nm wide to maintain clearance on both sides</li>
+                <li>A gap that's 40 nm wide on the ground radar may be 20 nm (or closed) by the time you reach it — cells move and merge</li>
+                <li>If the gap looks "just barely enough," it isn't</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Warm-sector instability + lifting mechanism</h3>
+              <ul class="hazard-list">
+                <li>The warm sector ahead of a cold front combines maximum moisture and instability with the approaching frontal lifting mechanism — classic severe thunderstorm setup</li>
+                <li>Squall lines can form 50–200 nm ahead of the surface front, visible only on radar</li>
+                <li>The surface analysis chart will not show the squall line — check real-time radar before every VFR departure in this environment</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Anvil visible on your route</h3>
+              <ul class="hazard-list">
+                <li>An anvil overhead — even in clear air — means large hail may be falling in your altitude band up to 20 nm downwind of the storm</li>
+                <li>Anvil cloud appears as thin fibrous cirrus with no radar return overhead — it doesn't look dangerous</li>
+                <li>Never fly under a thunderstorm anvil at any altitude. The rule has no exceptions. (AIM 7-1-29)</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -590,6 +715,34 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            It's a July afternoon in central Texas. You're a VFR private pilot planning a 180 nm flight from Austin to Dallas, departing at 3:00 PM local. Surface dewpoints are 68°F. The SPC Day 1 outlook shows a Slight risk for severe thunderstorms in north-central Texas. The morning GFA shows scattered convection developing by 2:00–4:00 PM along your route. Current radar (1.5 hours before departure) shows clear skies, but several cumulus are already building to 18,000 ft over the Hill Country.
+          </p>
+
+          <details class="qa">
+            <summary>Option A: Depart on schedule — radar is clear right now and you'll outrun any development.</summary>
+            <p><strong>High risk.</strong> Clear radar at departure does not account for the convective setup: all three ingredients are present (high dewpoints, afternoon heating, a slight-risk environment), and TCu are already building. A Slight risk day in Texas in July means organized severe thunderstorms are possible. The assumption "I'll outrun development" is a form of continuation bias — cells that develop behind you can also develop ahead of you. Your 180 nm route takes 1.5–2 hours. Convection that's building now will be mature before you land. (FAA-H-8083-25 §17-5)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: Depart early — leave at 1:00 PM to arrive before peak convective heating.</summary>
+            <p><strong>Best option on this scenario.</strong> Arriving before peak heating (typically 2:00–5:00 PM local) reduces convective risk substantially. The morning GFA shows development beginning at 2:00–4:00 PM — a 1:00 PM departure puts you on the ground or near destination before the forecast development window. This is proactive planning: adjusting the flight window to align with the most favorable period of the atmospheric cycle. (AC 00-6B Ch. 11)</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: Wait for the 4:00 PM radar to show what actually develops, then decide.</summary>
+            <p><strong>Reasonable — but the decision window has narrowed.</strong> Waiting for better data is generally sound ADM. By 4:00 PM local, the convective picture will be clearer. However, if storms have developed along the route, departure is now off the table. Waiting for confirmation of a hazard before deciding is reactive rather than proactive. A better version of this option is filing a flight plan, monitoring the SPC mesoscale discussion through the afternoon, and deciding at 1:30 PM whether to go early or cancel. (AIM 7-1-27)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: Cancel and fly tomorrow morning.</summary>
+            <p><strong>Safe and entirely valid.</strong> A 180 nm VFR flight on a Slight-risk severe weather day with high dewpoints, active convection already building, and a GFA showing development along the route is a scenario where the atmosphere is clearly in an active state. Morning departures in summer avoid the convective window entirely. If the trip is not time-critical, the next morning gives you clear air, stable atmosphere (overnight radiative cooling), and none of the convective risk. (FAA-H-8083-28 Ch. 13)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -609,7 +762,7 @@
         <!-- Bottom nav -->
         <nav class="concept-nav-bottom">
           <a href="fog-formation.html" class="concept-nav-link">← Fog Formation</a>
-          <span class="concept-nav-next">Next concept: Icing (coming soon)</span>
+          <a href="icing.html" class="concept-nav-link">Aircraft Icing →</a>
         </nav>
 
       </article>
@@ -619,7 +772,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

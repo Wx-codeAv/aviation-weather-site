@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -61,12 +61,16 @@
         <p class="toc-label">On this page</p>
         <ol>
           <li><a href="#overview">What the FB is</a></li>
+          <li><a href="#why">Why pilots care</a></li>
           <li><a href="#format">Format &amp; decoding</a></li>
           <li><a href="#encoding">Three encoding rules</a></li>
           <li><a href="#jetstream">The jet stream</a></li>
           <li><a href="#tropopause">The tropopause</a></li>
           <li><a href="#planning">Using winds aloft</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
@@ -95,6 +99,17 @@
 
           <p class="callout">
             <strong>FB vs. GFA winds:</strong> The text FB gives numeric values you can directly plan against. The Graphical Forecast for Aviation (GFA) on aviationweather.gov offers the same data as wind barb overlays at selectable altitude slices — useful for seeing the big picture (where the jet stream axis is, which way the wind gradient is running) but the FB numbers are what you use for actual groundspeed calculations. Use both: GFA for situational awareness, FB for the numbers.
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            The FB drives three critical preflight decisions: <strong>altitude selection</strong> (which flight level gives the best groundspeed for the fuel burn), <strong>fuel planning</strong> (a 50-kt headwind at 8,000 ft vs. a 20-kt headwind at 12,000 ft can mean the difference between landing with reserves and declaring a fuel emergency), and <strong>freezing level analysis</strong> (the altitude in the temperature column where icing begins).
+          </p>
+          <p>
+            For IFR pilots, the FB is also the primary tool for identifying a potential freezing rain signature: a warm layer aloft over a cold surface layer shows up directly in the temperature column as a positive-negative-positive pattern with altitude. That temperature inversion is the most dangerous icing setup in aviation, and the FB will show it before any forecast or AIRMET confirms it.
           </p>
         </section>
 
@@ -519,6 +534,104 @@
           </p>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>Winds and Temperatures Aloft Forecast (FB)</h3>
+              <p class="hazard-mnemonic">The primary numeric wind and temperature product for flight planning.</p>
+              <ul class="hazard-list">
+                <li>Issued 4x daily; valid for 6, 12, and 24-hour periods — use the valid time closest to your departure</li>
+                <li>Covers 3,000–53,000 ft at standard levels; no wind within 1,500 ft of station elevation, no temperature at 3,000 ft</li>
+                <li>The numbers you use for groundspeed calculations and freezing level analysis — the GFA winds are for situational awareness, the FB is for the actual numbers</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA Wind Barb Overlay</h3>
+              <p class="hazard-mnemonic">Graphical visualization of the wind field at selectable altitudes.</p>
+              <ul class="hazard-list">
+                <li>Available at aviationweather.gov — select "Winds" layer and step through altitude slices</li>
+                <li>Excellent for seeing the jet stream axis, wind gradient changes along a route, and where headwinds turn to tailwinds with altitude</li>
+                <li>Use for situational awareness and altitude selection strategy; use the FB for the actual numeric planning</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Constant Pressure Charts (300/500mb)</h3>
+              <p class="hazard-mnemonic">Upper-level synoptic charts showing jet stream position and wind field at cruise altitudes.</p>
+              <ul class="hazard-list">
+                <li>300mb (~30,000 ft) shows jet stream core — wind barbs and isotachs show speed and direction at that level</li>
+                <li>500mb (~18,000 ft) is the steering level for surface weather systems</li>
+                <li>Tight isotachs on the 300mb chart indicate strong CAT risk zones on the lateral flanks of the jet</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Area Forecast Discussion (AFD)</h3>
+              <p class="hazard-mnemonic">The forecaster's narrative behind the winds — useful when the FB looks unusual.</p>
+              <ul class="hazard-list">
+                <li>When the FB shows unexpectedly strong headwinds or an unusual temperature profile, the AFD explains the forecaster's reasoning and confidence level</li>
+                <li>Available per NWS forecast office at weather.gov — use the office that covers your destination</li>
+                <li>Particularly valuable for identifying forecast uncertainty on marginal-conditions days</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>Temperature crossing 0°C at your planned altitude</h3>
+              <ul class="hazard-list">
+                <li>If the FB shows temperatures near or just below 0°C at your planned altitude in cloud, structural icing is possible</li>
+                <li>Cross-check with the AIRMET Zulu and GFA icing overlay — the FB gives you the altitude, they give you the probability</li>
+                <li>A 3,000 ft altitude change may put you above or below the critical icing window — check the full temperature column before committing to a cruise altitude</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Positive-negative-positive temperature profile (warm layer aloft)</h3>
+              <ul class="hazard-list">
+                <li>Temperature goes above 0°C at some altitude, then back below at a higher altitude — rain forms above the warm layer and becomes supercooled in the cold surface air below</li>
+                <li>This is the freezing rain signature — the most dangerous icing scenario in aviation; rapid clear ice accumulation in the cold surface layer</li>
+                <li>Maximum risk just ahead of a surface warm front in the 1,000–5,000 ft layer (AC 91-74B §3)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Strong headwinds consuming fuel reserve</h3>
+              <ul class="hazard-list">
+                <li>A 50-kt headwind at your planned altitude can add 30–50% to en-route time and fuel burn — verify reserves against worst-case winds, not forecast winds</li>
+                <li>Check the 12-hour and 24-hour FB to see if winds are strengthening — plan against the worst-case valid time that covers your flight window</li>
+                <li>If headwinds remove your legal fuel reserve, a different altitude or a fuel stop is required — not a hope that the forecast is accurate</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>High-wind encoding trap (direction ≥50 in FB)</h3>
+              <ul class="hazard-list">
+                <li>Any direction group of 50 or above in the FB means winds ≥100 kt — subtract 50 from direction, add 100 to speed</li>
+                <li>Misreading "7535" as 750°/35 kt instead of 250°/135 kt is a fundamental error that corrupts every calculation that follows</li>
+                <li>Always check: is the direction field ≥50? If so, the high-wind encoding is active (AC 00-45H §4.2.3)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Blank FB entries at high-elevation stations</h3>
+              <ul class="hazard-list">
+                <li>Stations like Denver, Salt Lake City, and Albuquerque will show blank entries at the 3,000 ft level — the level is within 1,500 ft of terrain elevation</li>
+                <li>A blank entry does not mean calm winds — it means the data is not provided for that station at that level</li>
+                <li>Use a nearby lower-elevation station's entry to estimate conditions, or use the GFA wind overlay</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>9900 wind entry — do not decode as a direction</h3>
+              <ul class="hazard-list">
+                <li>"9900" means calm or light and variable winds (less than 5 kt) — the "99" is a flag, not a wind direction</li>
+                <li>No temperature is appended to a 9900 group</li>
+                <li>Common exam trap: students try to decode 9900 as a wind from 990° — an impossible direction that should immediately signal the flag (AC 00-45H §4.2.2)</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -567,6 +680,41 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            You're planning an IFR flight from Denver (KDEN, elevation 5,433 ft) to Kansas City (KMCI) — 540 nm. Your Cessna 182T (turbocharged) cruises at 155 kt TAS. You pull the 12-hour FB for your 14:00Z departure:
+          </p>
+          <ul>
+            <li>6,000 ft: <strong>(blank)</strong> — station is within 1,500 ft of terrain</li>
+            <li>9,000 ft: <strong>2718-05</strong> → winds 270°/18 kt, −5°C</li>
+            <li>12,000 ft: <strong>2832-12</strong> → winds 280°/32 kt, −12°C</li>
+            <li>18,000 ft: <strong>2848-28</strong> → winds 280°/48 kt, −28°C</li>
+          </ul>
+          <p>The GFA shows an overcast layer from 11,000–16,000 ft along most of the route. AIRMET Zulu is not currently active. The freezing level from the FB at 9,000 ft is −5°C — well below freezing at all altitudes in the clouds.</p>
+
+          <details class="qa">
+            <summary>Option A: File for 9,000 ft — lowest usable IFR altitude, smallest headwind.</summary>
+            <p><strong>Reasonable, but check the math.</strong> At 9,000 ft, 18 kt headwind on a 280° track heading roughly 090° gives a headwind component of approximately 18 kt. 155 − 18 = 137 kt groundspeed. 540 nm / 137 kt = 3.9 hours. Fuel: check. Clouds at 11,000 ft put 9,000 ft below the cloud layer — potentially VMC on top or under it depending on bases. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (AC 00-45H §4.2)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: File for 12,000 ft — in the cloud layer with a 32-kt headwind.</summary>
+            <p><strong>Check the icing risk.</strong> 12,000 ft is inside the GFA cloud layer (11,000–16,000 ft) at −12°C. The temperature is in the rime ice range (−15°C to −20°C is typical rime; −12°C is mixed to clear territory). No AIRMET Zulu is active, but the conditions (cloud, below 0°C) make icing possible without an advisory. For a turbocharged 182 with no FIKI, flying in cloud at −12°C for potentially hours is a risk that should be explicitly weighed. PIREPs from aircraft in that layer are your best current data. (AC 00-45H §4; AC 91-74B)</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: File for 18,000 ft — above the clouds, smooth air, but 48 kt headwind.</summary>
+            <p><strong>The headwind math kills this option.</strong> 155 − 48 = 107 kt groundspeed. 540 nm / 107 kt = 5.0 hours. That's 1.1 hours more than at 9,000 ft — easily 30–40 more gallons of fuel in a 182. At 18,000 ft you're also in the oxygen-required zone (above 14,000 ft for more than 30 minutes as a required crew member). Unless you have supplemental O₂ and the fuel, this isn't the answer. (14 CFR 91.211)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: File for 9,000 ft, check PIREPs for cloud bases, and plan an altitude amendment if tops are above 9,000 ft.</summary>
+            <p><strong>Best approach.</strong> Start with the lowest usable altitude and least headwind (9,000 ft). Before departure, get PIREPs to confirm cloud bases — if bases are at or above 9,000 ft, you'll be in the clouds, and you need to decide whether to stay below or climb to 12,000 ft through the layer. Filing 9,000 ft with a plan to request an amendment keeps options open. The key principle: work the actual numbers from the FB for groundspeed and fuel, don't assume an altitude is better without running the math. (AIM 7-1-20)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -596,7 +744,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -61,6 +61,8 @@
       <aside class="concept-toc">
         <p class="toc-label">On this page</p>
         <ol>
+          <li><a href="#what">What it is</a></li>
+          <li><a href="#why">Why pilots care</a></li>
           <li><a href="#pressure">Pressure systems</a></li>
           <li><a href="#airmasses">Air masses</a></li>
           <li><a href="#cold">Cold fronts</a></li>
@@ -71,13 +73,41 @@
           <li><a href="#comparison">Cold vs. warm — comparison</a></li>
           <li><a href="#surface">Surface analysis chart</a></li>
           <li><a href="#planning">Flight planning with fronts</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
 
       <!-- Article body -->
       <article class="concept-article">
+
+        <!-- Section: What it is -->
+        <section id="what">
+          <h2>What fronts and pressure systems are</h2>
+          <p>
+            A <strong>front</strong> is a boundary between two air masses of different temperature, moisture content, and density. The contrasting air masses don't mix cleanly — they clash at the boundary. The weather at that boundary depends on how different the air masses are, how fast the front is moving, and which direction it's headed.
+          </p>
+          <p>
+            <strong>Pressure systems</strong> organize the large-scale circulation that pushes fronts around. Low pressure concentrates converging, rising air — clouds, precipitation, and instability follow. High pressure means diverging, sinking air — generally fair conditions, though surface-based inversions can trap fog overnight even inside a high.
+          </p>
+          <p>
+            Together, fronts and pressure systems are the foundation of every synoptic weather briefing. They determine what weather is coming, how fast, and what flight conditions to expect at your destination. (FAA-H-8083-28 Ch. 12)
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            Fronts produce the most significant <em>sustained</em> weather hazards in GA flying. A slow-moving warm front can keep a destination IFR for 24–48 hours. A fast cold front can generate pre-frontal squall lines with severe thunderstorms 200 nm ahead of its surface position — invisible on the synoptic chart, visible only on radar. An occluded front combines both.
+          </p>
+          <p>
+            Understanding frontal motion turns the surface analysis chart from a snapshot into a prediction tool. A pilot who can read where a front is and how fast it's moving can plan fuel stops, alternate airports, and departure windows proactively — rather than discovering on the phone with FSS that the destination went IFR an hour before landing.
+          </p>
+        </section>
 
         <!-- Section: Pressure systems -->
         <section id="pressure">
@@ -900,6 +930,104 @@
           </ul>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>Surface Analysis Chart</h3>
+              <p class="hazard-mnemonic">Current position of all fronts, Highs, and Lows.</p>
+              <ul class="hazard-list">
+                <li>Issued every 3 hours; this is an analysis (current state), not a forecast</li>
+                <li>Isobar spacing tells you pressure gradient — tightly packed = strong winds</li>
+                <li>Always pair with the prog chart to understand where things are going</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Prog Charts (12/24/48hr)</h3>
+              <p class="hazard-mnemonic">Where fronts will be during your flight window.</p>
+              <ul class="hazard-list">
+                <li>Lower panel shows IFR/MVFR shading and precipitation at each valid time</li>
+                <li>12 and 24-hour charts are most reliable; 36/48-hour are trend guidance only</li>
+                <li>If the front is closer to your route in the 12hr prog than expected, conditions are arriving faster than forecast</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA (Graphical Forecasts for Aviation)</h3>
+              <p class="hazard-mnemonic">Route-specific conditions linked to frontal timing.</p>
+              <ul class="hazard-list">
+                <li>Step through 3-hourly slices to see when frontal weather reaches your route or destination</li>
+                <li>Icing and turbulence overlays flag frontal hazard zones</li>
+                <li>Cross-check GFA IFR shading against the prog chart to understand the cause</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>PIREPs</h3>
+              <p class="hazard-mnemonic">What pilots are actually experiencing near frontal boundaries right now.</p>
+              <ul class="hazard-list">
+                <li>Most operationally current data for turbulence, icing, and visibility near fronts</li>
+                <li>Cloud tops and bases from PIREPs tell you whether you can stay VFR on top</li>
+                <li>Absence of PIREPs near a front does not mean conditions are benign — traffic is sparse</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>Fast cold front within 200 nm of route</h3>
+              <ul class="hazard-list">
+                <li>A 35-kt cold front covers 200 nm in under 6 hours — plan for it to arrive, not to miss it</li>
+                <li>Pre-frontal squall lines form 50–200 nm ahead and won't show on the surface analysis chart, only on radar</li>
+                <li>Check current radar before every VFR departure when a cold front is within 400 nm</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Warm front over or approaching destination</h3>
+              <ul class="hazard-list">
+                <li>Warm-front IFR (Ns, St, fog) persists 12–48 hours — there is no "push through" strategy</li>
+                <li>Freezing rain in the zone just ahead of the surface warm front is the most dangerous icing scenario in aviation</li>
+                <li>If the TAF already shows IFR for your arrival window, the front hasn't moved and won't in time</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Rapidly deepening low pressure</h3>
+              <ul class="hazard-list">
+                <li>A drop of 4+ mb in 3 hours signals explosive deepening — conditions deteriorate faster than forecasts predict</li>
+                <li>Compare the current surface analysis to the prog: if the low is deeper than forecast, so is the weather</li>
+                <li>Rapidly deepening lows produce the most intense wind, lowest ceilings, and worst icing in any frontal system</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Temp/dewpoint spread ≤3°C at destination</h3>
+              <ul class="hazard-list">
+                <li>Near-saturation conditions mean fog, low stratus, or precipitation is likely</li>
+                <li>Near a warm front in cold temperatures: freezing fog or freezing drizzle is possible</li>
+                <li>A narrowing T/Td spread in the TAF trend means conditions are still deteriorating, not recovering</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Stationary front over destination</h3>
+              <ul class="hazard-list">
+                <li>Stationary fronts don't move — IFR conditions can sit over the same area for 2–3 days</li>
+                <li>There is no "wait an hour" strategy; the only fix is routing around the front or waiting for confirmed synoptic movement</li>
+                <li>Check the 24-hr prog: if the front is still in place, so are the IFR conditions</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Dryline near route (Great Plains, Apr–Jun, PM)</h3>
+              <ul class="hazard-list">
+                <li>A dryline in the central plains during spring fires supercell thunderstorms and tornadoes as afternoon surface heating peaks</li>
+                <li>Drylines surge eastward by 100–200 nm between noon and sunset, then retrograde overnight</li>
+                <li>Check the SPC convective outlook whenever your afternoon route crosses the central plains in spring</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -958,6 +1086,37 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            You're a VFR-only private pilot planning a 280 nm cross-country from the Chicago area to Columbus, OH. Departure is planned at 10:00 local. The surface analysis shows a warm front stalled over southern Indiana — about 120 nm south of your route. Columbus METAR: 1500 OVC, 3SM BR. The TAF calls for improvement by 14:00 (BECMG 1314 BKN020 3SM BR). Your ETA is 12:30.
+          </p>
+          <p>
+            The 12-hour prog shows the warm front essentially stationary with IFR shading covering all of central Ohio at your arrival time. AIRMET Sierra is active for the Ohio Valley corridor. The 24-hour prog shows no significant frontal movement.
+          </p>
+
+          <details class="qa">
+            <summary>Option A: Go — the TAF shows improvement by 14:00 and you can hold for 1.5 hours if needed.</summary>
+            <p><strong>High risk.</strong> The TAF improving forecast conflicts directly with the prog chart, which shows the front stationary and IFR shading persisting over Ohio. When a TAF disagrees with the synoptic prog, the prog is usually more reliable for large-scale, slow-moving patterns like a stationary warm front. A stationary front clears when it moves — not on a schedule. Planning to hold for 1.5 hours over IFR terrain with no alternate identified compounds the risk. (FAA-H-8083-28 Ch. 14)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: Depart and plan to divert to Cincinnati if Columbus goes below minimums.</summary>
+            <p><strong>Better, but the divert is flawed.</strong> Cincinnati is only 100 nm southwest of Columbus — still under the same warm-front cloud shield. A divert airport needs to be well outside the frontal weather zone: north or well to the west, behind the front or well ahead of it. Picking an alternate based on proximity rather than weather position is a trap. (AIM 7-1-3)</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: Delay departure — wait for the 12:00 local surface analysis to confirm whether the front has moved.</summary>
+            <p><strong>Correct decision framework.</strong> A stationary front means "wait for the synoptic picture to change." The 12:00 surface analysis will tell you whether the front is actually moving. If it's still stalled, conditions at Columbus won't improve regardless of what the TAF says. Delaying to a decision point where you have better data — rather than committing on a forecast already contradicted by synoptic data — is sound ADM. (FAA-H-8083-25 §17-5)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: Cancel and drive — the uncertainty is too high for a VFR flight.</summary>
+            <p><strong>Also valid and safe.</strong> A 280 nm VFR flight into an area covered by AIRMET Sierra with a stationary warm front and a conflicting TAF is a scenario where the information is telling you something. For a VFR pilot, "ambiguous synoptic picture" is a valid reason to choose a different mode of transportation. No flight is required by any obligation. (AIM 7-1-27)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -988,7 +1147,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>

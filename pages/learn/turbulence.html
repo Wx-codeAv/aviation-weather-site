@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -61,6 +61,8 @@
       <aside class="concept-toc">
         <p class="toc-label">On this page</p>
         <ol>
+          <li><a href="#what">What it is</a></li>
+          <li><a href="#why">Why pilots care</a></li>
           <li><a href="#types">Five types — overview</a></li>
           <li><a href="#mechanical">Mechanical turbulence</a></li>
           <li><a href="#thermal">Thermal turbulence</a></li>
@@ -69,13 +71,38 @@
           <li><a href="#wake">Wake turbulence</a></li>
           <li><a href="#mountain">Mountain wave turbulence</a></li>
           <li><a href="#intensity">Intensity &amp; reporting</a></li>
+          <li><a href="#products">Products that show it</a></li>
+          <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
+          <li><a href="#scenario">Would-You-Fly</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
 
       <!-- Article body -->
       <article class="concept-article">
+
+        <!-- Section: What it is -->
+        <section id="what">
+          <h2>What turbulence is</h2>
+          <p>
+            <strong>Turbulence</strong> is irregular, chaotic air movement that causes unexpected and rapid changes in aircraft attitude, altitude, and airspeed. It is caused by atmospheric instability, wind shear, terrain, or wake vortices from other aircraft. The FAA defines turbulence intensity by its effect on the aircraft: from light (slight erratic control inputs) through moderate (large but controllable attitude changes) to severe (momentary loss of control) and extreme (aircraft cannot be controlled). (AC 00-6B §11; FAA-H-8083-25 §12-20)
+          </p>
+          <p>
+            Turbulence is grouped by mechanism — the cause determines the altitude band, the visual cues available (if any), and the avoidance strategy. Knowing the mechanism is the difference between a manageable encounter and a dangerous one.
+          </p>
+        </section>
+
+        <!-- Section: Why pilots care -->
+        <section id="why">
+          <h2>Why pilots care</h2>
+          <p>
+            Turbulence causes more inflight injuries than any other weather phenomenon — including accidents. Even light turbulence can send an unsecured passenger to the ceiling; severe turbulence has caused structural failures in transport-category aircraft and fatalities in GA. Below 2,000 ft AGL, there is no altitude buffer to recover from a turbulence-induced upset: low-level wind shear and wake vortex encounters on approach and departure are particularly lethal.
+          </p>
+          <p>
+            CAT is especially hazardous because it has no visual cue, no radar return, and no warning until the aircraft enters it. A cabin full of unsecured passengers at cruise altitude is the highest-risk scenario. Seat belts on, always.
+          </p>
+        </section>
 
         <!-- Section: Five types -->
         <section id="types">
@@ -640,6 +667,104 @@
           </ul>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>AIRMETs &amp; SIGMETs</h3>
+              <p class="hazard-mnemonic">The official turbulence advisory system.</p>
+              <ul class="hazard-list">
+                <li><strong>AIRMET Tango</strong> — moderate turbulence, sustained surface winds ≥30 kt, non-convective LLWS; valid 6 hours</li>
+                <li><strong>SIGMET</strong> — severe or extreme turbulence; valid up to 4 hours; a SIGMET on your route is a serious go/no-go factor</li>
+                <li>No Tango does not mean no turbulence — it means no <em>moderate</em> turbulence has been forecast; light turbulence exists without any advisory</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>PIREPs</h3>
+              <p class="hazard-mnemonic">The most operationally current turbulence data available.</p>
+              <ul class="hazard-list">
+                <li>Turbulence is reported as None, Light, Moderate, Severe, or Extreme — with a location, altitude, aircraft type, and time</li>
+                <li>Cluster of moderate PIREPs at your planned altitude is the most direct evidence you'll encounter turbulence</li>
+                <li>PIREP age matters: a 2-hour-old PIREP in rapidly changing conditions has limited value</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA &amp; Graphical Turbulence Guidance (GTG)</h3>
+              <p class="hazard-mnemonic">Forecast turbulence intensity at selectable altitude slices.</p>
+              <ul class="hazard-list">
+                <li>GTG is the NWS automated turbulence forecast product; it correlates best with CAT and mountain wave turbulence</li>
+                <li>Available at aviationweather.gov under "Turbulence" — step through altitude layers to see your planned flight level</li>
+                <li>GTG performs poorly for convective turbulence and wake — supplement with radar and PIREPs for those</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Constant Pressure Charts (300/500mb)</h3>
+              <p class="hazard-mnemonic">Jet stream position and CAT risk zones.</p>
+              <ul class="hazard-list">
+                <li>300mb chart shows jet stream axis and isotach gradients — tight isotachs = strong wind shear = CAT risk</li>
+                <li>CAT most likely on the poleward flank and exit region of the jet, 100–200 nm from the core</li>
+                <li>Check upper-level charts before any cruise altitude flight above FL200 in winter</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Section: Red flags -->
+        <section id="redflags">
+          <h2>Red flags</h2>
+          <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem;">
+            <article class="hazard-card hazard-zulu">
+              <h3>Jet stream within 200 nm of route above FL200</h3>
+              <ul class="hazard-list">
+                <li>CAT risk extends 100–200 nm from the jet stream axis, especially on the poleward (north) flank and in the exit region</li>
+                <li>300mb chart showing tight isotachs near your cruise altitude is your primary CAT planning signal</li>
+                <li>There is no visual cue and no radar return — if the chart shows CAT risk, plan for it regardless of current ride reports</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-zulu">
+              <h3>Mountain wave lenticular clouds</h3>
+              <ul class="hazard-list">
+                <li>Lenticular clouds (ACSL) at wave crests downwind of a ridge mean mountain wave is active — the rotor zone below the first lenticular is the most violently turbulent area</li>
+                <li>In dry air, no lenticulars may be visible even when wave activity is severe — use PIREPs and wind reports rather than visual cues alone</li>
+                <li>Reduce to Va before penetrating any known wave turbulence area (FAA-H-8083-25 §12-22)</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>AIRMET Tango active on your route</h3>
+              <ul class="hazard-list">
+                <li>Moderate turbulence forecast — plan for altitude options (is there an altitude that's reported smoother?)</li>
+                <li>Cross-check against PIREPs and GTG to understand where the turbulence is worst within the advisory area</li>
+                <li>Tango combined with a mountain wave environment or jet proximity means moderate may become severe without warning</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-tango">
+              <h3>Heavy aircraft departure or approach ahead of you</h3>
+              <ul class="hazard-list">
+                <li>Wake vortices from a heavy aircraft descend 300–500 fpm and drift downwind — they persist 2–3 minutes in calm conditions</li>
+                <li>On approach: stay above the preceding aircraft's glide path and land beyond their touchdown point</li>
+                <li>On departure: rotate before their rotation point and turn upwind to avoid the vortex</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Strong surface winds + rugged terrain</h3>
+              <ul class="hazard-list">
+                <li>Mechanical turbulence from buildings, trees, and ridge lines is strongest in unstable air with surface winds above 20 kt</li>
+                <li>Leeward side of any obstacle in strong winds is the danger zone — turbulence can extend 10x the height of the obstacle downwind</li>
+                <li>Local knowledge matters: a VFR approach to a mountain airport in 25-kt winds is not the same as the same approach in calm conditions</li>
+              </ul>
+            </article>
+            <article class="hazard-card hazard-sierra">
+              <h3>Afternoon cumulus over terrain</h3>
+              <ul class="hazard-list">
+                <li>Visible cumulus mark active thermals — thermal turbulence is moderate to strong under and within the cloud</li>
+                <li>In desert environments, thermals are violent and may be completely cloudless — do not assume smooth air because the sky is clear</li>
+                <li>Thermal turbulence peaks 1400–1700 local and diminishes rapidly after sunset</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Checkride questions -->
         <section id="checkride">
           <h2>Checkride questions you'll actually be asked</h2>
@@ -693,6 +818,34 @@
           </details>
         </section>
 
+        <!-- Section: Would-You-Fly scenario -->
+        <section id="scenario">
+          <h2>Would-You-Fly scenario</h2>
+          <p class="callout" style="border-left-color: var(--rust);">
+            <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
+          </p>
+          <p>
+            You're instrument-rated, flying a Cessna 182 IFR at 8,000 ft MSL on a cross-country through the Rocky Mountain foothills. AIRMET Tango is active for moderate turbulence below 12,000 ft in your area. A PIREP from 45 minutes ago — a Piper Archer at 8,000 ft — reported moderate turbulence 30 nm west of your position. You've been in light chop for 20 minutes. ATC advises a company King Air at 12,000 ft reported smooth at their altitude.
+          </p>
+
+          <details class="qa">
+            <summary>Option A: Continue at 8,000 ft — it's only light chop and you're nearly through the area.</summary>
+            <p><strong>Acceptable but not optimal.</strong> Light chop is manageable, but the context matters: active AIRMET Tango, a recent moderate PIREP 30 nm west (which is behind you and conditions are improving, or the cell is moving toward you — unclear), and mountain wave terrain. "Nearly through" is not a verified distance — mountain wave turbulence can extend well downwind of ridges. Seat belts on, passengers briefed, airspeed at or below Va are the minimum required actions in this environment. (FAA-H-8083-25 §12-21)</p>
+          </details>
+          <details class="qa">
+            <summary>Option B: Request a climb to 12,000 ft based on the King Air's smooth ride report.</summary>
+            <p><strong>Good option — worth requesting.</strong> The King Air reported smooth at 12,000 ft, 4,000 ft above the AIRMET Tango layer. A climb request from ATC is straightforward when you're on an IFR flight plan and there's no traffic conflict. The caveat: the King Air is a different aircraft type (may be less sensitive to turbulence) and the PIREP was their altitude, not necessarily yours at 12,000 ft. But "pilot reports smooth 4,000 ft above my current altitude in a turbulence environment" is a meaningful data point worth acting on. (AIM 7-1-21)</p>
+          </details>
+          <details class="qa">
+            <summary>Option C: Slow to maneuvering speed (Va) and brief the passengers regardless of current conditions.</summary>
+            <p><strong>This should already be done.</strong> In any turbulence environment with an active AIRMET Tango, Va should have been set before entering the advisory area. Passenger briefing ("keep your seat belts fastened, we may encounter rough air") is a preflight or early-flight action — not reactive. These are not options to choose between; they are baseline actions that should have been taken at the first indication of a turbulence environment. (FAA-H-8083-3 §1)</p>
+          </details>
+          <details class="qa">
+            <summary>Option D: Divert to an airport below the terrain that generated the wave and wait for conditions to improve.</summary>
+            <p><strong>Valid if the turbulence is worsening or you have specific concerns.</strong> Moderate turbulence in a mountain wave environment can escalate to severe without warning. If the light chop becomes moderate, or if a PIREP indicates the wave is strengthening, diversion is the correct proactive choice. Landing short with passengers safe is always better than continuing into a deteriorating turbulence environment at low altitude with limited recovery options. The key question is: does the trend suggest conditions are improving or worsening? (AIM 7-1-22)</p>
+          </details>
+        </section>
+
         <!-- Section: Pilot takeaway -->
         <section id="takeaway">
           <h2>Pilot takeaway</h2>
@@ -722,7 +875,7 @@
   <!-- ============== Footer ============== -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>
