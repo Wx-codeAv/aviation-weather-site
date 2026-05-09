@@ -346,6 +346,36 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
 }
 .feature-status.upcoming { color: var(--ink-soft); border-color: var(--rule); }
 
+/* ---------- Upcoming section strip ---------- */
+.upcoming-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  border: 1px solid var(--rule);
+  border-top: none;
+  padding: 1.4rem 2.2rem;
+  background: rgba(0, 0, 0, 0.015);
+}
+.upcoming-strip .feature-num { color: var(--ink-soft); }
+.upcoming-strip h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  margin: 0.4rem 0 0.5rem;
+  color: var(--ink-soft);
+}
+.upcoming-strip p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  max-width: 55ch;
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .upcoming-strip { padding: 1.4rem; gap: 1rem; }
+}
+
 /* ---------- About strip ---------- */
 .about {
   background: var(--ink);
