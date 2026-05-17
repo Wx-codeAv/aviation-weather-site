@@ -3,11 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nav Log — CrosswindWX</title>
+  <title>Nav Log Calculator — CrosswindWX</title>
+  <meta name="description" content="Interactive VFR nav log calculator. Enter waypoints, winds aloft, and TAS — the tool computes WCA, true/magnetic/compass headings, ground speed, ETE, and fuel burn per leg. Shows the math so student pilots learn, not just get answers.">
   <link rel="stylesheet" href="../css/main.css">
+  <style>
+    /* ─── Hero ─── */
+    .nl-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--rule); }
+    .nl-hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1; margin-bottom: 0.8rem; }
+    .nl-hero .lede { font-size: 1.05rem; max-width: 60ch; margin: 0 0 1rem; }
+
+    /* ─── Sign convention banner ─── */
+    .nl-conventions {
+      background: #fffaf0; border-left: 3px solid var(--sky);
+      padding: 0.9rem 1.2rem; margin: 1.5rem 0; font-size: 0.88rem;
+    }
+    .nl-conventions strong { color: var(--ink); }
+    .nl-conventions code { font-family: var(--font-mono); font-size: 0.82rem; background: var(--buff-dark); padding: 0 3px; }
+
+    /* ─── Flight profile panel ─── */
+    .nl-profile-section { padding: 2rem 0 0; }
+    .nl-profile-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem 1.5rem; background: #fffaf0;
+      border: 1px solid var(--rule); padding: 1.4rem 1.6rem; margin-bottom: 1rem;
+    }
+    .nl-profile-title {
+      font-family: var(--font-display); font-size: 1.15rem; letter-spacing: 0.03em;
+      grid-column: 1 / -1; border-bottom: 2px solid var(--ink);
+      padding-bottom: 0.5rem; margin-bottom: 0.4rem; color: var(--ink);
+    }
+    .nl-pf { display: flex; flex-direction: column; gap: 0.3rem; }
+    .nl-pf label {
+      font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--sage);
+    }
+    .nl-pf input, .nl-pf select {
+      font-family: var(--font-mono); font-size: 0.92rem; background: var(--buff);
+      border: 1px solid var(--rule); color: var(--ink); padding: 0.45rem 0.6rem;
+      width: 100%; outline: none; -moz-appearance: textfield;
+    }
+    .nl-pf input::-webkit-inner-spin-button,
+    .nl-pf input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .nl-pf input:focus, .nl-pf select:focus { border-color: var(--sky); }
+    .nl-pf-hint { font-size: 0.72rem; color: var(--ink-soft); margin-top: 0.15rem; }
+
+    /* Reserve radio row */
+    .nl-pf-radio { display: flex; gap: 1.2rem; margin-top: 0.2rem; }
+    .nl-pf-radio label { display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink); text-transform: none; letter-spacing: 0; cursor: pointer; }
+    .nl-pf-radio input[type=radio] { width: auto; }
+
+    /* Climb estimate callout */
+    .nl-climb-note {
+      background: var(--buff-dark); border-left: 3px solid var(--sun);
+      padding: 0.75rem 1.1rem; font-size: 0.85rem; color: var(--ink-soft);
+      margin-bottom: 0;
+    }
+    .nl-climb-note strong { color: var(--ink); }
+
+    /* ─── Banners ─── */
+    .nl-banners { margin: 1.2rem 0 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    .nl-banner {
+      padding: 0.75rem 1.1rem; font-size: 0.88rem; font-family: var(--font-mono);
+      display: flex; align-items: baseline; gap: 0.7rem;
+    }
+    .nl-banner-danger {
+      background: rgba(181,61,31,0.08); border: 2px solid var(--rust); color: var(--rust);
+    }
+    .nl-banner-warn {
+      background: rgba(217,165,33,0.1); border: 1px solid var(--sun); color: var(--ink);
+    }
+    .nl-banner-label { font-weight: 600; }
+
+    /* ─── Table section ─── */
+    .nl-table-section { padding: 1.5rem 0 2rem; }
+    .nl-table-wrap {
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--rule); background: var(--buff);
+    }
+    .nl-table {
+      border-collapse: collapse; white-space: nowrap;
+      font-size: 0.82rem; font-family: var(--font-mono); min-width: 1100px; width: 100%;
+    }
+
+    /* Group headers */
+    .nl-table .gh {
+      background: var(--ink); color: var(--buff);
+      font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.08em;
+      text-align: center; padding: 0.45rem 0.5rem; border-right: 1px solid rgba(255,255,255,0.12);
+    }
+    .nl-table .gh.gh-comp { background: #1a3a5c; }
+
+    /* Column headers */
+    .nl-table .ch {
+      background: var(--ink); color: rgba(244,236,214,0.75);
+      font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.1em; text-align: center; padding: 0.4rem 0.3rem;
+      border-right: 1px solid rgba(255,255,255,0.08); cursor: help; position: relative;
+    }
+    .nl-table .ch.ch-comp { background: #1a3a5c; color: rgba(244,236,214,0.6); }
+    .nl-table .ch-fix { text-align: left; padding-left: 0.7rem; min-width: 130px; }
+
+    /* Sticky fix column */
+    .nl-fix-cell {
+      position: sticky; left: 0; z-index: 2;
+      background: var(--buff); border-right: 2px solid var(--rule);
+    }
+    .nl-fix-cell.ch, .nl-fix-cell.gh {
+      background: var(--ink); z-index: 3;
+    }
+    .nl-fix-cell.ch-comp { background: #1a3a5c; }
+
+    /* Body cells */
+    .nl-table td {
+      border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+      padding: 0; vertical-align: middle;
+    }
+    .nl-table .nl-td-inp { background: var(--buff); }
+    .nl-table .nl-td-cmp {
+      background: #ece5cc; color: var(--ink); text-align: center;
+      padding: 0.2rem 0.4rem; font-family: var(--font-mono);
+    }
+    .nl-table .nl-td-cmp.nl-dash { color: var(--rule); font-size: 0.75rem; }
+    .nl-table .nl-td-cmp.nl-warn { color: var(--rust); font-weight: 600; }
+    .nl-table .nl-td-cmp.nl-low-fuel { color: var(--rust); font-weight: 600; background: rgba(181,61,31,0.08); }
+
+    /* Table inputs */
+    .nl-inp {
+      width: 100%; border: none; outline: none; background: transparent;
+      font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink);
+      padding: 0.35rem 0.4rem; text-align: center; -moz-appearance: textfield;
+    }
+    .nl-inp::-webkit-inner-spin-button,
+    .nl-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .nl-inp:focus { background: #fff8e6; outline: 1px solid var(--sky); outline-offset: -1px; }
+    .nl-inp-fix { text-align: left; padding-left: 0.5rem; }
+    .nl-inp-invalid { background: rgba(181,61,31,0.07) !important; color: var(--rust) !important; }
+
+    /* Actions column */
+    .nl-td-actions { background: var(--buff); padding: 0.2rem 0.3rem; white-space: nowrap; }
+    .nl-btn {
+      border: 1px solid var(--rule); background: var(--buff); color: var(--ink-soft);
+      font-family: var(--font-mono); font-size: 0.78rem; cursor: pointer;
+      padding: 0.15rem 0.35rem; line-height: 1; margin: 0 1px;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .nl-btn:hover { border-color: var(--sky); color: var(--sky); }
+    .nl-btn-del:hover { border-color: var(--rust); color: var(--rust); }
+    .nl-btn-work.active { background: var(--ink); color: var(--buff); border-color: var(--ink); }
+
+    /* Work expansion row */
+    .nl-work-td {
+      background: #f7f2e2; border-bottom: 2px solid var(--rule);
+      padding: 0; border-right: none;
+    }
+    .nl-work-content {
+      padding: 1.1rem 1.4rem; font-family: var(--font-mono); font-size: 0.8rem;
+      color: var(--ink); line-height: 1.8;
+    }
+    .nl-work-title {
+      font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.03em;
+      color: var(--ink); margin: 0 0 0.8rem; padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .nl-work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 0.8rem 2.5rem; }
+    .nl-work-block { }
+    .nl-work-label { color: var(--sage); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.2rem; }
+    .nl-work-steps { color: var(--ink); line-height: 1.9; }
+    .nl-work-steps .step { display: block; }
+    .nl-work-steps .step-indent { display: block; padding-left: 1.4rem; color: var(--ink-soft); }
+    .nl-work-steps .result { color: var(--sky); font-weight: 600; }
+    .nl-work-mnemonic { color: var(--rust); font-size: 0.75rem; font-style: italic; }
+    .nl-work-na { color: var(--rule); font-style: italic; }
+
+    /* Totals row */
+    .nl-totals-row td {
+      background: var(--ink); color: var(--buff);
+      font-family: var(--font-mono); font-size: 0.8rem;
+      padding: 0.4rem 0.4rem; border-right: 1px solid rgba(255,255,255,0.12);
+      text-align: center; font-weight: 600;
+    }
+    .nl-totals-row .tot-label { text-align: left; padding-left: 0.7rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(244,236,214,0.6); }
+
+    /* Add-row button */
+    .nl-add-wrap { margin-top: 0.8rem; display: flex; align-items: center; gap: 1rem; }
+    .nl-add-first {
+      font-family: var(--font-mono); font-size: 0.82rem; cursor: pointer;
+      padding: 0.5rem 1.2rem; background: var(--buff); border: 1px dashed var(--rule);
+      color: var(--ink-soft); transition: border-color 0.15s, color 0.15s;
+    }
+    .nl-add-first:hover { border-color: var(--sky); color: var(--sky); }
+
+    /* ─── Fuel summary ─── */
+    .nl-fuel-section { padding: 1rem 0 2rem; }
+    .nl-fuel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .nl-fuel-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1rem 1.2rem; }
+    .nl-fuel-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 0.3rem; }
+    .nl-fuel-val { font-family: var(--font-display); font-size: 1.9rem; color: var(--ink); letter-spacing: 0.02em; line-height: 1; }
+    .nl-fuel-val span { font-size: 0.85rem; opacity: 0.6; font-family: var(--font-mono); }
+    .nl-fuel-val.danger { color: var(--rust); }
+    .nl-fuel-sub { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.3rem; }
+    .nl-fuel-reserve-note { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; padding: 0.6rem 0; border-top: 1px solid var(--rule); }
+
+    /* ─── Glossary modal ─── */
+    .nl-gloss-modal {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(12,37,65,0.6); align-items: center; justify-content: center;
+    }
+    .nl-gloss-modal.open { display: flex; }
+    .nl-gloss-box {
+      background: var(--buff); max-width: 640px; width: 90vw; max-height: 80vh;
+      overflow-y: auto; padding: 2rem; position: relative; border: 2px solid var(--ink);
+    }
+    .nl-gloss-close {
+      position: absolute; top: 1rem; right: 1rem; font-family: var(--font-mono);
+      font-size: 1rem; cursor: pointer; background: none; border: 1px solid var(--rule);
+      padding: 0.2rem 0.6rem; color: var(--ink);
+    }
+    .nl-gloss-title { font-family: var(--font-display); font-size: 1.5rem; margin: 0 0 1.2rem; color: var(--ink); }
+    .nl-gloss-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .nl-gloss-table tr:not(:last-child) td { border-bottom: 1px solid var(--rule); }
+    .nl-gloss-table td { padding: 0.5rem 0.7rem; vertical-align: top; }
+    .nl-gloss-table td:first-child { font-family: var(--font-mono); font-weight: 600; color: var(--ink); white-space: nowrap; width: 80px; }
+    .nl-gloss-table td:last-child { color: var(--ink-soft); }
+
+    /* ─── Educational section ─── */
+    .nl-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 3.5rem 0; }
+    .nl-edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem 3rem; }
+    .nl-edu-block { border-left: 3px solid var(--rule); padding-left: 1.3rem; }
+    .nl-edu-eyebrow { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--rust); margin: 0 0 0.4rem; }
+    .nl-edu-block h3 { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.02em; margin: 0 0 0.8rem; color: var(--ink); }
+    .nl-edu-block p { font-size: 0.9rem; color: var(--ink-soft); margin: 0 0 0.7rem; }
+
+    /* TVMDC chain diagram */
+    .tvmdc {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+      font-family: var(--font-mono); font-size: 0.82rem; margin: 1rem 0;
+    }
+    .tvmdc-step { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0; }
+    .tvmdc-box {
+      background: var(--ink); color: var(--buff); padding: 0.25rem 0.7rem;
+      font-size: 0.78rem; letter-spacing: 0.06em; min-width: 80px; text-align: center;
+    }
+    .tvmdc-op { color: var(--rust); font-size: 0.85rem; padding-left: 0.3rem; }
+    .tvmdc-arrow { color: var(--rule); font-size: 1rem; padding: 0 0.5rem; }
+    .tvmdc-connector { display: flex; align-items: center; padding: 0 0 0 1.4rem; color: var(--ink-soft); font-size: 0.78rem; }
+    .tvmdc-line { border-left: 1px dashed var(--rule); margin-left: 39px; height: 0.5rem; }
+
+    /* Common mistakes table */
+    .mistakes-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+    .mistakes-table td { padding: 0.4rem 0.5rem; border-bottom: 1px dotted var(--rule); vertical-align: top; }
+    .mistakes-table td:first-child { color: var(--rust); font-weight: 600; white-space: nowrap; padding-right: 0.8rem; }
+    .mistakes-table td:last-child { color: var(--ink-soft); }
+
+    /* ─── Toolbar row ─── */
+    .nl-toolbar { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
+    .nl-toolbar-btn {
+      font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer;
+      padding: 0.45rem 1rem; background: var(--buff); border: 1px solid var(--rule);
+      color: var(--ink); transition: border-color 0.15s, color 0.15s;
+    }
+    .nl-toolbar-btn:hover { border-color: var(--sky); color: var(--sky); }
+    .nl-toolbar-sep { color: var(--rule); }
+    .nl-storage-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); }
+
+    /* ─── Print styles ─── */
+    @media print {
+      @page { size: landscape; margin: 0.45in 0.5in; }
+      .site-header, .nl-hero, .nl-conventions, .nl-toolbar, .nl-add-wrap,
+      .nl-banners, .nl-edu, footer, .nl-gloss-modal, .nl-fuel-section { display: none !important; }
+      .nl-btn { display: none !important; }
+      .nl-work-row { display: none !important; }
+      .nl-print-header { display: block !important; margin-bottom: 0.3in; }
+      .nl-profile-section { padding: 0; }
+      .nl-profile-grid { border: none; padding: 0; display: block; }
+      .nl-table-section { padding: 0; }
+      .nl-table-wrap { border: none; overflow: visible; }
+      .nl-table { font-size: 7.5pt; min-width: 0; }
+      .nl-fix-cell { position: static; }
+      .nl-inp { font-size: 7.5pt; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    .nl-print-header { display: none; font-family: var(--font-mono); font-size: 0.82rem; }
+    .nl-print-header table { width: 100%; border-collapse: collapse; margin-bottom: 0.15in; }
+    .nl-print-header td { padding: 0.1rem 0.5rem; border: 0.5pt solid #999; }
+    .nl-print-header td:first-child { font-weight: 600; color: #333; width: 130px; }
+  </style>
 </head>
 <body>
 
+  <!-- ══ Header ══ -->
   <header class="site-header">
     <div class="container">
       <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
@@ -15,7 +299,7 @@
         <ul class="nav-links">
           <li><a href="learn.html">Learn</a></li>
           <li><a href="decoder.html">Decoder</a></li>
-          <li><a href="navlog.html">Nav Log</a></li>
+          <li><a href="navlog.html" aria-current="page">Nav Log</a></li>
           <li><a href="acs.html">ACS</a></li>
           <li class="nav-dropdown">
             <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
@@ -29,23 +313,1041 @@
     </div>
   </header>
 
-  <section class="hero">
+  <!-- ══ Hero ══ -->
+  <section class="nl-hero">
     <div class="container">
-      <p class="hero-eyebrow">Section 03 / Nav Log</p>
-      <h1>Cross-country,<br><span class="accent">walked</span> through.</h1>
-      <p class="lede">
-        A guided VFR/IFR nav log builder. Enter your route, pick an altitude — the tool pulls winds aloft, computes WCA, ground speed, ETE, and fuel burn per leg. Built for the early cross-country planning phase, where students drown in trig and tables.
-      </p>
-      <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--sage); text-transform: uppercase; letter-spacing: 0.15em;">Status: scaffolded · Build target: Phase 4</p>
-      <p><a href="../index.html">← Back to home</a></p>
+      <p class="hero-eyebrow">Tool · Cross-country planning</p>
+      <h1>Nav Log <span class="accent">Calculator</span></h1>
+      <p class="lede">Enter your route, winds aloft, and TAS. The tool computes wind correction angle, true/magnetic/compass headings, ground speed, ETE, and fuel burn per leg — and shows you the math behind each answer.</p>
     </div>
   </section>
 
+  <div class="container">
+
+    <!-- ══ Sign convention callout ══ -->
+    <div class="nl-conventions">
+      <strong>Sign conventions used throughout this tool:</strong>
+      &nbsp; <code>TC</code> True Course — from chart, degrees true &nbsp;|&nbsp;
+      <code>Var</code> positive = West, negative = East ("West is best, add it") &nbsp;|&nbsp;
+      <code>WCA</code> positive = crab right, negative = crab left &nbsp;|&nbsp;
+      Winds aloft (FB forecasts) are always <strong>true</strong> direction.
+      &nbsp; <a href="#" id="nl-gloss-open" style="border-bottom:1px solid currentColor;">Full glossary</a>
+    </div>
+
+    <!-- ══ Flight Profile ══ -->
+    <section class="nl-profile-section">
+      <div class="nl-profile-grid">
+        <div class="nl-profile-title">Flight Profile</div>
+
+        <div class="nl-pf">
+          <label for="pf-tail">Tail Number</label>
+          <input type="text" id="pf-tail" placeholder="N12345" maxlength="8" data-meta="tailNum">
+        </div>
+        <div class="nl-pf">
+          <label for="pf-ac">Aircraft Type</label>
+          <select id="pf-ac" data-meta="acType">
+            <option value="C172S">C172S</option>
+            <option value="C172R">C172R</option>
+            <option value="C172N">C172N</option>
+            <option value="C152">C152</option>
+            <option value="PA-28-161">PA-28-161</option>
+            <option value="PA-28-181">PA-28-181</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="nl-pf">
+          <label for="pf-etd">ETD (UTC) <span style="font-weight:400;text-transform:none;letter-spacing:0">HH:MM</span></label>
+          <input type="text" id="pf-etd" placeholder="14:30" pattern="[0-2][0-9]:[0-5][0-9]" maxlength="5" data-meta="etdUtc">
+        </div>
+        <div class="nl-pf">
+          <label for="pf-fob">Fuel on Board (gal)</label>
+          <input type="number" id="pf-fob" min="0" max="200" step="0.5" placeholder="40" data-meta="fuelOb">
+        </div>
+        <div class="nl-pf">
+          <label>VFR Reserve Required</label>
+          <div class="nl-pf-radio">
+            <label><input type="radio" name="reserve" value="30" data-meta="reserveMin"> 30 min (day)</label>
+            <label><input type="radio" name="reserve" value="45" data-meta="reserveMin"> 45 min (night)</label>
+          </div>
+          <div class="nl-pf-hint">14 CFR §91.151</div>
+        </div>
+        <div class="nl-pf">
+          <label for="pf-tas">Default TAS (kt)</label>
+          <input type="number" id="pf-tas" min="30" max="300" step="1" placeholder="110" data-meta="defaultTas">
+          <div class="nl-pf-hint">Fills new leg rows</div>
+        </div>
+        <div class="nl-pf">
+          <label for="pf-gph">Default GPH (gal/hr)</label>
+          <input type="number" id="pf-gph" min="0.5" max="50" step="0.1" placeholder="8.5" data-meta="defaultGph">
+          <div class="nl-pf-hint">Fills new leg rows</div>
+        </div>
+        <div class="nl-pf">
+          <label for="pf-var">Default Variation (°)</label>
+          <input type="number" id="pf-var" min="-90" max="90" step="0.5" placeholder="6" data-meta="defaultVar">
+          <div class="nl-pf-hint">+W / −E. Fills new rows</div>
+        </div>
+        <div class="nl-pf">
+          <label for="pf-climb">Climb Rate (fpm)</label>
+          <input type="number" id="pf-climb" min="100" max="2000" step="50" placeholder="700" data-meta="climbFpm">
+        </div>
+        <div class="nl-pf">
+          <label for="pf-descent">Descent Rate (fpm)</label>
+          <input type="number" id="pf-descent" min="100" max="2000" step="50" placeholder="500" data-meta="descentFpm">
+        </div>
+        <div class="nl-pf">
+          <label for="pf-cruisealt">Cruise Alt (ft MSL)</label>
+          <input type="number" id="pf-cruisealt" min="0" max="18000" step="500" placeholder="4500" data-meta="cruiseAlt">
+        </div>
+        <div class="nl-pf">
+          <label for="pf-depelev">Departure Elev (ft)</label>
+          <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
+        </div>
+      </div>
+      <div class="nl-climb-note" id="nl-climb-note">
+        Enter climb rate, descent rate, cruise altitude, and departure elevation above to see climb estimates.
+      </div>
+    </section>
+
+    <!-- ══ Banners ══ -->
+    <div class="nl-banners" id="nl-banners"></div>
+
+    <!-- ══ Nav Log Table ══ -->
+    <section class="nl-table-section">
+
+      <div class="nl-toolbar">
+        <button class="nl-toolbar-btn" id="nl-save-json">Export JSON</button>
+        <button class="nl-toolbar-btn" id="nl-load-json">Import JSON</button>
+        <input type="file" id="nl-file-input" accept=".json" style="display:none">
+        <button class="nl-toolbar-btn" onclick="window.print()">Print Nav Log</button>
+        <span class="nl-toolbar-sep">|</span>
+        <button class="nl-toolbar-btn" id="nl-clear-btn">Clear all rows</button>
+        <span class="nl-storage-note" id="nl-save-status">Saves automatically in this browser.</span>
+      </div>
+
+      <div class="nl-table-wrap">
+        <table class="nl-table" id="nl-table">
+          <thead>
+            <tr>
+              <th class="gh nl-fix-cell" rowspan="2">Waypoint</th>
+              <th class="gh" colspan="4">Winds / Airspeed (input)</th>
+              <th class="gh gh-comp" colspan="7">Heading Chain (computed ←→ input)</th>
+              <th class="gh" colspan="2">Route</th>
+              <th class="gh gh-comp" colspan="3">Time (computed)</th>
+              <th class="gh" colspan="1">Burn</th>
+              <th class="gh gh-comp" colspan="2">Fuel (computed)</th>
+              <th class="gh" style="background:transparent;border:none;"></th>
+            </tr>
+            <tr>
+              <!-- Already took fix col via rowspan -->
+              <th class="ch" title="True Course — from plotter on sectional chart, degrees TRUE">TC °</th>
+              <th class="ch" title="Wind direction, degrees TRUE (FB winds aloft forecasts are always true north)">WD °</th>
+              <th class="ch" title="Wind speed in knots from your winds aloft (FA/FB) forecast">WS kt</th>
+              <th class="ch" title="True Airspeed for this leg from your POH cruise table">TAS kt</th>
+              <th class="ch ch-comp" title="Wind Correction Angle (crab). WCA = asin(WS/TAS × sin(WD−TC)). + = crab right, − = crab left">WCA °</th>
+              <th class="ch ch-comp" title="True Heading = TC + WCA">TH °</th>
+              <th class="ch" title="Magnetic Variation. Positive = West ('West is best'), Negative = East. Read from sectional isogonic lines.">Var °</th>
+              <th class="ch ch-comp" title="Magnetic Heading = TH + Var (+W, −E). Mnemonic: East is least (subtract), West is best (add)">MH °</th>
+              <th class="ch" title="Compass deviation from aircraft compass correction card. Enter positive or negative degrees.">Dev °</th>
+              <th class="ch ch-comp" title="Compass Heading = MH + Dev. This is the number you fly on the magnetic compass.">CH °</th>
+              <th class="ch" title="Altitude planned for this leg in feet MSL. For the hemispheric rule: odd thousands +500 ft eastbound, even thousands +500 ft westbound.">Alt ft</th>
+              <th class="ch" title="Leg distance in nautical miles, measured on your sectional chart with a plotter.">Dist NM</th>
+              <th class="ch ch-comp" title="Ground Speed (kt) — vector formula: √(TAS²+WS²−2·TAS·WS·cos(TC+WCA−WD))">GS kt</th>
+              <th class="ch ch-comp" title="Estimated Time En Route for this leg: (Dist / GS) × 60 minutes">ETE</th>
+              <th class="ch ch-comp" title="Estimated Time of Arrival at this fix: your ETD plus cumulative ETE">ETA UTC</th>
+              <th class="ch" title="Fuel burn rate for this leg in gallons per hour (from POH cruise table)">GPH</th>
+              <th class="ch ch-comp" title="Fuel used this leg = ETE(hrs) × GPH">Leg gal</th>
+              <th class="ch ch-comp" title="Fuel remaining after this leg. Red = below your reserve requirement.">Rem gal</th>
+              <th class="ch" style="background:var(--ink);border:none;"></th>
+            </tr>
+          </thead>
+          <tbody id="nl-tbody"></tbody>
+          <tfoot>
+            <tr class="nl-totals-row" id="nl-totals">
+              <td class="tot-label">TOTALS</td>
+              <td colspan="11"></td>
+              <td id="tot-dist">—</td>
+              <td id="tot-gs">—</td>
+              <td id="tot-ete">—</td>
+              <td id="tot-eta">—</td>
+              <td></td>
+              <td id="tot-fuel">—</td>
+              <td id="tot-rem">—</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="nl-add-wrap">
+        <button class="nl-add-first" id="nl-add-first">+ Add waypoint row</button>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--ink-soft);">Use the + button in each row to insert after it</span>
+      </div>
+
+    </section>
+
+    <!-- ══ Fuel Summary ══ -->
+    <section class="nl-fuel-section">
+      <div class="nl-fuel-grid" id="nl-fuel-grid">
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Total Trip Fuel</div>
+          <div class="nl-fuel-val" id="fs-trip">— <span>gal</span></div>
+          <div class="nl-fuel-sub">All legs combined</div>
+        </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Reserve Required</div>
+          <div class="nl-fuel-val" id="fs-reserve">— <span>gal</span></div>
+          <div class="nl-fuel-sub" id="fs-reserve-sub">—</div>
+        </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Minimum Fuel Needed</div>
+          <div class="nl-fuel-val" id="fs-min">— <span>gal</span></div>
+          <div class="nl-fuel-sub">Trip + reserve</div>
+        </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Fuel Remaining at Dest</div>
+          <div class="nl-fuel-val" id="fs-dest">— <span>gal</span></div>
+          <div class="nl-fuel-sub" id="fs-dest-sub">—</div>
+        </div>
+      </div>
+      <p class="nl-fuel-reserve-note">
+        14 CFR §91.151 requires fuel to fly to the first intended landing plus 30 min (day VFR) or 45 min (night VFR) at normal cruise consumption.
+        These figures assume all fuel on board is usable. Always consult your aircraft's POH for unusable fuel quantity.
+      </p>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- ══ Print-only header ══ -->
+  <div class="nl-print-header" id="nl-print-header">
+    <table>
+      <tr>
+        <td>N-NUMBER / TYPE</td><td id="pr-ac">—</td>
+        <td>ETD (UTC)</td><td id="pr-etd">—</td>
+        <td>FUEL ON BOARD</td><td id="pr-fob">— gal</td>
+      </tr>
+      <tr>
+        <td>TOTAL DISTANCE</td><td id="pr-dist">—</td>
+        <td>TOTAL ETE</td><td id="pr-ete">—</td>
+        <td>TRIP FUEL</td><td id="pr-fuel">—</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ══ Educational Section ══ -->
+  <section class="nl-edu">
+    <div class="container">
+      <p class="hero-eyebrow" style="margin-bottom:0.5rem;">Why the numbers work</p>
+      <h2 style="font-family:var(--font-display);font-size:2rem;letter-spacing:0.02em;margin:0 0 2.5rem;color:var(--ink);">The Math Behind the Log</h2>
+
+      <div class="nl-edu-grid">
+
+        <div class="nl-edu-block">
+          <p class="nl-edu-eyebrow">Heading conversion chain</p>
+          <h3>TVMDC</h3>
+          <p>Every heading starts as a True Course from your chart and gets transformed through four corrections before you read it on the compass. The mnemonic: <strong>"Tall Virgins Make Dull Companions"</strong> (or any phrase you like).</p>
+          <div class="tvmdc">
+            <div class="tvmdc-step">
+              <div class="tvmdc-box">TC</div>
+              <span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-soft);">True Course (from chart)</span>
+            </div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-connector"><span class="tvmdc-op">± WCA</span>&nbsp;&nbsp;Wind Correction Angle (crab)</div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-step">
+              <div class="tvmdc-box">TH</div>
+              <span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-soft);">True Heading</span>
+            </div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-connector"><span class="tvmdc-op">± Var</span>&nbsp;&nbsp;<span style="color:var(--rust);">East is least (−) · West is best (+)</span></div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-step">
+              <div class="tvmdc-box">MH</div>
+              <span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-soft);">Magnetic Heading</span>
+            </div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-connector"><span class="tvmdc-op">± Dev</span>&nbsp;&nbsp;From compass correction card</div>
+            <div class="tvmdc-line"></div>
+            <div class="tvmdc-step">
+              <div class="tvmdc-box">CH</div>
+              <span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-soft);">Compass Heading (fly this)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nl-edu-block">
+          <p class="nl-edu-eyebrow">The core formulas</p>
+          <h3>Wind triangle math</h3>
+          <p style="font-family:var(--font-mono);font-size:0.82rem;line-height:2;color:var(--ink);">
+            <strong>WCA</strong> = asin( WS/TAS × sin(WD − TC) )<br>
+            <strong>TH</strong> &nbsp;= TC + WCA<br>
+            <strong>MH</strong> &nbsp;= TH + Var &nbsp;(+W, −E)<br>
+            <strong>CH</strong> &nbsp;= MH + Dev<br>
+            <strong>GS</strong> &nbsp;= √(TAS² + WS² − 2·TAS·WS·cos(TH − WD))<br>
+            <strong>ETE</strong> = Dist / GS × 60 &nbsp;(minutes)<br>
+            <strong>Fuel</strong> = ETE(hrs) × GPH
+          </p>
+          <p>All angles in degrees; converted to radians internally for trig. Headings normalized to 0–359°. WCA exceeding ±30° usually means your wind speed is unrealistically high relative to TAS.</p>
+        </div>
+
+        <div class="nl-edu-block">
+          <p class="nl-edu-eyebrow">Most common student mistakes</p>
+          <h3>Where things go wrong</h3>
+          <table class="mistakes-table">
+            <tr><td>Sign flip</td><td>Adding east variation instead of subtracting — check "East is least."</td></tr>
+            <tr><td>True wind</td><td>FB winds aloft are TRUE. Don't convert before entering WD here.</td></tr>
+            <tr><td>Course vs heading</td><td>TC is what you measure from the chart. TH is what you fly into the wind.</td></tr>
+            <tr><td>Climb fuel</td><td>Climb burns more fuel — your first leg GPH should reflect the higher climb burn or add a margin. C172S POH includes a +1.1 gal start/taxi/TO allowance in climb tables.</td></tr>
+            <tr><td>Reserve math</td><td>The 30/45 min reserve is computed at cruise GPH, not at endurance speed.</td></tr>
+            <tr><td>GS check</td><td>With a headwind GS &lt; TAS; tailwind GS &gt; TAS. If GS is way off, check WD.</td></tr>
+          </table>
+        </div>
+
+        <div class="nl-edu-block">
+          <p class="nl-edu-eyebrow">Checkride connection</p>
+          <h3>ACS Area I, Task D</h3>
+          <p>The Private Pilot ACS (FAA-S-ACS-6C) expects you to <em>"prepare, present, and explain a cross-country flight plan … including calculations of headings, fuel requirements, and ETE/ETA."</em> EFB or paper — either is accepted under the 2023 ACS update.</p>
+          <p>Examiners want to hear you <strong>reason through</strong> the numbers, not just read them. When they ask about your heading, explain the WCA correction. When they ask about fuel, mention the reserve requirement and climb allowance. This tool's "show work" feature (≡ button in each row) models exactly that chain of reasoning.</p>
+          <p><a href="acs.html">See the full ACS task mapping →</a></p>
+        </div>
+
+      </div>
+
+      <div style="margin-top:2.5rem;padding:1rem 1.2rem;background:var(--buff-dark);border-left:3px solid var(--sun);font-size:0.85rem;color:var(--ink-soft);">
+        <strong style="color:var(--ink);">Sources:</strong> FAA-H-8083-25C Chapter 16 (Navigation), FAA-S-ACS-6C (Private Pilot ACS, April 2024), 14 CFR §91.151 (fuel requirements).
+        Formulas match FAA Chapter 16 sample arithmetic. For formal flight planning always cross-check with official charts and publications.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Footer ══ -->
   <footer>
     <div class="container">
-      <span>CrosswindWX · Built for student pilots</span>
-      <span>Not for navigation · Educational use only</span>
+      <span>CrosswindWX</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>
+
+  <!-- ══ Glossary Modal ══ -->
+  <div class="nl-gloss-modal" id="nl-gloss-modal" role="dialog" aria-modal="true" aria-label="Glossary">
+    <div class="nl-gloss-box">
+      <button class="nl-gloss-close" id="nl-gloss-close">✕ Close</button>
+      <h2 class="nl-gloss-title">Nav Log Glossary</h2>
+      <table class="nl-gloss-table">
+        <tr><td>TC</td><td><strong>True Course</strong> — Direction of travel measured from chart vs. true north. Read with your plotter from the sectional.</td></tr>
+        <tr><td>WD</td><td><strong>Wind Direction</strong> — Direction the wind blows FROM, in degrees true (as reported in FB forecasts).</td></tr>
+        <tr><td>WS</td><td><strong>Wind Speed</strong> — Forecast wind velocity from winds-aloft report (FA/FB), in knots.</td></tr>
+        <tr><td>TAS</td><td><strong>True Airspeed</strong> — Your calibrated airspeed corrected for altitude and temperature. Look up in POH Section 5 cruise table.</td></tr>
+        <tr><td>WCA</td><td><strong>Wind Correction Angle</strong> — The crab angle you apply to stay on course despite crosswind. Positive = crab right, negative = crab left.</td></tr>
+        <tr><td>TH</td><td><strong>True Heading</strong> — TC ± WCA. Your aircraft's nose direction relative to true north.</td></tr>
+        <tr><td>Var</td><td><strong>Magnetic Variation</strong> — Angular difference between true and magnetic north, read from isogonic lines on your sectional. Positive = West (add to TH), Negative = East (subtract from TH).</td></tr>
+        <tr><td>MH</td><td><strong>Magnetic Heading</strong> — TH corrected for variation. This is what your DI (directional gyro) shows when set.</td></tr>
+        <tr><td>Dev</td><td><strong>Compass Deviation</strong> — Local error in your aircraft's magnetic compass, from the compass correction card in the cockpit.</td></tr>
+        <tr><td>CH</td><td><strong>Compass Heading</strong> — The number you actually fly on the wet compass: MH ± Dev.</td></tr>
+        <tr><td>GS</td><td><strong>Ground Speed</strong> — Actual speed over the ground: TAS adjusted for the wind vector.</td></tr>
+        <tr><td>ETE</td><td><strong>Estimated Time En Route</strong> — Time to fly this leg: (Dist ÷ GS) × 60.</td></tr>
+        <tr><td>ETA</td><td><strong>Estimated Time of Arrival</strong> — Your ETD plus the running total of ETE legs, in UTC.</td></tr>
+        <tr><td>GPH</td><td><strong>Gallons Per Hour</strong> — Fuel burn rate at cruise from POH Section 5.</td></tr>
+        <tr><td>ETD</td><td><strong>Estimated Time of Departure</strong> — Your planned takeoff time, in UTC.</td></tr>
+        <tr><td>FB</td><td><strong>Winds Aloft Forecast</strong> — The FAA product (formerly "FD winds") giving wind direction/speed and temperature at standard altitudes.</td></tr>
+      </table>
+    </div>
+  </div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   NAV LOG CALCULATOR — CrosswindWX
+   Math references: FAA-H-8083-25C Chapter 16
+   ══════════════════════════════════════════════════════ */
+
+/* ── MATH MODULE ── */
+
+function wcaDeg(tcDeg, tasCruise, wdDeg, wsKt) {
+  if (!wsKt || !tasCruise) return 0;
+  const relRad = (wdDeg - tcDeg) * Math.PI / 180;
+  const sinW = (wsKt / tasCruise) * Math.sin(relRad);
+  if (Math.abs(sinW) > 1) return NaN;
+  return Math.asin(sinW) * 180 / Math.PI;
+}
+
+function gsDeg(tcDeg, tasCruise, wdDeg, wsKt, wca) {
+  if (!tasCruise) return NaN;
+  if (!wsKt) return tasCruise;
+  const thDegVal = tcDeg + wca;
+  const angleRad = (thDegVal - wdDeg) * Math.PI / 180;
+  const val = tasCruise * tasCruise + wsKt * wsKt - 2 * tasCruise * wsKt * Math.cos(angleRad);
+  return val > 0 ? Math.sqrt(val) : NaN;
+}
+
+function norm360(deg) { return ((deg % 360) + 360) % 360; }
+
+function etdToMin(str) {
+  if (!str || !/^\d{1,2}:\d{2}$/.test(str.trim())) return null;
+  const [h, m] = str.split(':').map(Number);
+  if (h > 23 || m > 59) return null;
+  return h * 60 + m;
+}
+
+function minToUtc(totalMin) {
+  const m = ((totalMin % 1440) + 1440) % 1440;
+  return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') + 'Z';
+}
+
+function fmt3(deg) {
+  if (isNaN(deg) || deg === null) return '—';
+  return String(Math.round(norm360(deg))).padStart(3, '0') + '°';
+}
+
+function fmtWCA(deg) {
+  if (isNaN(deg) || deg === null) return '—';
+  const r = Math.round(deg * 10) / 10;
+  return (r >= 0 ? '+' : '') + r.toFixed(1) + '°';
+}
+
+function fmtETE(min) {
+  if (isNaN(min) || min === null || min < 0) return '—';
+  const h = Math.floor(min / 60);
+  const m = Math.round(min % 60);
+  return h > 0 ? h + ':' + String(m).padStart(2, '0') : m + ' min';
+}
+
+/* ── STATE ── */
+
+let state = {
+  version: 1,
+  meta: {
+    tailNum: '', acType: 'C172S', etdUtc: '',
+    fuelOb: 40, reserveMin: 30,
+    defaultTas: 110, defaultGph: 8.5, defaultVar: 6,
+    climbFpm: 700, descentFpm: 500, cruiseAlt: 4500, depElev: 0
+  },
+  legs: []
+};
+
+const workExpanded = new Set();
+
+function newLeg() {
+  return {
+    id: crypto.randomUUID(),
+    fix: '', alt: '',
+    tc: '', wd: '', ws: '', tas: state.meta.defaultTas,
+    varDeg: state.meta.defaultVar, dev: 0,
+    dist: '', gph: state.meta.defaultGph
+  };
+}
+
+function getLeg(id) { return state.legs.find(l => l.id === id); }
+
+function updateLeg(id, field, rawValue) {
+  const leg = getLeg(id);
+  if (!leg) return;
+  if (['tc','wd','ws','tas','varDeg','dev','dist','gph','alt'].includes(field)) {
+    leg[field] = rawValue === '' ? '' : parseFloat(rawValue);
+  } else {
+    leg[field] = rawValue;
+  }
+}
+
+/* ── COMPUTE ── */
+
+function computeAll() {
+  const etdMin = etdToMin(state.meta.etdUtc);
+  let cumEte = 0;
+  let fuelRem = parseFloat(state.meta.fuelOb) || 0;
+  let totDist = 0, totFuel = 0;
+
+  const results = state.legs.map(leg => {
+    const tc  = parseFloat(leg.tc);
+    const wd  = parseFloat(leg.wd);
+    const ws  = parseFloat(leg.ws) || 0;
+    const tas = parseFloat(leg.tas);
+    const vrg = parseFloat(leg.varDeg) || 0;
+    const dev = parseFloat(leg.dev) || 0;
+    const dst = parseFloat(leg.dist);
+    const gph = parseFloat(leg.gph) || 0;
+
+    const hasTC  = !isNaN(tc);
+    const hasTAS = !isNaN(tas) && tas > 0;
+    const hasWD  = !isNaN(wd);
+    const hasDst = !isNaN(dst) && dst > 0;
+
+    let wca = 0, th, mh, ch, gs = NaN, eteMin = NaN;
+    let legFuel = NaN, etaStr = '—';
+
+    if (hasTC && hasTAS) {
+      wca = (hasWD) ? wcaDeg(tc, tas, wd, ws) : 0;
+      th  = norm360(tc + (isNaN(wca) ? 0 : wca));
+      mh  = norm360(th + vrg);
+      ch  = norm360(mh + dev);
+
+      if (!isNaN(wca) && hasWD) {
+        gs = gsDeg(tc, tas, wd, ws, wca);
+      } else if (!isNaN(wca)) {
+        gs = tas;
+      }
+
+      if (!isNaN(gs) && gs > 0 && hasDst) {
+        eteMin = (dst / gs) * 60;
+      }
+    } else {
+      th = mh = ch = NaN;
+    }
+
+    if (!isNaN(eteMin) && gph > 0) {
+      legFuel = (eteMin / 60) * gph;
+    }
+
+    if (!isNaN(eteMin)) {
+      cumEte += eteMin;
+      if (etdMin !== null) etaStr = minToUtc(etdMin + cumEte);
+    }
+
+    const fuelRemBefore = fuelRem;
+    if (!isNaN(legFuel)) {
+      fuelRem -= legFuel;
+    }
+
+    if (!isNaN(dst)) totDist += dst;
+    if (!isNaN(legFuel)) totFuel += legFuel;
+
+    return { wca: isNaN(wca) ? NaN : wca, th, mh, ch, gs, eteMin, etaStr, legFuel, fuelRem, id: leg.id };
+  });
+
+  const reserveGal = ((parseFloat(state.meta.fuelOb) || 0) > 0)
+    ? ((parseFloat(state.meta.reserveMin) || 30) / 60) * (parseFloat(state.meta.defaultGph) || 8.5)
+    : NaN;
+
+  return {
+    legs: results,
+    totDist, totFuel, totEte: cumEte,
+    fuelRemFinal: fuelRem,
+    reserveGal,
+    etaFinal: (etdMin !== null && cumEte > 0) ? minToUtc(etdMin + cumEte) : '—'
+  };
+}
+
+/* ── TABLE RENDER ── */
+
+function buildRow(leg) {
+  const id = leg.id;
+  const v = (f) => (leg[f] === '' || leg[f] === undefined || leg[f] === null) ? '' : leg[f];
+
+  const inp = (field, min, max, step, placeholder, cls='') =>
+    `<input class="nl-inp${cls ? ' ' + cls : ''}" type="number" min="${min}" max="${max}" step="${step}"
+      placeholder="${placeholder}" data-lid="${id}" data-field="${field}" value="${v(field)}">`;
+
+  const workOpen = workExpanded.has(id) ? '' : 'display:none';
+
+  return `
+<tr class="nl-leg-row" data-lid="${id}">
+  <td class="nl-fix-cell nl-td-inp">
+    <input class="nl-inp nl-inp-fix" type="text" placeholder="Fix / waypoint" maxlength="40"
+      data-lid="${id}" data-field="fix" value="${v('fix')}">
+  </td>
+  <td class="nl-td-inp">${inp('tc', 0, 359, 1, '005')}</td>
+  <td class="nl-td-inp">${inp('wd', 0, 360, 1, '210')}</td>
+  <td class="nl-td-inp">${inp('ws', 0, 250, 1, '15')}</td>
+  <td class="nl-td-inp">${inp('tas', 30, 400, 1, '110')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-wca-${id}">—</td>
+  <td class="nl-td-cmp nl-dash" id="nl-th-${id}">—</td>
+  <td class="nl-td-inp">${inp('varDeg', -90, 90, 0.5, '6')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-mh-${id}">—</td>
+  <td class="nl-td-inp">${inp('dev', -30, 30, 0.5, '0')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-ch-${id}">—</td>
+  <td class="nl-td-inp">${inp('alt', 0, 18000, 500, '4500')}</td>
+  <td class="nl-td-inp">${inp('dist', 0, 9999, 0.1, '18.0')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-gs-${id}">—</td>
+  <td class="nl-td-cmp nl-dash" id="nl-ete-${id}">—</td>
+  <td class="nl-td-cmp nl-dash" id="nl-eta-${id}">—</td>
+  <td class="nl-td-inp">${inp('gph', 0.1, 50, 0.1, '8.5')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-fuel-${id}">—</td>
+  <td class="nl-td-cmp nl-dash" id="nl-rem-${id}">—</td>
+  <td class="nl-td-actions">
+    <button class="nl-btn nl-btn-work${workExpanded.has(id) ? ' active' : ''}" data-lid="${id}" data-action="work" title="Show/hide calculation work">≡</button>
+    <button class="nl-btn" data-lid="${id}" data-action="add" title="Insert row below">+</button>
+    <button class="nl-btn nl-btn-del" data-lid="${id}" data-action="del" title="Delete this row">×</button>
+    <button class="nl-btn" data-lid="${id}" data-action="up" title="Move up">↑</button>
+    <button class="nl-btn" data-lid="${id}" data-action="dn" title="Move down">↓</button>
+  </td>
+</tr>
+<tr class="nl-work-row" id="nl-work-${id}" style="${workOpen}">
+  <td class="nl-work-td" colspan="20">
+    <div class="nl-work-content" id="nl-work-content-${id}"></div>
+  </td>
+</tr>`;
+}
+
+function rebuildTable() {
+  document.getElementById('nl-tbody').innerHTML = state.legs.map(buildRow).join('');
+}
+
+/* ── COMPUTED CELL UPDATE ── */
+
+function updateComputed() {
+  const c = computeAll();
+
+  c.legs.forEach((r, i) => {
+    const id = r.id;
+    const set = (elId, val, cls) => {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.textContent = val;
+      el.className = 'nl-td-cmp' + (cls ? ' ' + cls : (val === '—' ? ' nl-dash' : ''));
+    };
+
+    set(`nl-wca-${id}`, isNaN(r.wca) ? '—' : fmtWCA(r.wca));
+    set(`nl-th-${id}`, isNaN(r.th) ? '—' : fmt3(r.th));
+    set(`nl-mh-${id}`, isNaN(r.mh) ? '—' : fmt3(r.mh));
+    set(`nl-ch-${id}`, isNaN(r.ch) ? '—' : fmt3(r.ch));
+    set(`nl-gs-${id}`, isNaN(r.gs) ? '—' : Math.round(r.gs) + ' kt');
+    set(`nl-ete-${id}`, fmtETE(r.eteMin));
+    set(`nl-eta-${id}`, r.etaStr || '—');
+    set(`nl-fuel-${id}`, isNaN(r.legFuel) ? '—' : r.legFuel.toFixed(1));
+
+    const remOk = !isNaN(r.fuelRem);
+    const remBelowRes = remOk && !isNaN(c.reserveGal) && r.fuelRem < c.reserveGal;
+    const remNeg = remOk && r.fuelRem < 0;
+    set(`nl-rem-${id}`,
+      !remOk ? '—' : r.fuelRem.toFixed(1),
+      remNeg ? 'nl-low-fuel' : remBelowRes ? 'nl-warn' : '');
+
+    if (workExpanded.has(id)) {
+      const leg = getLeg(id);
+      if (leg) renderWorkContent(id, leg, r);
+    }
+  });
+
+  // Totals row
+  document.getElementById('tot-dist').textContent = c.totDist > 0 ? c.totDist.toFixed(1) + ' NM' : '—';
+  document.getElementById('tot-gs').textContent = '';
+  document.getElementById('tot-ete').textContent = c.totEte > 0 ? fmtETE(c.totEte) : '—';
+  document.getElementById('tot-eta').textContent = c.etaFinal;
+  document.getElementById('tot-fuel').textContent = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' gal' : '—';
+  document.getElementById('tot-rem').textContent = !isNaN(c.fuelRemFinal) ? c.fuelRemFinal.toFixed(1) + ' gal' : '—';
+
+  // Fuel summary cards
+  const fob = parseFloat(state.meta.fuelOb) || 0;
+  const res = isNaN(c.reserveGal) ? 0 : c.reserveGal;
+  const min = c.totFuel + res;
+
+  document.getElementById('fs-trip').innerHTML = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
+  document.getElementById('fs-reserve').innerHTML = !isNaN(c.reserveGal) ? c.reserveGal.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
+  document.getElementById('fs-reserve-sub').textContent = state.meta.reserveMin + ' min × ' + state.meta.defaultGph + ' GPH';
+  document.getElementById('fs-min').innerHTML = c.totFuel > 0 ? min.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
+
+  const destEl = document.getElementById('fs-dest');
+  const destSub = document.getElementById('fs-dest-sub');
+  if (!isNaN(c.fuelRemFinal) && c.totFuel > 0) {
+    destEl.innerHTML = c.fuelRemFinal.toFixed(1) + ' <span>gal</span>';
+    const ok = c.fuelRemFinal >= res;
+    destEl.className = 'nl-fuel-val' + (ok ? '' : ' danger');
+    destSub.textContent = ok
+      ? 'Above reserve ✓'
+      : '⚠ Below ' + (isNaN(c.reserveGal) ? 'reserve' : c.reserveGal.toFixed(1) + ' gal reserve');
+  } else {
+    destEl.innerHTML = '— <span>gal</span>';
+    destEl.className = 'nl-fuel-val';
+    destSub.textContent = '';
+  }
+
+  // Climb estimate
+  const climbFpm = parseFloat(state.meta.climbFpm);
+  const cruiseAlt = parseFloat(state.meta.cruiseAlt);
+  const depElev   = parseFloat(state.meta.depElev) || 0;
+  const tas       = parseFloat(state.meta.defaultTas);
+  const gph       = parseFloat(state.meta.defaultGph);
+  const noteEl    = document.getElementById('nl-climb-note');
+  if (!isNaN(climbFpm) && !isNaN(cruiseAlt) && !isNaN(tas) && climbFpm > 0) {
+    const altGain = Math.max(0, cruiseAlt - depElev);
+    const climbMin = altGain / climbFpm;
+    const climbNm  = (climbMin / 60) * tas * 0.85; // ~85% TAS in climb
+    const climbGal = climbMin / 60 * (gph * 1.3) + 1.1; // higher burn + startup allowance
+    noteEl.innerHTML = `<strong>Climb estimate:</strong> ${altGain.toLocaleString()} ft gain at ${climbFpm} fpm → approx <strong>${Math.round(climbMin)} min</strong>, <strong>${climbNm.toFixed(1)} NM</strong>, <strong>${climbGal.toFixed(1)} gal</strong> (includes ≈1.1 gal startup/taxi/TO per C172S POH §5). Add your first leg distance after the top-of-climb point.`;
+  } else {
+    noteEl.textContent = 'Enter climb rate, cruise altitude, and departure elevation above to see climb estimates.';
+  }
+
+  // Banners
+  renderBanners(c);
+
+  // Print header
+  document.getElementById('pr-ac').textContent = (state.meta.tailNum || '—') + ' / ' + (state.meta.acType || '—');
+  document.getElementById('pr-etd').textContent = state.meta.etdUtc || '—';
+  document.getElementById('pr-fob').textContent = fob.toFixed(1) + ' gal';
+  document.getElementById('pr-dist').textContent = c.totDist > 0 ? c.totDist.toFixed(1) + ' NM' : '—';
+  document.getElementById('pr-ete').textContent = c.totEte > 0 ? fmtETE(c.totEte) : '—';
+  document.getElementById('pr-fuel').textContent = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' gal' : '—';
+}
+
+/* ── BANNERS ── */
+
+function renderBanners(c) {
+  const div = document.getElementById('nl-banners');
+  const banners = [];
+
+  // Fuel below reserve at destination
+  if (!isNaN(c.fuelRemFinal) && !isNaN(c.reserveGal) && c.fuelRemFinal < c.reserveGal && c.totFuel > 0) {
+    banners.push(`<div class="nl-banner nl-banner-danger">
+      <span class="nl-banner-label">⚠ FUEL BELOW RESERVE</span>
+      Fuel at destination (${c.fuelRemFinal.toFixed(1)} gal) is below your ${state.meta.reserveMin}-min reserve (${c.reserveGal.toFixed(1)} gal).
+      Add fuel, shorten route, or plan a fuel stop. 14 CFR §91.151.
+    </div>`);
+  }
+
+  // Negative fuel remaining
+  if (!isNaN(c.fuelRemFinal) && c.fuelRemFinal < 0 && c.totFuel > 0) {
+    banners.push(`<div class="nl-banner nl-banner-danger">
+      <span class="nl-banner-label">⚠ FUEL EXHAUSTED EN ROUTE</span>
+      Your fuel on board is insufficient to complete this route. Reduce route length or add a fuel stop.
+    </div>`);
+  }
+
+  // Large WCA warnings
+  c.legs.forEach((r, i) => {
+    const leg = state.legs[i];
+    if (!isNaN(r.wca) && Math.abs(r.wca) > 20) {
+      banners.push(`<div class="nl-banner nl-banner-warn">
+        <span class="nl-banner-label">Check:</span>
+        Leg "${leg.fix || (i+1)}" has WCA = ${fmtWCA(r.wca)}. A correction over 20° is unusually large — verify your wind speed and TAS inputs.
+      </div>`);
+    }
+  });
+
+  div.innerHTML = banners.join('');
+}
+
+/* ── SHOW WORK ── */
+
+function renderWorkContent(id, leg, r) {
+  const el = document.getElementById(`nl-work-content-${id}`);
+  if (!el) return;
+
+  const fixName = leg.fix || ('Leg ' + (state.legs.indexOf(leg) + 1));
+  const tc  = parseFloat(leg.tc);
+  const wd  = parseFloat(leg.wd);
+  const ws  = parseFloat(leg.ws) || 0;
+  const tas = parseFloat(leg.tas);
+  const vrg = parseFloat(leg.varDeg) || 0;
+  const dev = parseFloat(leg.dev) || 0;
+  const dst = parseFloat(leg.dist);
+  const gph = parseFloat(leg.gph) || 0;
+
+  const valid = !isNaN(tc) && !isNaN(tas) && tas > 0;
+
+  if (!valid) {
+    el.innerHTML = `<p class="nl-work-na">Enter TC and TAS for this leg to see the calculation work.</p>`;
+    return;
+  }
+
+  const wcaRad = !isNaN(wd) ? ((wd - tc) * Math.PI / 180) : null;
+  const sinArg = wcaRad !== null ? ((ws / tas) * Math.sin(wcaRad)) : null;
+  const wcaVal = r.wca;
+  const thVal  = !isNaN(r.th) ? norm360(r.th) : null;
+  const mhVal  = !isNaN(r.mh) ? norm360(r.mh) : null;
+  const chVal  = !isNaN(r.ch) ? norm360(r.ch) : null;
+
+  const vrgDesc = vrg > 0 ? `${Math.abs(vrg).toFixed(1)}° West → ADD to TH ("West is best")`
+                : vrg < 0 ? `${Math.abs(vrg).toFixed(1)}° East → SUBTRACT from TH ("East is least")`
+                : '0° (no variation)';
+
+  const wcaCrabDir = !isNaN(wcaVal)
+    ? (wcaVal > 0.05 ? '→ Wind from LEFT side → crab RIGHT (+)'
+    : wcaVal < -0.05 ? '→ Wind from RIGHT side → crab LEFT (−)'
+    : '→ Wind on nose/tail, no crab needed')
+    : '';
+
+  const gsAngle = thVal !== null && !isNaN(wd) ? (thVal - wd) : null;
+
+  let html = `<div class="nl-work-title">Calculation Work — ${fixName}</div><div class="nl-work-grid">`;
+
+  // WCA block
+  html += `<div class="nl-work-block"><div class="nl-work-label">Wind Correction Angle (WCA)</div><div class="nl-work-steps">`;
+  if (wcaRad !== null) {
+    html += `<span class="step">WCA = asin( WS/TAS × sin(WD − TC) )</span>`;
+    html += `<span class="step-indent">= asin( ${ws}/${tas} × sin(${wd}° − ${tc}°) )</span>`;
+    html += `<span class="step-indent">= asin( ${(ws/tas).toFixed(4)} × sin(${(wd-tc).toFixed(1)}°) )</span>`;
+    html += `<span class="step-indent">= asin( ${(ws/tas).toFixed(4)} × ${Math.sin(wcaRad).toFixed(4)} )</span>`;
+    if (sinArg !== null) {
+      html += `<span class="step-indent">= asin( ${sinArg.toFixed(4)} )</span>`;
+      if (!isNaN(wcaVal)) {
+        html += `<span class="step result">= ${wcaVal.toFixed(2)}°</span>`;
+        html += `<span class="step nl-work-mnemonic">${wcaCrabDir}</span>`;
+      } else {
+        html += `<span class="step" style="color:var(--rust)">= undefined (|sin| > 1 — wind too fast for TAS)</span>`;
+      }
+    }
+  } else {
+    html += `<span class="step nl-work-na">No wind entered — WCA = 0° (no correction)</span>`;
+  }
+  html += `</div></div>`;
+
+  // TH block
+  if (thVal !== null) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">True Heading (TH)</div><div class="nl-work-steps">`;
+    html += `<span class="step">TH = TC + WCA</span>`;
+    html += `<span class="step-indent">= ${tc}° + (${isNaN(wcaVal) ? '0' : wcaVal.toFixed(2)}°)</span>`;
+    html += `<span class="step-indent">= ${(tc + (isNaN(wcaVal) ? 0 : wcaVal)).toFixed(2)}° → normalized</span>`;
+    html += `<span class="step result">= ${fmt3(thVal)}</span>`;
+    html += `</div></div>`;
+  }
+
+  // MH block
+  if (mhVal !== null) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">Magnetic Heading (MH)</div><div class="nl-work-steps">`;
+    html += `<span class="step">MH = TH + Variation</span>`;
+    html += `<span class="step-indent">Variation: ${vrgDesc}</span>`;
+    html += `<span class="step-indent">= ${fmt3(thVal)} + (${vrg >= 0 ? '+' : ''}${vrg.toFixed(1)}°)</span>`;
+    html += `<span class="step result">= ${fmt3(mhVal)}</span>`;
+    html += `<span class="step nl-work-mnemonic">"East is least (subtract), West is best (add)"</span>`;
+    html += `</div></div>`;
+  }
+
+  // CH block
+  if (chVal !== null) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">Compass Heading (CH)</div><div class="nl-work-steps">`;
+    html += `<span class="step">CH = MH + Deviation</span>`;
+    html += `<span class="step-indent">= ${fmt3(mhVal)} + (${dev >= 0 ? '+' : ''}${dev.toFixed(1)}°)</span>`;
+    html += `<span class="step result">= ${fmt3(chVal)}</span>`;
+    html += `<span class="step nl-work-mnemonic">Fly this number on your wet compass.</span>`;
+    html += `</div></div>`;
+  }
+
+  // GS block
+  if (!isNaN(r.gs) && gsAngle !== null) {
+    const cosArg = Math.cos(gsAngle * Math.PI / 180);
+    const inner  = tas*tas + ws*ws - 2*tas*ws*cosArg;
+    html += `<div class="nl-work-block"><div class="nl-work-label">Ground Speed (GS) — vector formula</div><div class="nl-work-steps">`;
+    html += `<span class="step">GS = √( TAS² + WS² − 2·TAS·WS·cos(TH − WD) )</span>`;
+    html += `<span class="step-indent">= √( ${tas}² + ${ws}² − 2·${tas}·${ws}·cos(${thVal.toFixed(1)}°−${wd}°) )</span>`;
+    html += `<span class="step-indent">= √( ${tas*tas} + ${ws*ws} − ${(2*tas*ws).toFixed(0)}·cos(${gsAngle.toFixed(1)}°) )</span>`;
+    html += `<span class="step-indent">= √( ${tas*tas} + ${ws*ws} − ${(2*tas*ws).toFixed(0)}·${cosArg.toFixed(4)} )</span>`;
+    html += `<span class="step-indent">= √( ${inner.toFixed(2)} )</span>`;
+    html += `<span class="step result">= ${r.gs.toFixed(1)} kt → ${Math.round(r.gs)} kt</span>`;
+    html += `</div></div>`;
+  } else if (!isNaN(r.gs)) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">Ground Speed (GS)</div><div class="nl-work-steps">`;
+    html += `<span class="step">No wind entered — GS = TAS = ${Math.round(r.gs)} kt</span>`;
+    html += `</div></div>`;
+  }
+
+  // ETE/Fuel block
+  if (!isNaN(r.eteMin) && !isNaN(dst)) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">ETE and Fuel</div><div class="nl-work-steps">`;
+    html += `<span class="step">ETE = (Dist / GS) × 60</span>`;
+    html += `<span class="step-indent">= (${dst} NM / ${r.gs.toFixed(1)} kt) × 60</span>`;
+    html += `<span class="step result">= ${r.eteMin.toFixed(1)} min → ${fmtETE(r.eteMin)}</span>`;
+    if (!isNaN(r.legFuel) && gph > 0) {
+      html += `<span class="step" style="margin-top:0.4rem">Fuel = ETE(hrs) × GPH</span>`;
+      html += `<span class="step-indent">= ${(r.eteMin/60).toFixed(3)} hr × ${gph} gph</span>`;
+      html += `<span class="step result">= ${r.legFuel.toFixed(2)} gal</span>`;
+    }
+    html += `</div></div>`;
+  }
+
+  html += `</div>`; // end work-grid
+  el.innerHTML = html;
+}
+
+/* ── MAIN RENDER ── */
+
+function render() {
+  rebuildTable();
+  updateComputed();
+}
+
+/* ── META INPUT SYNC ── */
+
+function syncMetaFromDOM() {
+  document.querySelectorAll('[data-meta]').forEach(el => {
+    const field = el.dataset.meta;
+    if (el.type === 'radio') {
+      if (el.checked) state.meta[field] = parseFloat(el.value);
+    } else if (el.type === 'number') {
+      const v = parseFloat(el.value);
+      if (!isNaN(v)) state.meta[field] = v;
+    } else {
+      state.meta[field] = el.value;
+    }
+  });
+}
+
+function populateMetaDOM() {
+  document.querySelectorAll('[data-meta]').forEach(el => {
+    const field = el.dataset.meta;
+    const val   = state.meta[field];
+    if (el.type === 'radio') {
+      el.checked = String(val) === el.value;
+    } else if (el.tagName === 'SELECT') {
+      el.value = val;
+    } else {
+      el.value = val !== undefined ? val : '';
+    }
+  });
+}
+
+/* ── EVENTS ── */
+
+document.querySelectorAll('[data-meta]').forEach(el => {
+  el.addEventListener('input', () => {
+    syncMetaFromDOM();
+    updateComputed();
+    save();
+  });
+});
+
+const tbody = document.getElementById('nl-tbody');
+
+tbody.addEventListener('input', e => {
+  const inp = e.target;
+  const lid = inp.dataset.lid;
+  const field = inp.dataset.field;
+  if (!lid || !field) return;
+  updateLeg(lid, field, inp.value);
+  updateComputed();
+  save();
+});
+
+tbody.addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const lid    = btn.dataset.lid;
+  const action = btn.dataset.action;
+  const idx    = state.legs.findIndex(l => l.id === lid);
+
+  if (action === 'work') {
+    if (workExpanded.has(lid)) {
+      workExpanded.delete(lid);
+      btn.classList.remove('active');
+      const wr = document.getElementById(`nl-work-${lid}`);
+      if (wr) wr.style.display = 'none';
+    } else {
+      workExpanded.add(lid);
+      btn.classList.add('active');
+      const wr = document.getElementById(`nl-work-${lid}`);
+      if (wr) wr.style.display = '';
+      const leg = getLeg(lid);
+      const r = computeAll().legs[idx];
+      if (leg && r) renderWorkContent(lid, leg, r);
+    }
+    return;
+  }
+
+  if (action === 'add') {
+    const leg = newLeg();
+    state.legs.splice(idx + 1, 0, leg);
+  } else if (action === 'del') {
+    if (state.legs.length <= 1) return;
+    workExpanded.delete(lid);
+    state.legs.splice(idx, 1);
+  } else if (action === 'up') {
+    if (idx <= 0) return;
+    [state.legs[idx], state.legs[idx-1]] = [state.legs[idx-1], state.legs[idx]];
+  } else if (action === 'dn') {
+    if (idx >= state.legs.length - 1) return;
+    [state.legs[idx], state.legs[idx+1]] = [state.legs[idx+1], state.legs[idx]];
+  }
+
+  render();
+  save();
+});
+
+document.getElementById('nl-add-first').addEventListener('click', () => {
+  state.legs.push(newLeg());
+  render();
+  save();
+});
+
+/* ── GLOSSARY ── */
+
+document.getElementById('nl-gloss-open').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('nl-gloss-modal').classList.add('open');
+});
+document.getElementById('nl-gloss-close').addEventListener('click', () => {
+  document.getElementById('nl-gloss-modal').classList.remove('open');
+});
+document.getElementById('nl-gloss-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+/* ── PERSISTENCE ── */
+
+const STORAGE_KEY = 'crosswindwx.navlog.v1';
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const el = document.getElementById('nl-save-status');
+    el.textContent = 'Saved · ' + new Date().toLocaleTimeString();
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const saved = JSON.parse(raw);
+    if (!saved || !saved.legs) return false;
+    state = saved;
+    return true;
+  } catch(e) { return false; }
+}
+
+/* ── JSON EXPORT / IMPORT ── */
+
+document.getElementById('nl-save-json').addEventListener('click', () => {
+  const json = JSON.stringify(state, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const tail = state.meta.tailNum || 'navlog';
+  a.href = url; a.download = `${tail}-navlog.json`; a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('nl-load-json').addEventListener('click', () => {
+  document.getElementById('nl-file-input').click();
+});
+
+document.getElementById('nl-file-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if (!parsed.legs) throw new Error('Not a valid nav log file');
+      state = parsed;
+      workExpanded.clear();
+      populateMetaDOM();
+      render();
+      save();
+    } catch(err) {
+      alert('Could not load file: ' + err.message);
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('nl-clear-btn').addEventListener('click', () => {
+  if (!confirm('Clear all waypoint rows? Your flight profile settings will be kept.')) return;
+  state.legs = [];
+  workExpanded.clear();
+  render();
+  save();
+});
+
+/* ── INIT ── */
+
+(function init() {
+  const loaded = load();
+  if (!loaded) {
+    // Default: 3 empty rows
+    state.legs = [newLeg(), newLeg(), newLeg()];
+  }
+  populateMetaDOM();
+  render();
+})();
+</script>
 </body>
 </html>
