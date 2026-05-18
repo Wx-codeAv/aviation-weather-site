@@ -312,11 +312,12 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   position: relative;
   transition: background 0.2s;
 }
-.feature:nth-child(2n) { border-right: none; }
-.feature:nth-last-child(-n+2) { border-bottom: none; }
+.feature:nth-child(2n):not([style*="grid-column"]) { border-right: none; }
+.feature:last-child { border-bottom: none; }
+.feature:nth-last-child(2):not([style*="grid-column"]) { border-bottom: none; }
 @media (max-width: 700px) {
   .feature { border-right: none; }
-  .feature:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .feature:not(:last-child) { border-bottom: 1px solid var(--rule); }
   .feature:last-child { border-bottom: none; }
 }
 .feature:hover { background: rgba(255, 250, 240, 0.6); }

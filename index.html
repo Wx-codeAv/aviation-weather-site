@@ -133,14 +133,13 @@
         </article>
       </div>
 
-      <div class="upcoming-strip">
-        <div>
-          <span class="feature-num">05 / Nav Log</span>
-          <h3>Cross-country nav log helper</h3>
-          <p>Enter your route and altitude, pull winds aloft from the forecast, and compute WCA, ground speed, ETE, and fuel per leg. Built for students planning their first cross-country.</p>
-        </div>
-        <span class="feature-status upcoming" style="flex-shrink:0;">In development</span>
-      </div>
+      <article class="feature" style="grid-column: 1 / -1; border-right: none;">
+        <span class="feature-num">05 / Nav Log</span>
+        <h3>Cross-country nav log calculator</h3>
+        <p>Plan your first cross-country start to finish. Enter each waypoint, winds aloft, and altitude — the calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel burn per leg, and shows the step-by-step math for every computed value. Cruise TAS and GPH pull directly from the C172S POH Section 5 tables via 3-axis interpolation across altitude, RPM, and temperature. Climb time, fuel, and distance come from the same tables with the 1.4-gallon start/taxi allowance built in. Export to JSON, print to a clean nav log sheet, and save your work automatically in the browser.</p>
+        <span class="feature-status">Live · Beta</span>
+        <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/navlog.html">Open nav log →</a></p>
+      </article>
     </div>
   </section>
 

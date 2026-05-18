@@ -266,6 +266,50 @@
     .nl-toolbar-sep { color: var(--rule); }
     .nl-storage-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); }
 
+    /* ─── POH Performance panels ─── */
+    .nl-poh-section { padding: 0.5rem 0 1.5rem; }
+    .nl-ac-strip {
+      background: var(--ink); color: var(--buff);
+      padding: 0.55rem 1.1rem; display: flex; align-items: center;
+      gap: 0.7rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .nl-ac-badge {
+      background: var(--rust); color: #fff;
+      font-size: 0.64rem; letter-spacing: 0.12em; font-weight: 700; padding: 0.15rem 0.45rem;
+    }
+    .nl-ac-name { font-weight: 600; font-size: 0.88rem; letter-spacing: 0.02em; }
+    .nl-ac-detail { color: rgba(244,236,214,0.6); }
+    .nl-ac-note { margin-left: auto; color: var(--sun); font-size: 0.72rem; }
+    .nl-poh-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem 1.5rem; }
+    .nl-poh-panel { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
+    .nl-poh-panel-title {
+      font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.03em;
+      color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 0.4rem; margin-bottom: 0.9rem;
+    }
+    .nl-poh-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.7rem 1rem; margin-bottom: 0.8rem; }
+    .nl-poh-callout {
+      font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft);
+      padding: 0.6rem 0.8rem; background: var(--buff-dark); border-left: 3px solid var(--rule); line-height: 1.65;
+    }
+    .nl-poh-callout.ok   { border-left-color: var(--sky); color: var(--ink); }
+    .nl-poh-callout.warn { border-left-color: var(--rust); color: var(--rust); background: rgba(181,61,31,0.05); }
+    .nl-poh-details { margin-top: 0.8rem; border-top: 1px solid var(--rule); padding-top: 0.5rem; }
+    .nl-poh-details summary {
+      font-family: var(--font-mono); font-size: 0.78rem; color: var(--sky);
+      cursor: pointer; user-select: none; padding: 0.15rem 0; list-style: none;
+    }
+    .nl-poh-details summary::-webkit-details-marker { display: none; }
+    .nl-poh-details summary::before { content: '▶  '; font-size: 0.68rem; }
+    .nl-poh-details[open] summary::before { content: '▼  '; }
+    .nl-poh-details-body {
+      font-size: 0.82rem; color: var(--ink-soft); line-height: 1.7; padding: 0.8rem 0.2rem 0;
+    }
+    .nl-poh-details-body ol, .nl-poh-details-body ul { padding-left: 1.4rem; margin: 0.4rem 0; }
+    .nl-poh-details-body li { margin-bottom: 0.25rem; }
+    .nl-poh-details-body code { font-family: var(--font-mono); font-size: 0.8rem; background: var(--buff-dark); padding: 0 3px; }
+    .nl-poh-details-body strong { color: var(--ink); }
+
     /* ─── Print styles ─── */
     @media print {
       @page { size: landscape; margin: 0.45in 0.5in; }
@@ -318,7 +362,7 @@
     <div class="container">
       <p class="hero-eyebrow">Tool · Cross-country planning</p>
       <h1>Nav Log <span class="accent">Calculator</span></h1>
-      <p class="lede">Enter your route, winds aloft, and TAS. The tool computes wind correction angle, true/magnetic/compass headings, ground speed, ETE, and fuel burn per leg — and shows you the math behind each answer.</p>
+      <p class="lede">Enter your route, winds aloft, and altitude. The calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel per leg — with cruise TAS and GPH drawn from C172S POH Section 5 tables and step-by-step math shown for every value.</p>
     </div>
   </section>
 
@@ -405,6 +449,83 @@
       </div>
       <div class="nl-climb-note" id="nl-climb-note">
         Enter climb rate, descent rate, cruise altitude, and departure elevation above to see climb estimates.
+      </div>
+    </section>
+
+    <!-- ══ POH Performance ══ -->
+    <section class="nl-poh-section">
+
+      <div class="nl-ac-strip">
+        <span class="nl-ac-badge">POH DATA</span>
+        <span class="nl-ac-name">Cessna 172S NAV III</span>
+        <span class="nl-ac-detail">· 2550 lb · Section 5 (172SPHBUS-00) · POH speeds reduced 2 kt (no speed fairings)</span>
+        <span class="nl-ac-note">W&amp;B not checked — verify weight ≤ 2550 lb before use</span>
+      </div>
+
+      <div class="nl-poh-grid">
+
+        <!-- Cruise Performance -->
+        <div class="nl-poh-panel">
+          <div class="nl-poh-panel-title">Cruise Performance <span style="font-weight:400;font-size:0.85rem;">— auto-fills TAS &amp; GPH for all legs</span></div>
+          <div class="nl-poh-inputs">
+            <div class="nl-pf">
+              <label for="poh-cruise-pa">Cruise Press. Alt (ft)</label>
+              <input type="number" id="poh-cruise-pa" min="2000" max="6000" step="500" placeholder="4500">
+              <div class="nl-pf-hint">Pre-fills from Cruise Alt above</div>
+            </div>
+            <div class="nl-pf">
+              <label for="poh-cruise-oat">Cruise OAT (°C)</label>
+              <input type="number" id="poh-cruise-oat" min="-40" max="60" step="1" placeholder="16">
+            </div>
+            <div class="nl-pf">
+              <label for="poh-cruise-rpm">Cruise RPM</label>
+              <input type="number" id="poh-cruise-rpm" min="2100" max="2650" step="50" placeholder="2400">
+            </div>
+          </div>
+          <div class="nl-poh-callout" id="nl-cruise-callout">Enter cruise PA, OAT, and RPM above to compute from POH Section 5, Figure 5-8.</div>
+
+          <details class="nl-poh-details">
+            <summary>How this is calculated (3-axis interpolation)</summary>
+            <div class="nl-poh-details-body">
+              <p>The cruise table (Figure 5-8) is 3-axis: <strong>pressure altitude × RPM × temperature deviation from ISA standard</strong>. Each cell has three temperature columns: −20°C from ISA, ISA standard, and +20°C from ISA.</p>
+              <ol>
+                <li>Find the two altitude tables that bracket your cruise PA (e.g., 4000 ft and 6000 ft for PA 4500 ft).</li>
+                <li>Within each table, find the two RPM rows that bracket your RPM.</li>
+                <li>For each (altitude, RPM) cell: <code>temp_dev = OAT − ISA_std(table_alt)</code>. Linearly interpolate across temperature columns to get {BHP%, KTAS, GPH}.</li>
+                <li>Lerp the two RPM results to your RPM. Repeat for both altitudes.</li>
+                <li>Lerp the two altitude results to your target PA.</li>
+              </ol>
+              <p><strong>Worked example:</strong> PA 4500 ft, OAT 16°C, RPM 2400</p>
+              <ul>
+                <li>4000 ft table — ISA std = 7°C → dev = +9°C: KTAS = lerp(9, 0, 20, 109, 107) = <strong>108.1</strong></li>
+                <li>6000 ft table — ISA std = 3°C → dev = +13°C: KTAS = lerp(13, 0, 20, 108, 106) = <strong>106.7</strong></li>
+                <li>Lerp to 4500 ft (t = 0.25): 108.1 + (106.7−108.1) × 0.25 = 107.75 → <strong>108 kt</strong></li>
+              </ul>
+              <p style="font-size:0.78rem;">Note: above 75% BHP use full rich mixture (POH §5-14). The 2 kt speed-fairings deduction is already applied to the result shown above.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- Climb Performance -->
+        <div class="nl-poh-panel">
+          <div class="nl-poh-panel-title">Climb Performance <span style="font-weight:400;font-size:0.85rem;">— reads Dep. Elev &amp; Cruise Alt from profile</span></div>
+          <div class="nl-poh-inputs">
+            <div class="nl-pf">
+              <label for="poh-climb-oat-field">Departure OAT (°C)</label>
+              <input type="number" id="poh-climb-oat-field" min="-40" max="60" step="1" placeholder="20">
+            </div>
+            <div class="nl-pf">
+              <label for="poh-climb-oat-cruise">Cruise Alt OAT (°C)</label>
+              <input type="number" id="poh-climb-oat-cruise" min="-40" max="60" step="1" placeholder="6">
+            </div>
+          </div>
+          <div class="nl-poh-callout" id="nl-climb-callout">Enter departure and cruise OATs above. Reads Dep. Elev and Cruise Alt from the Flight Profile.</div>
+          <div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
+            <button class="nl-toolbar-btn" id="nl-insert-climb-row" disabled>Insert ↑ CLIMB row</button>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);">Adds a row at table top with POH climb distance pre-filled</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -596,7 +717,7 @@
             <tr><td>Sign flip</td><td>Adding east variation instead of subtracting — check "East is least."</td></tr>
             <tr><td>True wind</td><td>FB winds aloft are TRUE. Don't convert before entering WD here.</td></tr>
             <tr><td>Course vs heading</td><td>TC is what you measure from the chart. TH is what you fly into the wind.</td></tr>
-            <tr><td>Climb fuel</td><td>Climb burns more fuel — your first leg GPH should reflect the higher climb burn or add a margin. C172S POH includes a +1.1 gal start/taxi/TO allowance in climb tables.</td></tr>
+            <tr><td>Climb fuel</td><td>Climb burns more fuel — your first leg GPH should reflect the higher climb burn or add a margin. C172S POH §5 includes a 1.4 gal start/taxi/T.O. allowance in the climb tables (Figure 5-7). Also increase time/fuel/distance by 10% per 10°C above standard temperature.</td></tr>
             <tr><td>Reserve math</td><td>The 30/45 min reserve is computed at cruise GPH, not at endurance speed.</td></tr>
             <tr><td>GS check</td><td>With a headwind GS &lt; TAS; tailwind GS &gt; TAS. If GS is way off, check WD.</td></tr>
           </table>
@@ -653,6 +774,8 @@
     </div>
   </div>
 
+<script src="../js/poh-c172s.js"></script>
+<script src="../js/poh-interp.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    NAV LOG CALCULATOR — CrosswindWX
@@ -725,13 +848,15 @@ let state = {
 
 const workExpanded = new Set();
 
-function newLeg() {
+function newLeg(from) {
   return {
     id: crypto.randomUUID(),
-    fix: '', alt: '',
-    tc: '', wd: '', ws: '', tas: state.meta.defaultTas,
-    varDeg: state.meta.defaultVar, dev: 0,
-    dist: '', gph: state.meta.defaultGph
+    fix: '', alt: from ? from.alt : '',
+    tc: '', wd: from ? from.wd : '', ws: from ? from.ws : '',
+    tas: from ? from.tas : state.meta.defaultTas,
+    varDeg: from ? from.varDeg : state.meta.defaultVar,
+    dev: from ? from.dev : 0,
+    dist: '', gph: from ? from.gph : state.meta.defaultGph
   };
 }
 
@@ -918,7 +1043,8 @@ function updateComputed() {
 
   // Totals row
   document.getElementById('tot-dist').textContent = c.totDist > 0 ? c.totDist.toFixed(1) + ' NM' : '—';
-  document.getElementById('tot-gs').textContent = '';
+  const avgGs = c.totEte > 0 && c.totDist > 0 ? (c.totDist / (c.totEte / 60)) : NaN;
+  document.getElementById('tot-gs').textContent = !isNaN(avgGs) ? Math.round(avgGs) + ' kt' : '';
   document.getElementById('tot-ete').textContent = c.totEte > 0 ? fmtETE(c.totEte) : '—';
   document.getElementById('tot-eta').textContent = c.etaFinal;
   document.getElementById('tot-fuel').textContent = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' gal' : '—';
@@ -960,8 +1086,8 @@ function updateComputed() {
     const altGain = Math.max(0, cruiseAlt - depElev);
     const climbMin = altGain / climbFpm;
     const climbNm  = (climbMin / 60) * tas * 0.85; // ~85% TAS in climb
-    const climbGal = climbMin / 60 * (gph * 1.3) + 1.1; // higher burn + startup allowance
-    noteEl.innerHTML = `<strong>Climb estimate:</strong> ${altGain.toLocaleString()} ft gain at ${climbFpm} fpm → approx <strong>${Math.round(climbMin)} min</strong>, <strong>${climbNm.toFixed(1)} NM</strong>, <strong>${climbGal.toFixed(1)} gal</strong> (includes ≈1.1 gal startup/taxi/TO per C172S POH §5). Add your first leg distance after the top-of-climb point.`;
+    const climbGal = climbMin / 60 * (gph * 1.3) + 1.4; // higher burn + startup allowance
+    noteEl.innerHTML = `<strong>Climb estimate:</strong> ${altGain.toLocaleString()} ft gain at ${climbFpm} fpm → approx <strong>${Math.round(climbMin)} min</strong>, <strong>${climbNm.toFixed(1)} NM</strong> (zero wind), <strong>${climbGal.toFixed(1)} gal</strong> (includes 1.4 gal start/taxi/T.O. per C172S POH §5). Use the POH Climb panel below for table-accurate values.`;
   } else {
     noteEl.textContent = 'Enter climb rate, cruise altitude, and departure elevation above to see climb estimates.';
   }
@@ -976,6 +1102,28 @@ function updateComputed() {
   document.getElementById('pr-dist').textContent = c.totDist > 0 ? c.totDist.toFixed(1) + ' NM' : '—';
   document.getElementById('pr-ete').textContent = c.totEte > 0 ? fmtETE(c.totEte) : '—';
   document.getElementById('pr-fuel').textContent = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' gal' : '—';
+}
+
+/* ── HEMISPHERIC ALTITUDE RULE CHECK (14 CFR §91.159) ── */
+
+function hemisphericRuleMsg(alt_ft, mh_deg) {
+  if (!alt_ft || isNaN(alt_ft) || alt_ft < 3000) return null;
+  const thou = Math.floor(alt_ft / 1000);
+  const rem  = Math.round(alt_ft % 1000);
+  const mh   = ((mh_deg % 360) + 360) % 360;
+  const eastbound = mh < 180;
+
+  if (rem !== 500) {
+    return (eastbound ? 'Eastbound (MH 0–179°): odd' : 'Westbound (MH 180–359°): even') +
+      ' thousands + 500 ft required above 3,000 ft AGL (14 CFR §91.159)';
+  }
+  if (eastbound && thou % 2 === 0) {
+    return `Eastbound (MH ${Math.round(mh)}°): need odd thousands + 500 ft — e.g. ${thou + 1}500 ft, not ${alt_ft.toLocaleString()} ft (14 CFR §91.159)`;
+  }
+  if (!eastbound && thou % 2 === 1) {
+    return `Westbound (MH ${Math.round(mh)}°): need even thousands + 500 ft — e.g. ${thou + 1}500 ft, not ${alt_ft.toLocaleString()} ft (14 CFR §91.159)`;
+  }
+  return null;
 }
 
 /* ── BANNERS ── */
@@ -1009,6 +1157,20 @@ function renderBanners(c) {
         <span class="nl-banner-label">Check:</span>
         Leg "${leg.fix || (i+1)}" has WCA = ${fmtWCA(r.wca)}. A correction over 20° is unusually large — verify your wind speed and TAS inputs.
       </div>`);
+    }
+  });
+
+  // Hemispheric altitude rule (14 CFR §91.159)
+  c.legs.forEach((r, i) => {
+    const leg = state.legs[i];
+    if (!isNaN(r.mh) && leg.alt !== '' && leg.alt !== undefined) {
+      const msg = hemisphericRuleMsg(parseFloat(leg.alt), r.mh);
+      if (msg) {
+        banners.push(`<div class="nl-banner nl-banner-warn">
+          <span class="nl-banner-label">Altitude:</span>
+          Leg "${leg.fix || (i+1)}" — ${msg}
+        </div>`);
+      }
     }
   });
 
@@ -1194,6 +1356,12 @@ document.querySelectorAll('[data-meta]').forEach(el => {
   });
 });
 
+document.getElementById('pf-etd').addEventListener('input', function() {
+  const val = this.value.trim();
+  const valid = !val || /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(val);
+  this.classList.toggle('nl-inp-invalid', !!val && !valid);
+});
+
 const tbody = document.getElementById('nl-tbody');
 
 tbody.addEventListener('input', e => {
@@ -1232,10 +1400,15 @@ tbody.addEventListener('click', e => {
   }
 
   if (action === 'add') {
-    const leg = newLeg();
+    const leg = newLeg(state.legs[idx]);
     state.legs.splice(idx + 1, 0, leg);
   } else if (action === 'del') {
-    if (state.legs.length <= 1) return;
+    if (state.legs.length <= 1) {
+      const statusEl = document.getElementById('nl-save-status');
+      statusEl.textContent = 'Cannot delete the last row.';
+      setTimeout(() => { statusEl.textContent = 'Saves automatically in this browser.'; }, 2000);
+      return;
+    }
     workExpanded.delete(lid);
     state.legs.splice(idx, 1);
   } else if (action === 'up') {
@@ -1251,7 +1424,8 @@ tbody.addEventListener('click', e => {
 });
 
 document.getElementById('nl-add-first').addEventListener('click', () => {
-  state.legs.push(newLeg());
+  const last = state.legs.length > 0 ? state.legs[state.legs.length - 1] : null;
+  state.legs.push(newLeg(last));
   render();
   save();
 });
@@ -1347,7 +1521,162 @@ document.getElementById('nl-clear-btn').addEventListener('click', () => {
   }
   populateMetaDOM();
   render();
+  pohInit();
 })();
+
+/* ══════════════════════════════════════════════════════
+   POH PERFORMANCE INTEGRATION
+   ══════════════════════════════════════════════════════ */
+
+function pohInit() {
+  if (typeof pohInterp === 'undefined' || typeof C172S_POH === 'undefined') return;
+
+  // Pre-fill cruise PA from the flight profile's cruise alt
+  const profCruiseEl = document.getElementById('pf-cruisealt');
+  const cruisePaEl   = document.getElementById('poh-cruise-pa');
+  if (profCruiseEl && cruisePaEl && profCruiseEl.value && !cruisePaEl.value) {
+    cruisePaEl.value = profCruiseEl.value;
+  }
+
+  // Keep cruise PA in sync when profile cruise alt changes
+  profCruiseEl && profCruiseEl.addEventListener('input', () => {
+    if (cruisePaEl && profCruiseEl.value) cruisePaEl.value = profCruiseEl.value;
+    pohUpdateCruise();
+    pohUpdateClimb();
+  });
+  document.getElementById('pf-depelev') && document.getElementById('pf-depelev').addEventListener('input', pohUpdateClimb);
+
+  ['poh-cruise-pa', 'poh-cruise-oat', 'poh-cruise-rpm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', pohUpdateCruise);
+  });
+  ['poh-climb-oat-field', 'poh-climb-oat-cruise'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', pohUpdateClimb);
+  });
+
+  document.getElementById('nl-insert-climb-row').addEventListener('click', pohInsertClimbRow);
+
+  // Run initial computation in case values were pre-filled
+  pohUpdateCruise();
+  pohUpdateClimb();
+}
+
+function pohUpdateCruise() {
+  const pa  = parseFloat(document.getElementById('poh-cruise-pa').value);
+  const oat = parseFloat(document.getElementById('poh-cruise-oat').value);
+  const rpm = parseFloat(document.getElementById('poh-cruise-rpm').value);
+  const callout = document.getElementById('nl-cruise-callout');
+
+  if (isNaN(pa) || isNaN(oat) || isNaN(rpm)) {
+    callout.className = 'nl-poh-callout';
+    callout.textContent = 'Enter cruise PA, OAT, and RPM above to compute from POH Section 5, Figure 5-8.';
+    return;
+  }
+
+  const result = pohInterp.cruisePerf(C172S_POH, pa, oat, rpm);
+
+  if (!result) {
+    callout.className = 'nl-poh-callout warn';
+    callout.textContent = '⚠ Outside POH data range — do not use extrapolated values for flight planning. Table covers PA 2000–6000 ft (current data); check that RPM falls within the available range for that altitude.';
+    return;
+  }
+
+  const stdT  = pohInterp.stdTempC(pa);
+  const dev   = oat - stdT;
+  const devStr = (dev >= 0 ? '+' : '') + dev.toFixed(0) + '°C from ISA';
+
+  callout.className = 'nl-poh-callout ok';
+  callout.innerHTML =
+    '<strong>PA ' + pa.toLocaleString() + ' ft / OAT ' + oat + '°C (' + devStr + ') / ' + rpm + ' RPM</strong><br>' +
+    'TAS <strong>' + result.ktas + ' kt</strong>   GPH <strong>' + result.gph + '</strong>   BHP <strong>' + result.bhp_pct + '%</strong>' +
+    (result.bhp_pct > 75 ? ' <span style="color:var(--rust);font-size:0.78rem;">⚠ >75% — use full rich</span>' : '') +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Interpolated from POH Section 5, Figure 5-8 · 2 kt speed-fairings deduction applied · All leg rows updated.</span>';
+
+  // Auto-fill TAS and GPH into every leg row
+  state.legs.forEach(leg => { leg.tas = result.ktas; leg.gph = result.gph; });
+  state.meta.defaultTas = result.ktas;
+  state.meta.defaultGph = result.gph;
+  // Update profile inputs so they stay consistent
+  const profTas = document.getElementById('pf-tas');
+  const profGph = document.getElementById('pf-gph');
+  if (profTas) profTas.value = result.ktas;
+  if (profGph) profGph.value = result.gph;
+  // Update each existing row's DOM inputs without a full rebuild
+  state.legs.forEach(leg => {
+    const tasEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="tas"]');
+    const gphEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="gph"]');
+    if (tasEl) tasEl.value = result.ktas;
+    if (gphEl) gphEl.value = result.gph;
+  });
+  updateComputed();
+  save();
+}
+
+let _lastClimbSegment = null;
+
+function pohUpdateClimb() {
+  const fieldOat  = parseFloat(document.getElementById('poh-climb-oat-field').value);
+  const cruiseOat = parseFloat(document.getElementById('poh-climb-oat-cruise').value);
+  const fieldElev = parseFloat(document.getElementById('pf-depelev').value)  || 0;
+  const cruiseAlt = parseFloat(document.getElementById('pf-cruisealt').value);
+  const callout   = document.getElementById('nl-climb-callout');
+  const btn       = document.getElementById('nl-insert-climb-row');
+
+  _lastClimbSegment = null;
+  btn.disabled = true;
+
+  if (isNaN(fieldOat) || isNaN(cruiseOat)) {
+    callout.className = 'nl-poh-callout';
+    callout.textContent = 'Enter departure and cruise OATs above. Reads Dep. Elev and Cruise Alt from the Flight Profile.';
+    return;
+  }
+  if (isNaN(cruiseAlt)) {
+    callout.className = 'nl-poh-callout';
+    callout.textContent = 'Set Cruise Alt (ft MSL) in the Flight Profile to enable climb calculation.';
+    return;
+  }
+
+  const result = pohInterp.climbSegment(C172S_POH, fieldElev, cruiseAlt, fieldOat, cruiseOat);
+
+  if (!result) {
+    callout.className = 'nl-poh-callout warn';
+    callout.textContent = '⚠ Outside POH data range — field elevation or cruise altitude falls outside the climb table (0–12,000 ft PA). Do not extrapolate.';
+    return;
+  }
+
+  _lastClimbSegment = { result, fieldElev, cruiseAlt };
+  btn.disabled = false;
+
+  const altGain = Math.max(0, cruiseAlt - fieldElev);
+  callout.className = 'nl-poh-callout ok';
+  callout.innerHTML =
+    '<strong>' + fieldElev.toLocaleString() + ' ft → ' + cruiseAlt.toLocaleString() + ' ft (' + altGain.toLocaleString() + ' ft gain)</strong><br>' +
+    'Time <strong>' + result.time_min + ' min</strong>   Distance <strong>' + result.dist_nm + ' NM</strong>   Fuel <strong>' + result.fuel_gal + ' gal</strong>' +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Fuel includes 1.4 gal start/taxi/T.O. allowance (POH §5, Fig. 5-7). Climb speed ' + result.climb_speed_KIAS + ' KIAS. <strong style="color:var(--ink)">Distance is zero-wind</strong> — add headwind correction for actual conditions. OAT above ISA standard: time/fuel/dist increased 10% per 10°C (already applied).</span>';
+}
+
+function pohInsertClimbRow() {
+  if (!_lastClimbSegment) return;
+  const { result, cruiseAlt } = _lastClimbSegment;
+
+  // Update existing climb row if already present, otherwise prepend
+  const existingIdx = state.legs.findIndex(l => l.fix === '↑ CLIMB');
+  if (existingIdx >= 0) {
+    state.legs[existingIdx].dist = result.dist_nm;
+    state.legs[existingIdx].tas  = result.climb_speed_KIAS;
+    state.legs[existingIdx].alt  = cruiseAlt;
+  } else {
+    const climbLeg = newLeg();
+    climbLeg.fix  = '↑ CLIMB';
+    climbLeg.dist = result.dist_nm;
+    climbLeg.tas  = result.climb_speed_KIAS;
+    climbLeg.alt  = cruiseAlt;
+    state.legs.unshift(climbLeg);
+  }
+  render();
+  save();
+}
 </script>
 </body>
 </html>
