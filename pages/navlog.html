@@ -315,6 +315,11 @@
     .nl-climb-row .nl-td-inp  { background: #ebf0e0; }
     .nl-climb-row .nl-td-cmp  { background: #dde6c8; }
 
+    /* ─── POH Descent row ─── */
+    .nl-descent-row .nl-fix-cell { background: #d8eaf7; border-left: 3px solid var(--sky); }
+    .nl-descent-row .nl-td-inp  { background: #d8eaf7; }
+    .nl-descent-row .nl-td-cmp  { background: #c3d9ec; }
+
     /* ─── Print styles ─── */
     @media print {
       @page { size: landscape; margin: 0.45in 0.5in; }
@@ -451,9 +456,13 @@
           <label for="pf-depelev">Departure Elev (ft)</label>
           <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
         </div>
+        <div class="nl-pf">
+          <label for="pf-destelev">Dest Elev (ft)</label>
+          <input type="number" id="pf-destelev" min="0" max="14000" step="10" placeholder="0" data-meta="destElev">
+        </div>
       </div>
       <div class="nl-climb-note" id="nl-climb-note">
-        Enter climb rate, descent rate, cruise altitude, and departure elevation above to see climb estimates.
+        Enter climb/descent rates, cruise altitude, and departure/destination elevations above to see estimates.
       </div>
     </section>
 
@@ -475,8 +484,8 @@
           <div class="nl-poh-inputs">
             <div class="nl-pf">
               <label for="poh-cruise-pa">Cruise Press. Alt (ft)</label>
-              <input type="number" id="poh-cruise-pa" min="2000" max="6000" step="500" placeholder="4500">
-              <div class="nl-pf-hint">Pre-fills from Cruise Alt above</div>
+              <input type="number" id="poh-cruise-pa" min="500" max="12000" step="500" placeholder="4500">
+              <div class="nl-pf-hint">Pre-fills from Cruise Alt; data covers 2000–6000 ft</div>
             </div>
             <div class="nl-pf">
               <label for="poh-cruise-oat">Cruise OAT (°C)</label>
@@ -529,6 +538,28 @@
             <button class="nl-toolbar-btn" id="nl-insert-climb-row" disabled>Insert ↑ CLIMB row</button>
             <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);">Adds a row at table top with POH climb distance pre-filled</span>
           </div>
+        </div>
+
+        <!-- Descent Estimate -->
+        <div class="nl-poh-panel">
+          <div class="nl-poh-panel-title">Descent Estimate <span style="font-weight:400;font-size:0.85rem;">— reads Cruise Alt, Dest Elev &amp; Descent Rate from profile</span></div>
+          <div class="nl-poh-callout" id="nl-descent-callout">Set Cruise Alt, Dest Elev, and Descent Rate in the Flight Profile to compute.</div>
+          <div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
+            <button class="nl-toolbar-btn" id="nl-insert-descent-row" disabled>Insert ↓ DESCENT row</button>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);">Adds a row at table end with estimated descent distance pre-filled</span>
+          </div>
+          <details class="nl-poh-details">
+            <summary>How this is estimated (simplified — no POH descent table)</summary>
+            <div class="nl-poh-details-body">
+              <p>Unlike climb, the C172S POH does not publish a descent performance table. This estimate uses:</p>
+              <ul>
+                <li><strong>Time</strong> = Altitude loss ÷ Descent Rate (from Flight Profile)</li>
+                <li><strong>Distance</strong> = Time(hrs) × Cruise TAS (from POH cruise panel or default)</li>
+                <li><strong>Fuel</strong> = Time(hrs) × GPH × 0.65 — reduced-power descent burns approximately 65% of cruise fuel flow</li>
+              </ul>
+              <p>For a more precise number, use your planned descent power setting from POH §4 and look up that fuel flow in the cruise table (Fig. 5-8). Always add a margin — real descents vary with ATC, terrain, and traffic.</p>
+            </div>
+          </details>
         </div>
 
       </div>
@@ -846,7 +877,7 @@ let state = {
     tailNum: '', acType: 'C172S', etdUtc: '',
     fuelOb: 40, reserveMin: 30,
     defaultTas: 110, defaultGph: 8.5, defaultVar: 6,
-    climbFpm: 700, descentFpm: 500, cruiseAlt: 4500, depElev: 0
+    climbFpm: 700, descentFpm: 500, cruiseAlt: 4500, depElev: 0, destElev: 0
   },
   legs: []
 };
@@ -963,7 +994,8 @@ function computeAll() {
 
 function buildRow(leg) {
   const id = leg.id;
-  const isClimb = !!leg._pohRow;
+  const isClimb   = leg._pohRow && !leg._descentRow;
+  const isDescent = !!leg._descentRow;
   const v = (f) => (leg[f] === '' || leg[f] === undefined || leg[f] === null) ? '' : leg[f];
 
   const inp = (field, min, max, step, placeholder, cls='') =>
@@ -973,7 +1005,7 @@ function buildRow(leg) {
   const workOpen = workExpanded.has(id) ? '' : 'display:none';
 
   return `
-<tr class="nl-leg-row${isClimb ? ' nl-climb-row' : ''}" data-lid="${id}">
+<tr class="nl-leg-row${isClimb ? ' nl-climb-row' : isDescent ? ' nl-descent-row' : ''}" data-lid="${id}">
   <td class="nl-fix-cell nl-td-inp">
     <input class="nl-inp nl-inp-fix" type="text" placeholder="Fix / waypoint" maxlength="40"
       data-lid="${id}" data-field="fix" value="${v('fix')}">
@@ -1085,21 +1117,34 @@ function updateComputed() {
     destSub.textContent = '';
   }
 
-  // Climb estimate
-  const climbFpm = parseFloat(state.meta.climbFpm);
-  const cruiseAlt = parseFloat(state.meta.cruiseAlt);
-  const depElev   = parseFloat(state.meta.depElev) || 0;
-  const tas       = parseFloat(state.meta.defaultTas);
-  const gph       = parseFloat(state.meta.defaultGph);
-  const noteEl    = document.getElementById('nl-climb-note');
+  // Climb + descent estimates
+  const climbFpm   = parseFloat(state.meta.climbFpm);
+  const descentFpm = parseFloat(state.meta.descentFpm);
+  const cruiseAlt  = parseFloat(state.meta.cruiseAlt);
+  const depElev    = parseFloat(state.meta.depElev)  || 0;
+  const destElev   = parseFloat(state.meta.destElev) || 0;
+  const tas        = parseFloat(state.meta.defaultTas);
+  const gph        = parseFloat(state.meta.defaultGph);
+  const noteEl     = document.getElementById('nl-climb-note');
+  const parts      = [];
   if (!isNaN(climbFpm) && !isNaN(cruiseAlt) && !isNaN(tas) && climbFpm > 0) {
-    const altGain = Math.max(0, cruiseAlt - depElev);
+    const altGain  = Math.max(0, cruiseAlt - depElev);
     const climbMin = altGain / climbFpm;
-    const climbNm  = (climbMin / 60) * tas * 0.85; // ~85% TAS in climb
-    const climbGal = climbMin / 60 * (gph * 1.3) + 1.4; // higher burn + startup allowance
-    noteEl.innerHTML = `<strong>Climb estimate:</strong> ${altGain.toLocaleString()} ft gain at ${climbFpm} fpm → approx <strong>${Math.round(climbMin)} min</strong>, <strong>${climbNm.toFixed(1)} NM</strong> (zero wind), <strong>${climbGal.toFixed(1)} gal</strong> (includes 1.4 gal start/taxi/T.O. per C172S POH §5). Use the POH Climb panel below for table-accurate values.`;
+    const climbNm  = (climbMin / 60) * tas * 0.85;
+    const climbGal = climbMin / 60 * (gph * 1.3) + 1.4;
+    parts.push(`<strong>Climb estimate:</strong> ${altGain.toLocaleString()} ft gain at ${climbFpm} fpm → approx <strong>${Math.round(climbMin)} min</strong>, <strong>${climbNm.toFixed(1)} NM</strong> (zero wind), <strong>${climbGal.toFixed(1)} gal</strong> (includes 1.4 gal start/taxi/T.O. per C172S POH §5). Use the POH Climb panel below for table-accurate values.`);
+  }
+  if (!isNaN(descentFpm) && !isNaN(cruiseAlt) && !isNaN(tas) && descentFpm > 0) {
+    const altLoss  = Math.max(0, cruiseAlt - destElev);
+    const descMin  = altLoss / descentFpm;
+    const descNm   = (descMin / 60) * tas;
+    const descGal  = (descMin / 60) * gph * 0.65;
+    parts.push(`<strong>Descent estimate:</strong> ${altLoss.toLocaleString()} ft at ${descentFpm} fpm → approx <strong>${Math.round(descMin)} min</strong>, <strong>${descNm.toFixed(1)} NM</strong> (zero wind), <strong>${descGal.toFixed(1)} gal</strong> (65% cruise GPH). Use the Descent Estimate panel below to insert into the table.`);
+  }
+  if (parts.length) {
+    noteEl.innerHTML = parts.join('<br>');
   } else {
-    noteEl.textContent = 'Enter climb rate, cruise altitude, and departure elevation above to see climb estimates.';
+    noteEl.textContent = 'Enter climb/descent rates, cruise altitude, and departure/destination elevations above to see estimates.';
   }
 
   // Banners
@@ -1196,8 +1241,33 @@ function renderWorkContent(id, leg, r) {
 
   const fixName = leg.fix || ('Leg ' + (state.legs.indexOf(leg) + 1));
 
-  // POH rows (taxi or climb): show table data instead of wind-triangle math
+  // POH rows (taxi, climb, or descent): show source data instead of wind-triangle math
   if (leg._pohRow) {
+    if (leg._descentRow) {
+      el.innerHTML = `<div class="nl-work-title">Descent Estimate — ${fixName}</div>
+<div class="nl-work-grid">
+  <div class="nl-work-block">
+    <div class="nl-work-label">Method</div>
+    <div class="nl-work-steps">
+      <span class="step">Simplified estimate — no POH descent table for C172S</span>
+      <span class="step-indent">Time = Altitude loss ÷ Descent Rate (from profile)</span>
+      <span class="step-indent">Distance = Time(hrs) × Cruise TAS</span>
+      <span class="step-indent">Fuel = Time(hrs) × GPH × 0.65 (reduced-power descent)</span>
+    </div>
+  </div>
+  <div class="nl-work-block">
+    <div class="nl-work-label">Values Used</div>
+    <div class="nl-work-steps">
+      <span class="step">TAS: <span class="result">${leg.tas} kt</span></span>
+      <span class="step">Time: <span class="result">${leg._pohTime} min</span></span>
+      <span class="step">Distance (zero-wind): <span class="result">${leg.dist} NM</span></span>
+      <span class="step">Fuel: <span class="result">${leg._pohFuel} gal</span> (≈ 65% cruise GPH)</span>
+      <span class="step-indent">Add margin for ATC vectors, terrain, and traffic</span>
+    </div>
+  </div>
+</div>`;
+      return;
+    }
     if (leg._pohTime !== undefined) {
       el.innerHTML = `<div class="nl-work-title">POH Climb Data — ${fixName}</div>
 <div class="nl-work-grid">
@@ -1603,8 +1673,11 @@ function pohInit() {
     if (cruisePaEl && profCruiseEl.value) cruisePaEl.value = profCruiseEl.value;
     pohUpdateCruise();
     pohUpdateClimb();
+    pohUpdateDescent();
   });
-  document.getElementById('pf-depelev') && document.getElementById('pf-depelev').addEventListener('input', pohUpdateClimb);
+  document.getElementById('pf-depelev')  && document.getElementById('pf-depelev').addEventListener('input', pohUpdateClimb);
+  document.getElementById('pf-destelev') && document.getElementById('pf-destelev').addEventListener('input', pohUpdateDescent);
+  document.getElementById('pf-descent')  && document.getElementById('pf-descent').addEventListener('input', pohUpdateDescent);
 
   ['poh-cruise-pa', 'poh-cruise-oat', 'poh-cruise-rpm'].forEach(id => {
     const el = document.getElementById(id);
@@ -1616,10 +1689,12 @@ function pohInit() {
   });
 
   document.getElementById('nl-insert-climb-row').addEventListener('click', pohInsertClimbRow);
+  document.getElementById('nl-insert-descent-row').addEventListener('click', pohInsertDescentRow);
 
   // Run initial computation in case values were pre-filled
   pohUpdateCruise();
   pohUpdateClimb();
+  pohUpdateDescent();
 }
 
 function pohUpdateCruise() {
@@ -1674,6 +1749,7 @@ function pohUpdateCruise() {
     if (gphEl) gphEl.value = result.gph;
   });
   updateComputed();
+  pohUpdateDescent();
   save();
 }
 
@@ -1724,9 +1800,9 @@ function pohInsertClimbRow() {
   if (!_lastClimbSegment) return;
   const { result, cruiseAlt } = _lastClimbSegment;
 
-  // Find existing POH rows by type: climb has _pohTime, taxi does not
-  const climbIdx = state.legs.findIndex(l => l._pohRow && l._pohTime !== undefined);
-  const taxiIdx  = state.legs.findIndex(l => l._pohRow && l._pohTime === undefined);
+  // Find existing climb/taxi rows (exclude descent rows which also have _pohTime)
+  const climbIdx = state.legs.findIndex(l => l._pohRow && !l._descentRow && l._pohTime !== undefined);
+  const taxiIdx  = state.legs.findIndex(l => l._pohRow && !l._descentRow && l._pohTime === undefined);
 
   // Update or create ↑ CLIMB row
   if (climbIdx >= 0) {
@@ -1758,6 +1834,83 @@ function pohInsertClimbRow() {
     taxiLeg._pohFuel  = result.taxi_fuel_gal;
     taxiLeg._pohRow   = true;
     state.legs.unshift(taxiLeg);
+  }
+
+  render();
+  save();
+}
+
+/* ── DESCENT ESTIMATE ── */
+
+let _lastDescentSegment = null;
+
+function pohUpdateDescent() {
+  const cruiseAlt  = parseFloat(document.getElementById('pf-cruisealt').value);
+  const destElev   = parseFloat(document.getElementById('pf-destelev').value) || 0;
+  const descentFpm = parseFloat(document.getElementById('pf-descent').value);
+  const callout    = document.getElementById('nl-descent-callout');
+  const btn        = document.getElementById('nl-insert-descent-row');
+
+  _lastDescentSegment = null;
+  btn.disabled = true;
+
+  if (isNaN(cruiseAlt)) {
+    callout.className = 'nl-poh-callout';
+    callout.textContent = 'Set Cruise Alt (ft MSL) in the Flight Profile to enable descent calculation.';
+    return;
+  }
+  if (isNaN(descentFpm) || descentFpm <= 0) {
+    callout.className = 'nl-poh-callout';
+    callout.textContent = 'Set Descent Rate (fpm) in the Flight Profile to enable descent calculation.';
+    return;
+  }
+
+  const altLoss = Math.max(0, cruiseAlt - destElev);
+  if (altLoss === 0) {
+    callout.className = 'nl-poh-callout warn';
+    callout.textContent = '⚠ Cruise altitude equals destination elevation — no descent needed.';
+    return;
+  }
+
+  const tas     = parseFloat(state.meta.defaultTas) || 110;
+  const gph     = parseFloat(state.meta.defaultGph) || 8.5;
+  const timeMin = altLoss / descentFpm;
+  const distNm  = Math.round((timeMin / 60) * tas * 10) / 10;
+  const fuelGal = Math.round((timeMin / 60) * gph * 0.65 * 10) / 10;
+
+  _lastDescentSegment = { altLoss, timeMin: Math.round(timeMin), distNm, fuelGal, tas, destElev, cruiseAlt };
+  btn.disabled = false;
+
+  callout.className = 'nl-poh-callout ok';
+  callout.innerHTML =
+    '<strong>' + cruiseAlt.toLocaleString() + ' ft → ' + destElev.toLocaleString() + ' ft (' + altLoss.toLocaleString() + ' ft loss)</strong><br>' +
+    'Time <strong>' + Math.round(timeMin) + ' min</strong>   Distance <strong>' + distNm + ' NM</strong>   Fuel <strong>' + fuelGal + ' gal</strong> (65% cruise GPH)' +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">TAS ' + tas + ' kt. <strong style="color:var(--ink)">Distance is zero-wind</strong> — simplified estimate, no POH descent table. Add a buffer for ATC and terrain.</span>';
+}
+
+function pohInsertDescentRow() {
+  if (!_lastDescentSegment) return;
+  const { timeMin, distNm, fuelGal, tas } = _lastDescentSegment;
+
+  // Find existing descent row and update it; otherwise append to end
+  const descentIdx = state.legs.findIndex(l => l._descentRow);
+
+  if (descentIdx >= 0) {
+    const dl     = state.legs[descentIdx];
+    dl.dist      = distNm;
+    dl.tas       = tas;
+    dl._pohFuel  = fuelGal;
+    dl._pohTime  = timeMin;
+  } else {
+    const descentLeg       = newLeg();
+    descentLeg.fix         = '↓ DESCENT';
+    descentLeg.dist        = distNm;
+    descentLeg.tas         = tas;
+    descentLeg._pohFuel    = fuelGal;
+    descentLeg._pohTime    = timeMin;
+    descentLeg._pohRow     = true;
+    descentLeg._descentRow = true;
+    state.legs.push(descentLeg);
   }
 
   render();
