@@ -310,6 +310,11 @@
     .nl-poh-details-body code { font-family: var(--font-mono); font-size: 0.8rem; background: var(--buff-dark); padding: 0 3px; }
     .nl-poh-details-body strong { color: var(--ink); }
 
+    /* ─── POH Climb row ─── */
+    .nl-climb-row .nl-fix-cell { background: #ebf0e0; border-left: 3px solid var(--sage); }
+    .nl-climb-row .nl-td-inp  { background: #ebf0e0; }
+    .nl-climb-row .nl-td-cmp  { background: #dde6c8; }
+
     /* ─── Print styles ─── */
     @media print {
       @page { size: landscape; margin: 0.45in 0.5in; }
@@ -917,7 +922,11 @@ function computeAll() {
       th = mh = ch = NaN;
     }
 
-    if (!isNaN(eteMin) && gph > 0) {
+    // POH climb row overrides: use table-derived time and fuel directly
+    if (leg._pohTime !== undefined) eteMin = leg._pohTime;
+    if (leg._pohFuel !== undefined) {
+      legFuel = leg._pohFuel;
+    } else if (!isNaN(eteMin) && gph > 0) {
       legFuel = (eteMin / 60) * gph;
     }
 
@@ -954,6 +963,7 @@ function computeAll() {
 
 function buildRow(leg) {
   const id = leg.id;
+  const isClimb = !!leg._pohRow;
   const v = (f) => (leg[f] === '' || leg[f] === undefined || leg[f] === null) ? '' : leg[f];
 
   const inp = (field, min, max, step, placeholder, cls='') =>
@@ -963,7 +973,7 @@ function buildRow(leg) {
   const workOpen = workExpanded.has(id) ? '' : 'display:none';
 
   return `
-<tr class="nl-leg-row" data-lid="${id}">
+<tr class="nl-leg-row${isClimb ? ' nl-climb-row' : ''}" data-lid="${id}">
   <td class="nl-fix-cell nl-td-inp">
     <input class="nl-inp nl-inp-fix" type="text" placeholder="Fix / waypoint" maxlength="40"
       data-lid="${id}" data-field="fix" value="${v('fix')}">
@@ -1160,9 +1170,10 @@ function renderBanners(c) {
     }
   });
 
-  // Hemispheric altitude rule (14 CFR §91.159)
+  // Hemispheric altitude rule (14 CFR §91.159) — skip POH rows (taxi/climb)
   c.legs.forEach((r, i) => {
     const leg = state.legs[i];
+    if (leg._pohRow) return;
     if (!isNaN(r.mh) && leg.alt !== '' && leg.alt !== undefined) {
       const msg = hemisphericRuleMsg(parseFloat(leg.alt), r.mh);
       if (msg) {
@@ -1184,6 +1195,55 @@ function renderWorkContent(id, leg, r) {
   if (!el) return;
 
   const fixName = leg.fix || ('Leg ' + (state.legs.indexOf(leg) + 1));
+
+  // POH rows (taxi or climb): show table data instead of wind-triangle math
+  if (leg._pohRow) {
+    if (leg._pohTime !== undefined) {
+      el.innerHTML = `<div class="nl-work-title">POH Climb Data — ${fixName}</div>
+<div class="nl-work-grid">
+  <div class="nl-work-block">
+    <div class="nl-work-label">Source</div>
+    <div class="nl-work-steps">
+      <span class="step">C172S POH Section 5, Figure 5-7 (Normal Climb)</span>
+      <span class="step-indent">Conditions: Flaps UP, Full Throttle, Standard Temp, Zero Wind</span>
+      <span class="step-indent">Cumulative values interpolated from sea level</span>
+    </div>
+  </div>
+  <div class="nl-work-block">
+    <div class="nl-work-label">Climb-Only Values</div>
+    <div class="nl-work-steps">
+      <span class="step">Climb Speed: <span class="result">${leg.tas} KIAS</span></span>
+      <span class="step">Time en route: <span class="result">${leg._pohTime} min</span></span>
+      <span class="step">Distance (zero-wind): <span class="result">${leg.dist} NM</span></span>
+      <span class="step">Fuel (climb only): <span class="result">${leg._pohFuel} gal</span></span>
+      <span class="step-indent">Start/taxi/T.O. allowance is tracked separately in the START/TAXI row above</span>
+      <span class="step-indent">Temperature correction applied (10% per 10°C above ISA)</span>
+    </div>
+  </div>
+</div>`;
+    } else {
+      el.innerHTML = `<div class="nl-work-title">Start / Taxi / Takeoff Allowance</div>
+<div class="nl-work-grid">
+  <div class="nl-work-block">
+    <div class="nl-work-label">Source</div>
+    <div class="nl-work-steps">
+      <span class="step">C172S POH Section 5, Figure 5-7 (Normal Climb), Note 1</span>
+      <span class="step-indent">Fixed pre-departure allowance — not a flight leg</span>
+    </div>
+  </div>
+  <div class="nl-work-block">
+    <div class="nl-work-label">Allowance</div>
+    <div class="nl-work-steps">
+      <span class="step">Fuel: <span class="result">${leg._pohFuel} gal</span></span>
+      <span class="step-indent">Covers engine start, taxi to runway, and takeoff roll</span>
+      <span class="step-indent">ETE and distance: ground operations, not counted in route time</span>
+    </div>
+  </div>
+</div>`;
+    }
+    return;
+  }
+
   const tc  = parseFloat(leg.tc);
   const wd  = parseFloat(leg.wd);
   const ws  = parseFloat(leg.ws) || 0;
@@ -1593,8 +1653,11 @@ function pohUpdateCruise() {
     (result.bhp_pct > 75 ? ' <span style="color:var(--rust);font-size:0.78rem;">⚠ >75% — use full rich</span>' : '') +
     '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Interpolated from POH Section 5, Figure 5-8 · 2 kt speed-fairings deduction applied · All leg rows updated.</span>';
 
-  // Auto-fill TAS and GPH into every leg row
-  state.legs.forEach(leg => { leg.tas = result.ktas; leg.gph = result.gph; });
+  // Auto-fill TAS and GPH into every leg row (skip POH rows — taxi/climb have their own values)
+  state.legs.forEach(leg => {
+    if (leg._pohRow) return;
+    leg.tas = result.ktas; leg.gph = result.gph;
+  });
   state.meta.defaultTas = result.ktas;
   state.meta.defaultGph = result.gph;
   // Update profile inputs so they stay consistent
@@ -1604,6 +1667,7 @@ function pohUpdateCruise() {
   if (profGph) profGph.value = result.gph;
   // Update each existing row's DOM inputs without a full rebuild
   state.legs.forEach(leg => {
+    if (leg._pohRow) return;
     const tasEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="tas"]');
     const gphEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="gph"]');
     if (tasEl) tasEl.value = result.ktas;
@@ -1652,28 +1716,50 @@ function pohUpdateClimb() {
   callout.className = 'nl-poh-callout ok';
   callout.innerHTML =
     '<strong>' + fieldElev.toLocaleString() + ' ft → ' + cruiseAlt.toLocaleString() + ' ft (' + altGain.toLocaleString() + ' ft gain)</strong><br>' +
-    'Time <strong>' + result.time_min + ' min</strong>   Distance <strong>' + result.dist_nm + ' NM</strong>   Fuel <strong>' + result.fuel_gal + ' gal</strong>' +
-    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Fuel includes 1.4 gal start/taxi/T.O. allowance (POH §5, Fig. 5-7). Climb speed ' + result.climb_speed_KIAS + ' KIAS. <strong style="color:var(--ink)">Distance is zero-wind</strong> — add headwind correction for actual conditions. OAT above ISA standard: time/fuel/dist increased 10% per 10°C (already applied).</span>';
+    'Time <strong>' + result.time_min + ' min</strong>   Distance <strong>' + result.dist_nm + ' NM</strong>   Climb fuel <strong>' + result.climb_fuel_gal + ' gal</strong>   + Start/taxi <strong>' + result.taxi_fuel_gal + ' gal</strong>' +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Inserts two rows: START/TAXI (' + result.taxi_fuel_gal + ' gal, no ETE) and ↑ CLIMB (' + result.climb_fuel_gal + ' gal). Climb speed ' + result.climb_speed_KIAS + ' KIAS. <strong style="color:var(--ink)">Distance is zero-wind</strong> — add headwind correction for actual conditions. OAT above ISA: 10% per 10°C applied.</span>';
 }
 
 function pohInsertClimbRow() {
   if (!_lastClimbSegment) return;
   const { result, cruiseAlt } = _lastClimbSegment;
 
-  // Update existing climb row if already present, otherwise prepend
-  const existingIdx = state.legs.findIndex(l => l.fix === '↑ CLIMB');
-  if (existingIdx >= 0) {
-    state.legs[existingIdx].dist = result.dist_nm;
-    state.legs[existingIdx].tas  = result.climb_speed_KIAS;
-    state.legs[existingIdx].alt  = cruiseAlt;
+  // Find existing POH rows by type: climb has _pohTime, taxi does not
+  const climbIdx = state.legs.findIndex(l => l._pohRow && l._pohTime !== undefined);
+  const taxiIdx  = state.legs.findIndex(l => l._pohRow && l._pohTime === undefined);
+
+  // Update or create ↑ CLIMB row
+  if (climbIdx >= 0) {
+    const cl = state.legs[climbIdx];
+    cl.dist      = result.dist_nm;
+    cl.tas       = result.climb_speed_KIAS;
+    cl.alt       = cruiseAlt;
+    cl._pohFuel  = result.climb_fuel_gal;
+    cl._pohTime  = result.time_min;
+    cl._pohRow   = true;
   } else {
-    const climbLeg = newLeg();
-    climbLeg.fix  = '↑ CLIMB';
-    climbLeg.dist = result.dist_nm;
-    climbLeg.tas  = result.climb_speed_KIAS;
-    climbLeg.alt  = cruiseAlt;
+    const climbLeg      = newLeg();
+    climbLeg.fix        = '↑ CLIMB';
+    climbLeg.dist       = result.dist_nm;
+    climbLeg.tas        = result.climb_speed_KIAS;
+    climbLeg.alt        = cruiseAlt;
+    climbLeg._pohFuel   = result.climb_fuel_gal;
+    climbLeg._pohTime   = result.time_min;
+    climbLeg._pohRow    = true;
     state.legs.unshift(climbLeg);
   }
+
+  // Update or create START/TAXI row (always above climb row)
+  if (taxiIdx >= 0) {
+    state.legs[taxiIdx]._pohFuel = result.taxi_fuel_gal;
+  } else {
+    const taxiLeg     = newLeg();
+    taxiLeg.fix       = 'START/TAXI';
+    taxiLeg._pohFuel  = result.taxi_fuel_gal;
+    taxiLeg._pohRow   = true;
+    state.legs.unshift(taxiLeg);
+  }
+
   render();
   save();
 }

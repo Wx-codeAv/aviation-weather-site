@@ -74,18 +74,21 @@ window.pohInterp = (function () {
        climbSegment(C172S_POH, 0, 4000, 15, 7)
        At SL (15°C std): time=0, fuel=0, dist=0
        At 4000 ft (7°C std): time=6, fuel=1.5, dist=8
-       Delta + taxi allowance: time=6 min, fuel=2.9 gal, dist=8 NM  */
+       Delta: time=6 min, climb_fuel=1.5 gal, taxi_fuel=1.4 gal, dist=8 NM  */
   function climbSegment(poh, field_elev_ft, cruise_alt_ft, oat_at_field_C, oat_at_cruise_C) {
     if (field_elev_ft >= cruise_alt_ft) return null;
     const atField  = climbPerf(poh, field_elev_ft, oat_at_field_C);
     const atCruise = climbPerf(poh, cruise_alt_ft,  oat_at_cruise_C);
     if (!atField || !atCruise) return null;
 
+    const climb_fuel = Math.max(0, atCruise.fuel_gal - atField.fuel_gal);
+    const taxi_fuel  = poh.climb.start_taxi_takeoff_allowance_gal;
+
     return {
       time_min:         Math.max(0, atCruise.time_min - atField.time_min),
-      fuel_gal:         Math.round(
-                          (Math.max(0, atCruise.fuel_gal - atField.fuel_gal)
-                           + poh.climb.start_taxi_takeoff_allowance_gal) * 10) / 10,
+      climb_fuel_gal:   Math.round(climb_fuel * 10) / 10,
+      taxi_fuel_gal:    taxi_fuel,
+      fuel_gal:         Math.round((climb_fuel + taxi_fuel) * 10) / 10,
       dist_nm:          Math.max(0, atCruise.dist_nm - atField.dist_nm),
       climb_speed_KIAS: atField.climb_speed_KIAS,
     };
