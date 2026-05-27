@@ -43,7 +43,7 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 
 - [x] Personal Minimums Builder
 - [x] Crosswind Calculator
-- [ ] Nav Log Helper (with weather integration)
+- [x] Nav Log Helper (with weather integration — live FB winds aloft fetch, FD text parser, vector interpolation, per-leg apply)
 
 ## Stretch goals — long-term, not committed
 
