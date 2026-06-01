@@ -16,9 +16,12 @@
     .nl-conventions {
       background: #fffaf0; border-left: 3px solid var(--sky);
       padding: 0.9rem 1.2rem; margin: 1.5rem 0; font-size: 0.88rem;
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0;
     }
-    .nl-conventions strong { color: var(--ink); }
+    .nl-conventions strong { color: var(--ink); margin-right: 0.6rem; white-space: nowrap; }
     .nl-conventions code { font-family: var(--font-mono); font-size: 0.82rem; background: var(--buff-dark); padding: 0 3px; }
+    .nl-conv-items { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; }
+    .nl-conv-sep { color: var(--rule); }
 
     /* ─── Flight profile panel ─── */
     .nl-profile-section { padding: 2rem 0 0; }
@@ -263,8 +266,10 @@
       color: var(--ink); transition: border-color 0.15s, color 0.15s;
     }
     .nl-toolbar-btn:hover { border-color: var(--sky); color: var(--sky); }
+    .nl-toolbar-btn-danger { border-color: rgba(181,61,31,0.35); color: var(--ink-soft); }
+    .nl-toolbar-btn-danger:hover { border-color: var(--rust) !important; color: var(--rust) !important; }
     .nl-toolbar-sep { color: var(--rule); }
-    .nl-storage-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); }
+    .nl-storage-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); margin-left: auto; }
 
     /* ─── POH Performance panels ─── */
     .nl-poh-section { padding: 0.5rem 0 1.5rem; }
@@ -380,12 +385,18 @@
 
     <!-- ══ Sign convention callout ══ -->
     <div class="nl-conventions">
-      <strong>Sign conventions used throughout this tool:</strong>
-      &nbsp; <code>TC</code> True Course — from chart, degrees true &nbsp;|&nbsp;
-      <code>Var</code> positive = West, negative = East ("West is best, add it") &nbsp;|&nbsp;
-      <code>WCA</code> positive = crab right, negative = crab left &nbsp;|&nbsp;
-      Winds aloft (FB forecasts) are always <strong>true</strong> direction.
-      &nbsp; <a href="#" id="nl-gloss-open" style="border-bottom:1px solid currentColor;">Full glossary</a>
+      <strong>Sign conventions:</strong>
+      <span class="nl-conv-items">
+        <span><code>TC</code> True Course — from chart, degrees true</span>
+        <span class="nl-conv-sep">·</span>
+        <span><code>Var</code> + = West (add), − = East (subtract)</span>
+        <span class="nl-conv-sep">·</span>
+        <span><code>WCA</code> + = crab right, − = crab left</span>
+        <span class="nl-conv-sep">·</span>
+        <span>FB winds are always <strong>true</strong> direction</span>
+        <span class="nl-conv-sep">·</span>
+        <a href="#" id="nl-gloss-open" style="border-bottom:1px solid currentColor;white-space:nowrap;">Full glossary</a>
+      </span>
     </div>
 
     <!-- ══ Flight Profile ══ -->
@@ -535,7 +546,7 @@
           </div>
           <div class="nl-poh-callout" id="nl-climb-callout">Enter departure and cruise OATs above. Reads Dep. Elev and Cruise Alt from the Flight Profile.</div>
           <div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
-            <button class="nl-toolbar-btn" id="nl-insert-climb-row" disabled>Insert ↑ CLIMB row</button>
+            <button class="nl-toolbar-btn" id="nl-insert-climb-row">Insert ↑ CLIMB row</button>
             <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);">Adds a row at table top with POH climb distance pre-filled</span>
           </div>
         </div>
@@ -545,7 +556,7 @@
           <div class="nl-poh-panel-title">Descent Estimate <span style="font-weight:400;font-size:0.85rem;">— reads Cruise Alt, Dest Elev &amp; Descent Rate from profile</span></div>
           <div class="nl-poh-callout" id="nl-descent-callout">Set Cruise Alt, Dest Elev, and Descent Rate in the Flight Profile to compute.</div>
           <div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
-            <button class="nl-toolbar-btn" id="nl-insert-descent-row" disabled>Insert ↓ DESCENT row</button>
+            <button class="nl-toolbar-btn" id="nl-insert-descent-row">Insert ↓ DESCENT row</button>
             <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);">Adds a row at table end with estimated descent distance pre-filled</span>
           </div>
           <details class="nl-poh-details">
@@ -564,37 +575,60 @@
 
         <!-- ── Winds Aloft ── -->
         <div class="nl-poh-panel">
-          <div class="nl-poh-panel-title">Winds Aloft <span style="font-weight:400;font-size:0.85rem;">— fills WD &amp; WS from live AWC FB forecast</span></div>
-          <div class="nl-poh-inputs" style="grid-template-columns:1fr;">
-            <div class="nl-pf">
-              <label for="wa-fcst">Forecast Look-Ahead</label>
-              <select id="wa-fcst">
-                <option value="06">6-hour (fcst=06)</option>
-                <option value="12" selected>12-hour (fcst=12)</option>
-                <option value="24">24-hour (fcst=24)</option>
-              </select>
-              <div class="nl-pf-hint">Choose the period closest to your planned ETD</div>
-            </div>
+          <div class="nl-poh-panel-title">Winds Aloft <span style="font-weight:400;font-size:0.85rem;">— paste winds data to fill WD &amp; WS per leg</span></div>
+
+          <div class="nl-poh-callout" style="margin-bottom:0.8rem;">
+            <strong>Two formats supported — paste from either source:</strong><br>
+            <span style="font-size:0.85rem;">
+              • <strong>AWC FD text</strong> — go to <strong>aviationweather.gov → Products → Winds/Temps Aloft</strong>, choose your region, click <strong>Text</strong>, and copy the full block (must include the <code>FT  3000  6000…</code> header line).<br>
+              • <strong>ForeFlight</strong> — open the Winds Aloft table for your route, select all and copy the text. The parser reads the waypoint/altitude grid automatically.<br>
+              Waypoint names in the data must match your Fix column entries (e.g. <code>KDAB</code> or <code>DAB</code> — not city names).
+            </span>
           </div>
-          <div class="nl-poh-callout" id="nl-wa-callout">Matches each leg's Fix name to an AWC winds aloft station — strips leading K automatically (KDAB → DAB) — then fills WD &amp; WS at the leg's planned altitude using vector interpolation between the 3,000 / 6,000 / 9,000 / 12,000 ft FB levels.</div>
-          <div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
-            <button class="nl-toolbar-btn" id="nl-wa-fetch">↓ Fetch Winds Aloft</button>
+
+          <textarea id="nl-wa-paste-text" style="width:100%;height:110px;font-family:var(--font-mono);font-size:0.72rem;background:var(--buff);border:1px solid var(--rule);padding:0.5rem;color:var(--ink);resize:vertical;box-sizing:border-box;" placeholder="Paste AWC FD text or ForeFlight winds aloft data here…"></textarea>
+
+          <div style="margin-top:0.6rem;display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;">
+            <button class="nl-toolbar-btn" id="nl-wa-parse-paste">Parse &amp; Preview</button>
             <button class="nl-toolbar-btn" id="nl-wa-apply" disabled>Apply to All Matched Legs</button>
+            <span id="nl-wa-paste-status" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);"></span>
             <span id="nl-wa-status" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);"></span>
           </div>
-          <div id="nl-wa-preview" style="margin-top:0.9rem;display:none;"></div>
-          <details class="nl-poh-details" style="margin-top:0.6rem;">
-            <summary>How this works &amp; limitations</summary>
+
+          <div class="nl-poh-callout" id="nl-wa-callout" style="margin-top:0.7rem;display:none;"></div>
+          <div id="nl-wa-preview" style="margin-top:0.7rem;display:none;"></div>
+
+          <details class="nl-poh-details" style="margin-top:0.8rem;">
+            <summary>Try live fetch (unreliable — CORS blocks most browsers)</summary>
             <div class="nl-poh-details-body">
-              <p>Queries the <strong>FAA/NWS Winds and Temperatures Aloft Forecast (FB)</strong> text product from the Aviation Weather Center public API (<code>aviationweather.gov</code>). No API key required — public data.</p>
+              <p>Attempts to fetch directly from <code>aviationweather.gov</code>. Most browsers block this due to CORS policy on AWC's server — if you get a network error, use the paste method above instead.</p>
+              <div style="margin-bottom:0.6rem;">
+                <div class="nl-pf" style="max-width:200px;">
+                  <label for="wa-fcst">Forecast window</label>
+                  <select id="wa-fcst">
+                    <option value="06">6-hour</option>
+                    <option value="12" selected>12-hour</option>
+                    <option value="24">24-hour</option>
+                  </select>
+                </div>
+              </div>
+              <button class="nl-toolbar-btn" id="nl-wa-fetch">↓ Try live fetch</button>
+            </div>
+          </details>
+
+          <details class="nl-poh-details" style="margin-top:0.4rem;">
+            <summary>How parsing &amp; station matching works</summary>
+            <div class="nl-poh-details-body">
+              <p>Two formats are supported:</p>
               <ul>
-                <li><strong>Station matching:</strong> Each leg's Fix/Waypoint field is compared to AWC's 3-letter station IDs. The leading "K" is stripped: <code>KDAB</code> → <code>DAB</code>. If no station is found, WD/WS for that leg must be entered manually.</li>
-                <li><strong>Altitude interpolation:</strong> The FB low-level product publishes winds at 3,000 / 6,000 / 9,000 / 12,000 ft. For altitudes between levels, direction and speed are interpolated using vector (u/v component) math to handle the 360°/0° directional wrap correctly. Altitudes outside the published range use the nearest available level.</li>
-                <li><strong>True directions:</strong> FB winds aloft are always <strong>true north</strong>. The WD column in this nav log also uses true direction — no conversion needed.</li>
-                <li><strong>High-elevation stations:</strong> Airports with field elevations above ~1,500 ft MSL may have no 3,000 ft wind data. The tool uses the lowest available level for those stations.</li>
+                <li><strong>AWC FD text</strong> — the FAA/NWS Winds and Temperatures Aloft Forecast, issued 4× daily (00Z, 06Z, 12Z, 18Z). Identified by a header line starting with <code>FT  3000  6000…</code>. Stations are 3-letter AWC IDs; the leading K is stripped automatically (<code>KDAB</code> → <code>DAB</code>).</li>
+                <li><strong>ForeFlight route winds</strong> — the winds aloft table ForeFlight generates for your planned route. Identified by wind cells in the format <code>268° 17kts</code>. Waypoint names come directly from your ForeFlight route, so they match your Fix entries naturally (e.g. <code>KDAB</code>).</li>
               </ul>
-              <p><strong>Limitations:</strong> The FB is a forecast, not observed data. Issued 4× daily (00Z, 06Z, 12Z, 18Z) — data may be several hours old. Coverage is continental US only; Alaska, Hawaii, and oceanic routes require separate products. Not a substitute for an official preflight weather briefing.</p>
-              <p><strong>Tip:</strong> This feature requires the page to be served over HTTP/HTTPS. It will not work when opening the file directly in a browser (<code>file://</code>). Use Live Server in VS Code, or open the site from GitHub Pages.</p>
+              <ul>
+                <li><strong>Altitude interpolation:</strong> For altitudes between published levels, direction and speed are interpolated using vector (u/v component) math to correctly handle the 360°/0° wrap. Altitudes outside the published range use the nearest level.</li>
+                <li><strong>True directions:</strong> Winds aloft are always <strong>true north</strong>. The WD column in this nav log also uses true direction — no conversion needed.</li>
+              </ul>
+              <p><strong>Data currency:</strong> Winds aloft are a forecast, not observed data. Not a substitute for an official preflight weather briefing.</p>
               <p style="font-size:0.78rem;color:var(--rust);">Educational use only · Not for flight planning · Always consult official FAA/NWS sources and obtain a full preflight weather briefing.</p>
             </div>
           </details>
@@ -615,7 +649,7 @@
         <input type="file" id="nl-file-input" accept=".json" style="display:none">
         <button class="nl-toolbar-btn" onclick="window.print()">Print Nav Log</button>
         <span class="nl-toolbar-sep">|</span>
-        <button class="nl-toolbar-btn" id="nl-clear-btn">Clear all rows</button>
+        <button class="nl-toolbar-btn nl-toolbar-btn-danger" id="nl-clear-btn">Clear all rows</button>
         <span class="nl-storage-note" id="nl-save-status">Saves automatically in this browser.</span>
       </div>
 
@@ -855,6 +889,11 @@
    NAV LOG CALCULATOR — CrosswindWX
    Math references: FAA-H-8083-25C Chapter 16
    ══════════════════════════════════════════════════════ */
+
+// Module-level state — declared here so functions called during init can reference them
+let _lastClimbSegment   = null;
+let _lastDescentSegment = null;
+let _windAloftData      = null; // { stations, validStr, altLevels, fetchedAt }
 
 /* ── MATH MODULE ── */
 
@@ -1792,18 +1831,14 @@ function pohUpdateCruise() {
   save();
 }
 
-let _lastClimbSegment = null;
-
 function pohUpdateClimb() {
   const fieldOat  = parseFloat(document.getElementById('poh-climb-oat-field').value);
   const cruiseOat = parseFloat(document.getElementById('poh-climb-oat-cruise').value);
   const fieldElev = parseFloat(document.getElementById('pf-depelev').value)  || 0;
   const cruiseAlt = parseFloat(document.getElementById('pf-cruisealt').value);
   const callout   = document.getElementById('nl-climb-callout');
-  const btn       = document.getElementById('nl-insert-climb-row');
 
   _lastClimbSegment = null;
-  btn.disabled = true;
 
   if (isNaN(fieldOat) || isNaN(cruiseOat)) {
     callout.className = 'nl-poh-callout';
@@ -1825,7 +1860,6 @@ function pohUpdateClimb() {
   }
 
   _lastClimbSegment = { result, fieldElev, cruiseAlt };
-  btn.disabled = false;
 
   const altGain = Math.max(0, cruiseAlt - fieldElev);
   callout.className = 'nl-poh-callout ok';
@@ -1836,7 +1870,14 @@ function pohUpdateClimb() {
 }
 
 function pohInsertClimbRow() {
-  if (!_lastClimbSegment) return;
+  if (!_lastClimbSegment) {
+    const callout = document.getElementById('nl-climb-callout');
+    if (callout) {
+      callout.className = 'nl-poh-callout warn';
+      callout.textContent = '⚠ Fill in Departure OAT, Cruise Alt OAT, and Cruise Alt (in the Flight Profile) to compute climb data first.';
+    }
+    return;
+  }
   const { result, cruiseAlt } = _lastClimbSegment;
 
   // Find existing climb/taxi rows (exclude descent rows which also have _pohTime)
@@ -1881,17 +1922,13 @@ function pohInsertClimbRow() {
 
 /* ── DESCENT ESTIMATE ── */
 
-let _lastDescentSegment = null;
-
 function pohUpdateDescent() {
   const cruiseAlt  = parseFloat(document.getElementById('pf-cruisealt').value);
   const destElev   = parseFloat(document.getElementById('pf-destelev').value) || 0;
   const descentFpm = parseFloat(document.getElementById('pf-descent').value);
   const callout    = document.getElementById('nl-descent-callout');
-  const btn        = document.getElementById('nl-insert-descent-row');
 
   _lastDescentSegment = null;
-  btn.disabled = true;
 
   if (isNaN(cruiseAlt)) {
     callout.className = 'nl-poh-callout';
@@ -1918,7 +1955,6 @@ function pohUpdateDescent() {
   const fuelGal = Math.round((timeMin / 60) * gph * 0.65 * 10) / 10;
 
   _lastDescentSegment = { altLoss, timeMin: Math.round(timeMin), distNm, fuelGal, tas, destElev, cruiseAlt };
-  btn.disabled = false;
 
   callout.className = 'nl-poh-callout ok';
   callout.innerHTML =
@@ -1928,7 +1964,14 @@ function pohUpdateDescent() {
 }
 
 function pohInsertDescentRow() {
-  if (!_lastDescentSegment) return;
+  if (!_lastDescentSegment) {
+    const callout = document.getElementById('nl-descent-callout');
+    if (callout) {
+      callout.className = 'nl-poh-callout warn';
+      callout.textContent = '⚠ Set Cruise Alt, Dest Elev, and Descent Rate in the Flight Profile first.';
+    }
+    return;
+  }
   const { timeMin, distNm, fuelGal, tas } = _lastDescentSegment;
 
   // Find existing descent row and update it; otherwise append to end
@@ -1963,17 +2006,161 @@ function pohInsertDescentRow() {
    fixed-format FD text, and fills WD/WS for each matched leg.
    ══════════════════════════════════════════════════════ */
 
-let _windAloftData = null; // { stations, validStr, altLevels, fetchedAt }
-
 function waInit() {
   const fetchBtn = document.getElementById('nl-wa-fetch');
   const applyBtn = document.getElementById('nl-wa-apply');
-  if (!fetchBtn || !applyBtn) return;
-  fetchBtn.addEventListener('click', waFetch);
-  applyBtn.addEventListener('click', waApply);
+  const pasteBtn = document.getElementById('nl-wa-parse-paste');
+  if (fetchBtn) fetchBtn.addEventListener('click', waFetch);
+  if (applyBtn) applyBtn.addEventListener('click', waApply);
+  if (pasteBtn) pasteBtn.addEventListener('click', waParsePaste);
 }
 
-/* ── Fetch ── */
+function waParsePaste() {
+  const ta       = document.getElementById('nl-wa-paste-text');
+  const pStatus  = document.getElementById('nl-wa-paste-status');
+  const applyBtn = document.getElementById('nl-wa-apply');
+  const callout  = document.getElementById('nl-wa-callout');
+  const preview  = document.getElementById('nl-wa-preview');
+
+  try { _waParsePasteInner(ta, pStatus, applyBtn, callout, preview); }
+  catch (err) {
+    console.error('[CrosswindWX] waParsePaste threw:', err);
+    if (pStatus) { pStatus.textContent = '⚠ Parse error — see console'; pStatus.style.color = 'var(--rust)'; }
+    if (callout) {
+      callout.className = 'nl-poh-callout warn';
+      callout.style.display = 'block';
+      callout.innerHTML = `<strong>Internal error:</strong> ${err.message}`;
+    }
+  }
+}
+
+function _waParsePasteInner(ta, pStatus, applyBtn, callout, preview) {
+  const raw = ta ? ta.value : '';
+  if (!raw.trim()) {
+    pStatus.textContent = 'Paste winds data above first.';
+    pStatus.style.color = '';
+    return;
+  }
+
+  // Detect format by fingerprint
+  const hasFDHeader = /^\s*FT\s+\d{3,5}/m.test(raw);
+  // Match "276° 18kts" — accept degree sign (U+00B0), ring above (U+02DA), or no symbol at all
+  const hasFFWinds  = /\d+[°˚°]?\s+\d+\s*kts/i.test(raw);
+
+  let parsed = null;
+  let formatName = '';
+
+  if (hasFDHeader) {
+    const diag = waDiagnoseParse(raw);
+    console.log('[CrosswindWX] AWC FD parse diagnostic:', diag);
+    if (diag.stationCount === 0) {
+      pStatus.textContent = '⚠ FT header found but no station rows';
+      pStatus.style.color = 'var(--rust)';
+      callout.className = 'nl-poh-callout warn';
+      callout.style.display = 'block';
+      callout.innerHTML =
+        `<strong>FT header found (levels: ${diag.altLevels.join(', ')} ft) but no station rows parsed.</strong><br>` +
+        `<span style="font-size:0.75rem;">Station rows must begin with a 3–4 letter code, e.g. <code>DAB  2314 2318+05 …</code>. ` +
+        `Make sure you copied the full text block including the station data rows.</span>`;
+      return;
+    }
+    parsed = waParseFBText(raw);
+    formatName = 'AWC FD text';
+  } else if (hasFFWinds) {
+    parsed = waParseForeflight(raw);         // three-section route-grid format
+    if (!parsed) parsed = waParseInline(raw); // single-line-per-waypoint format
+    formatName = parsed && parsed._inline ? 'inline winds' : 'ForeFlight';
+  } else {
+    pStatus.textContent = '⚠ Unrecognized format';
+    pStatus.style.color = 'var(--rust)';
+    callout.className = 'nl-poh-callout warn';
+    callout.style.display = 'block';
+    callout.innerHTML =
+      `<strong>Could not detect winds format.</strong><br>` +
+      `<span style="font-size:0.75rem;">Two formats are supported:<br>` +
+      `• <strong>AWC FD text</strong> — copy the text product from aviationweather.gov; it must include a line starting with <code>FT  3000  6000…</code><br>` +
+      `• <strong>ForeFlight</strong> — copy the winds aloft table for your route; it contains values like <code>268° 17kts</code><br>` +
+      `First 80 chars of your paste: <code>${raw.slice(0,80).replace(/</g,'&lt;')}</code></span>`;
+    return;
+  }
+
+  if (!parsed || Object.keys(parsed.stations).length === 0) {
+    pStatus.textContent = '⚠ No waypoints parsed';
+    pStatus.style.color = 'var(--rust)';
+    callout.className = 'nl-poh-callout warn';
+    callout.style.display = 'block';
+    callout.innerHTML =
+      `<strong>Format detected (${formatName}) but no usable wind data was found.</strong><br>` +
+      `<span style="font-size:0.75rem;">` +
+      (formatName === 'ForeFlight'
+        ? `Make sure your paste includes the waypoint names and the wind data rows. The parser expects the route-grid layout from ForeFlight's Winds Aloft table.`
+        : `Check that the station data rows are included in your paste.`) +
+      ` First 80 chars: <code>${raw.slice(0,80).replace(/</g,'&lt;')}</code></span>`;
+    return;
+  }
+
+  _windAloftData = parsed;
+  const n = Object.keys(parsed.stations).length;
+  const unitLabel = formatName === 'ForeFlight' ? 'waypoints' : 'stations';
+  pStatus.textContent = `Parsed: ${n} ${unitLabel}`;
+  pStatus.style.color = 'var(--sage)';
+
+  const ids = Object.keys(parsed.stations);
+  const idPreview = ids.slice(0,8).join(', ') + (n > 8 ? '…' : '');
+
+  const altDisplay = parsed._inline
+    ? 'applied at leg altitude'
+    : `${parsed.altLevels.join(', ')} ft`;
+
+  callout.className = 'nl-poh-callout ok';
+  callout.style.display = 'block';
+  callout.innerHTML =
+    `<strong>${n} ${unitLabel} parsed</strong> from ${formatName}` +
+    (parsed.validStr ? ` · <span style="font-family:var(--font-mono);font-size:0.9em;">${parsed.validStr}</span>` : '') +
+    `<br><span style="font-size:0.75rem;color:var(--ink-soft);">` +
+    `Altitude: ${altDisplay} · ` +
+    (formatName === 'AWC FD text'
+      ? `Stations in data: ${idPreview}. Fix names must match AWC station IDs (e.g. <code>DAB</code> or <code>KDAB</code>).`
+      : `Waypoints in data: ${idPreview}. Your Fix names must match these exactly (e.g. <code>KDAB</code> — not a city name).`) +
+    `</span>`;
+
+  waUpdatePreview();
+  applyBtn.disabled = false;
+}
+
+// Diagnostic helper — runs the same logic as waParseFBText but returns details on what it found
+function waDiagnoseParse(text) {
+  const lines = text.replace(/\r/g, '').split('\n');
+  let headerFound = false, altLevels = [], stationCount = 0;
+  let headerIdx = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*FT\s+\d{3,5}/.test(lines[i])) {
+      headerFound = true;
+      headerIdx = i;
+      const altRe = /(\d{4,5})/g; let m;
+      while ((m = altRe.exec(lines[i])) !== null) altLevels.push(parseInt(m[1]));
+      break;
+    }
+  }
+
+  if (headerFound) {
+    for (let i = headerIdx + 1; i < lines.length; i++) {
+      if (lines[i].length >= 4 && /^[A-Z]{3,4}\b/.test(lines[i])) stationCount++;
+    }
+  }
+
+  return { headerFound, altLevels, stationCount };
+}
+
+/* ── Fetch ──
+   TODO (deferred): Add a Cloudflare Worker proxy to enable live fetch without CORS issues.
+   AWC's API (aviationweather.gov/api/data/windtemp) does not send Access-Control-Allow-Origin headers,
+   so browsers block the response even though the server returns 200 OK.
+   The fix is a tiny Worker (~15 lines) that fetches from AWC and forwards the response with CORS headers.
+   Wire it up here: replace `url` below with the Worker URL and remove the `details` wrapper from the
+   live-fetch section in the HTML. Right architecture, wrong time — do this when domain/deployment is set up.
+*/
 
 async function waFetch() {
   const fetchBtn = document.getElementById('nl-wa-fetch');
@@ -1991,29 +2178,37 @@ async function waFetch() {
   preview.style.display = 'none';
 
   // AWC public API — no key required, CORS enabled
-  // level=lo returns 3,000 / 6,000 / 9,000 / 12,000 ft for continental US
-  const url = `https://aviationweather.gov/api/data/windtemp?region=all&level=lo&fcst=${fcst}`;
+  // level=low returns 3000/6000/9000/12000 ft levels for continental US
+  const url = `https://aviationweather.gov/api/data/windtemp?region=all&level=low&fcst=${fcst}`;
 
   try {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status} from aviationweather.gov`);
+    const resp = await fetch(url, { headers: { 'Accept': 'text/plain, */*' } });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText} from aviationweather.gov`);
     const text = await resp.text();
 
-    _windAloftData = waParseFBText(text);
-
-    if (!_windAloftData || Object.keys(_windAloftData.stations).length === 0) {
-      throw new Error('No station data in response — the API format may have changed. Check the browser console for the raw text.');
+    // Detect unexpected JSON/HTML response (means API format changed)
+    const trimmed = text.trimStart();
+    if (trimmed.startsWith('{') || trimmed.startsWith('[') || trimmed.startsWith('<')) {
+      console.error('[CrosswindWX] AWC API returned unexpected format. First 300 chars:', text.slice(0, 300));
+      throw new Error(`AWC API returned unexpected format — first chars: "${text.slice(0, 60)}". Try the manual paste option below.`);
     }
 
     console.log('[CrosswindWX] Winds aloft raw response:\n', text.slice(0, 800));
+    _windAloftData = waParseFBText(text);
+
+    if (!_windAloftData || Object.keys(_windAloftData.stations).length === 0) {
+      console.error('[CrosswindWX] Parse failed. Response preview:\n', text.slice(0, 500));
+      throw new Error('No station data parsed — the API format may have changed. Check the browser console for the raw text, or use the manual paste option below.');
+    }
 
     const n = Object.keys(_windAloftData.stations).length;
     status.textContent = `${n} stations · ${_windAloftData.validStr}`;
     callout.className  = 'nl-poh-callout ok';
+    callout.style.display = 'block';
     callout.innerHTML  =
-      `<strong>Data received</strong> — ${n} stations · ` +
+      `<strong>${n} stations fetched</strong> · ` +
       `<span style="font-family:var(--font-mono);font-size:0.9em;">${_windAloftData.validStr}</span><br>` +
-      `<span style="font-size:0.75rem;color:var(--ink-soft);">Altitude levels: ${_windAloftData.altLevels.join(', ')} ft. Review the match table below, then click Apply.</span>`;
+      `<span style="font-size:0.75rem;color:var(--ink-soft);">Altitude levels: ${_windAloftData.altLevels.join(', ')} ft. Review the match table below, then click Apply to All Matched Legs.</span>`;
 
     waUpdatePreview();
     applyBtn.disabled = false;
@@ -2023,11 +2218,12 @@ async function waFetch() {
     const isFile = location.protocol === 'file:';
     status.textContent = 'Fetch failed';
     callout.className  = 'nl-poh-callout warn';
+    callout.style.display = 'block';
     callout.innerHTML  =
       `⚠ Could not fetch winds aloft: <strong>${err.message}</strong><br>` +
       `<span style="font-size:0.75rem;">${isFile
         ? 'Opening this page as a local file (file://) blocks cross-origin requests. Use Live Server in VS Code, or open from GitHub Pages.'
-        : 'Check your internet connection. The AWC API may be temporarily unavailable. Try again in a moment.'
+        : 'Check your internet connection, or use the manual paste option below. The AWC API may be temporarily unavailable.'
       }</span>`;
     preview.style.display = 'none';
   } finally {
@@ -2053,10 +2249,10 @@ function waParseFBText(text) {
     if (/VALID/i.test(line)) { validStr = line.trim(); break; }
   }
 
-  // Find the header line: "   FT  3000    6000   ..."
+  // Find the header line: "FT  3000    6000   ..." (no leading whitespace in current API format)
   let headerLine = null, headerIdx = -1;
   for (let i = 0; i < lines.length; i++) {
-    if (/^\s+FT\s+\d/.test(lines[i])) {
+    if (/^\s*FT\s+\d{3,5}/.test(lines[i])) {
       headerLine = lines[i];
       headerIdx = i;
       break;
@@ -2127,6 +2323,96 @@ function waParseFDGroup(token) {
   return { dir, spd };
 }
 
+/* ── ForeFlight winds aloft parser ──
+   ForeFlight copies its route winds table as three sections:
+     1. Waypoint names (one per line) — same IDs the user planned with
+     2. Altitudes — MSL integers (/^\d+$/) interleaved with AGL references like "-4000 FT" or "Filed"
+     3. Wind data rows — one per waypoint, cells separated by 2+ spaces, format "268° 17kts 28°C"
+*/
+function waParseForeflight(text) {
+  const lines = text.replace(/\r/g, '').split('\n').map(l => l.trim()).filter(l => l);
+
+  const windRe = /(\d+)[°˚°]?\s+(\d+)\s*kts/i;
+  if (!windRe.test(text)) return null;
+
+  // Walk the lines in three phases: waypoints → altitudes → winds
+  const waypoints = [], altLevels = [], windRows = [];
+  let phase = 'waypoints';
+
+  for (const line of lines) {
+    if (phase === 'waypoints') {
+      if (/^\d+$/.test(line)) {
+        phase = 'altitudes';
+        altLevels.push(parseInt(line, 10));
+      } else {
+        waypoints.push(line);
+      }
+    } else if (phase === 'altitudes') {
+      if (/^\d+$/.test(line)) {
+        altLevels.push(parseInt(line, 10));
+      } else if (windRe.test(line)) {
+        phase = 'winds';
+        windRows.push(line.split(/\t+|\s{2,}/).filter(c => c.trim()));
+      }
+      // Skip AGL reference lines ("-4000 FT", "Filed", etc.)
+    } else {
+      if (windRe.test(line)) windRows.push(line.split(/\t+|\s{2,}/).filter(c => c.trim()));
+    }
+  }
+
+  if (altLevels.length === 0 || windRows.length === 0) return null;
+
+  const stations = {};
+  for (let wi = 0; wi < windRows.length; wi++) {
+    const wpName = waypoints[wi];
+    if (!wpName) continue;
+
+    const cells = windRows[wi];
+    const windMap = {};
+    for (let ci = 0; ci < cells.length && ci < altLevels.length; ci++) {
+      const m = cells[ci].match(windRe);
+      if (m) windMap[altLevels[ci]] = { dir: parseInt(m[1], 10), spd: parseInt(m[2], 10) };
+    }
+
+    if (Object.keys(windMap).length === 0) continue;
+
+    // Store under alphanumeric-only uppercase key
+    const key = wpName.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!key) continue;
+    stations[key] = windMap;
+    // Also store K-stripped variant so KDAB → DAB lookup works either direction
+    if (key.length === 4 && key[0] === 'K') stations[key.slice(1)] = windMap;
+  }
+
+  if (Object.keys(stations).length === 0) return null;
+  return { stations, validStr: '', altLevels, fetchedAt: Date.now() };
+}
+
+/* ── Inline winds parser ──
+   Handles single-line-per-waypoint format: "KDAB 276° 18kts 21°C"
+   No altitude section — each line is one waypoint + one wind reading.
+   Wind is stored under the sentinel altitude 0; waGetWindAtAlt returns it
+   for any requested altitude (because the target will always be ≥ 0).
+*/
+function waParseInline(text) {
+  const lines = text.replace(/\r/g, '').split('\n').map(l => l.trim()).filter(l => l);
+  const lineRe = /^([A-Z][A-Z0-9]{1,5})\s+(\d+)[°˚°]?\s+(\d+)\s*kts/i;
+
+  const stations = {};
+  for (const line of lines) {
+    const m = line.match(lineRe);
+    if (!m) continue;
+    const id  = m[1].toUpperCase();
+    const dir = parseInt(m[2], 10);
+    const spd = parseInt(m[3], 10);
+    stations[id] = { 0: { dir, spd } };
+    if (id.length === 4 && id[0] === 'K') stations[id.slice(1)] = { 0: { dir, spd } };
+  }
+
+  if (Object.keys(stations).length === 0) return null;
+  return { stations, validStr: '', altLevels: [0], _inline: true, fetchedAt: Date.now() };
+}
+
 /* ── Altitude interpolation ── */
 // Uses u/v component math to correctly handle the 360°/0° boundary.
 
@@ -2181,8 +2467,13 @@ function waUpdatePreview() {
   if (!preview || !_windAloftData) return;
 
   const legs = state.legs.filter(l => !l._pohRow);
-  if (legs.length === 0) { preview.style.display = 'none'; return; }
+  if (legs.length === 0) {
+    preview.style.display = 'block';
+    preview.innerHTML = `<p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-soft);padding:0.4rem 0;">Add waypoint rows to the table first, then parse and apply winds.</p>`;
+    return;
+  }
 
+  const availableIds = Object.keys(_windAloftData.stations);
   const rows = legs.map(leg => {
     const fix   = leg.fix || '(unnamed)';
     const stId  = waResolveStation(leg.fix, _windAloftData.stations);
@@ -2192,16 +2483,16 @@ function waUpdatePreview() {
     let wdStr = '—', wsStr = '—', icon = '', iconStyle = '';
 
     if (!stId) {
-      icon = '✗ no match'; iconStyle = 'color:var(--rust)';
+      icon = '✗ no station match'; iconStyle = 'color:var(--rust)';
     } else if (!hasAlt) {
-      icon = '⚠ set Alt ft'; iconStyle = 'color:var(--ink-soft)';
+      icon = '⚠ need Alt ft in leg'; iconStyle = 'color:var(--ink-soft)';
     } else {
       const wind = waGetWindAtAlt(_windAloftData.stations[stId], alt, _windAloftData.altLevels);
       if (wind) {
         wdStr = wind.dir + '°'; wsStr = wind.spd + ' kt';
         icon = '✓ matched'; iconStyle = 'color:var(--sage)';
       } else {
-        icon = '⚠ no data'; iconStyle = 'color:var(--ink-soft)';
+        icon = '⚠ no data at this alt'; iconStyle = 'color:var(--ink-soft)';
       }
     }
 
@@ -2215,6 +2506,14 @@ function waUpdatePreview() {
     </tr>`;
   }).join('');
 
+  const noMatchCount = legs.filter(l => !waResolveStation(l.fix, _windAloftData.stations)).length;
+  const matchNote = noMatchCount > 0
+    ? `<p style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rust);margin:0.5rem 0 0;">` +
+      `${noMatchCount} leg(s) show "no station match" — Fix names must be 3-letter AWC IDs (e.g. <strong>DAB</strong>) or ICAO codes starting with K (e.g. <strong>KDAB</strong>). ` +
+      `Full city names like "Daytona Beach" will not match. ` +
+      `Stations in this data: <strong>${availableIds.slice(0,10).join(', ')}${availableIds.length > 10 ? '…' : ''}</strong></p>`
+    : '';
+
   const thStyle = 'text-align:left;padding:0.2rem 0.5rem;border-bottom:2px solid var(--ink);font-family:var(--font-mono);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);';
   const thC = thStyle + 'text-align:center;';
 
@@ -2222,15 +2521,15 @@ function waUpdatePreview() {
   preview.innerHTML = `
     <table style="width:100%;border-collapse:collapse;">
       <thead><tr>
-        <th style="${thStyle}">Fix</th>
-        <th style="${thStyle}">Station</th>
+        <th style="${thStyle}">Fix (your leg)</th>
+        <th style="${thStyle}">Station matched</th>
         <th style="${thC}">Alt</th>
         <th style="${thC}">WD</th>
         <th style="${thC}">WS</th>
         <th style="${thStyle}">Status</th>
       </tr></thead>
       <tbody>${rows}</tbody>
-    </table>`;
+    </table>${matchNote}`;
 }
 
 /* ── Apply winds to leg rows ── */
