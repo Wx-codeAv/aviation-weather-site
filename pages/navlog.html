@@ -63,6 +63,45 @@
     }
     .nl-climb-note strong { color: var(--ink); }
 
+    /* ─── Airport Information ─── */
+    .nl-airport-section { padding: 2rem 0 0; }
+    .nl-airport-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.2rem; }
+    .nl-airport-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
+    .nl-airport-title {
+      font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.03em; color: var(--ink);
+      border-bottom: 2px solid var(--ink); padding-bottom: 0.45rem; margin-bottom: 0.9rem;
+      display: flex; align-items: baseline; gap: 0.5rem;
+    }
+    .nl-airport-role {
+      font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #fff; background: var(--sage); padding: 0.12rem 0.45rem;
+    }
+    .nl-airport-card.is-arrival .nl-airport-role { background: var(--sky); }
+    .nl-airport-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.7rem 1rem; }
+    .nl-airport-sub {
+      grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink-soft); border-top: 1px dotted var(--rule);
+      padding-top: 0.5rem; margin-top: 0.2rem;
+    }
+    .nl-airport-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); margin-top: 0.9rem; }
+
+    /* ─── Time Limits & Diversion ─── */
+    .nl-info-section { padding: 0.5rem 0 2rem; }
+    .nl-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.2rem; }
+    .nl-pf-wide { grid-column: 1 / -1; }
+    .nl-oplabel {
+      font-family: var(--font-mono) !important; font-size: 0.7rem !important;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--sage) !important;
+      background: var(--buff-dark) !important; border-style: dashed !important; margin-bottom: 0.35rem;
+    }
+    .nl-oplabel::placeholder { color: var(--ink-soft); font-style: italic; text-transform: none; letter-spacing: 0; }
+    .nl-pf textarea {
+      font-family: var(--font-mono); font-size: 0.85rem; background: var(--buff);
+      border: 1px solid var(--rule); color: var(--ink); padding: 0.5rem 0.6rem;
+      width: 100%; outline: none; resize: vertical; min-height: 70px; box-sizing: border-box;
+    }
+    .nl-pf textarea:focus { border-color: var(--sky); }
+
     /* ─── Banners ─── */
     .nl-banners { margin: 1.2rem 0 0; display: flex; flex-direction: column; gap: 0.6rem; }
     .nl-banner {
@@ -85,8 +124,15 @@
     }
     .nl-table {
       border-collapse: collapse; white-space: nowrap;
-      font-size: 0.82rem; font-family: var(--font-mono); min-width: 1100px; width: 100%;
+      font-size: 0.82rem; font-family: var(--font-mono); min-width: 1500px; width: 100%;
     }
+
+    /* In-flight ("actuals") columns — hidden in planning mode */
+    .nl-table.nl-actuals-hidden .nl-col-actual { display: none; }
+    .nl-table .ch.nl-col-actual { background: #243a2a; color: rgba(244,236,214,0.7); }
+    .nl-table .gh.nl-col-actual { background: #243a2a; }
+    .nl-table td.nl-col-actual.nl-td-inp { background: #eef3ea; }
+    .nl-table td.nl-col-actual.nl-td-cmp { background: #e1ebda; }
 
     /* Group headers */
     .nl-table .gh {
@@ -399,6 +445,150 @@
       </span>
     </div>
 
+    <!-- ══ Airport Information ══ -->
+    <section class="nl-airport-section">
+      <div class="nl-airport-grid">
+
+        <!-- Departure -->
+        <div class="nl-airport-card">
+          <div class="nl-airport-title">Departure <span class="nl-airport-role">From</span></div>
+          <div class="nl-airport-fields">
+            <div class="nl-pf">
+              <label for="dep-id">ID</label>
+              <input type="text" id="dep-id" placeholder="KDAB" maxlength="8" data-meta="depId">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-elev" title="Field elevation in feet MSL. Feeds the climb calculation.">Field Elev (ft)</label>
+              <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-tpa">TPA (ft MSL)</label>
+              <input type="number" id="dep-tpa" min="0" max="14000" step="10" placeholder="1034" data-meta="depTpa">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-atis">ATIS / ASOS / AWOS</label>
+              <input type="text" id="dep-atis" placeholder="120.65" maxlength="12" data-meta="depAtis">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-clnc">Clearance Delivery</label>
+              <input type="text" id="dep-clnc" placeholder="—" maxlength="12" data-meta="depClnc">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-gnd">Ground</label>
+              <input type="text" id="dep-gnd" placeholder="121.9" maxlength="12" data-meta="depGnd">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-twr">Tower / CTAF</label>
+              <input type="text" id="dep-twr" placeholder="118.1" maxlength="12" data-meta="depTwr">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-dep">Departure Control</label>
+              <input type="text" id="dep-dep" placeholder="125.35" maxlength="12" data-meta="depDep">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-app">Approach Control</label>
+              <input type="text" id="dep-app" placeholder="125.35" maxlength="12" data-meta="depApp">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-uni">UNICOM</label>
+              <input type="text" id="dep-uni" placeholder="122.95" maxlength="12" data-meta="depUni">
+            </div>
+            <div class="nl-airport-sub">Flight Service / FBO</div>
+            <div class="nl-pf">
+              <label for="dep-fss-name">FSS Name</label>
+              <input type="text" id="dep-fss-name" placeholder="Miami Radio" maxlength="24" data-meta="depFssName">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-fss-freq">FSS Freq</label>
+              <input type="text" id="dep-fss-freq" placeholder="122.2" maxlength="12" data-meta="depFssFreq">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-fbo-name">FBO Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="dep-fbo-name" placeholder="—" maxlength="24" data-meta="depFboName">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-fbo-freq">FBO Freq <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="dep-fbo-freq" placeholder="—" maxlength="12" data-meta="depFboFreq">
+            </div>
+            <div class="nl-pf">
+              <label for="dep-fbo-phone">FBO Phone <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="dep-fbo-phone" placeholder="—" maxlength="20" data-meta="depFboPhone">
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrival -->
+        <div class="nl-airport-card is-arrival">
+          <div class="nl-airport-title">Arrival <span class="nl-airport-role">To</span></div>
+          <div class="nl-airport-fields">
+            <div class="nl-pf">
+              <label for="arr-id">ID</label>
+              <input type="text" id="arr-id" placeholder="KSGJ" maxlength="8" data-meta="arrId">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-elev" title="Field elevation in feet MSL. Feeds the descent estimate.">Field Elev (ft)</label>
+              <input type="number" id="pf-destelev" min="0" max="14000" step="10" placeholder="10" data-meta="destElev">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-tpa">TPA (ft MSL)</label>
+              <input type="number" id="arr-tpa" min="0" max="14000" step="10" placeholder="1010" data-meta="arrTpa">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-atis">ATIS / ASOS / AWOS</label>
+              <input type="text" id="arr-atis" placeholder="135.07" maxlength="12" data-meta="arrAtis">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-clnc">Clearance Delivery</label>
+              <input type="text" id="arr-clnc" placeholder="—" maxlength="12" data-meta="arrClnc">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-gnd">Ground</label>
+              <input type="text" id="arr-gnd" placeholder="121.7" maxlength="12" data-meta="arrGnd">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-twr">Tower / CTAF</label>
+              <input type="text" id="arr-twr" placeholder="120.5" maxlength="12" data-meta="arrTwr">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-dep">Departure Control</label>
+              <input type="text" id="arr-dep" placeholder="—" maxlength="12" data-meta="arrDep">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-app">Approach Control</label>
+              <input type="text" id="arr-app" placeholder="124.9" maxlength="12" data-meta="arrApp">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-uni">UNICOM</label>
+              <input type="text" id="arr-uni" placeholder="122.95" maxlength="12" data-meta="arrUni">
+            </div>
+            <div class="nl-airport-sub">Flight Service / FBO</div>
+            <div class="nl-pf">
+              <label for="arr-fss-name">FSS Name</label>
+              <input type="text" id="arr-fss-name" placeholder="Miami Radio" maxlength="24" data-meta="arrFssName">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-fss-freq">FSS Freq</label>
+              <input type="text" id="arr-fss-freq" placeholder="122.5" maxlength="12" data-meta="arrFssFreq">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-fbo-name">FBO Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="arr-fbo-name" placeholder="—" maxlength="24" data-meta="arrFboName">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-fbo-freq">FBO Freq <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="arr-fbo-freq" placeholder="—" maxlength="12" data-meta="arrFboFreq">
+            </div>
+            <div class="nl-pf">
+              <label for="arr-fbo-phone">FBO Phone <span style="font-weight:400;text-transform:none;letter-spacing:0">(opt)</span></label>
+              <input type="text" id="arr-fbo-phone" placeholder="—" maxlength="20" data-meta="arrFboPhone">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="nl-airport-note">Frequencies, TPA, and field elevation come from the Chart Supplement / ForeFlight — verify against current official sources. Field elevations feed the climb &amp; descent calculations below.</p>
+    </section>
+
     <!-- ══ Flight Profile ══ -->
     <section class="nl-profile-section">
       <div class="nl-profile-grid">
@@ -463,13 +653,8 @@
           <label for="pf-cruisealt">Cruise Alt (ft MSL)</label>
           <input type="number" id="pf-cruisealt" min="0" max="18000" step="500" placeholder="4500" data-meta="cruiseAlt">
         </div>
-        <div class="nl-pf">
-          <label for="pf-depelev">Departure Elev (ft)</label>
-          <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
-        </div>
-        <div class="nl-pf">
-          <label for="pf-destelev">Dest Elev (ft)</label>
-          <input type="number" id="pf-destelev" min="0" max="14000" step="10" placeholder="0" data-meta="destElev">
+        <div class="nl-pf" style="grid-column:1/-1;">
+          <div class="nl-pf-hint" style="margin-top:0;">Departure &amp; destination field elevations are entered in the Airport Information cards above — they feed the climb and descent calculations.</div>
         </div>
       </div>
       <div class="nl-climb-note" id="nl-climb-note">
@@ -494,20 +679,49 @@
           <div class="nl-poh-panel-title">Cruise Performance <span style="font-weight:400;font-size:0.85rem;">— auto-fills TAS &amp; GPH for all legs</span></div>
           <div class="nl-poh-inputs">
             <div class="nl-pf">
-              <label for="poh-cruise-pa">Cruise Press. Alt (ft)</label>
-              <input type="number" id="poh-cruise-pa" min="500" max="12000" step="500" placeholder="4500">
-              <div class="nl-pf-hint">Pre-fills from Cruise Alt; data covers 2000–6000 ft</div>
+              <label for="poh-cruise-indalt" title="Planned cruising altitude shown on the altimeter, ft MSL.">Indicated Alt (ft)</label>
+              <input type="number" id="poh-cruise-indalt" min="0" max="18000" step="500" placeholder="4500">
+              <div class="nl-pf-hint">MSL on the altimeter</div>
             </div>
             <div class="nl-pf">
-              <label for="poh-cruise-oat">Cruise OAT (°C)</label>
+              <label for="poh-cruise-baro" title="Average of the altimeter settings (inHg) reported along your route in the METARs.">Altimeter (inHg)</label>
+              <input type="number" id="poh-cruise-baro" min="28" max="31.5" step="0.01" placeholder="29.92">
+              <div class="nl-pf-hint">Avg of route METAR settings</div>
+            </div>
+            <div class="nl-pf">
+              <label for="poh-cruise-pa">Press. Alt (ft)</label>
+              <input type="number" id="poh-cruise-pa" min="500" max="12000" step="500" placeholder="4500">
+              <div class="nl-pf-hint">Auto-computed; editable. Data covers 2000–6000 ft</div>
+            </div>
+            <div class="nl-pf">
+              <label for="poh-cruise-oat" title="Temperature aloft at cruise — read from the winds aloft (FB) table for your altitude.">Temp Aloft (°C)</label>
               <input type="number" id="poh-cruise-oat" min="-40" max="60" step="1" placeholder="16">
+              <div class="nl-pf-hint">OAT at cruise</div>
             </div>
             <div class="nl-pf">
               <label for="poh-cruise-rpm">Cruise RPM</label>
               <input type="number" id="poh-cruise-rpm" min="2100" max="2650" step="50" placeholder="2400">
             </div>
+            <div class="nl-pf">
+              <label for="poh-cruise-mp" title="Manifold pressure. Not applicable to the fixed-pitch C172S — there is no propeller/MP control. Shown for aircraft that use it.">MP (inHg)</label>
+              <input type="text" id="poh-cruise-mp" value="N/A — fixed pitch" disabled style="color:var(--ink-soft);background:var(--buff-dark);font-style:italic;">
+              <div class="nl-pf-hint">N/A on C172S</div>
+            </div>
           </div>
-          <div class="nl-poh-callout" id="nl-cruise-callout">Enter cruise PA, OAT, and RPM above to compute from POH Section 5, Figure 5-8.</div>
+          <div class="nl-poh-callout" id="nl-da-callout">Enter Indicated Alt, Altimeter, and Temp Aloft to compute pressure &amp; density altitude.</div>
+          <div class="nl-poh-callout" id="nl-cruise-callout" style="margin-top:0.6rem;">Add Cruise RPM to compute TAS, GPH, and % power from POH Section 5, Figure 5-8.</div>
+
+          <details class="nl-poh-details">
+            <summary>How pressure &amp; density altitude are computed</summary>
+            <div class="nl-poh-details-body">
+              <p><strong>Pressure altitude</strong> corrects your indicated altitude to the standard datum (29.92 inHg):</p>
+              <p style="padding-left:1rem;"><code>PA = Indicated Alt + (29.92 − Altimeter) × 1000</code></p>
+              <p>Each 0.01 inHg below 29.92 raises PA by ~10 ft. With the altimeter set to 29.92, PA equals indicated altitude.</p>
+              <p><strong>Density altitude</strong> is pressure altitude corrected for non-standard temperature — the altitude the airplane "feels":</p>
+              <p style="padding-left:1rem;"><code>DA = PA + 120 × (OAT − ISA_temp)</code>, where <code>ISA_temp = 15 − 2 × (PA ÷ 1000)</code> °C</p>
+              <p>High DA means thinner air: less power, less lift, longer takeoff/climb. See PHAK Ch. 16 (cross-country planning) and the density-altitude page in Learn.</p>
+            </div>
+          </details>
 
           <details class="nl-poh-details">
             <summary>How this is calculated (3-axis interpolation)</summary>
@@ -649,21 +863,38 @@
         <input type="file" id="nl-file-input" accept=".json" style="display:none">
         <button class="nl-toolbar-btn" onclick="window.print()">Print Nav Log</button>
         <span class="nl-toolbar-sep">|</span>
+        <button class="nl-toolbar-btn" id="nl-toggle-actuals" title="Show or hide the in-flight columns: actual GS, ATE, and ATA. Hidden during planning.">✈ Show in-flight columns</button>
+        <span class="nl-toolbar-sep">|</span>
         <button class="nl-toolbar-btn nl-toolbar-btn-danger" id="nl-clear-btn">Clear all rows</button>
         <span class="nl-storage-note" id="nl-save-status">Saves automatically in this browser.</span>
       </div>
 
+      <div class="nl-conventions" style="border-left-color: var(--sage); margin: 0 0 1rem;">
+        <strong>Speed chain:</strong>
+        <span class="nl-conv-items">
+          <span><code>KIAS</code> indicated</span>
+          <span class="nl-conv-sep">→ calibration →</span>
+          <span><code>KCAS</code> calibrated</span>
+          <span class="nl-conv-sep">→ altitude &amp; temp →</span>
+          <span><code>KTAS</code> true</span>
+          <span class="nl-conv-sep">→ wind triangle →</span>
+          <span><code>GS</code> ground speed</span>
+          <span class="nl-conv-sep">·</span>
+          <span style="color:var(--ink-soft);">The POH climb table gives speed in KIAS; cruise gives KTAS. This tool turns TAS + wind into GS via the wind triangle — the same chain an E6B walks.</span>
+        </span>
+      </div>
+
       <div class="nl-table-wrap">
-        <table class="nl-table" id="nl-table">
+        <table class="nl-table nl-actuals-hidden" id="nl-table">
           <thead>
             <tr>
-              <th class="gh nl-fix-cell" rowspan="2">Waypoint</th>
+              <th class="gh nl-fix-cell" rowspan="2" title="Checkpoint / waypoint. First and last rows are your airports. Space checkpoints so you're never more than ~10 NM abeam one — commonly 20–30 NM apart for cross-country planning.">Waypoint</th>
               <th class="gh" colspan="4">Winds / Airspeed (input)</th>
-              <th class="gh gh-comp" colspan="7">Heading Chain (computed ←→ input)</th>
-              <th class="gh" colspan="2">Route</th>
-              <th class="gh gh-comp" colspan="3">Time (computed)</th>
-              <th class="gh" colspan="1">Burn</th>
-              <th class="gh gh-comp" colspan="2">Fuel (computed)</th>
+              <th class="gh gh-comp" colspan="6">Heading Chain (computed ←→ input)</th>
+              <th class="gh" colspan="5">Route</th>
+              <th class="gh gh-comp" colspan="3">Speed &amp; Time (computed)</th>
+              <th class="gh gh-comp nl-col-actual" colspan="3">In-Flight (actual)</th>
+              <th class="gh" colspan="4">Fuel</th>
               <th class="gh" style="background:transparent;border:none;"></th>
             </tr>
             <tr>
@@ -679,13 +910,20 @@
               <th class="ch" title="Compass deviation from aircraft compass correction card. Enter positive or negative degrees.">Dev °</th>
               <th class="ch ch-comp" title="Compass Heading = MH + Dev. This is the number you fly on the magnetic compass.">CH °</th>
               <th class="ch" title="Altitude planned for this leg in feet MSL. For the hemispheric rule: odd thousands +500 ft eastbound, even thousands +500 ft westbound.">Alt ft</th>
+              <th class="ch" title="NAVAID frequency for this checkpoint (VOR/VORTAC), optional.">NAV Freq</th>
+              <th class="ch" title="NAVAID identifier (e.g. ORL), optional.">NAV ID</th>
               <th class="ch" title="Leg distance in nautical miles, measured on your sectional chart with a plotter.">Dist NM</th>
-              <th class="ch ch-comp" title="Ground Speed (kt) — vector formula: √(TAS²+WS²−2·TAS·WS·cos(TC+WCA−WD))">GS kt</th>
+              <th class="ch ch-comp" title="Distance remaining to destination after this leg: total route distance minus distance flown so far.">Rem NM</th>
+              <th class="ch ch-comp" title="Estimated Ground Speed (kt) — vector formula: √(TAS²+WS²−2·TAS·WS·cos(TH−WD))">GS kt</th>
               <th class="ch ch-comp" title="Estimated Time En Route for this leg: (Dist / GS) × 60 minutes">ETE</th>
-              <th class="ch ch-comp" title="Estimated Time of Arrival at this fix: your ETD plus cumulative ETE">ETA UTC</th>
+              <th class="ch ch-comp" title="Estimated Time of Arrival at this fix: your Time Off plus cumulative ETE">ETA UTC</th>
+              <th class="ch ch-comp nl-col-actual" title="Actual Ground Speed (computed in flight): Dist ÷ (ATE/60). Fill in ATE to see it.">GS act</th>
+              <th class="ch nl-col-actual" title="Actual Time En Route for this leg, in minutes — read from your timer/clock in flight.">ATE min</th>
+              <th class="ch nl-col-actual" title="Actual Time of Arrival at this fix (UTC, hh:mm) — recorded as you cross it.">ATA UTC</th>
               <th class="ch" title="Fuel burn rate for this leg in gallons per hour (from POH cruise table)">GPH</th>
               <th class="ch ch-comp" title="Fuel used this leg = ETE(hrs) × GPH">Leg gal</th>
               <th class="ch ch-comp" title="Fuel remaining after this leg. Red = below your reserve requirement.">Rem gal</th>
+              <th class="ch ch-comp" title="Fuel on board remaining after this leg, expressed as time: Rem gal ÷ GPH.">Rem hh:mm</th>
               <th class="ch" style="background:var(--ink);border:none;"></th>
             </tr>
           </thead>
@@ -693,14 +931,19 @@
           <tfoot>
             <tr class="nl-totals-row" id="nl-totals">
               <td class="tot-label">TOTALS</td>
-              <td colspan="11"></td>
+              <td colspan="13"></td>
               <td id="tot-dist">—</td>
+              <td></td>
               <td id="tot-gs">—</td>
               <td id="tot-ete">—</td>
               <td id="tot-eta">—</td>
+              <td class="nl-col-actual"></td>
+              <td class="nl-col-actual"></td>
+              <td class="nl-col-actual"></td>
               <td></td>
               <td id="tot-fuel">—</td>
               <td id="tot-rem">—</td>
+              <td></td>
               <td></td>
             </tr>
           </tfoot>
@@ -720,7 +963,7 @@
         <div class="nl-fuel-card">
           <div class="nl-fuel-label">Total Trip Fuel</div>
           <div class="nl-fuel-val" id="fs-trip">— <span>gal</span></div>
-          <div class="nl-fuel-sub">All legs combined</div>
+          <div class="nl-fuel-sub" id="fs-trip-sub">All legs combined · rounded down</div>
         </div>
         <div class="nl-fuel-card">
           <div class="nl-fuel-label">Reserve Required</div>
@@ -737,11 +980,87 @@
           <div class="nl-fuel-val" id="fs-dest">— <span>gal</span></div>
           <div class="nl-fuel-sub" id="fs-dest-sub">—</div>
         </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Total Trip Time</div>
+          <div class="nl-fuel-val" id="fs-trip-time">— <span>hh:mm</span></div>
+          <div class="nl-fuel-sub">Sum of all leg ETEs</div>
+        </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Fuel Remaining (time)</div>
+          <div class="nl-fuel-val" id="fs-rem-time">— <span>hh:mm</span></div>
+          <div class="nl-fuel-sub" id="fs-rem-time-sub">Remaining gal ÷ GPH</div>
+        </div>
+        <div class="nl-fuel-card">
+          <div class="nl-fuel-label">Endurance on Board</div>
+          <div class="nl-fuel-val" id="fs-fob-time">— <span>hh:mm</span></div>
+          <div class="nl-fuel-sub">Trip time + remaining time</div>
+        </div>
       </div>
       <p class="nl-fuel-reserve-note">
-        14 CFR §91.151 requires fuel to fly to the first intended landing plus 30 min (day VFR) or 45 min (night VFR) at normal cruise consumption.
+        Trip fuel includes a <strong>1.4 gal start, taxi, and takeoff allowance</strong> (C172S POH Section 5, Figure 5-7, Note 1) — it appears as the START/TAXI row when you insert the POH climb. Headline trip fuel is rounded down to the whole gallon; per-leg and running totals stay to a tenth so the §91.151 reserve check is exact.
+        <br>14 CFR §91.151 requires fuel to fly to the first intended landing plus 30 min (day VFR) or 45 min (night VFR) at normal cruise consumption.
         These figures assume all fuel on board is usable. Always consult your aircraft's POH for unusable fuel quantity.
       </p>
+    </section>
+
+    <!-- ══ Time Limits & Diversion ══ -->
+    <section class="nl-info-section">
+      <div class="nl-info-grid">
+
+        <!-- Panel 7 — Time Limits & Flight Info -->
+        <div class="nl-airport-card">
+          <div class="nl-airport-title">Time Limits &amp; Flight Info <span class="nl-airport-role">Info</span></div>
+          <div class="nl-airport-fields">
+            <div class="nl-pf">
+              <label for="pf-clncvoid" title="If issued a clearance with a void time (often for IFR departures from non-towered fields), record it here.">Clearance Void Time</label>
+              <input type="text" id="pf-clncvoid" placeholder="hh:mm UTC" maxlength="12" data-meta="clncVoid">
+            </div>
+            <div class="nl-pf">
+              <label for="pf-sunset" title="Local sunset / end of civil twilight — relevant to night currency and the 45-min night fuel reserve.">Sunset</label>
+              <input type="text" id="pf-sunset" placeholder="hh:mm" maxlength="12" data-meta="sunset">
+            </div>
+            <div class="nl-pf">
+              <input class="nl-oplabel" type="text" placeholder="Operator time limit 1 — type your own label" maxlength="40" data-meta="opLimit1Label">
+              <input type="text" placeholder="value / time" maxlength="20" data-meta="opLimit1Value">
+            </div>
+            <div class="nl-pf">
+              <input class="nl-oplabel" type="text" placeholder="Operator time limit 2 — type your own label" maxlength="40" data-meta="opLimit2Label">
+              <input type="text" placeholder="value / time" maxlength="20" data-meta="opLimit2Value">
+            </div>
+            <div class="nl-pf nl-pf-wide">
+              <label for="pf-notes">Notes</label>
+              <textarea id="pf-notes" placeholder="Frequencies to monitor, terrain notes, alternate plan, reminders…" data-meta="notes"></textarea>
+            </div>
+          </div>
+          <p class="nl-airport-note">Tail number, ETD, and fuel on board are set in the Flight Profile. The two Operator Time Limit fields are blank on purpose — label them with whatever time limits your operation uses.</p>
+        </div>
+
+        <!-- Panel 8 — Diversion -->
+        <div class="nl-airport-card">
+          <div class="nl-airport-title">Diversion <span class="nl-airport-role" style="background:var(--rust);">In-flight</span></div>
+          <div class="nl-airport-fields">
+            <div class="nl-pf">
+              <label for="pf-divtime" title="Clock time (UTC) you begin the diversion.">Time (UTC)</label>
+              <input type="text" id="pf-divtime" placeholder="hh:mm" maxlength="5" data-meta="divTime">
+            </div>
+            <div class="nl-pf">
+              <label for="pf-divhdg" title="Magnetic heading toward the new destination — measured/estimated in flight.">HDG °</label>
+              <input type="number" id="pf-divhdg" min="0" max="360" step="1" placeholder="270" data-meta="divHdg">
+            </div>
+            <div class="nl-pf">
+              <label for="pf-divdist" title="Distance to the new destination, NM.">Distance NM</label>
+              <input type="number" id="pf-divdist" min="0" max="9999" step="0.1" placeholder="24" data-meta="divDist">
+            </div>
+            <div class="nl-pf">
+              <label for="pf-divgs" title="Estimated ground speed for the diversion leg. Leave blank to use your planned average GS.">GS kt</label>
+              <input type="number" id="pf-divgs" min="30" max="400" step="1" placeholder="auto" data-meta="divGs">
+            </div>
+          </div>
+          <div class="nl-poh-callout" id="nl-div-callout" style="margin-top:0.9rem;">Enter a diversion distance (and time) to compute ETE, ETA, and fuel on board.</div>
+          <p class="nl-airport-note">Diversion ETE = Distance ÷ GS. ETA = Time + ETE. FOB carries your fuel remaining from the planned route — in the air, use your actual gauge reading. PHAK Ch. 16.</p>
+        </div>
+
+      </div>
     </section>
 
   </div><!-- /container -->
@@ -758,6 +1077,11 @@
         <td>TOTAL DISTANCE</td><td id="pr-dist">—</td>
         <td>TOTAL ETE</td><td id="pr-ete">—</td>
         <td>TRIP FUEL</td><td id="pr-fuel">—</td>
+      </tr>
+      <tr>
+        <td>VOID TIME</td><td id="pr-void">—</td>
+        <td>SUNSET</td><td id="pr-sunset">—</td>
+        <td>NOTES</td><td id="pr-notes"></td>
       </tr>
     </table>
   </div>
@@ -832,6 +1156,19 @@
         </div>
 
         <div class="nl-edu-block">
+          <p class="nl-edu-eyebrow">Rounding conventions</p>
+          <h3>How this tool rounds</h3>
+          <p>Common cross-country planning practice, applied so your numbers stay conservative:</p>
+          <table class="mistakes-table">
+            <tr><td>Temperature</td><td>Nearest whole degree.</td></tr>
+            <tr><td>Fuel flow (GPH)</td><td><strong>Up</strong> to the nearest tenth — never under-state burn.</td></tr>
+            <tr><td>True airspeed</td><td><strong>Down</strong> to the nearest whole knot — conservative ground speed.</td></tr>
+            <tr><td>Time</td><td>Each leg's ETE rounds <strong>up</strong> to the whole minute.</td></tr>
+            <tr><td>Fuel quantity</td><td>Read fuel you <em>have</em> conservatively (round down). Per-leg burns are shown to a tenth so the running total stays accurate; the headline figures are what you'd log.</td></tr>
+          </table>
+        </div>
+
+        <div class="nl-edu-block">
           <p class="nl-edu-eyebrow">Checkride connection</p>
           <h3>ACS Area I, Task D</h3>
           <p>The Private Pilot ACS (FAA-S-ACS-6C) expects you to <em>"prepare, present, and explain a cross-country flight plan … including calculations of headings, fuel requirements, and ETE/ETA."</em> EFB or paper — either is accepted under the 2023 ACS update.</p>
@@ -878,6 +1215,11 @@
         <tr><td>GPH</td><td><strong>Gallons Per Hour</strong> — Fuel burn rate at cruise from POH Section 5.</td></tr>
         <tr><td>ETD</td><td><strong>Estimated Time of Departure</strong> — Your planned takeoff time, in UTC.</td></tr>
         <tr><td>FB</td><td><strong>Winds Aloft Forecast</strong> — The FAA product (formerly "FD winds") giving wind direction/speed and temperature at standard altitudes.</td></tr>
+        <tr><td>ATE</td><td><strong>Actual Time En Route</strong> — The real elapsed time for a leg, read from your timer in flight (minutes). Compare against ETE to refine your remaining estimates.</td></tr>
+        <tr><td>ATA</td><td><strong>Actual Time of Arrival</strong> — The clock time (UTC) you actually crossed a checkpoint.</td></tr>
+        <tr><td>NAVAID</td><td><strong>Navigational Aid</strong> — A VOR/VORTAC/NDB you can tune for the leg. Enter its frequency and identifier as a backup to pilotage/GPS.</td></tr>
+        <tr><td>PA</td><td><strong>Pressure Altitude</strong> — Indicated altitude corrected to 29.92 inHg: IndAlt + (29.92 − altimeter) × 1000.</td></tr>
+        <tr><td>DA</td><td><strong>Density Altitude</strong> — Pressure altitude corrected for temperature: PA + 120 × (OAT − ISA). The altitude the airplane performs at.</td></tr>
       </table>
     </div>
   </div>
@@ -946,16 +1288,46 @@ function fmtETE(min) {
   return h > 0 ? h + ':' + String(m).padStart(2, '0') : m + ' min';
 }
 
+// Always hh:mm (for endurance/time-on-board cards)
+function fmtHM(min) {
+  if (isNaN(min) || min === null || min < 0) return '—';
+  const t = Math.round(min);
+  const h = Math.floor(t / 60);
+  const m = t % 60;
+  return h + ':' + String(m).padStart(2, '0');
+}
+
+/* ── ROUNDING CONVENTIONS (PHAK Ch. 16 / common E6B practice) ── */
+const rnd = {
+  temp:  x => Math.round(x),          // temperature → nearest whole degree
+  gph:   x => Math.ceil(x * 10) / 10, // fuel flow → UP to nearest tenth
+  fuel:  x => Math.floor(x),          // fuel quantity → DOWN to nearest whole gal
+  tas:   x => Math.floor(x),          // true airspeed → DOWN to nearest whole knot
+  min:   x => Math.ceil(x)            // time → UP to nearest whole minute
+};
+
 /* ── STATE ── */
+
+const DEFAULT_META = {
+  tailNum: '', acType: 'C172S', etdUtc: '',
+  fuelOb: 40, reserveMin: 30,
+  defaultTas: 110, defaultGph: 8.5, defaultVar: 6,
+  climbFpm: 700, descentFpm: 500, cruiseAlt: 4500, depElev: 0, destElev: 0,
+  // Airport Information (Panel 1) — all user-entered
+  depId: '', depAtis: '', depClnc: '', depGnd: '', depTwr: '', depDep: '', depApp: '',
+  depUni: '', depFssName: '', depFssFreq: '', depFboName: '', depFboFreq: '', depFboPhone: '', depTpa: '',
+  arrId: '', arrAtis: '', arrClnc: '', arrGnd: '', arrTwr: '', arrDep: '', arrApp: '',
+  arrUni: '', arrFssName: '', arrFssFreq: '', arrFboName: '', arrFboFreq: '', arrFboPhone: '', arrTpa: '',
+  // Time Limits & Flight Info (Panel 7) — user-entered
+  clncVoid: '', sunset: '', notes: '',
+  opLimit1Label: '', opLimit1Value: '', opLimit2Label: '', opLimit2Value: '',
+  // Diversion (Panel 8) — user-entered
+  divTime: '', divHdg: '', divDist: '', divGs: ''
+};
 
 let state = {
   version: 1,
-  meta: {
-    tailNum: '', acType: 'C172S', etdUtc: '',
-    fuelOb: 40, reserveMin: 30,
-    defaultTas: 110, defaultGph: 8.5, defaultVar: 6,
-    climbFpm: 700, descentFpm: 500, cruiseAlt: 4500, depElev: 0, destElev: 0
-  },
+  meta: Object.assign({}, DEFAULT_META),
   legs: []
 };
 
@@ -969,7 +1341,9 @@ function newLeg(from) {
     tas: from ? from.tas : state.meta.defaultTas,
     varDeg: from ? from.varDeg : state.meta.defaultVar,
     dev: from ? from.dev : 0,
-    dist: '', gph: from ? from.gph : state.meta.defaultGph
+    dist: '', gph: from ? from.gph : state.meta.defaultGph,
+    navFreq: '', navId: '',          // NAVAID reference (entry, optional)
+    ate: '', ata: ''                 // actual time en route (min) / actual time of arrival (UTC) — entered in flight
   };
 }
 
@@ -978,7 +1352,7 @@ function getLeg(id) { return state.legs.find(l => l.id === id); }
 function updateLeg(id, field, rawValue) {
   const leg = getLeg(id);
   if (!leg) return;
-  if (['tc','wd','ws','tas','varDeg','dev','dist','gph','alt'].includes(field)) {
+  if (['tc','wd','ws','tas','varDeg','dev','dist','gph','alt','ate'].includes(field)) {
     leg[field] = rawValue === '' ? '' : parseFloat(rawValue);
   } else {
     leg[field] = rawValue;
@@ -991,7 +1365,7 @@ function computeAll() {
   const etdMin = etdToMin(state.meta.etdUtc);
   let cumEte = 0;
   let fuelRem = parseFloat(state.meta.fuelOb) || 0;
-  let totDist = 0, totFuel = 0;
+  let totDist = 0, totFuel = 0, cumDist = 0;
 
   const results = state.legs.map(leg => {
     const tc  = parseFloat(leg.tc);
@@ -1008,7 +1382,7 @@ function computeAll() {
     const hasWD  = !isNaN(wd);
     const hasDst = !isNaN(dst) && dst > 0;
 
-    let wca = 0, th, mh, ch, gs = NaN, eteMin = NaN;
+    let wca = 0, th, mh, ch, gs = NaN, eteMin = NaN, eteRaw = NaN;
     let legFuel = NaN, etaStr = '—';
 
     if (hasTC && hasTAS) {
@@ -1024,14 +1398,15 @@ function computeAll() {
       }
 
       if (!isNaN(gs) && gs > 0 && hasDst) {
-        eteMin = (dst / gs) * 60;
+        eteRaw = (dst / gs) * 60;
+        eteMin = rnd.min(eteRaw);   // round each leg's time up to the whole minute
       }
     } else {
       th = mh = ch = NaN;
     }
 
     // POH climb row overrides: use table-derived time and fuel directly
-    if (leg._pohTime !== undefined) eteMin = leg._pohTime;
+    if (leg._pohTime !== undefined) { eteMin = leg._pohTime; eteRaw = leg._pohTime; }
     if (leg._pohFuel !== undefined) {
       legFuel = leg._pohFuel;
     } else if (!isNaN(eteMin) && gph > 0) {
@@ -1048,10 +1423,25 @@ function computeAll() {
       fuelRem -= legFuel;
     }
 
-    if (!isNaN(dst)) totDist += dst;
+    if (!isNaN(dst)) { totDist += dst; cumDist += dst; }
     if (!isNaN(legFuel)) totFuel += legFuel;
 
-    return { wca: isNaN(wca) ? NaN : wca, th, mh, ch, gs, eteMin, etaStr, legFuel, fuelRem, id: leg.id };
+    // Actual ground speed from in-flight ATE: GS = Dist ÷ (ATE/60)
+    const ateMin = parseFloat(leg.ate);
+    const gsAct = (!isNaN(ateMin) && ateMin > 0 && hasDst) ? (dst / (ateMin / 60)) : NaN;
+
+    // Fuel on board remaining after this leg, expressed as time
+    const remTimeMin = (gph > 0 && !isNaN(fuelRem)) ? (fuelRem / gph) * 60 : NaN;
+
+    return {
+      wca: isNaN(wca) ? NaN : wca, th, mh, ch, gs, eteMin, eteRaw, etaStr, legFuel, fuelRem,
+      gsAct, remTimeMin, cumDistAfter: cumDist, id: leg.id
+    };
+  });
+
+  // Distance remaining after each leg = total route distance − distance flown so far
+  results.forEach(r => {
+    r.distRem = totDist > 0 ? Math.max(0, totDist - r.cumDistAfter) : NaN;
   });
 
   const reserveGal = ((parseFloat(state.meta.fuelOb) || 0) > 0)
@@ -1079,6 +1469,10 @@ function buildRow(leg) {
     `<input class="nl-inp${cls ? ' ' + cls : ''}" type="number" min="${min}" max="${max}" step="${step}"
       placeholder="${placeholder}" data-lid="${id}" data-field="${field}" value="${v(field)}">`;
 
+  const inpText = (field, placeholder, maxlen, cls='') =>
+    `<input class="nl-inp${cls ? ' ' + cls : ''}" type="text" maxlength="${maxlen}"
+      placeholder="${placeholder}" data-lid="${id}" data-field="${field}" value="${v(field)}">`;
+
   const workOpen = workExpanded.has(id) ? '' : 'display:none';
 
   return `
@@ -1098,13 +1492,20 @@ function buildRow(leg) {
   <td class="nl-td-inp">${inp('dev', -30, 30, 0.5, '0')}</td>
   <td class="nl-td-cmp nl-dash" id="nl-ch-${id}">—</td>
   <td class="nl-td-inp">${inp('alt', 0, 18000, 500, '4500')}</td>
+  <td class="nl-td-inp">${inpText('navFreq', '113.4', 8, 'nl-inp-fix')}</td>
+  <td class="nl-td-inp">${inpText('navId', 'ORL', 5, 'nl-inp-fix')}</td>
   <td class="nl-td-inp">${inp('dist', 0, 9999, 0.1, '18.0')}</td>
+  <td class="nl-td-cmp nl-dash" id="nl-distrem-${id}">—</td>
   <td class="nl-td-cmp nl-dash" id="nl-gs-${id}">—</td>
   <td class="nl-td-cmp nl-dash" id="nl-ete-${id}">—</td>
   <td class="nl-td-cmp nl-dash" id="nl-eta-${id}">—</td>
+  <td class="nl-td-cmp nl-dash nl-col-actual" id="nl-gsact-${id}">—</td>
+  <td class="nl-td-inp nl-col-actual">${inp('ate', 0, 999, 1, '12')}</td>
+  <td class="nl-td-inp nl-col-actual">${inpText('ata', '14:42', 5, 'nl-inp-fix')}</td>
   <td class="nl-td-inp">${inp('gph', 0.1, 50, 0.1, '8.5')}</td>
   <td class="nl-td-cmp nl-dash" id="nl-fuel-${id}">—</td>
   <td class="nl-td-cmp nl-dash" id="nl-rem-${id}">—</td>
+  <td class="nl-td-cmp nl-dash" id="nl-remtime-${id}">—</td>
   <td class="nl-td-actions">
     <button class="nl-btn nl-btn-work${workExpanded.has(id) ? ' active' : ''}" data-lid="${id}" data-action="work" title="Show/hide calculation work">≡</button>
     <button class="nl-btn" data-lid="${id}" data-action="add" title="Insert row below">+</button>
@@ -1114,7 +1515,7 @@ function buildRow(leg) {
   </td>
 </tr>
 <tr class="nl-work-row" id="nl-work-${id}" style="${workOpen}">
-  <td class="nl-work-td" colspan="20">
+  <td class="nl-work-td" colspan="27">
     <div class="nl-work-content" id="nl-work-content-${id}"></div>
   </td>
 </tr>`;
@@ -1142,10 +1543,19 @@ function updateComputed() {
     set(`nl-th-${id}`, isNaN(r.th) ? '—' : fmt3(r.th));
     set(`nl-mh-${id}`, isNaN(r.mh) ? '—' : fmt3(r.mh));
     set(`nl-ch-${id}`, isNaN(r.ch) ? '—' : fmt3(r.ch));
+    set(`nl-distrem-${id}`, isNaN(r.distRem) ? '—' : r.distRem.toFixed(1));
     set(`nl-gs-${id}`, isNaN(r.gs) ? '—' : Math.round(r.gs) + ' kt');
     set(`nl-ete-${id}`, fmtETE(r.eteMin));
     set(`nl-eta-${id}`, r.etaStr || '—');
     set(`nl-fuel-${id}`, isNaN(r.legFuel) ? '—' : r.legFuel.toFixed(1));
+
+    // Actual GS cell keeps its nl-col-actual class (set() would overwrite className)
+    const gsActEl = document.getElementById(`nl-gsact-${id}`);
+    if (gsActEl) {
+      const hasGsAct = !isNaN(r.gsAct);
+      gsActEl.textContent = hasGsAct ? Math.round(r.gsAct) + ' kt' : '—';
+      gsActEl.className = 'nl-td-cmp nl-col-actual' + (hasGsAct ? '' : ' nl-dash');
+    }
 
     const remOk = !isNaN(r.fuelRem);
     const remBelowRes = remOk && !isNaN(c.reserveGal) && r.fuelRem < c.reserveGal;
@@ -1153,6 +1563,12 @@ function updateComputed() {
     set(`nl-rem-${id}`,
       !remOk ? '—' : r.fuelRem.toFixed(1),
       remNeg ? 'nl-low-fuel' : remBelowRes ? 'nl-warn' : '');
+
+    const reserveMinLeg = parseFloat(state.meta.reserveMin) || 30;
+    set(`nl-remtime-${id}`,
+      isNaN(r.remTimeMin) ? '—' : fmtHM(r.remTimeMin),
+      (remNeg || (!isNaN(r.remTimeMin) && r.remTimeMin < 0)) ? 'nl-low-fuel'
+        : (!isNaN(r.remTimeMin) && r.remTimeMin < reserveMinLeg) ? 'nl-warn' : '');
 
     if (workExpanded.has(id)) {
       const leg = getLeg(id);
@@ -1174,7 +1590,10 @@ function updateComputed() {
   const res = isNaN(c.reserveGal) ? 0 : c.reserveGal;
   const min = c.totFuel + res;
 
-  document.getElementById('fs-trip').innerHTML = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
+  document.getElementById('fs-trip').innerHTML = c.totFuel > 0 ? rnd.fuel(c.totFuel) + ' <span>gal</span>' : '— <span>gal</span>';
+  document.getElementById('fs-trip-sub').textContent = c.totFuel > 0
+    ? 'Rounded down · ' + c.totFuel.toFixed(1) + ' gal exact'
+    : 'All legs combined · rounded down';
   document.getElementById('fs-reserve').innerHTML = !isNaN(c.reserveGal) ? c.reserveGal.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
   document.getElementById('fs-reserve-sub').textContent = state.meta.reserveMin + ' min × ' + state.meta.defaultGph + ' GPH';
   document.getElementById('fs-min').innerHTML = c.totFuel > 0 ? min.toFixed(1) + ' <span>gal</span>' : '— <span>gal</span>';
@@ -1193,6 +1612,37 @@ function updateComputed() {
     destEl.className = 'nl-fuel-val';
     destSub.textContent = '';
   }
+
+  // Fuel/time summary cards
+  const gphTime = parseFloat(state.meta.defaultGph) || 0;
+  const reserveMin = parseFloat(state.meta.reserveMin) || 30;
+  const remTimeMin = (!isNaN(c.fuelRemFinal) && gphTime > 0 && c.totFuel > 0)
+    ? (c.fuelRemFinal / gphTime) * 60 : NaN;
+  const fobTimeMin = (!isNaN(remTimeMin) && c.totEte > 0) ? c.totEte + remTimeMin : NaN;
+
+  document.getElementById('fs-trip-time').innerHTML =
+    c.totEte > 0 ? fmtHM(c.totEte) + ' <span>hh:mm</span>' : '— <span>hh:mm</span>';
+
+  const remTimeEl  = document.getElementById('fs-rem-time');
+  const remTimeSub = document.getElementById('fs-rem-time-sub');
+  if (!isNaN(remTimeMin)) {
+    const belowRes = remTimeMin < reserveMin;
+    remTimeEl.innerHTML = fmtHM(remTimeMin) + ' <span>hh:mm</span>';
+    remTimeEl.className = 'nl-fuel-val' + (belowRes ? ' danger' : '');
+    remTimeSub.textContent = belowRes
+      ? '⚠ Below ' + reserveMin + '-min reserve (§91.151)'
+      : 'Above ' + reserveMin + '-min reserve ✓';
+  } else {
+    remTimeEl.innerHTML = '— <span>hh:mm</span>';
+    remTimeEl.className = 'nl-fuel-val';
+    remTimeSub.textContent = 'Remaining gal ÷ GPH';
+  }
+
+  document.getElementById('fs-fob-time').innerHTML =
+    !isNaN(fobTimeMin) ? fmtHM(fobTimeMin) + ' <span>hh:mm</span>' : '— <span>hh:mm</span>';
+
+  // Diversion block
+  updateDiversion(c);
 
   // Climb + descent estimates
   const climbFpm   = parseFloat(state.meta.climbFpm);
@@ -1231,12 +1681,57 @@ function updateComputed() {
   document.getElementById('pr-ac').textContent = (state.meta.tailNum || '—') + ' / ' + (state.meta.acType || '—');
   document.getElementById('pr-etd').textContent = state.meta.etdUtc || '—';
   document.getElementById('pr-fob').textContent = fob.toFixed(1) + ' gal';
+  document.getElementById('pr-void').textContent   = state.meta.clncVoid || '—';
+  document.getElementById('pr-sunset').textContent = state.meta.sunset || '—';
+  document.getElementById('pr-notes').textContent  = state.meta.notes || '';
   document.getElementById('pr-dist').textContent = c.totDist > 0 ? c.totDist.toFixed(1) + ' NM' : '—';
   document.getElementById('pr-ete').textContent = c.totEte > 0 ? fmtETE(c.totEte) : '—';
   document.getElementById('pr-fuel').textContent = c.totFuel > 0 ? c.totFuel.toFixed(1) + ' gal' : '—';
 }
 
 /* ── HEMISPHERIC ALTITUDE RULE CHECK (14 CFR §91.159) ── */
+
+/* ── DIVERSION ── */
+
+function updateDiversion(c) {
+  const el = document.getElementById('nl-div-callout');
+  if (!el) return;
+
+  const dist    = parseFloat(state.meta.divDist);
+  const gsIn    = parseFloat(state.meta.divGs);
+  const timeMin = etdToMin(state.meta.divTime);
+  const hdg     = parseFloat(state.meta.divHdg);
+  const gphv    = parseFloat(state.meta.defaultGph) || 0;
+
+  // Fallback GS = planned average GS, else default cruise TAS
+  const avgGs   = (c.totEte > 0 && c.totDist > 0) ? c.totDist / (c.totEte / 60) : NaN;
+  const gsAuto  = !(!isNaN(gsIn) && gsIn > 0);
+  const usedGs  = gsAuto ? (!isNaN(avgGs) ? avgGs : parseFloat(state.meta.defaultTas)) : gsIn;
+
+  if (isNaN(dist) || dist <= 0 || isNaN(usedGs) || usedGs <= 0) {
+    el.className = 'nl-poh-callout';
+    el.textContent = 'Enter a diversion distance (and time) to compute ETE, ETA, and fuel on board.';
+    return;
+  }
+
+  const eteMin  = rnd.min((dist / usedGs) * 60);
+  const etaStr  = (timeMin !== null) ? minToUtc(timeMin + eteMin) : '—';
+  const divFuel = gphv > 0 ? (eteMin / 60) * gphv : NaN;
+  const fobGal  = c.fuelRemFinal;
+  const fobTime = (gphv > 0 && !isNaN(fobGal)) ? (fobGal / gphv) * 60 : NaN;
+  const short   = !isNaN(divFuel) && !isNaN(fobGal) && divFuel > fobGal;
+
+  el.className = 'nl-poh-callout ' + (short ? 'warn' : 'ok');
+  el.innerHTML =
+    '<strong>' + (!isNaN(hdg) ? 'HDG ' + fmt3(hdg) + ' · ' : '') + dist.toFixed(1) + ' NM @ ' + Math.round(usedGs) + ' kt' + (gsAuto ? ' (auto)' : '') + '</strong><br>' +
+    'ETE <strong>' + fmtETE(eteMin) + '</strong>' +
+    (etaStr !== '—' ? '   ETA <strong>' + etaStr + '</strong>' : '') +
+    (!isNaN(divFuel) ? '   Burn <strong>' + divFuel.toFixed(1) + ' gal</strong>' : '') +
+    '<br>FOB (from last leg): <strong>' + (!isNaN(fobGal) ? fobGal.toFixed(1) + ' gal' : '—') + '</strong>' +
+    (!isNaN(fobTime) ? ' (' + fmtHM(fobTime) + ')' : '') +
+    (short ? ' <span style="color:var(--rust);">⚠ diversion burn exceeds fuel remaining</span>' : '') +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">ETE = Dist ÷ GS · ETA = Time + ETE' + (gsAuto ? ' · GS from planned average — enter a GS to override' : '') + '. In flight, verify FOB against the gauge.</span>';
+}
 
 function hemisphericRuleMsg(alt_ft, mh_deg) {
   if (!alt_ft || isNaN(alt_ft) || alt_ft < 3000) return null;
@@ -1503,11 +1998,33 @@ function renderWorkContent(id, leg, r) {
     html += `<div class="nl-work-block"><div class="nl-work-label">ETE and Fuel</div><div class="nl-work-steps">`;
     html += `<span class="step">ETE = (Dist / GS) × 60</span>`;
     html += `<span class="step-indent">= (${dst} NM / ${r.gs.toFixed(1)} kt) × 60</span>`;
-    html += `<span class="step result">= ${r.eteMin.toFixed(1)} min → ${fmtETE(r.eteMin)}</span>`;
+    html += `<span class="step result">= ${(isNaN(r.eteRaw) ? r.eteMin : r.eteRaw).toFixed(1)} min → ${fmtETE(r.eteMin)} <span style="color:var(--ink-soft)">(rounded up to whole min)</span></span>`;
     if (!isNaN(r.legFuel) && gph > 0) {
       html += `<span class="step" style="margin-top:0.4rem">Fuel = ETE(hrs) × GPH</span>`;
       html += `<span class="step-indent">= ${(r.eteMin/60).toFixed(3)} hr × ${gph} gph</span>`;
       html += `<span class="step result">= ${r.legFuel.toFixed(2)} gal</span>`;
+    }
+    html += `</div></div>`;
+  }
+
+  // Distance remaining / fuel-time / actual GS block
+  if (!isNaN(r.distRem) || !isNaN(r.remTimeMin) || !isNaN(r.gsAct)) {
+    html += `<div class="nl-work-block"><div class="nl-work-label">Running Totals &amp; In-Flight Check</div><div class="nl-work-steps">`;
+    if (!isNaN(r.distRem)) {
+      html += `<span class="step">Dist remaining = total route − flown</span>`;
+      html += `<span class="step result">= ${r.distRem.toFixed(1)} NM to destination</span>`;
+    }
+    if (!isNaN(r.remTimeMin)) {
+      html += `<span class="step" style="margin-top:0.4rem">Fuel remaining (time) = Rem gal ÷ GPH</span>`;
+      html += `<span class="step-indent">= ${r.fuelRem.toFixed(1)} gal ÷ ${gph} gph × 60</span>`;
+      html += `<span class="step result">= ${fmtHM(r.remTimeMin)} of fuel on board</span>`;
+    }
+    if (!isNaN(r.gsAct)) {
+      html += `<span class="step" style="margin-top:0.4rem">Actual GS = Dist ÷ (ATE/60)</span>`;
+      html += `<span class="step-indent">= ${dst} NM ÷ (${leg.ate} min / 60)</span>`;
+      html += `<span class="step result">= ${Math.round(r.gsAct)} kt actual${!isNaN(r.gs) ? ' (planned ' + Math.round(r.gs) + ' kt)' : ''}</span>`;
+    } else {
+      html += `<span class="step nl-work-na" style="margin-top:0.4rem">Enter ATE in flight to compute actual GS (Dist ÷ ATE).</span>`;
     }
     html += `</div></div>`;
   }
@@ -1669,6 +2186,7 @@ function load() {
     const saved = JSON.parse(raw);
     if (!saved || !saved.legs) return false;
     state = saved;
+    state.meta = Object.assign({}, DEFAULT_META, saved.meta || {});
     return true;
   } catch(e) { return false; }
 }
@@ -1698,6 +2216,7 @@ document.getElementById('nl-file-input').addEventListener('change', e => {
       const parsed = JSON.parse(ev.target.result);
       if (!parsed.legs) throw new Error('Not a valid nav log file');
       state = parsed;
+      state.meta = Object.assign({}, DEFAULT_META, parsed.meta || {});
       workExpanded.clear();
       populateMetaDOM();
       render();
@@ -1716,6 +2235,14 @@ document.getElementById('nl-clear-btn').addEventListener('click', () => {
   workExpanded.clear();
   render();
   save();
+});
+
+/* ── PLANNING / IN-FLIGHT COLUMN TOGGLE ── */
+
+document.getElementById('nl-toggle-actuals').addEventListener('click', function() {
+  const table = document.getElementById('nl-table');
+  const showing = table.classList.toggle('nl-actuals-hidden') === false;
+  this.textContent = showing ? '✈ Hide in-flight columns' : '✈ Show in-flight columns';
 });
 
 /* ── INIT ── */
@@ -1748,7 +2275,12 @@ function pohInit() {
 
   // Keep cruise PA in sync when profile cruise alt changes
   profCruiseEl && profCruiseEl.addEventListener('input', () => {
-    if (cruisePaEl && profCruiseEl.value) cruisePaEl.value = profCruiseEl.value;
+    if (profCruiseEl.value) {
+      const ia = document.getElementById('poh-cruise-indalt');
+      if (ia) ia.value = profCruiseEl.value;
+      if (cruisePaEl) cruisePaEl.value = profCruiseEl.value;
+      pohComputePA(); // overrides PA from IndAlt + altimeter when a setting is present
+    }
     pohUpdateCruise();
     pohUpdateClimb();
     pohUpdateDescent();
@@ -1757,9 +2289,20 @@ function pohInit() {
   document.getElementById('pf-destelev') && document.getElementById('pf-destelev').addEventListener('input', pohUpdateDescent);
   document.getElementById('pf-descent')  && document.getElementById('pf-descent').addEventListener('input', pohUpdateDescent);
 
+  // Pre-fill indicated altitude from the profile cruise alt
+  const indAltEl = document.getElementById('poh-cruise-indalt');
+  if (indAltEl && profCruiseEl && profCruiseEl.value && !indAltEl.value) {
+    indAltEl.value = profCruiseEl.value;
+  }
+
   ['poh-cruise-pa', 'poh-cruise-oat', 'poh-cruise-rpm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', pohUpdateCruise);
+  });
+  // Indicated alt + altimeter recompute pressure altitude, then cruise/DA
+  ['poh-cruise-indalt', 'poh-cruise-baro'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { pohComputePA(); pohUpdateCruise(); });
   });
   ['poh-climb-oat-field', 'poh-climb-oat-cruise'].forEach(id => {
     const el = document.getElementById(id);
@@ -1775,15 +2318,48 @@ function pohInit() {
   pohUpdateDescent();
 }
 
+// Compute pressure altitude from indicated altitude + altimeter setting and
+// auto-fill the (still-editable) Press. Alt field. PA = IndAlt + (29.92 − baro) × 1000.
+function pohComputePA() {
+  const indAlt = parseFloat(document.getElementById('poh-cruise-indalt').value);
+  const baro   = parseFloat(document.getElementById('poh-cruise-baro').value);
+  if (isNaN(indAlt) || isNaN(baro)) return;
+  const pa = Math.round(indAlt + (29.92 - baro) * 1000);
+  document.getElementById('poh-cruise-pa').value = pa;
+}
+
+// Density altitude readout (independent of RPM). DA = PA + 120 × (OAT − ISA_temp).
+function updateDensityAlt(pa, oat) {
+  const el = document.getElementById('nl-da-callout');
+  if (!el) return;
+  if (isNaN(pa) || isNaN(oat)) {
+    el.className = 'nl-poh-callout';
+    el.textContent = 'Enter Indicated Alt, Altimeter, and Temp Aloft to compute pressure & density altitude.';
+    return;
+  }
+  const isaT = pohInterp.stdTempC(pa);          // 15 − 2×(PA/1000)
+  const da   = Math.round(pa + 120 * (oat - isaT));
+  const devStr = (oat - isaT >= 0 ? '+' : '') + (oat - isaT).toFixed(0) + '°C vs ISA';
+  el.className = 'nl-poh-callout ok';
+  el.innerHTML =
+    '<strong>Pressure Alt ' + pa.toLocaleString() + ' ft</strong> · ISA temp ' + isaT.toFixed(0) + '°C (' + devStr + ')' +
+    ' · <strong>Density Alt ' + da.toLocaleString() + ' ft</strong>' +
+    (da > pa + 50 ? ' <span style="color:var(--rust);font-size:0.78rem;">⚠ DA above PA — reduced power, lift &amp; climb</span>' : '') +
+    '<br><span style="font-size:0.75rem;color:var(--ink-soft)">PA = IndAlt + (29.92 − altimeter)×1000 · DA = PA + 120×(OAT − ISA). PHAK Ch. 16.</span>';
+}
+
 function pohUpdateCruise() {
   const pa  = parseFloat(document.getElementById('poh-cruise-pa').value);
   const oat = parseFloat(document.getElementById('poh-cruise-oat').value);
   const rpm = parseFloat(document.getElementById('poh-cruise-rpm').value);
   const callout = document.getElementById('nl-cruise-callout');
 
+  // Density altitude updates whenever PA + temp are known, even without RPM
+  updateDensityAlt(pa, oat);
+
   if (isNaN(pa) || isNaN(oat) || isNaN(rpm)) {
     callout.className = 'nl-poh-callout';
-    callout.textContent = 'Enter cruise PA, OAT, and RPM above to compute from POH Section 5, Figure 5-8.';
+    callout.textContent = 'Add Cruise RPM (with PA and Temp Aloft) to compute TAS, GPH, and % power from POH Section 5, Figure 5-8.';
     return;
   }
 
@@ -1795,6 +2371,9 @@ function pohUpdateCruise() {
     return;
   }
 
+  // Aviation rounding conventions: TAS down to whole kt, GPH up to nearest tenth
+  const ktas = rnd.tas(result.ktas);
+  const gph  = rnd.gph(result.gph);
   const stdT  = pohInterp.stdTempC(pa);
   const dev   = oat - stdT;
   const devStr = (dev >= 0 ? '+' : '') + dev.toFixed(0) + '°C from ISA';
@@ -1802,29 +2381,29 @@ function pohUpdateCruise() {
   callout.className = 'nl-poh-callout ok';
   callout.innerHTML =
     '<strong>PA ' + pa.toLocaleString() + ' ft / OAT ' + oat + '°C (' + devStr + ') / ' + rpm + ' RPM</strong><br>' +
-    'TAS <strong>' + result.ktas + ' kt</strong>   GPH <strong>' + result.gph + '</strong>   BHP <strong>' + result.bhp_pct + '%</strong>' +
+    'TAS <strong>' + ktas + ' kt</strong>   GPH <strong>' + gph.toFixed(1) + '</strong>   BHP <strong>' + result.bhp_pct + '%</strong>' +
     (result.bhp_pct > 75 ? ' <span style="color:var(--rust);font-size:0.78rem;">⚠ >75% — use full rich</span>' : '') +
     '<br><span style="font-size:0.75rem;color:var(--ink-soft)">Interpolated from POH Section 5, Figure 5-8 · 2 kt speed-fairings deduction applied · All leg rows updated.</span>';
 
   // Auto-fill TAS and GPH into every leg row (skip POH rows — taxi/climb have their own values)
   state.legs.forEach(leg => {
     if (leg._pohRow) return;
-    leg.tas = result.ktas; leg.gph = result.gph;
+    leg.tas = ktas; leg.gph = gph;
   });
-  state.meta.defaultTas = result.ktas;
-  state.meta.defaultGph = result.gph;
+  state.meta.defaultTas = ktas;
+  state.meta.defaultGph = gph;
   // Update profile inputs so they stay consistent
   const profTas = document.getElementById('pf-tas');
   const profGph = document.getElementById('pf-gph');
-  if (profTas) profTas.value = result.ktas;
-  if (profGph) profGph.value = result.gph;
+  if (profTas) profTas.value = ktas;
+  if (profGph) profGph.value = gph;
   // Update each existing row's DOM inputs without a full rebuild
   state.legs.forEach(leg => {
     if (leg._pohRow) return;
     const tasEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="tas"]');
     const gphEl = document.querySelector('input[data-lid="' + leg.id + '"][data-field="gph"]');
-    if (tasEl) tasEl.value = result.ktas;
-    if (gphEl) gphEl.value = result.gph;
+    if (tasEl) tasEl.value = ktas;
+    if (gphEl) gphEl.value = gph;
   });
   updateComputed();
   pohUpdateDescent();
