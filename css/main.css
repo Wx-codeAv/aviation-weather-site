@@ -160,6 +160,82 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   .nav-dropdown-label { font-size: 0.85rem; }
 }
 
+/* ---------- Mobile nav toggle ---------- */
+.nav-toggle {
+  display: none;                 /* desktop: hidden */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;                  /* full 44×44 touch target */
+  margin: -0.5rem 0;             /* keep header bar height unchanged */
+  padding: 0;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+}
+.nav-toggle-bars,
+.nav-toggle-bars::before,
+.nav-toggle-bars::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  transition: transform 0.2s, opacity 0.2s;
+}
+.nav-toggle-bars { position: relative; }
+.nav-toggle-bars::before,
+.nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
+.nav-toggle-bars::before { top: -6px; }
+.nav-toggle-bars::after  { top: 6px; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { top: 0; transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after  { top: 0; transform: rotate(-45deg); }
+
+@media (max-width: 700px) {
+  .nav-toggle { display: inline-flex; }
+
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--buff);
+    border-bottom: 1px solid var(--rule);
+    box-shadow: 0 8px 0 var(--buff-dark);
+  }
+  .site-nav.is-open { display: block; }
+
+  .site-nav .nav-links {
+    flex-direction: column;
+    gap: 0;
+    padding: 0 var(--gutter);
+  }
+  .site-nav .nav-links a,
+  .site-nav .nav-dropdown-menu a {
+    display: block;
+    padding: 0.9rem 0;           /* tall tap rows */
+    font-size: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* flatten the Tools submenu into the panel (no hover flyout on touch) */
+  .site-nav .nav-dropdown { position: static; }
+  .site-nav .nav-dropdown-label { display: none; }
+  .site-nav .nav-dropdown-menu {
+    display: block;
+    position: static;
+    border: none;
+    box-shadow: none;
+    background: none;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .site-nav .nav-dropdown-menu li:last-child a { border-bottom: none; }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   padding: 5rem 0 3rem;
@@ -205,7 +281,7 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
 
 .hero p.lede {
   font-size: 1.15rem;
-  max-width: 38ch;
+  max-width: 44ch;
   margin-bottom: 2rem;
 }
 
@@ -221,6 +297,29 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   transition: background 0.15s, transform 0.15s;
 }
 .hero-cta:hover { background: var(--rust); color: var(--buff); transform: translate(-1px, -1px); }
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+}
+.hero-cta-secondary {
+  display: inline-block;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  padding: 0.9rem 1.8rem;
+  border: 1px solid var(--ink);
+  font-size: 1rem;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.hero-cta-secondary:hover {
+  background: var(--ink);
+  color: var(--buff);
+  transform: translate(-1px, -1px);
+}
 
 /* ---------- METAR teaser card ---------- */
 .metar-card {
@@ -247,7 +346,8 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   font-size: 0.92rem;
   color: var(--ink);
   line-height: 1.7;
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: break-word;
   margin-bottom: 1.5rem;
   padding-bottom: 1.2rem;
   border-bottom: 1px dashed var(--rule);
@@ -299,7 +399,8 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
 .features {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0;
+  gap: 1px;                       /* the gap reveals the container color as hairlines */
+  background: var(--rule);
   border: 1px solid var(--rule);
 }
 @media (max-width: 700px) {
@@ -307,20 +408,16 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
 }
 .feature {
   padding: 2.2rem;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  background: #fffaf0;            /* surface tone: the grid reads as one elevated panel */
   position: relative;
   transition: background 0.2s;
 }
-.feature:nth-child(2n):not([style*="grid-column"]) { border-right: none; }
-.feature:last-child { border-bottom: none; }
-.feature:nth-last-child(2):not([style*="grid-column"]) { border-bottom: none; }
-@media (max-width: 700px) {
-  .feature { border-right: none; }
-  .feature:not(:last-child) { border-bottom: 1px solid var(--rule); }
-  .feature:last-child { border-bottom: none; }
+.feature-full { grid-column: 1 / -1; }
+.feature:hover { background: var(--buff); }
+.feature .feature-link {
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
 }
-.feature:hover { background: rgba(255, 250, 240, 0.6); }
 .feature-num {
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -411,17 +508,6 @@ footer .container {
   gap: 1rem;
 }
 
-/* ---------- Compass rose ornament ---------- */
-.compass {
-  position: absolute;
-  top: 2rem;
-  right: var(--gutter);
-  width: 60px;
-  height: 60px;
-  opacity: 0.35;
-  pointer-events: none;
-}
-
 /* ---------- Tooltip on tagged METAR words ---------- */
 .tag { position: relative; }
 .tag::after {
@@ -435,14 +521,18 @@ footer .container {
   font-family: var(--font-body);
   font-size: 0.78rem;
   padding: 4px 8px;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: min(220px, 60vw);
+  text-align: center;
   letter-spacing: 0.02em;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s;
   z-index: 10;
 }
-.tag:hover::after { opacity: 1; }
+.tag:hover::after,
+.tag:focus-visible::after,
+.tag.is-revealed::after { opacity: 1; }
 
 /* ============================================
    Concept pages (pages/learn/*)
@@ -1547,3 +1637,53 @@ footer .container {
   color: var(--sage);
 }
 .pirep-field-desc { color: var(--ink-soft); }
+
+/* ============================================
+   Polish & accessibility
+   Cross-cutting refinements: keyboard focus, anchor
+   offset under the sticky header, text selection,
+   and reduced-motion support.
+   ============================================ */
+
+/* In-page anchor jumps (TOC links, #section) clear the sticky header */
+html { scroll-padding-top: 80px; }
+
+/* Branded, visible keyboard-focus ring. Mouse clicks stay clean;
+   keyboard users get a clear indicator — including on inputs that
+   otherwise suppress the default outline. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* On the dark navy decoder bar, use the warmer accent so the ring reads */
+.decoder-wrapper input:focus-visible,
+.decoder-wrapper textarea:focus-visible,
+.decoder-wrapper button:focus-visible {
+  outline-color: var(--sun);
+}
+
+/* On-brand text selection */
+::selection { background: var(--ink); color: var(--buff); }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-cta:hover,
+  .hero-cta-secondary:hover,
+  .decoder-btn:hover,
+  .learn-card:hover { transform: none; }
+}

@@ -211,7 +211,10 @@
   <header class="site-header">
     <div class="container">
       <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
-      <nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="primary-nav">
         <ul class="nav-links">
           <li><a href="learn.html">Learn</a></li>
           <li><a href="decoder.html">Decoder</a></li>
@@ -655,5 +658,6 @@
 
     renderCards();
   </script>
+  <script src="../js/main.js"></script>
 </body>
 </html>

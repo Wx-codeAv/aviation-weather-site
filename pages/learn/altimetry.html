@@ -13,7 +13,10 @@
   <header class="site-header">
     <div class="container">
       <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
-      <nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="primary-nav">
         <ul class="nav-links">
           <li><a href="../learn.html">Learn</a></li>
           <li><a href="../decoder.html">Decoder</a></li>
@@ -517,12 +520,6 @@
             <p>Difference: 30.15 − 29.85 = 0.30"Hg → 300 ft error. The setting is too low, so the altimeter under-reads — the airplane is higher than indicated. True altitude: 700 + 300 = <strong>1,000 ft</strong>. The pilot who trusts the altimeter will flare 300 ft too high on final. Note: if the question were reversed (setting too high), the airplane would be lower than indicated — the dangerous direction near terrain.</p>
           </details>
 
-          <!-- TODO: additional checkride question to be added by project author -->
-          <details class="qa">
-            <summary>Q: [Placeholder — additional question to be added]</summary>
-            <p>[TODO: project author has additional content to add here.]</p>
-          </details>
-
         </section>
 
         <!-- Section: Decision scenario -->
@@ -584,5 +581,6 @@
     </div>
   </footer>
 
+  <script src="../../js/main.js"></script>
 </body>
 </html>

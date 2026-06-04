@@ -40,15 +40,25 @@ aviation-weather-site/
 ├── ROADMAP.md        ← multi-month build plan
 ├── index.html        ← landing page
 ├── pages/
-│   ├── learn.html
-│   ├── decoder.html
-│   ├── navlog.html
-│   └── acs.html
+│   ├── learn.html        ← Learn index
+│   ├── decoder.html      ← METAR + TAF decoder
+│   ├── navlog.html       ← cross-country nav log calculator
+│   ├── acs.html          ← ACS checkride task mapping
+│   ├── minimums.html     ← personal minimums builder
+│   ├── crosswind.html    ← crosswind calculator
+│   └── learn/            ← 15 concept pages (icing, fog, fronts, …)
 ├── css/
-│   └── main.css      ← all styles
+│   └── main.css          ← all styles
 ├── js/
-│   └── main.js       ← interactivity
-└── assets/           ← images, icons (empty for now)
+│   ├── main.js           ← shared interactivity
+│   ├── metar-decoder.js  ← METAR parsing
+│   ├── taf-decoder.js    ← TAF parsing
+│   ├── poh-c172s.js      ← C172S POH performance tables
+│   └── poh-interp.js     ← 3-axis POH interpolation
+├── assets/
+│   └── skewt/            ← generated skew-T diagrams
+├── reference/            ← project principles, ACS task notes
+└── tools/                ← Python helpers (skew-T generation)
 ```
 
 ## Running it locally

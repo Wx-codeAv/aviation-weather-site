@@ -15,7 +15,10 @@
       <a href="index.html" class="brand">
         Crosswind<span class="brand-mark">WX</span>
       </a>
-      <nav>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="primary-nav">
         <ul class="nav-links">
           <li><a href="pages/learn.html">Learn</a></li>
           <li><a href="pages/decoder.html">Decoder</a></li>
@@ -36,16 +39,6 @@
   <!-- ============== Hero ============== -->
   <section class="hero">
     <div class="container">
-      <!-- subtle compass-rose ornament, top-right -->
-      <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="#0c2541" stroke-width="1"/>
-        <circle cx="50" cy="50" r="32" fill="none" stroke="#0c2541" stroke-width="0.5"/>
-        <polygon points="50,8 53,50 50,92 47,50" fill="#b53d1f"/>
-        <polygon points="8,50 50,47 92,50 50,53" fill="#0c2541"/>
-        <text x="50" y="6" text-anchor="middle" font-family="Anton, sans-serif" font-size="8" fill="#0c2541">N</text>
-        <text x="50" y="99" text-anchor="middle" font-family="Anton, sans-serif" font-size="8" fill="#0c2541">S</text>
-      </svg>
-
       <div class="hero-grid">
         <div>
           <p class="hero-eyebrow">Aviation weather, decoded</p>
@@ -55,9 +48,12 @@
             What now?
           </h1>
           <p class="lede">
-            Built by a meteorology tutor and a student pilot, for the people who freeze when an examiner asks what an AIRMET Sierra means. The weather products are doing fine. The translations are not.
+            A free, no-login study tool that turns the aviation weather on the Private Pilot ACS into plain English: METAR and TAF decoders, crosswind and nav-log calculators, and 15 concept lessons.
           </p>
-          <a href="pages/decoder.html" class="hero-cta">Decode a METAR →</a>
+          <div class="hero-actions">
+            <a href="pages/decoder.html" class="hero-cta">Decode a METAR →</a>
+            <a href="pages/learn.html" class="hero-cta-secondary">Browse the lessons →</a>
+          </div>
         </div>
 
         <!-- Sample METAR card with tooltips -->
@@ -65,14 +61,14 @@
           <span class="metar-card-label">METAR · KDAB</span>
           <p class="metar-raw">
             KDAB
-            <span class="tag" data-tip="Day 25, 17:53 Zulu">251753Z</span>
-            <span class="tag tag-wind" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
-            <span class="tag tag-vis" data-tip="Visibility 6 statute miles">6SM</span>
-            <span class="tag tag-wx" data-tip="Light rain in the vicinity">-RA</span>
-            <span class="tag" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
-            <span class="tag" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
+            <span class="tag" tabindex="0" aria-label="251753Z: day 25, 17:53 Zulu" data-tip="Day 25, 17:53 Zulu">251753Z</span>
+            <span class="tag tag-wind" tabindex="0" aria-label="24014G22KT: wind 240 degrees at 14 knots, gusting 22" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
+            <span class="tag tag-vis" tabindex="0" aria-label="6SM: visibility 6 statute miles" data-tip="Visibility 6 statute miles">6SM</span>
+            <span class="tag tag-wx" tabindex="0" aria-label="-RA: light rain in the vicinity" data-tip="Light rain in the vicinity">-RA</span>
+            <span class="tag" tabindex="0" aria-label="BKN025: broken clouds at 2,500 ft AGL" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
+            <span class="tag" tabindex="0" aria-label="OVC080: overcast at 8,000 ft AGL" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
             22/19
-            <span class="tag" data-tip="Altimeter 29.84 inHg">A2984</span>
+            <span class="tag" tabindex="0" aria-label="A2984: altimeter 29.84 inHg" data-tip="Altimeter 29.84 inHg">A2984</span>
           </p>
           <dl class="metar-decode">
             <dt>Wind</dt>
@@ -103,9 +99,9 @@
         <article class="feature">
           <span class="feature-num">01 / Learn</span>
           <h3>Weather, concept by concept</h3>
-          <p>Fourteen pages covering every ACS weather topic — AIRMETs and SIGMETs, icing, fog, thunderstorms, turbulence, fronts, winds aloft, density altitude, altimetry, and more. Each page follows the same format: what it is, why it matters, what to look for, and a checkride scenario.</p>
+          <p>Fifteen pages covering every ACS weather topic — AIRMETs and SIGMETs, icing, fog, thunderstorms, turbulence, fronts, winds aloft, density altitude, altimetry, and more. Each page follows the same format: what it is, why it matters, what to look for, and a checkride scenario.</p>
           <span class="feature-status">Live · 15 pages</span>
-          <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/learn.html">Browse all topics →</a></p>
+          <p class="feature-link"><a href="pages/learn.html">Browse all topics →</a></p>
         </article>
 
         <article class="feature">
@@ -113,7 +109,7 @@
           <h3>METAR &amp; TAF translator</h3>
           <p>Paste a raw METAR or TAF. Get a color-coded breakdown, flight category badge, and plain-English translation of every token — winds, visibility, sky coverage, weather phenomena, and TAF change groups with timing.</p>
           <span class="feature-status">Live · METAR + TAF</span>
-          <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/decoder.html">Decode a METAR →</a></p>
+          <p class="feature-link"><a href="pages/decoder.html">Decode a METAR →</a></p>
         </article>
 
         <article class="feature">
@@ -121,7 +117,7 @@
           <h3>Checkride task mapping</h3>
           <p>The weather tasks from the Private Pilot ACS, organized by topic. See exactly what the examiner can ask, the standard you're being held to, and the oral question types — without scrolling the PDF at 11 PM the night before.</p>
           <span class="feature-status">Live · Private Pilot</span>
-          <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/acs.html">Browse the ACS →</a></p>
+          <p class="feature-link"><a href="pages/acs.html">Browse the ACS →</a></p>
         </article>
 
         <article class="feature">
@@ -129,17 +125,17 @@
           <h3>Two flight calculators</h3>
           <p><strong>Personal Minimums Builder</strong> — set conservative limits above the legal floor and document them for your checkride. <strong>Crosswind Calculator</strong> — enter METAR wind and a runway number to see headwind and crosswind components with a live wind triangle diagram.</p>
           <span class="feature-status">Live · 2 tools</span>
-          <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/crosswind.html">Crosswind calc →</a> &nbsp;·&nbsp; <a href="pages/minimums.html">Minimums builder →</a></p>
+          <p class="feature-link"><a href="pages/crosswind.html">Crosswind calc →</a> &nbsp;·&nbsp; <a href="pages/minimums.html">Minimums builder →</a></p>
+        </article>
+
+        <article class="feature feature-full">
+          <span class="feature-num">05 / Nav Log</span>
+          <h3>Cross-country nav log calculator</h3>
+          <p>Plan your first cross-country start to finish. Enter each waypoint, winds aloft, and altitude — the calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel burn per leg, and shows the step-by-step math for every computed value. Cruise TAS and GPH pull directly from the C172S POH Section 5 tables via 3-axis interpolation across altitude, RPM, and temperature. Climb time, fuel, and distance come from the same tables with the 1.4-gallon start/taxi allowance built in. Export to JSON, print to a clean nav log sheet, and save your work automatically in the browser.</p>
+          <span class="feature-status">Live · Beta</span>
+          <p class="feature-link"><a href="pages/navlog.html">Open nav log →</a></p>
         </article>
       </div>
-
-      <article class="feature" style="grid-column: 1 / -1; border-right: none;">
-        <span class="feature-num">05 / Nav Log</span>
-        <h3>Cross-country nav log calculator</h3>
-        <p>Plan your first cross-country start to finish. Enter each waypoint, winds aloft, and altitude — the calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel burn per leg, and shows the step-by-step math for every computed value. Cruise TAS and GPH pull directly from the C172S POH Section 5 tables via 3-axis interpolation across altitude, RPM, and temperature. Climb time, fuel, and distance come from the same tables with the 1.4-gallon start/taxi allowance built in. Export to JSON, print to a clean nav log sheet, and save your work automatically in the browser.</p>
-        <span class="feature-status">Live · Beta</span>
-        <p style="margin-top:1.2rem;font-size:0.9rem;"><a href="pages/navlog.html">Open nav log →</a></p>
-      </article>
     </div>
   </section>
 

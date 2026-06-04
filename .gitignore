@@ -23,3 +23,6 @@ Thumbs.db
 *~
 *.bak
 *.swp
+
+# Third-party Claude Code skill — kept local, not part of this repo
+.claude/skills/impeccable/
