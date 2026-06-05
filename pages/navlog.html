@@ -1360,6 +1360,9 @@ function updateLeg(id, field, rawValue) {
   } else {
     leg[field] = rawValue;
   }
+  // A manual wind or altitude edit overrides the applied winds-aloft value,
+  // so the stored interpolation math no longer describes the current WD/WS.
+  if (['wd','ws','alt'].includes(field)) delete leg._windInterp;
 }
 
 /* ── COMPUTE ── */
@@ -1925,6 +1928,35 @@ function renderWorkContent(id, leg, r) {
   const gsAngle = thVal !== null && !isNaN(wd) ? (thVal - wd) : null;
 
   let html = `<div class="nl-work-title">Calculation Work — ${fixName}</div><div class="nl-work-grid">`;
+
+  // Winds-aloft interpolation block — only when WD/WS came from applied FB data.
+  // Cleared the moment the pilot edits WD/WS/alt by hand (see updateLeg).
+  const wi = leg._windInterp;
+  if (wi) {
+    const fw = w => (!w || w.calm || !w.spd) ? 'calm'
+      : `${String(Math.round(w.dir)).padStart(3, '0')}°/${Math.round(w.spd)} kt`;
+    const ft = n => Number(n).toLocaleString('en-US');
+    html += `<div class="nl-work-block"><div class="nl-work-label">Winds Aloft — ${wi.station}</div><div class="nl-work-steps">`;
+    if (wi.kind === 'lerp') {
+      const pct = Math.round(wi.frac * 100);
+      html += `<span class="step">Leg altitude ${ft(wi.alt)} ft falls between reported levels</span>`;
+      html += `<span class="step-indent">${ft(wi.lo)} ft: ${fw(wi.wLo)}</span>`;
+      html += `<span class="step-indent">${ft(wi.hi)} ft: ${fw(wi.wHi)}</span>`;
+      html += `<span class="step-indent">${ft(wi.alt)} ft is ${pct}% of the way up → interpolate</span>`;
+      html += `<span class="step-indent">Vector (u/v) interpolation handles the 360°/0° wrap</span>`;
+      html += `<span class="step result">≈ ${fw(wi.result)}</span>`;
+    } else if (wi.kind === 'exact') {
+      html += `<span class="step">Reported level ${ft(wi.level)} ft matches leg altitude</span>`;
+      html += `<span class="step result">= ${fw(wi.result)} (no interpolation)</span>`;
+    } else {
+      const side = wi.kind === 'below' ? 'below the lowest' : 'above the highest';
+      html += `<span class="step">Leg altitude ${ft(wi.alt)} ft is ${side} reported level</span>`;
+      html += `<span class="step-indent">Using nearest level ${ft(wi.level)} ft (no extrapolation)</span>`;
+      html += `<span class="step result">= ${fw(wi.result)}</span>`;
+    }
+    html += `<span class="step nl-work-mnemonic">Source: FB winds aloft, valid ${wi.valid}</span>`;
+    html += `</div></div>`;
+  }
 
   // WCA block
   html += `<div class="nl-work-block"><div class="nl-work-label">Wind Correction Angle (WCA)</div><div class="nl-work-steps">`;
@@ -2999,16 +3031,30 @@ function waParseInline(text) {
 // Uses u/v component math to correctly handle the 360°/0° boundary.
 
 function waGetWindAtAlt(windMap, targetAlt, altLevels) {
+  const d = waGetWindDetail(windMap, targetAlt, altLevels);
+  return d ? d.wind : null;
+}
+
+// Same lookup as waGetWindAtAlt, but also returns how the value was derived
+// ({kind, ...}) so the per-leg show-work panel can display the interpolation math.
+function waGetWindDetail(windMap, targetAlt, altLevels) {
   const avail = altLevels.filter(a => windMap[a]).sort((a, b) => a - b);
   if (avail.length === 0) return null;
-  if (windMap[targetAlt]) return windMap[targetAlt];
-  if (targetAlt <= avail[0]) return windMap[avail[0]];               // Below range — use lowest
-  if (targetAlt >= avail[avail.length - 1]) return windMap[avail[avail.length - 1]]; // Above range — use highest
-
+  if (windMap[targetAlt]) {
+    return { wind: windMap[targetAlt], interp: { kind: 'exact', alt: targetAlt, level: targetAlt } };
+  }
+  if (targetAlt <= avail[0]) {                                       // Below range — use lowest
+    return { wind: windMap[avail[0]], interp: { kind: 'below', alt: targetAlt, level: avail[0] } };
+  }
+  if (targetAlt >= avail[avail.length - 1]) {                        // Above range — use highest
+    const hiLv = avail[avail.length - 1];
+    return { wind: windMap[hiLv], interp: { kind: 'above', alt: targetAlt, level: hiLv } };
+  }
   const lo = avail.filter(a => a <= targetAlt).pop();
   const hi = avail.find(a => a > targetAlt);
   const frac = (targetAlt - lo) / (hi - lo);
-  return waInterpWind(windMap[lo], windMap[hi], frac);
+  const wind = waInterpWind(windMap[lo], windMap[hi], frac);
+  return { wind, interp: { kind: 'lerp', alt: targetAlt, lo, hi, frac, wLo: windMap[lo], wHi: windMap[hi] } };
 }
 
 function waInterpWind(w1, w2, frac) {
@@ -3127,11 +3173,14 @@ function waApply() {
     const alt = parseFloat(leg.alt);
     if (isNaN(alt) || alt <= 0) return;
 
-    const wind = waGetWindAtAlt(_windAloftData.stations[stId], alt, _windAloftData.altLevels);
-    if (!wind) return;
+    const detail = waGetWindDetail(_windAloftData.stations[stId], alt, _windAloftData.altLevels);
+    if (!detail) return;
+    const wind = detail.wind;
 
     leg.wd = wind.dir;
     leg.ws = wind.spd;
+    // Provenance for the show-work panel; cleared on any manual WD/WS/alt edit.
+    leg._windInterp = Object.assign({ station: stId, valid: _windAloftData.validStr, result: wind }, detail.interp);
 
     // Update DOM inputs without a full table rebuild
     const wdEl = document.querySelector(`input[data-lid="${leg.id}"][data-field="wd"]`);

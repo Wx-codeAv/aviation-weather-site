@@ -320,14 +320,27 @@
               <!-- ===== COLD AIR side (left) ===== -->
               <text x="130" y="22" font-family="Anton, sans-serif" font-size="12" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">COLD AIR · POST-FRONTAL</text>
 
-              <!-- Post-frontal cumulus (small, scattered) -->
+              <!-- Post-frontal cumulus (small, scattered) — clean rim + body, no internal seams -->
               <!-- Cu 1 -->
-              <ellipse cx="80" cy="190" rx="28" ry="14" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
-              <ellipse cx="92" cy="180" rx="18" ry="11" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
-              <ellipse cx="70" cy="183" rx="15" ry="10" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <g fill="#4a7ba6">
+                <ellipse cx="80" cy="190" rx="29.3" ry="15.3"/>
+                <ellipse cx="92" cy="180" rx="19.3" ry="12.3"/>
+                <ellipse cx="70" cy="183" rx="16.3" ry="11.3"/>
+              </g>
+              <g fill="#dce6f0">
+                <ellipse cx="80" cy="190" rx="28" ry="14"/>
+                <ellipse cx="92" cy="180" rx="18" ry="11"/>
+                <ellipse cx="70" cy="183" rx="15" ry="10"/>
+              </g>
               <!-- Cu 2 -->
-              <ellipse cx="200" cy="194" rx="24" ry="12" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
-              <ellipse cx="210" cy="185" rx="16" ry="10" fill="rgba(220,230,240,0.85)" stroke="#4a7ba6" stroke-width="0.8"/>
+              <g fill="#4a7ba6">
+                <ellipse cx="200" cy="194" rx="25.3" ry="13.3"/>
+                <ellipse cx="210" cy="185" rx="17.3" ry="11.3"/>
+              </g>
+              <g fill="#dce6f0">
+                <ellipse cx="200" cy="194" rx="24" ry="12"/>
+                <ellipse cx="210" cy="185" rx="16" ry="10"/>
+              </g>
 
               <!-- Post-frontal wind arrow (NW) -->
               <g fill="#4a7ba6" stroke="#4a7ba6" stroke-width="1.5">
@@ -364,10 +377,17 @@
               <text x="420" y="283" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">thunder · hail possible</text>
 
               <!-- TCU (mid ~490) -->
-              <rect x="480" y="130" width="35" height="100" fill="rgba(195,205,220,0.8)" stroke="#777" stroke-width="0.8"/>
-              <ellipse cx="497" cy="128" rx="22" ry="14" fill="rgba(200,210,225,0.85)" stroke="#777" stroke-width="0.8"/>
-              <ellipse cx="510" cy="133" rx="14" ry="10" fill="rgba(200,210,225,0.8)" stroke="#777" stroke-width="0.8"/>
-              <ellipse cx="484" cy="134" rx="12" ry="9" fill="rgba(200,210,225,0.8)" stroke="#777" stroke-width="0.8"/>
+              <rect x="480" y="130" width="35" height="100" fill="#bcc6d4"/>
+              <g fill="#8a8f99">
+                <ellipse cx="497" cy="128" rx="23.3" ry="15.3"/>
+                <ellipse cx="510" cy="133" rx="15.3" ry="11.3"/>
+                <ellipse cx="484" cy="134" rx="13.3" ry="10.3"/>
+              </g>
+              <g fill="#c3cdda">
+                <ellipse cx="497" cy="128" rx="22" ry="14"/>
+                <ellipse cx="510" cy="133" rx="14" ry="10"/>
+                <ellipse cx="484" cy="134" rx="12" ry="9"/>
+              </g>
               <text x="520" y="148" font-family="Manrope, sans-serif" font-size="8" fill="#777">TCu</text>
 
               <!-- Squall line indicator (~570) -->
@@ -377,10 +397,17 @@
               <text x="574" y="86" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">SQUALL LINE</text>
               <text x="574" y="97" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">50–200 nm ahead</text>
 
-              <!-- Far warm sector Cu (right ~650) -->
-              <ellipse cx="640" cy="196" rx="26" ry="13" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
-              <ellipse cx="652" cy="187" rx="18" ry="11" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
-              <ellipse cx="632" cy="189" rx="14" ry="10" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <!-- Far warm sector Cu (right ~650) — clean rim + body -->
+              <g fill="#b9a87a">
+                <ellipse cx="640" cy="196" rx="27.3" ry="14.3"/>
+                <ellipse cx="652" cy="187" rx="19.3" ry="12.3"/>
+                <ellipse cx="632" cy="189" rx="15.3" ry="11.3"/>
+              </g>
+              <g fill="#e6dcc8">
+                <ellipse cx="640" cy="196" rx="26" ry="13"/>
+                <ellipse cx="652" cy="187" rx="18" ry="11"/>
+                <ellipse cx="632" cy="189" rx="14" ry="10"/>
+              </g>
 
               <!-- Pre-frontal wind arrow (SE → SW) -->
               <g fill="#b53d1f" stroke="#b53d1f" stroke-width="1.5">
@@ -549,10 +576,17 @@
               <text x="515" y="263" font-family="Manrope, sans-serif" font-size="7.5" fill="#777" text-anchor="middle">At surface front</text>
 
               <!-- ===== WARM SECTOR (right) ===== -->
-              <!-- Warm sector scattered Cu -->
-              <ellipse cx="620" cy="194" rx="28" ry="13" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
-              <ellipse cx="634" cy="184" rx="20" ry="12" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
-              <ellipse cx="612" cy="186" rx="16" ry="11" fill="rgba(230,220,200,0.8)" stroke="#b9a87a" stroke-width="0.8"/>
+              <!-- Warm sector scattered Cu — clean rim + body -->
+              <g fill="#b9a87a">
+                <ellipse cx="620" cy="194" rx="29.3" ry="14.3"/>
+                <ellipse cx="634" cy="184" rx="21.3" ry="13.3"/>
+                <ellipse cx="612" cy="186" rx="17.3" ry="12.3"/>
+              </g>
+              <g fill="#e6dcc8">
+                <ellipse cx="620" cy="194" rx="28" ry="13"/>
+                <ellipse cx="634" cy="184" rx="20" ry="12"/>
+                <ellipse cx="612" cy="186" rx="16" ry="11"/>
+              </g>
 
               <!-- Warm sector wind arrow -->
               <g fill="#b53d1f" stroke="#b53d1f" stroke-width="1.5">

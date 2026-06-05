@@ -216,6 +216,12 @@
           <figure class="diagram">
             <svg viewBox="0 0 680 325" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tstm-lifecycle-title">
               <title id="tstm-lifecycle-title">Thunderstorm three-stage lifecycle: cumulus stage with updrafts only and no surface precipitation; mature stage with coexisting updrafts and downdrafts, anvil top, and precipitation; dissipating stage with dominant downdrafts and weakening precipitation</title>
+              <defs>
+                <linearGradient id="cloudCool" x1="0" y1="56" x2="0" y2="262" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#dce8f4"/>
+                  <stop offset="1" stop-color="#9fb8d6"/>
+                </linearGradient>
+              </defs>
               <rect width="680" height="325" fill="#fffaf0"/>
 
               <!-- Tropopause line -->
@@ -229,21 +235,16 @@
               <rect x="22" y="25" width="188" height="248" fill="#5d6f3c" opacity="0.04" rx="3"/>
               <text x="116" y="42" font-family="Anton, sans-serif" font-size="11" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.1em">CUMULUS STAGE</text>
 
-              <!-- Cloud: growing TCu -->
-              <ellipse cx="116" cy="243" rx="30" ry="11" fill="#e8f0fa" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="116" cy="225" rx="33" ry="17" fill="#dde8f5" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="107" cy="207" rx="27" ry="15" fill="#d2e0f0" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="126" cy="203" rx="25" ry="14" fill="#d2e0f0" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="114" cy="185" rx="29" ry="17" fill="#c5d8ec" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="116" cy="167" rx="26" ry="17" fill="#bad0e8" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="116" cy="152" rx="21" ry="14" fill="#aec8e4" stroke="#4a7ba6" stroke-width="1"/>
+              <!-- Cloud: building towering cumulus — single billowing silhouette -->
+              <path d="M89,258 C85,242 87,222 93,210 C89,196 93,180 105,176 C103,162 115,156 125,162 C135,158 145,170 139,182 C147,194 143,214 135,224 C137,240 135,250 129,258 Z"
+                    fill="url(#cloudCool)" stroke="#5a82a8" stroke-width="1.4"/>
 
               <!-- Updraft arrows only -->
               <g stroke="#b53d1f" stroke-width="2" fill="#b53d1f">
-                <line x1="108" y1="238" x2="108" y2="202"/>
-                <polygon points="108,196 104,208 112,208"/>
-                <line x1="124" y1="238" x2="124" y2="198"/>
-                <polygon points="124,192 120,204 128,204"/>
+                <line x1="110" y1="240" x2="110" y2="190"/>
+                <polygon points="110,182 105,196 115,196"/>
+                <line x1="124" y1="240" x2="124" y2="180"/>
+                <polygon points="124,172 119,186 129,186"/>
               </g>
 
               <!-- Labels -->
@@ -258,43 +259,39 @@
               <rect x="216" y="25" width="248" height="248" fill="#b53d1f" opacity="0.04" rx="3"/>
               <text x="340" y="42" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.1em">MATURE STAGE</text>
 
-              <!-- Anvil at tropopause -->
-              <path d="M280,148 Q280,65 338,63 Q390,61 440,67 Q458,71 460,80 Q438,82 392,76 Q338,70 280,148" fill="#c5d8ec" stroke="#4a7ba6" stroke-width="1" opacity="0.85"/>
+              <!-- Anvil (incus) spreading downwind under the tropopause; drawn behind the tower -->
+              <path d="M268,80 C262,70 276,64 296,64 C330,62 380,62 412,64 C436,64 452,70 456,80 C450,86 438,88 424,90 C432,96 420,100 406,98 C380,102 340,102 312,98 C296,96 278,90 268,80 Z"
+                    fill="#c8dbed" stroke="#5a82a8" stroke-width="1" opacity="0.95"/>
 
-              <!-- Storm cloud body -->
-              <ellipse cx="308" cy="244" rx="38" ry="11" fill="#bccde0" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="318" cy="224" rx="43" ry="19" fill="#b0c2d8" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="304" cy="203" rx="36" ry="17" fill="#a4b7cf" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="328" cy="199" rx="33" ry="16" fill="#a4b7cf" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="314" cy="177" rx="40" ry="21" fill="#97abc5" stroke="#4a7ba6" stroke-width="1"/>
-              <ellipse cx="316" cy="152" rx="38" ry="21" fill="#8a9fbb" stroke="#4a7ba6" stroke-width="1"/>
+              <!-- Storm cloud body — towering Cb with overshooting top punching the tropopause -->
+              <path d="M300,258 C296,238 298,212 302,196 C298,176 302,154 312,146 C309,130 313,116 322,110 C318,92 328,62 342,58 C357,58 366,86 357,106 C366,116 369,134 360,148 C366,168 362,200 360,224 C360,240 360,250 356,258 Z"
+                    fill="url(#cloudCool)" stroke="#5a82a8" stroke-width="1.4"/>
 
               <!-- Strong updraft (left side) -->
               <g stroke="#b53d1f" stroke-width="2.5" fill="#b53d1f">
-                <line x1="296" y1="260" x2="296" y2="158"/>
-                <polygon points="296,150 291,165 301,165"/>
+                <line x1="318" y1="254" x2="318" y2="130"/>
+                <polygon points="318,122 313,137 323,137"/>
               </g>
-              <text x="281" y="212" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle" transform="rotate(-90 281 212)">UPDRAFT</text>
+              <text x="290" y="206" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle" transform="rotate(-90 290 206)">UPDRAFT</text>
 
               <!-- Downdraft (right side) -->
               <g stroke="#4a7ba6" stroke-width="2.5" fill="#4a7ba6">
-                <line x1="346" y1="158" x2="346" y2="258"/>
-                <polygon points="346,266 341,251 351,251"/>
+                <line x1="348" y1="130" x2="348" y2="256"/>
+                <polygon points="348,264 343,249 353,249"/>
               </g>
-              <text x="361" y="212" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle" transform="rotate(-90 361 212)">DOWNDRAFT</text>
+              <text x="386" y="206" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle" transform="rotate(-90 386 206)">DOWNDRAFT</text>
 
               <!-- Precipitation shafts -->
               <g stroke="#4a7ba6" stroke-width="1.3" stroke-dasharray="3,4" opacity="0.75">
-                <line x1="334" y1="253" x2="334" y2="270"/>
-                <line x1="344" y1="251" x2="346" y2="270"/>
-                <line x1="354" y1="250" x2="357" y2="270"/>
-                <line x1="364" y1="251" x2="366" y2="270"/>
-                <line x1="374" y1="250" x2="376" y2="270"/>
-                <line x1="382" y1="252" x2="384" y2="270"/>
+                <line x1="334" y1="257" x2="334" y2="270"/>
+                <line x1="342" y1="258" x2="344" y2="270"/>
+                <line x1="350" y1="257" x2="353" y2="270"/>
+                <line x1="358" y1="258" x2="360" y2="270"/>
+                <line x1="366" y1="258" x2="368" y2="270"/>
               </g>
 
               <!-- Lightning bolt -->
-              <path d="M330,180 L322,200 L328,200 L319,222" stroke="#d9a521" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M334,166 L327,188 L333,188 L325,212" stroke="#d9a521" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
               <!-- ALL HAZARDS label -->
               <text x="340" y="290" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">ALL HAZARDS ACTIVE</text>
@@ -308,30 +305,27 @@
               <rect x="470" y="25" width="188" height="248" fill="#2d4360" opacity="0.04" rx="3"/>
               <text x="564" y="42" font-family="Anton, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" letter-spacing="0.08em">DISSIPATING STAGE</text>
 
-              <!-- Anvil remnant -->
-              <path d="M482,82 Q510,68 564,66 Q600,66 622,72 Q614,82 592,80 Q564,78 522,84 Q500,88 482,82" fill="#c5d8ec" stroke="#4a7ba6" stroke-width="1" opacity="0.65"/>
+              <!-- Anvil remnant — sheared off and drifting downwind after the cell collapses -->
+              <path d="M560,142 C570,130 594,124 620,126 C638,128 648,136 640,146 C628,144 614,144 600,146 C612,152 598,156 584,152 C570,150 558,150 560,142 Z"
+                    fill="#c8dbed" stroke="#5a82a8" stroke-width="0.9" opacity="0.5"/>
 
-              <!-- Weakening cloud body (less saturated color) -->
-              <ellipse cx="536" cy="243" rx="43" ry="11" fill="#d8e5ef" stroke="#4a7ba6" stroke-width="1" opacity="0.8"/>
-              <ellipse cx="540" cy="225" rx="40" ry="17" fill="#cddae7" stroke="#4a7ba6" stroke-width="1" opacity="0.75"/>
-              <ellipse cx="528" cy="205" rx="33" ry="15" fill="#c2cfe0" stroke="#4a7ba6" stroke-width="1" opacity="0.7"/>
-              <ellipse cx="548" cy="201" rx="30" ry="14" fill="#c2cfe0" stroke="#4a7ba6" stroke-width="1" opacity="0.7"/>
-              <ellipse cx="537" cy="182" rx="34" ry="17" fill="#b5c5d8" stroke="#4a7ba6" stroke-width="1" opacity="0.65"/>
-              <ellipse cx="537" cy="163" rx="29" ry="16" fill="#a8b8cc" stroke="#4a7ba6" stroke-width="1" opacity="0.6"/>
+              <!-- Weakening cloud body — collapsing tower, faded -->
+              <path d="M538,258 C534,240 536,216 542,202 C538,184 543,164 554,158 C551,144 560,136 568,142 C576,138 584,150 578,160 C584,178 580,206 576,228 C576,242 574,250 570,258 Z"
+                    fill="url(#cloudCool)" stroke="#5a82a8" stroke-width="1.2" opacity="0.6"/>
 
               <!-- Dominant downdraft arrows -->
               <g stroke="#4a7ba6" stroke-width="2.5" fill="#4a7ba6">
-                <line x1="520" y1="168" x2="520" y2="258"/>
-                <polygon points="520,265 515,251 525,251"/>
-                <line x1="548" y1="168" x2="548" y2="258"/>
-                <polygon points="548,265 543,251 553,251"/>
+                <line x1="556" y1="160" x2="556" y2="254"/>
+                <polygon points="556,262 551,247 561,247"/>
+                <line x1="570" y1="160" x2="570" y2="254"/>
+                <polygon points="570,262 565,247 575,247"/>
               </g>
 
               <!-- Weak / diminishing precipitation -->
               <g stroke="#4a7ba6" stroke-width="1" stroke-dasharray="2,6" opacity="0.45">
-                <line x1="535" y1="252" x2="535" y2="270"/>
-                <line x1="549" y1="252" x2="551" y2="270"/>
-                <line x1="562" y1="252" x2="565" y2="270"/>
+                <line x1="552" y1="256" x2="552" y2="270"/>
+                <line x1="562" y1="256" x2="564" y2="270"/>
+                <line x1="572" y1="256" x2="575" y2="270"/>
               </g>
 
               <!-- Labels -->

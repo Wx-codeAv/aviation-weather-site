@@ -137,22 +137,24 @@
 
           <!-- Microburst SVG diagram -->
           <figure class="diagram">
-            <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="burst-title">
+            <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="burst-title">
               <title id="burst-title">Microburst encounter on approach. Aircraft approaches from upper right, first encounters an outflow headwind (airspeed increase), then enters the downdraft core (altitude loss), then exits into a tailwind on the far side (sudden airspeed loss). Three aircraft icons show the three phases of the encounter.</title>
 
-              <rect width="700" height="260" fill="#fffaf0"/>
+              <rect width="800" height="260" fill="#fffaf0"/>
 
               <!-- Ground line -->
-              <rect x="0" y="228" width="700" height="32" fill="#e8dcb8" opacity="0.6"/>
-              <line x1="0" y1="228" x2="700" y2="228" stroke="#b9a87a" stroke-width="1"/>
+              <rect x="0" y="228" width="800" height="32" fill="#e8dcb8" opacity="0.6"/>
+              <line x1="0" y1="228" x2="800" y2="228" stroke="#b9a87a" stroke-width="1"/>
               <text x="350" y="248" text-anchor="middle" font-family="Manrope,sans-serif" font-size="8.5" fill="#888">Runway / ground surface</text>
 
-              <!-- Storm cell -->
-              <ellipse cx="350" cy="28" rx="68" ry="26" fill="#4a5e6a" opacity="0.9"/>
-              <ellipse cx="290" cy="30" rx="44" ry="20" fill="#3a4e5a" opacity="0.75"/>
-              <ellipse cx="412" cy="30" rx="40" ry="18" fill="#3a4e5a" opacity="0.75"/>
-              <ellipse cx="445" cy="22" rx="52" ry="12" fill="#3a4e5a" opacity="0.5"/>
-              <text x="350" y="32" text-anchor="middle" font-family="Anton,sans-serif" font-size="10" fill="#f4ecd6" letter-spacing="0.07em">THUNDERSTORM</text>
+              <!-- Storm cell — clean two-tone mass (darker base, lighter billowing top) -->
+              <g fill="#3c4f5a">
+                <ellipse cx="350" cy="32" rx="72" ry="26"/>
+                <ellipse cx="294" cy="33" rx="46" ry="20"/>
+                <ellipse cx="406" cy="33" rx="44" ry="19"/>
+              </g>
+              <ellipse cx="350" cy="19" rx="54" ry="17" fill="#4a5e6a"/>
+              <text x="350" y="34" text-anchor="middle" font-family="Anton,sans-serif" font-size="10" fill="#f4ecd6" letter-spacing="0.07em">THUNDERSTORM</text>
 
               <!-- Downdraft column shading -->
               <rect x="322" y="54" width="56" height="172" fill="rgba(74,123,166,0.09)" rx="2"/>
@@ -204,7 +206,7 @@
               <text x="155" y="208" text-anchor="end" font-family="Manrope,sans-serif" font-size="7.5" fill="#888">↓ airspeed, low, near idle — no recovery</text>
 
               <!-- Outer border -->
-              <rect x="1" y="1" width="698" height="258" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <rect x="1" y="1" width="798" height="258" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
             <figcaption>Microburst encounter on approach (aircraft flying right to left). Phase ①: the outflow headwind increases airspeed — the instinctive response is to reduce power to recapture the glidepath. Phase ②: the aircraft enters the downdraft core and loses altitude rapidly, power already reduced. Phase ③: exiting into the tailwind, airspeed drops sharply — the aircraft is low, slow, and near idle with insufficient altitude to recover. The go-around decision must be made before entering the cell, not during.</figcaption>
           </figure>

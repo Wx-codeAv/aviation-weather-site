@@ -25,6 +25,11 @@
 
   --max-width: 1200px;
   --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  /* Motion: exponential ease-out, no bounce. Two speeds. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 0.15s;   /* taps, color shifts */
+  --dur-2: 0.25s;   /* lifts, reveals */
 }
 
 /* ---------- Reset & base ---------- */
@@ -43,10 +48,11 @@ body {
     radial-gradient(circle at 75% 65%, rgba(93, 111, 60, 0.04) 0%, transparent 40%);
 }
 
-a { color: var(--sky); text-decoration: none; border-bottom: 1px solid currentColor; }
+a { color: var(--sky); text-decoration: none; border-bottom: 1px solid currentColor; transition: color var(--dur-1) var(--ease-out); }
 a:hover { color: var(--rust); }
 
-h1, h2, h3 { color: var(--ink); margin: 0; }
+h1, h2, h3 { color: var(--ink); margin: 0; text-wrap: balance; }
+p { text-wrap: pretty; }   /* fewer orphans in prose */
 
 /* ---------- Layout helpers ---------- */
 .container {
@@ -104,7 +110,7 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   border: none;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
-  transition: border-color 0.15s;
+  transition: border-color var(--dur-1) var(--ease-out);
 }
 .nav-links a:hover { border-bottom-color: var(--rust); color: var(--ink); }
 
@@ -294,9 +300,17 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   padding: 0.9rem 1.8rem;
   border: none;
   font-size: 1rem;
-  transition: background 0.15s, transform 0.15s;
+  transition: background var(--dur-1) var(--ease-out),
+              transform var(--dur-2) var(--ease-out),
+              box-shadow var(--dur-2) var(--ease-out);
 }
-.hero-cta:hover { background: var(--rust); color: var(--buff); transform: translate(-1px, -1px); }
+.hero-cta:hover {
+  background: var(--rust);
+  color: var(--buff);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--buff-dark);
+}
+.hero-cta:active { transform: translate(0, 0); box-shadow: 1px 1px 0 var(--buff-dark); }
 
 .hero-actions {
   display: flex;
@@ -313,13 +327,18 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   padding: 0.9rem 1.8rem;
   border: 1px solid var(--ink);
   font-size: 1rem;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background var(--dur-1) var(--ease-out),
+              color var(--dur-1) var(--ease-out),
+              transform var(--dur-2) var(--ease-out),
+              box-shadow var(--dur-2) var(--ease-out);
 }
 .hero-cta-secondary:hover {
   background: var(--ink);
   color: var(--buff);
-  transform: translate(-1px, -1px);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--buff-dark);
 }
+.hero-cta-secondary:active { transform: translate(0, 0); box-shadow: 1px 1px 0 var(--buff-dark); }
 
 /* ---------- METAR teaser card ---------- */
 .metar-card {
@@ -410,7 +429,7 @@ h1, h2, h3 { color: var(--ink); margin: 0; }
   padding: 2.2rem;
   background: #fffaf0;            /* surface tone: the grid reads as one elevated panel */
   position: relative;
-  transition: background 0.2s;
+  transition: background var(--dur-2) var(--ease-out);
 }
 .feature-full { grid-column: 1 / -1; }
 .feature:hover { background: var(--buff); }
@@ -726,7 +745,8 @@ footer .container {
 /* ---------- Callout (highlighted note) ---------- */
 .callout {
   background: rgba(217, 165, 33, 0.12);
-  border-left: 4px solid var(--sun);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--sun);   /* top-accent, matches hazard-card */
   padding: 1rem 1.2rem;
   margin: 1.5rem 0;
   font-size: 0.95rem;
@@ -854,7 +874,7 @@ footer .container {
   background: var(--ink);
   color: var(--buff);
   padding: 1.6rem;
-  border-left: 4px solid var(--rust);
+  border-top: 3px solid var(--rust);   /* was border-left side-stripe */
 }
 .takeaway-list {
   list-style: none;
@@ -916,12 +936,16 @@ footer .container {
   text-decoration: none;
   color: inherit;
   border-bottom: 1px solid var(--rule);
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color var(--dur-1) var(--ease-out),
+              transform var(--dur-2) var(--ease-out),
+              box-shadow var(--dur-2) var(--ease-out);
 }
 .learn-card:hover {
   border-color: var(--rust);
-  transform: translate(-1px, -1px);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--buff-dark);
 }
+.learn-card:active { transform: translate(0, 0); box-shadow: 1px 1px 0 var(--buff-dark); }
 .learn-card-pending {
   opacity: 0.55;
   cursor: default;
@@ -1109,10 +1133,12 @@ footer .container {
   border: none;
   padding: 0.65rem 1.4rem;
   cursor: pointer;
-  transition: background 0.15s, transform 0.12s;
+  transition: background var(--dur-1) var(--ease-out),
+              transform var(--dur-2) var(--ease-out);
   white-space: nowrap;
 }
 .decoder-btn:hover { background: #933018; transform: translate(-1px,-1px); }
+.decoder-btn:active { transform: translate(0,0); }
 .decoder-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .decoder-btn--secondary {
   background: transparent;
@@ -1123,7 +1149,7 @@ footer .container {
 .decoder-examples-hint {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: rgba(244,236,214,0.4);
+  color: rgba(244,236,214,0.62);   /* was 0.4 (~3.3:1); 0.62 clears AA */
   margin: 0.7rem 0 0;
   letter-spacing: 0.06em;
 }
@@ -1178,7 +1204,7 @@ footer .container {
   padding: 1.2rem 1.5rem;
   background: #fffaf0;
   border: 1px solid var(--rule);
-  border-left: 4px solid var(--sage);
+  border-top: 3px solid var(--sage);   /* was border-left side-stripe */
 }
 .cat-badge {
   font-family: var(--font-display);
@@ -1202,7 +1228,7 @@ footer .container {
 .cat-edu-note {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--rule);
+  color: var(--sage);   /* was --rule (~2.3:1, failed AA); sage clears 4.5:1 */
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-left: auto;
@@ -1218,7 +1244,7 @@ footer .container {
 .decoder-raw-label {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: rgba(244,236,214,0.4);
+  color: rgba(244,236,214,0.62);   /* was 0.4; lifted for AA on navy */
   text-transform: uppercase;
   letter-spacing: 0.18em;
   margin: 0 0 0.6rem;
@@ -1228,7 +1254,7 @@ footer .container {
   font-size: 0.95rem;
   color: var(--buff);
   line-height: 2;
-  word-break: break-all;
+  overflow-wrap: anywhere;   /* wrap at spaces; only break a token if it alone overflows */
 }
 /* Token color classes */
 .tok { padding: 2px 5px; border-radius: 2px; cursor: help; transition: opacity 0.1s; }
@@ -1338,7 +1364,7 @@ footer .container {
   background: #fffaf0;
   border: 1px solid var(--rule);
   padding: 0.8rem 1rem;
-  word-break: break-all;
+  overflow-wrap: anywhere;
   margin: 0;
 }
 
@@ -1390,7 +1416,7 @@ footer .container {
 .product-selector-hint {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: rgba(244,236,214,0.3);
+  color: rgba(244,236,214,0.6);   /* was 0.3 (~2.6:1); 0.6 clears AA */
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-left: auto;
@@ -1409,7 +1435,7 @@ footer .container {
   padding: 1.2rem 1.5rem;
   background: #fffaf0;
   border: 1px solid var(--rule);
-  border-left: 4px solid var(--sky);
+  border-top: 3px solid var(--sky);   /* was border-left side-stripe */
 }
 .taf-header-left { display: flex; align-items: center; gap: 0.8rem; }
 .taf-header-right { display: flex; flex-direction: column; gap: 0.2rem; }
@@ -1586,7 +1612,7 @@ footer .container {
   font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 2;
-  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 /* PIREP token color classes */
 .ptok { padding: 2px 4px; border-radius: 2px; white-space: nowrap; }

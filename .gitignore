@@ -4,6 +4,9 @@ tools/__pycache__/
 tools/**/__pycache__/
 tools/*.pyc
 
+# Dev-only diagram render previews (throwaway screenshots from render_diagrams.py)
+tools/_diag_preview/
+
 # Sounding data
 tools/data/
 *.OAX
