@@ -102,7 +102,7 @@
 
     .cw-error {
       background: rgba(181,61,31,0.08);
-      border-left: 3px solid var(--rust);
+      border: 1px solid var(--rust);
       padding: 0.7rem 1rem;
       font-family: var(--font-mono);
       font-size: 0.82rem;
@@ -198,7 +198,8 @@
     .cw-callouts { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
     .edu-note {
       background: var(--buff-dark);
-      border-left: 3px solid var(--sky);
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--sky);
       padding: 0.9rem 1.2rem;
       font-size: 0.95rem;
     }
@@ -268,7 +269,7 @@
     .cw-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 4rem 0; }
     .cw-edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 3rem; }
     @media (max-width: 860px) { .cw-edu-grid { grid-template-columns: 1fr; } }
-    .cw-edu-block { border-left: 3px solid var(--rule); padding-left: 1.4rem; }
+    .cw-edu-block { min-width: 0; }
     .cw-edu-eyebrow {
       font-family: var(--font-mono);
       font-size: 0.7rem;
@@ -300,7 +301,8 @@
       margin-top: 2.5rem;
       padding: 1rem 1.2rem;
       background: var(--buff-dark);
-      border-left: 3px solid var(--sun);
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--sun);
       font-size: 0.88rem;
       color: var(--ink-soft);
     }

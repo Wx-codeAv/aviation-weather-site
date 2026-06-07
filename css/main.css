@@ -26,6 +26,19 @@
   --max-width: 1200px;
   --gutter: clamp(1rem, 4vw, 2.5rem);
 
+  /* Spacing scale (4pt-based). Use these, not arbitrary values. */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: clamp(3.5rem, 7vw, 6rem);
+
+  /* Surface tone used by every elevated panel/card on the site */
+  --surface: #fffaf0;
+
   /* Motion: exponential ease-out, no bounce. Two speeds. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-1: 0.15s;   /* taps, color shifts */
@@ -65,6 +78,65 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   border: 0;
   border-top: 1px solid var(--rule);
   margin: 4rem 0;
+}
+
+/* ---------- Workflow steps ----------
+   For tool pages that ARE a sequence (plan a route, then performance,
+   then build the log). Numbers earn their place here: they carry the
+   order the student works through. Generous space BETWEEN steps,
+   tight grouping within each. */
+.wf-step { padding-top: var(--space-2xl); }
+.wf-step:first-of-type { padding-top: var(--space-xl); }
+.wf-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+.wf-step-num {
+  flex: none;
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--buff);
+  background: var(--ink);
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+/* A breaking band that is NOT part of the numbered planning sequence
+   (e.g. in-flight tools). Mono tag instead of a step number. */
+.wf-step-tag {
+  flex: none;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--buff);
+  background: var(--rust);
+  padding: 0.4rem 0.55rem;
+  line-height: 1;
+}
+.wf-step-titles { min-width: 0; }
+.wf-step-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1.05;
+  margin: 0;
+}
+.wf-step-sub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  margin: 0.35rem 0 0;
 }
 
 /* ---------- Header / Nav ---------- */
@@ -242,19 +314,35 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   .site-nav .nav-dropdown-menu li:last-child a { border-bottom: none; }
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero ----------
+   Single centered column: eyebrow → display headline → explainer →
+   primary + secondary CTA → quiet mono reassurance. Anchored in navy
+   (headline, solid primary button, and the compass-rose substrate). */
 .hero {
-  padding: 5rem 0 3rem;
+  padding: clamp(4rem, 9vw, 7rem) 0 clamp(3rem, 5vw, 4.5rem);
   position: relative;
+  overflow: hidden;            /* clips the compass-rose chart substrate */
 }
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+.hero-stack {
+  position: relative;
+  z-index: 1;                  /* sits above .hero-chart */
+  max-width: 50rem;
+  margin: 0 auto;
+  text-align: center;          /* block, not flex: children take full width and wrap */
 }
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+/* VOR-style compass rose printed behind the stack like chart paper */
+.hero-chart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(680px, 92vw);
+  aspect-ratio: 1;
+  color: var(--ink);
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-eyebrow {
@@ -263,9 +351,10 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--sage);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.1rem;
   display: flex;
   align-items: center;
+  justify-content: center;     /* centered eyebrow with its chart tick */
   gap: 0.6rem;
 }
 .hero-eyebrow::before {
@@ -278,17 +367,28 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.01em;
-  margin-bottom: 1.5rem;
+  font-size: clamp(2.75rem, 8.5vw, 6rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 0 0 1.4rem;
 }
 .hero h1 .accent { color: var(--rust); }
 
 .hero p.lede {
-  font-size: 1.15rem;
-  max-width: 44ch;
-  margin-bottom: 2rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  max-width: 46ch;
+  margin: 0 auto 2.1rem;
+  color: var(--ink-soft);
+}
+
+.hero-reassure {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  margin: 1.5rem 0 0;
 }
 
 .hero-cta {
@@ -315,9 +415,22 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.8rem 1.4rem;
   align-items: center;
+  justify-content: center;     /* centered CTA row */
 }
+
+/* Secondary action: a text link, not a second button */
+.hero-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-1) var(--ease-out),
+              border-color var(--dur-1) var(--ease-out);
+}
+.hero-link:hover { color: var(--rust); border-bottom-color: var(--rust); }
 .hero-cta-secondary {
   display: inline-block;
   background: transparent;
@@ -397,6 +510,48 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 }
 .metar-decode dd { margin: 0; color: var(--ink); }
 
+/* ---------- Live sample strip (below the hero) ----------
+   Keeps the annotated-METAR showcase the old hero card had, restyled as a
+   full-width band so the hero itself can stay a clean centered column. */
+.hero-sample {
+  padding: 0 0 clamp(2.5rem, 5vw, 4rem);
+}
+.hero-sample-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--sage);
+  margin: 0 0 0.8rem;
+}
+.hero-sample-panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--sun);
+  padding: 1.5rem 1.6rem;
+  box-shadow: 6px 6px 0 var(--buff-dark);
+}
+.hero-sample-panel .metar-raw { margin-bottom: 1.3rem; }
+.hero-sample-decode {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 0;
+}
+.hero-sample-decode > div { min-width: 0; }
+.hero-sample-decode dt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.hero-sample-decode dd {
+  margin: 0.25rem 0 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
 /* ---------- Sections ---------- */
 .section-label {
   font-family: var(--font-mono);
@@ -408,33 +563,56 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 }
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
   letter-spacing: 0.01em;
-  margin-bottom: 2.5rem;
-  max-width: 22ch;
+  line-height: 1.02;
+  margin-bottom: clamp(2rem, 3.5vw, 3rem);
+  max-width: 20ch;
 }
 
-/* ---------- Feature grid ---------- */
+/* ---------- Feature bento ----------
+   Not a grid of equal cards. Learn is the flagship (15 lessons), so it
+   owns a 2×2 block; the rest orbit it. Hairline gaps read as one chart panel. */
 .features {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
   gap: 1px;                       /* the gap reveals the container color as hairlines */
   background: var(--rule);
   border: 1px solid var(--rule);
 }
-@media (max-width: 700px) {
-  .features { grid-template-columns: 1fr; }
+.feature--learn   { grid-column: 1 / 3; grid-row: 1 / 3; }
+.feature--decoder { grid-column: 3;     grid-row: 1; }
+.feature--acs     { grid-column: 3;     grid-row: 2; }
+.feature--tools   { grid-column: 1;     grid-row: 3; }
+.feature--navlog  { grid-column: 2 / 4; grid-row: 3; }
+
+@media (max-width: 860px) {
+  .features { grid-template-columns: 1fr 1fr; grid-auto-rows: auto; }
+  .feature--learn,
+  .feature--navlog { grid-column: 1 / -1; grid-row: auto; }
+  .feature--decoder,
+  .feature--acs,
+  .feature--tools { grid-column: auto; grid-row: auto; }
 }
+@media (max-width: 560px) {
+  .features { grid-template-columns: 1fr; }
+  .feature--learn,
+  .feature--navlog { grid-column: 1; }
+}
+
 .feature {
   padding: 2.2rem;
   background: #fffaf0;            /* surface tone: the grid reads as one elevated panel */
   position: relative;
+  display: flex;
+  flex-direction: column;
   transition: background var(--dur-2) var(--ease-out);
 }
-.feature-full { grid-column: 1 / -1; }
 .feature:hover { background: var(--buff); }
 .feature .feature-link {
-  margin-top: 1.2rem;
+  margin-top: auto;              /* link pins to the bottom so tiles align */
+  padding-top: 1.2rem;
   font-size: 0.9rem;
 }
 .feature-num {
@@ -450,6 +628,75 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   margin: 0.6rem 0 0.8rem;
 }
 .feature p { margin: 0; font-size: 0.95rem; }
+
+/* The flagship tile: dramatically larger type, more air, topic chips */
+.feature--learn { padding: clamp(2.2rem, 3vw, 3.2rem); }
+.feature--learn h3 {
+  font-size: clamp(2rem, 3.2vw, 2.9rem);
+  line-height: 0.98;
+  margin: 0.7rem 0 1rem;
+  max-width: 16ch;
+}
+.feature--learn p { font-size: 1.05rem; max-width: 50ch; }
+
+/* The lesson anatomy: shows the 6-part format every lesson follows.
+   This is the real capability — it fills the flagship tile and explains
+   what a student actually gets, not just that lessons exist. */
+.learn-anatomy-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--sage);
+  margin: 1.6rem 0 0.85rem;
+}
+.learn-anatomy-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  counter-reset: anat;
+}
+@media (max-width: 560px) { .learn-anatomy-steps { grid-template-columns: 1fr; } }
+.learn-anatomy-steps li {
+  counter-increment: anat;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dotted var(--rule);
+}
+.anat-term {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.anat-term::before {
+  content: counter(anat, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--rust);
+  margin-right: 0.6rem;
+}
+.anat-desc {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: 0.2rem;
+}
+
+/* Tile footer: status + link share one baseline row, no pinned-link gap */
+.feature-foot {
+  margin-top: auto;
+  padding-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.feature-foot .feature-status { margin-top: 0; }
+.feature-foot a { font-size: 0.95rem; font-weight: 600; }
 .feature-status {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -497,18 +744,40 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 .about {
   background: var(--ink);
   color: var(--buff);
-  padding: 4rem 0;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 0;
   margin-top: 5rem;
 }
 .about h2 {
   color: var(--buff);
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-  margin-bottom: 1.2rem;
-  max-width: 24ch;
+  font-size: clamp(2rem, 4.5vw, 3.3rem);
+  line-height: 1.02;
+  margin-bottom: 1.4rem;
+  max-width: 20ch;
 }
-.about p { max-width: 60ch; color: rgba(244, 236, 214, 0.85); }
+.about p { max-width: 62ch; color: rgba(244, 236, 214, 0.88); font-size: 1.05rem; }
 .about .section-label { color: var(--sun); }
+
+/* ---------- Hero entrance ----------
+   One orchestrated reveal on load, the page's single signature moment.
+   Default (and reduced-motion) state is fully visible: the animation only
+   exists inside no-preference, so content never ships hidden. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero .hero-eyebrow  { animation: hero-rise 0.6s var(--ease-out) both; }
+  .hero h1             { animation: hero-rise 0.7s var(--ease-out) 0.07s both; }
+  .hero .lede          { animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
+  .hero .hero-actions  { animation: hero-rise 0.7s var(--ease-out) 0.25s both; }
+  .hero .hero-reassure { animation: hero-rise 0.7s var(--ease-out) 0.33s both; }
+  .hero-sample-panel   { animation: hero-card-in 0.85s var(--ease-out) 0.3s both; }
+}
 
 /* ---------- Footer ---------- */
 footer {

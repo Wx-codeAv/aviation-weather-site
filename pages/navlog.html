@@ -14,7 +14,7 @@
 
     /* ─── Sign convention banner ─── */
     .nl-conventions {
-      background: #fffaf0; border-left: 3px solid var(--sky);
+      background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--sky);
       padding: 0.9rem 1.2rem; margin: 1.5rem 0; font-size: 0.88rem;
       display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0;
     }
@@ -24,7 +24,7 @@
     .nl-conv-sep { color: var(--rule); }
 
     /* ─── Flight profile panel ─── */
-    .nl-profile-section { padding: 2rem 0 0; }
+    .nl-profile-section { padding: 0; }
     .nl-profile-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem 1.5rem; background: #fffaf0;
@@ -57,14 +57,14 @@
 
     /* Climb estimate callout */
     .nl-climb-note {
-      background: var(--buff-dark); border-left: 3px solid var(--sun);
+      background: var(--buff-dark); border: 1px solid var(--rule); border-top: 3px solid var(--sun);
       padding: 0.75rem 1.1rem; font-size: 0.85rem; color: var(--ink-soft);
       margin-bottom: 0;
     }
     .nl-climb-note strong { color: var(--ink); }
 
     /* ─── Airport Information ─── */
-    .nl-airport-section { padding: 2rem 0 0; }
+    .nl-airport-section { padding: 0; }
     .nl-airport-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.2rem; }
     .nl-airport-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
     .nl-airport-title {
@@ -86,7 +86,7 @@
     .nl-airport-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); margin-top: 0.9rem; }
 
     /* ─── Time Limits & Diversion ─── */
-    .nl-info-section { padding: 0.5rem 0 2rem; }
+    .nl-info-section { padding: 0 0 var(--space-2xl); }
     .nl-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.2rem; }
     .nl-pf-wide { grid-column: 1 / -1; }
     .nl-oplabel {
@@ -117,7 +117,7 @@
     .nl-banner-label { font-weight: 600; }
 
     /* ─── Table section ─── */
-    .nl-table-section { padding: 1.5rem 0 2rem; }
+    .nl-table-section { padding: 0; }
     .nl-table-wrap {
       overflow-x: auto; -webkit-overflow-scrolling: touch;
       border: 1px solid var(--rule); background: var(--buff);
@@ -243,7 +243,7 @@
     .nl-add-first:hover { border-color: var(--sky); color: var(--sky); }
 
     /* ─── Fuel summary ─── */
-    .nl-fuel-section { padding: 1rem 0 2rem; }
+    .nl-fuel-section { padding: 0; }
     .nl-fuel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
     .nl-fuel-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1rem 1.2rem; }
     .nl-fuel-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 0.3rem; }
@@ -278,7 +278,7 @@
     /* ─── Educational section ─── */
     .nl-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 3.5rem 0; }
     .nl-edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem 3rem; }
-    .nl-edu-block { border-left: 3px solid var(--rule); padding-left: 1.3rem; }
+    .nl-edu-block { min-width: 0; }
     .nl-edu-eyebrow { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--rust); margin: 0 0 0.4rem; }
     .nl-edu-block h3 { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.02em; margin: 0 0 0.8rem; color: var(--ink); }
     .nl-edu-block p { font-size: 0.9rem; color: var(--ink-soft); margin: 0 0 0.7rem; }
@@ -318,7 +318,7 @@
     .nl-storage-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-soft); margin-left: auto; }
 
     /* ─── POH Performance panels ─── */
-    .nl-poh-section { padding: 0.5rem 0 1.5rem; }
+    .nl-poh-section { padding: 0; }
     .nl-ac-strip {
       background: var(--ink); color: var(--buff);
       padding: 0.55rem 1.1rem; display: flex; align-items: center;
@@ -332,7 +332,13 @@
     .nl-ac-name { font-weight: 600; font-size: 0.88rem; letter-spacing: 0.02em; }
     .nl-ac-detail { color: rgba(244,236,214,0.6); }
     .nl-ac-note { margin-left: auto; color: var(--sun); font-size: 0.72rem; }
-    .nl-poh-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem 1.5rem; }
+    .nl-poh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; align-items: start; }
+    .nl-poh-panel--cruise { grid-column: 1; grid-row: 1 / span 2; }   /* tall panel anchors the left column */
+    .nl-poh-panel--winds  { grid-column: 1 / -1; }                    /* paste area spans full width */
+    @media (max-width: 760px) {
+      .nl-poh-grid { grid-template-columns: 1fr; }
+      .nl-poh-panel--cruise { grid-column: auto; grid-row: auto; }
+    }
     .nl-poh-panel { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
     .nl-poh-panel-title {
       font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.03em;
@@ -341,10 +347,10 @@
     .nl-poh-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.7rem 1rem; margin-bottom: 0.8rem; }
     .nl-poh-callout {
       font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft);
-      padding: 0.6rem 0.8rem; background: var(--buff-dark); border-left: 3px solid var(--rule); line-height: 1.65;
+      padding: 0.6rem 0.8rem; background: var(--buff-dark); border: 1px solid var(--rule); border-top: 3px solid var(--rule); line-height: 1.65;
     }
-    .nl-poh-callout.ok   { border-left-color: var(--sky); color: var(--ink); }
-    .nl-poh-callout.warn { border-left-color: var(--rust); color: var(--rust); background: rgba(181,61,31,0.05); }
+    .nl-poh-callout.ok   { border-top-color: var(--sky); color: var(--ink); }
+    .nl-poh-callout.warn { border-top-color: var(--rust); color: var(--rust); background: rgba(181,61,31,0.05); }
     .nl-poh-details { margin-top: 0.8rem; border-top: 1px solid var(--rule); padding-top: 0.5rem; }
     .nl-poh-details summary {
       font-family: var(--font-mono); font-size: 0.78rem; color: var(--sky);
@@ -375,7 +381,9 @@
     @media print {
       @page { size: landscape; margin: 0.45in 0.5in; }
       .site-header, .nl-hero, .nl-conventions, .nl-toolbar, .nl-add-wrap,
-      .nl-banners, .nl-edu, footer, .nl-gloss-modal, .nl-fuel-section { display: none !important; }
+      .nl-banners, .nl-edu, footer, .nl-gloss-modal, .nl-fuel-section,
+      .wf-step-head { display: none !important; }
+      .wf-step, .wf-step:first-of-type { padding-top: 0 !important; }
       .nl-btn { display: none !important; }
       .nl-work-row { display: none !important; }
       .nl-print-header { display: block !important; margin-bottom: 0.3in; }
@@ -449,7 +457,14 @@
     </div>
 
     <!-- ══ Airport Information ══ -->
-    <section class="nl-airport-section">
+    <section class="nl-airport-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-num">1</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Airports &amp; route</h2>
+          <p class="wf-step-sub">Departure, arrival, field elevations, and frequencies</p>
+        </div>
+      </div>
       <div class="nl-airport-grid">
 
         <!-- Departure -->
@@ -593,9 +608,15 @@
     </section>
 
     <!-- ══ Flight Profile ══ -->
-    <section class="nl-profile-section">
+    <section class="nl-profile-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-num">2</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Flight profile</h2>
+          <p class="wf-step-sub">Aircraft, fuel and reserve, climb/cruise/descent defaults</p>
+        </div>
+      </div>
       <div class="nl-profile-grid">
-        <div class="nl-profile-title">Flight Profile</div>
 
         <div class="nl-pf">
           <label for="pf-tail">Tail Number</label>
@@ -666,7 +687,14 @@
     </section>
 
     <!-- ══ POH Performance ══ -->
-    <section class="nl-poh-section">
+    <section class="nl-poh-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-num">3</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Aircraft performance</h2>
+          <p class="wf-step-sub">C172S POH cruise, climb, descent, and winds aloft — fills TAS, GPH, and wind per leg</p>
+        </div>
+      </div>
 
       <div class="nl-ac-strip">
         <span class="nl-ac-badge">POH DATA</span>
@@ -678,7 +706,7 @@
       <div class="nl-poh-grid">
 
         <!-- Cruise Performance -->
-        <div class="nl-poh-panel">
+        <div class="nl-poh-panel nl-poh-panel--cruise">
           <div class="nl-poh-panel-title">Cruise Performance <span style="font-weight:400;font-size:0.85rem;">— auto-fills TAS &amp; GPH for all legs</span></div>
           <div class="nl-poh-inputs">
             <div class="nl-pf">
@@ -791,7 +819,7 @@
         </div>
 
         <!-- ── Winds Aloft ── -->
-        <div class="nl-poh-panel">
+        <div class="nl-poh-panel nl-poh-panel--winds">
           <div class="nl-poh-panel-title">Winds Aloft <span style="font-weight:400;font-size:0.85rem;">— paste winds data to fill WD &amp; WS per leg</span></div>
 
           <div class="nl-poh-callout" style="margin-bottom:0.8rem;">
@@ -858,7 +886,14 @@
     <div class="nl-banners" id="nl-banners"></div>
 
     <!-- ══ Nav Log Table ══ -->
-    <section class="nl-table-section">
+    <section class="nl-table-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-num">4</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Build the nav log</h2>
+          <p class="wf-step-sub">Add waypoints — heading chain, ground speed, ETE, and fuel compute as you type</p>
+        </div>
+      </div>
 
       <div class="nl-toolbar">
         <button class="nl-toolbar-btn" id="nl-save-json">Export JSON</button>
@@ -872,7 +907,7 @@
         <span class="nl-storage-note" id="nl-save-status">Saves automatically in this browser.</span>
       </div>
 
-      <div class="nl-conventions" style="border-left-color: var(--sage); margin: 0 0 1rem;">
+      <div class="nl-conventions" style="border-top-color: var(--sage); margin: 0 0 1rem;">
         <strong>Speed chain:</strong>
         <span class="nl-conv-items">
           <span><code>KIAS</code> indicated</span>
@@ -961,7 +996,14 @@
     </section>
 
     <!-- ══ Fuel Summary ══ -->
-    <section class="nl-fuel-section">
+    <section class="nl-fuel-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-num">5</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Fuel &amp; time check</h2>
+          <p class="wf-step-sub">§91.151 reserve, minimum fuel needed, and endurance at a glance</p>
+        </div>
+      </div>
       <div class="nl-fuel-grid" id="nl-fuel-grid">
         <div class="nl-fuel-card">
           <div class="nl-fuel-label">Total Trip Fuel</div>
@@ -1007,7 +1049,14 @@
     </section>
 
     <!-- ══ Time Limits & Diversion ══ -->
-    <section class="nl-info-section">
+    <section class="nl-info-section wf-step">
+      <div class="wf-step-head">
+        <span class="wf-step-tag">In&nbsp;flight</span>
+        <div class="wf-step-titles">
+          <h2 class="wf-step-title">Time limits &amp; diversion</h2>
+          <p class="wf-step-sub">Fill these in the air, not while planning — void times, sunset, and a quick divert solver</p>
+        </div>
+      </div>
       <div class="nl-info-grid">
 
         <!-- Panel 7 — Time Limits & Flight Info -->
@@ -1181,7 +1230,7 @@
 
       </div>
 
-      <div style="margin-top:2.5rem;padding:1rem 1.2rem;background:var(--buff-dark);border-left:3px solid var(--sun);font-size:0.85rem;color:var(--ink-soft);">
+      <div style="margin-top:2.5rem;padding:1rem 1.2rem;background:var(--buff-dark);border:1px solid var(--rule);border-top:3px solid var(--sun);font-size:0.85rem;color:var(--ink-soft);">
         <strong style="color:var(--ink);">Sources:</strong> FAA-H-8083-25C Chapter 16 (Navigation), FAA-S-ACS-6C (Private Pilot ACS, April 2024), 14 CFR §91.151 (fuel requirements).
         Formulas match FAA Chapter 16 sample arithmetic. For formal flight planning always cross-check with official charts and publications.
       </div>

@@ -38,51 +38,73 @@
 
   <!-- ============== Hero ============== -->
   <section class="hero">
+    <!-- VOR-style compass rose: chart substrate, decorative only -->
+    <svg class="hero-chart" viewBox="0 0 200 200" aria-hidden="true" focusable="false" fill="none" stroke="currentColor">
+      <circle cx="100" cy="100" r="96" stroke-width="0.8"/>
+      <circle cx="100" cy="100" r="70" stroke-width="0.6"/>
+      <circle cx="100" cy="100" r="88" stroke-width="6" stroke-dasharray="0.6 5.1" opacity="0.7"/>
+      <g stroke-width="1.1">
+        <line x1="100" y1="16" x2="100" y2="8"/>
+        <line x1="142" y1="27.3" x2="146" y2="20.3"/>
+        <line x1="172.7" y1="58" x2="179.7" y2="54"/>
+        <line x1="184" y1="100" x2="192" y2="100"/>
+        <line x1="172.7" y1="142" x2="179.7" y2="146"/>
+        <line x1="142" y1="172.7" x2="146" y2="179.7"/>
+        <line x1="100" y1="184" x2="100" y2="192"/>
+        <line x1="58" y1="172.7" x2="54" y2="179.7"/>
+        <line x1="27.3" y1="142" x2="20.3" y2="146"/>
+        <line x1="16" y1="100" x2="8" y2="100"/>
+        <line x1="27.3" y1="58" x2="20.3" y2="54"/>
+        <line x1="58" y1="27.3" x2="54" y2="20.3"/>
+      </g>
+      <g stroke-width="0.8">
+        <line x1="100" y1="100" x2="100" y2="30"/>
+        <line x1="100" y1="100" x2="170" y2="100"/>
+        <line x1="100" y1="100" x2="100" y2="170"/>
+        <line x1="100" y1="100" x2="30" y2="100"/>
+      </g>
+      <polygon points="100,34 95,50 100,45 105,50" fill="currentColor" stroke="none"/>
+      <text x="100" y="62" text-anchor="middle" font-family="Anton, sans-serif" font-size="13" fill="currentColor" stroke="none">N</text>
+    </svg>
     <div class="container">
-      <div class="hero-grid">
-        <div>
-          <p class="hero-eyebrow">Aviation weather, decoded</p>
-          <h1>
-            The TAF<br>
-            said <span class="accent">VCTS.</span><br>
-            What now?
-          </h1>
-          <p class="lede">
-            A free, no-login study tool that turns the aviation weather on the Private Pilot ACS into plain English: METAR and TAF decoders, crosswind and nav-log calculators, and 15 concept lessons.
-          </p>
-          <div class="hero-actions">
-            <a href="pages/decoder.html" class="hero-cta">Decode a METAR →</a>
-            <a href="pages/learn.html" class="hero-cta-secondary">Browse the lessons →</a>
-          </div>
+      <div class="hero-stack">
+        <p class="hero-eyebrow">For student pilots · ACS weather prep</p>
+        <h1>Aviation weather, <span class="accent">made clear.</span></h1>
+        <p class="lede">
+          METAR and TAF decoders, flight calculators, and fifteen lessons that turn aviation weather into a go/no-go call you can defend.
+        </p>
+        <div class="hero-actions">
+          <a href="pages/learn.html" class="hero-cta">Start with the lessons</a>
+          <a href="pages/decoder.html" class="hero-link">Try the METAR decoder →</a>
         </div>
+        <p class="hero-reassure">Free · No account · Built by a pilot, for pilots</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- Sample METAR card with tooltips -->
-        <div class="metar-card">
-          <span class="metar-card-label">METAR · KDAB</span>
-          <p class="metar-raw">
-            KDAB
-            <span class="tag" tabindex="0" aria-label="251753Z: day 25, 17:53 Zulu" data-tip="Day 25, 17:53 Zulu">251753Z</span>
-            <span class="tag tag-wind" tabindex="0" aria-label="24014G22KT: wind 240 degrees at 14 knots, gusting 22" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
-            <span class="tag tag-vis" tabindex="0" aria-label="6SM: visibility 6 statute miles" data-tip="Visibility 6 statute miles">6SM</span>
-            <span class="tag tag-wx" tabindex="0" aria-label="-RA: light rain in the vicinity" data-tip="Light rain in the vicinity">-RA</span>
-            <span class="tag" tabindex="0" aria-label="BKN025: broken clouds at 2,500 ft AGL" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
-            <span class="tag" tabindex="0" aria-label="OVC080: overcast at 8,000 ft AGL" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
-            22/19
-            <span class="tag" tabindex="0" aria-label="A2984: altimeter 29.84 inHg" data-tip="Altimeter 29.84 inHg">A2984</span>
-          </p>
-          <dl class="metar-decode">
-            <dt>Wind</dt>
-            <dd>240° at 14 kt, gusting 22</dd>
-            <dt>Vis</dt>
-            <dd>6 SM, light rain</dd>
-            <dt>Sky</dt>
-            <dd>BKN 2,500 · OVC 8,000</dd>
-            <dt>Temp</dt>
-            <dd>22°C / dew 19°C — spread of 3</dd>
-            <dt>Alt</dt>
-            <dd>29.84 inHg</dd>
-          </dl>
-        </div>
+  <!-- ============== Live sample decode (relocated from the hero) ============== -->
+  <section class="hero-sample">
+    <div class="container">
+      <p class="hero-sample-tag">Live sample · METAR KDAB · hover any code to decode it</p>
+      <div class="hero-sample-panel">
+        <p class="metar-raw">
+          KDAB
+          <span class="tag" tabindex="0" aria-label="251753Z: day 25, 17:53 Zulu" data-tip="Day 25, 17:53 Zulu">251753Z</span>
+          <span class="tag tag-wind" tabindex="0" aria-label="24014G22KT: wind 240 degrees at 14 knots, gusting 22" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
+          <span class="tag tag-vis" tabindex="0" aria-label="6SM: visibility 6 statute miles" data-tip="Visibility 6 statute miles">6SM</span>
+          <span class="tag tag-wx" tabindex="0" aria-label="-RA: light rain in the vicinity" data-tip="Light rain in the vicinity">-RA</span>
+          <span class="tag" tabindex="0" aria-label="BKN025: broken clouds at 2,500 ft AGL" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
+          <span class="tag" tabindex="0" aria-label="OVC080: overcast at 8,000 ft AGL" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
+          22/19
+          <span class="tag" tabindex="0" aria-label="A2984: altimeter 29.84 inHg" data-tip="Altimeter 29.84 inHg">A2984</span>
+        </p>
+        <dl class="hero-sample-decode">
+          <div><dt>Wind</dt><dd>240° at 14 kt, gusting 22</dd></div>
+          <div><dt>Vis</dt><dd>6 SM, light rain</dd></div>
+          <div><dt>Sky</dt><dd>BKN 2,500 · OVC 8,000</dd></div>
+          <div><dt>Temp</dt><dd>22°C / dew 19°C, 3° spread</dd></div>
+          <div><dt>Alt</dt><dd>29.84 inHg</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -96,15 +118,28 @@
       <h2 class="section-title">Every section answers one question: would you fly?</h2>
 
       <div class="features">
-        <article class="feature">
+        <article class="feature feature--learn">
           <span class="feature-num">01 / Learn</span>
           <h3>Weather, concept by concept</h3>
-          <p>Fifteen pages covering every ACS weather topic — AIRMETs and SIGMETs, icing, fog, thunderstorms, turbulence, fronts, winds aloft, density altitude, altimetry, and more. Each page follows the same format: what it is, why it matters, what to look for, and a checkride scenario.</p>
-          <span class="feature-status">Live · 15 pages</span>
-          <p class="feature-link"><a href="pages/learn.html">Browse all topics →</a></p>
+          <p>Fifteen lessons that turn each weather topic on the Private Pilot ACS into a go/no-go call you can defend in the cockpit and in the oral. Thunderstorms, icing, fog, turbulence, fronts, winds aloft, density altitude, altimetry, and more.</p>
+
+          <p class="learn-anatomy-label">Every lesson follows the same path</p>
+          <ol class="learn-anatomy-steps">
+            <li><span class="anat-term">What it is</span><span class="anat-desc">the mechanism in plain English</span></li>
+            <li><span class="anat-term">Why pilots care</span><span class="anat-desc">the real operational risk</span></li>
+            <li><span class="anat-term">What the products show</span><span class="anat-desc">in the METAR, TAF, and charts</span></li>
+            <li><span class="anat-term">Red flags</span><span class="anat-desc">conditions that should stop you</span></li>
+            <li><span class="anat-term">Oral questions</span><span class="anat-desc">what an examiner will ask</span></li>
+            <li><span class="anat-term">Would-you-fly</span><span class="anat-desc">a real go/no-go scenario</span></li>
+          </ol>
+
+          <div class="feature-foot">
+            <span class="feature-status">Live · 15 lessons</span>
+            <a href="pages/learn.html">Browse all topics →</a>
+          </div>
         </article>
 
-        <article class="feature">
+        <article class="feature feature--decoder">
           <span class="feature-num">02 / Decoder</span>
           <h3>METAR &amp; TAF translator</h3>
           <p>Paste a raw METAR or TAF. Get a color-coded breakdown, flight category badge, and plain-English translation of every token — winds, visibility, sky coverage, weather phenomena, and TAF change groups with timing.</p>
@@ -112,7 +147,7 @@
           <p class="feature-link"><a href="pages/decoder.html">Decode a METAR →</a></p>
         </article>
 
-        <article class="feature">
+        <article class="feature feature--acs">
           <span class="feature-num">03 / ACS</span>
           <h3>Checkride task mapping</h3>
           <p>The weather tasks from the Private Pilot ACS, organized by topic. See exactly what the examiner can ask, the standard you're being held to, and the oral question types — without scrolling the PDF at 11 PM the night before.</p>
@@ -120,7 +155,7 @@
           <p class="feature-link"><a href="pages/acs.html">Browse the ACS →</a></p>
         </article>
 
-        <article class="feature">
+        <article class="feature feature--tools">
           <span class="feature-num">04 / Tools</span>
           <h3>Two flight calculators</h3>
           <p><strong>Personal Minimums Builder</strong> — set conservative limits above the legal floor and document them for your checkride. <strong>Crosswind Calculator</strong> — enter METAR wind and a runway number to see headwind and crosswind components with a live wind triangle diagram.</p>
@@ -128,10 +163,10 @@
           <p class="feature-link"><a href="pages/crosswind.html">Crosswind calc →</a> &nbsp;·&nbsp; <a href="pages/minimums.html">Minimums builder →</a></p>
         </article>
 
-        <article class="feature feature-full">
+        <article class="feature feature--navlog">
           <span class="feature-num">05 / Nav Log</span>
           <h3>Cross-country nav log calculator</h3>
-          <p>Plan your first cross-country start to finish. Enter each waypoint, winds aloft, and altitude — the calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel burn per leg, and shows the step-by-step math for every computed value. Cruise TAS and GPH pull directly from the C172S POH Section 5 tables via 3-axis interpolation across altitude, RPM, and temperature. Climb time, fuel, and distance come from the same tables with the 1.4-gallon start/taxi allowance built in. Export to JSON, print to a clean nav log sheet, and save your work automatically in the browser.</p>
+          <p>Plan a cross-country start to finish. Enter each waypoint, winds aloft, and altitude; the calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and per-leg fuel, showing the math behind every value. Cruise TAS, GPH, and climb figures pull straight from the C172S POH Section 5 tables. Export to JSON, print a clean sheet, and your work saves automatically.</p>
           <span class="feature-status">Live · Beta</span>
           <p class="feature-link"><a href="pages/navlog.html">Open nav log →</a></p>
         </article>
