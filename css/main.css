@@ -75,6 +75,25 @@ html[data-theme="dark"] .about {
 html[data-theme="dark"] .about h2 { color: var(--ink); }
 html[data-theme="dark"] .about p  { color: var(--ink-soft); }
 
+/* Pilot-takeaway and scenario-answer panels are navy with cream text in light
+   mode; keep them dark in dark mode (re-assert --buff) instead of flipping to a
+   bright cream box. */
+html[data-theme="dark"] .takeaway-box,
+html[data-theme="dark"] .scenario-takeaway {
+  background: var(--surface);
+  --buff: #f4ecd6;
+}
+/* PIREP example panel is navy with cream tokens in light mode; keep it dark. */
+html[data-theme="dark"] .pirep-example {
+  background: var(--surface);
+  --buff: #f4ecd6;
+}
+/* Standard-atmosphere table header: dark bar instead of a bright flipped one. */
+html[data-theme="dark"] .atmo-table thead th {
+  background: var(--buff-dark);
+  color: var(--ink);
+}
+
 /* Hero sample chips are theme-agnostic: faint hue tints + --ink text read on
    both light and dark panels, so no dark-mode override is needed (the
    .metar-raw .tag rules carry the colors). */
@@ -106,11 +125,13 @@ html[data-theme="dark"] .taf-type-fm,
 html[data-theme="dark"] .taf-type-inter  { color: var(--sky); }
 html[data-theme="dark"] .taf-type-prob30,
 html[data-theme="dark"] .taf-type-prob40 { color: var(--sun); }
-/* Wind compass + cloud-layer diagrams are hardcoded-for-light SVG figures; keep
-   their cards light in dark mode (screen only) so the cardinal labels and cloud
-   bands stay legible — matching the other diagram figures across the site. */
+/* Hand-built SVG figures (decoder wind compass + cloud diagram, and every
+   Learn-page .diagram) hardcode navy ink for a light background. Keep their
+   cards light in dark mode (screen only) so labels/strokes stay legible —
+   the site-wide "figures are light cards" rule. */
 @media screen {
-  html[data-theme="dark"] .vis-card {
+  html[data-theme="dark"] .vis-card,
+  html[data-theme="dark"] .diagram {
     --buff: #f4ecd6; --buff-dark: #e8dcb8;
     --ink: #0c2541;  --ink-soft: #2d4360;
     --rule: #b9a87a; --surface: #fffaf0;
@@ -263,13 +284,12 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   padding: 0;
   flex: none;
   background: none;
-  border: 1px solid var(--rule);
+  border: none;
   color: var(--ink);
   cursor: pointer;
-  transition: border-color var(--dur-1) var(--ease-out),
-              color var(--dur-1) var(--ease-out);
+  transition: color var(--dur-1) var(--ease-out);
 }
-.theme-toggle:hover { border-color: var(--ink); color: var(--rust); }
+.theme-toggle:hover { color: var(--rust); }
 .theme-toggle svg { width: 18px; height: 18px; display: block; }
 .theme-toggle .icon-moon { display: none; }
 html[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
