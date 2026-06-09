@@ -1,10 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turbulence — CrosswindWX</title>
   <meta name="description" content="Mechanical, thermal, wind shear, clear-air, and wake turbulence — where each comes from, how to anticipate it, wake vortex avoidance rules, mountain waves, and turbulence intensity reporting. For PPL, IR, and commercial checkrides.">
+  <script>
+    // Apply saved/system theme before paint so there is no light-mode flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('crosswindwx-theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="../../css/main.css">
 </head>
 <body>
@@ -13,24 +24,42 @@
   <header class="site-header">
     <div class="container">
       <a href="../../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav class="site-nav" id="primary-nav">
-        <ul class="nav-links">
-          <li><a href="../learn.html">Learn</a></li>
-          <li><a href="../decoder.html">Decoder</a></li>
-          <li><a href="../navlog.html">Nav Log</a></li>
-          <li><a href="../acs.html">ACS</a></li>
-          <li class="nav-dropdown">
-            <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
-            <ul class="nav-dropdown-menu">
-              <li><a href="../minimums.html">Minimums</a></li>
-              <li><a href="../crosswind.html">Crosswind</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div class="header-actions">
+        <nav class="site-nav" id="primary-nav">
+          <ul class="nav-links">
+            <li><a href="../learn.html">Learn</a></li>
+            <li><a href="../decoder.html">Decoder</a></li>
+            <li><a href="../acs.html">ACS</a></li>
+            <li><a href="../navlog.html">Nav Log</a></li>
+            <li class="nav-dropdown">
+              <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../minimums.html">Minimums</a></li>
+                <li><a href="../crosswind.html">Crosswind</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <line x1="12" y1="2.5" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="4.6" y1="4.6" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.4" y2="19.4"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="4.6" y1="19.4" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.4" y2="4.6"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.2 8.2 0 1 1 9.2 3.5a6.4 6.4 0 0 0 11.3 11.3z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 

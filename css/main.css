@@ -43,6 +43,81 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-1: 0.15s;   /* taps, color shifts */
   --dur-2: 0.25s;   /* lifts, reveals */
+
+  color-scheme: light;
+}
+
+/* ---------- Dark theme (night-cockpit) ----------
+   Approach A: re-theme the same color-named variables for dark, then override
+   the few components that use --ink/--buff in reversed roles (below). Applied
+   when <html> carries data-theme="dark" — set pre-paint by the inline head
+   script and flipped by the header toggle. */
+html[data-theme="dark"] {
+  --buff: #0f1923;          /* page field: deep night navy */
+  --buff-dark: #21323f;     /* raised tint: hover fills + offset shadows */
+  --ink: #e9e4d6;           /* primary text: warm instrument off-white */
+  --ink-soft: #9fb1c0;      /* secondary text: muted slate */
+  --sage: #9bb06a;          /* accents brightened to hold on a dark field */
+  --rust: #e0613f;
+  --sky: #6ea8d4;
+  --sun: #e3ad2e;
+  --rule: #314656;          /* hairlines, visible on dark */
+  --surface: #18242f;       /* elevated panels */
+  color-scheme: dark;
+}
+
+/* Dark overrides: components that use --ink/--buff in reversed roles */
+html[data-theme="dark"] .about {
+  background: var(--surface);
+  color: var(--ink-soft);
+  border-top: 2px solid var(--rust);   /* aviation-red edge: a little warmth on the dark band */
+}
+html[data-theme="dark"] .about h2 { color: var(--ink); }
+html[data-theme="dark"] .about p  { color: var(--ink-soft); }
+
+/* Hero sample chips are theme-agnostic: faint hue tints + --ink text read on
+   both light and dark panels, so no dark-mode override is needed (the
+   .metar-raw .tag rules carry the colors). */
+
+/* Print always uses the light palette: dark backgrounds waste ink, and the
+   Minimums card / Nav Log sheet are meant to print on white. */
+@media print {
+  html[data-theme="dark"] {
+    --buff: #f4ecd6; --buff-dark: #e8dcb8;
+    --ink: #0c2541;  --ink-soft: #2d4360;
+    --sage: #5d6f3c; --rust: #b53d1f; --sky: #4a7ba6; --sun: #d9a521;
+    --rule: #b9a87a; --surface: #fffaf0;
+    color-scheme: light;
+  }
+}
+
+/* Decoder: the input bar and the annotated-raw panels are navy in light mode
+   (light text on dark). Keep them dark in dark mode and re-assert --buff so all
+   their cream text — tabs, inputs, buttons, raw METAR, and the token chips —
+   stays light. */
+html[data-theme="dark"] .decoder-wrapper,
+html[data-theme="dark"] .decoder-raw-wrap {
+  background: var(--surface);
+  --buff: #f4ecd6;
+}
+/* TAF: recessed indent group + label colors that were hardcoded dark hexes. */
+html[data-theme="dark"] .taf-group--indent { background: var(--buff); }
+html[data-theme="dark"] .taf-type-fm,
+html[data-theme="dark"] .taf-type-inter  { color: var(--sky); }
+html[data-theme="dark"] .taf-type-prob30,
+html[data-theme="dark"] .taf-type-prob40 { color: var(--sun); }
+/* Wind compass + cloud-layer diagrams are hardcoded-for-light SVG figures; keep
+   their cards light in dark mode (screen only) so the cardinal labels and cloud
+   bands stay legible — matching the other diagram figures across the site. */
+@media screen {
+  html[data-theme="dark"] .vis-card {
+    --buff: #f4ecd6; --buff-dark: #e8dcb8;
+    --ink: #0c2541;  --ink-soft: #2d4360;
+    --rule: #b9a87a; --surface: #fffaf0;
+    --sage: #5d6f3c; --rust: #b53d1f; --sky: #4a7ba6; --sun: #d9a521;
+    color-scheme: light;
+    background: #fffaf0;
+  }
 }
 
 /* ---------- Reset & base ---------- */
@@ -55,6 +130,11 @@ body {
   line-height: 1.6;
   color: var(--ink-soft);
   background: var(--buff);
+  /* Crisper, more deliberate type rendering site-wide */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
   /* subtle grain for paper-chart feel */
   background-image:
     radial-gradient(circle at 25% 35%, rgba(181, 61, 31, 0.03) 0%, transparent 40%),
@@ -167,6 +247,33 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   font-size: 0.8em;
   letter-spacing: 0;
 }
+
+/* Right-side header cluster: nav, theme toggle, mobile menu button */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  flex: none;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color var(--dur-1) var(--ease-out),
+              color var(--dur-1) var(--ease-out);
+}
+.theme-toggle:hover { border-color: var(--ink); color: var(--rust); }
+.theme-toggle svg { width: 18px; height: 18px; display: block; }
+.theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 .nav-links {
   display: flex;
   gap: 1.8rem;
@@ -331,18 +438,22 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   text-align: center;          /* block, not flex: children take full width and wrap */
 }
 
-/* VOR-style compass rose printed behind the stack like chart paper */
+/* VOR-style compass rose printed behind the stack like chart paper.
+   A radial mask fades the rose out through the center so the detailed
+   degree ring reads at the rim while the headline stays on clean paper. */
 .hero-chart {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(680px, 92vw);
+  width: min(740px, 96vw);
   aspect-ratio: 1;
   color: var(--ink);
-  opacity: 0.07;
+  opacity: 0.13;
   pointer-events: none;
   z-index: 0;
+  -webkit-mask-image: radial-gradient(circle, transparent 24%, #000 50%);
+          mask-image: radial-gradient(circle, transparent 24%, #000 50%);
 }
 
 .hero-eyebrow {
@@ -455,7 +566,7 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 
 /* ---------- METAR teaser card ---------- */
 .metar-card {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1.8rem;
   position: relative;
@@ -483,16 +594,26 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   margin-bottom: 1.5rem;
   padding-bottom: 1.2rem;
   border-bottom: 1px dashed var(--rule);
+  font-variant-numeric: tabular-nums;   /* digits align like an avionics readout */
 }
+/* METAR highlight chips: one coordinated hue per section, faint tints that
+   read on both light and dark panels (text follows the theme via --ink).
+   Metadata (time, altimeter) stays a quiet neutral; the condition tokens each
+   carry a distinct hue, so no single color dominates. */
 .metar-raw .tag {
-  background: var(--sun);
+  color: var(--ink);
+  background: rgba(120, 134, 150, 0.18);   /* quiet neutral = metadata default */
   padding: 1px 4px;
   border-radius: 2px;
   cursor: help;
 }
-.metar-raw .tag-wind { background: rgba(74, 123, 166, 0.25); }
-.metar-raw .tag-vis  { background: rgba(93, 111, 60, 0.25); }
-.metar-raw .tag-wx   { background: rgba(181, 61, 31, 0.2); }
+.metar-raw .tag-time,
+.metar-raw .tag-alt  { background: rgba(120, 134, 150, 0.18); }  /* metadata: quiet */
+.metar-raw .tag-wind { background: rgba(74, 123, 166, 0.28); }   /* wind        → sky blue */
+.metar-raw .tag-vis  { background: rgba(93, 111, 60, 0.32); }    /* visibility  → sage green */
+.metar-raw .tag-wx   { background: rgba(181, 61, 31, 0.30); }    /* weather     → aviation red */
+.metar-raw .tag-sky  { background: rgba(100, 75, 140, 0.32); }   /* sky/ceiling → violet */
+.metar-raw .tag-temp { background: rgba(217, 165, 33, 0.30); }   /* temperature → sun gold */
 
 .metar-decode {
   display: grid;
@@ -508,7 +629,7 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   letter-spacing: 0.1em;
   padding-top: 2px;
 }
-.metar-decode dd { margin: 0; color: var(--ink); }
+.metar-decode dd { margin: 0; color: var(--ink); font-variant-numeric: tabular-nums; }
 
 /* ---------- Live sample strip (below the hero) ----------
    Keeps the annotated-METAR showcase the old hero card had, restyled as a
@@ -550,6 +671,7 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   margin: 0.25rem 0 0;
   color: var(--ink);
   font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;   /* values line up across the readout grid */
 }
 
 /* ---------- Sections ---------- */
@@ -603,7 +725,7 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
 
 .feature {
   padding: 2.2rem;
-  background: #fffaf0;            /* surface tone: the grid reads as one elevated panel */
+  background: var(--surface);     /* surface tone: the grid reads as one elevated panel */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -779,6 +901,23 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   .hero-sample-panel   { animation: hero-card-in 0.85s var(--ease-out) 0.3s both; }
 }
 
+/* ---------- Scroll reveal ----------
+   Sections fade-and-rise once as they scroll into view. The pre-hidden state
+   lives ONLY inside no-preference, so reduced-motion users and the no-JS
+   fallback both get fully-visible, static content. JS adds `.reveal` (hide)
+   then `.is-visible` (settle); see js/main.js. Transition is on the end-state
+   so the initial hide is instant, not a visible fade-out. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal { opacity: 0; transform: translateY(18px); }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity   0.5s var(--ease-out) var(--reveal-delay, 0ms),
+      transform 0.5s var(--ease-out) var(--reveal-delay, 0ms);
+  }
+}
+
 /* ---------- Footer ---------- */
 footer {
   padding: 2.5rem 0;
@@ -897,7 +1036,7 @@ footer .container {
     position: static;
     border: 1px solid var(--rule);
     padding: 1.2rem;
-    background: #fffaf0;
+    background: var(--surface);
   }
 }
 .toc-label {
@@ -967,7 +1106,7 @@ footer .container {
   .card-grid-3 { grid-template-columns: 1fr; }
 }
 .hazard-card {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-top: 4px solid var(--ink);
   padding: 1.4rem;
@@ -1028,7 +1167,7 @@ footer .container {
   gap: 0;
   border: 1px solid var(--rule);
   margin: 1.5rem 0 2rem;
-  background: #fffaf0;
+  background: var(--surface);
 }
 @media (max-width: 700px) {
   .compare-table { grid-template-columns: 1fr; }
@@ -1066,7 +1205,7 @@ footer .container {
 /* ---------- Q&A details/accordion ---------- */
 .qa {
   border: 1px solid var(--rule);
-  background: #fffaf0;
+  background: var(--surface);
   padding: 0;
   margin-bottom: 0.7rem;
 }
@@ -1109,7 +1248,7 @@ footer .container {
   color: var(--ink);
 }
 .scenario-box {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1.6rem;
 }
@@ -1199,7 +1338,7 @@ footer .container {
   grid-template-columns: 60px 1fr 30px;
   gap: 1.5rem;
   align-items: center;
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1.4rem 1.6rem;
   text-decoration: none;
@@ -1266,7 +1405,7 @@ footer .container {
   margin: 1.8rem 0;
   padding: 0;
   border: 1px solid var(--rule);
-  background: #fffaf0;
+  background: var(--surface);
 }
 .diagram svg {
   display: block;
@@ -1289,7 +1428,7 @@ footer .container {
   max-width: 420px;
   margin: 1.2rem 0 1.6rem;
   border-collapse: collapse;
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   font-family: var(--font-mono);
   font-size: 0.9rem;
@@ -1471,7 +1610,7 @@ footer .container {
   flex-wrap: wrap;
   margin-bottom: 2rem;
   padding: 1.2rem 1.5rem;
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-top: 3px solid var(--sage);   /* was border-left side-stripe */
 }
@@ -1528,20 +1667,25 @@ footer .container {
 /* Token color classes */
 .tok { padding: 2px 5px; border-radius: 2px; cursor: help; transition: opacity 0.1s; }
 .tok:hover { opacity: 0.8; }
-.tok-type        { background: rgba(185,168,122,0.42); color: var(--buff); }
-.tok-station     { background: rgba(217,165,33,0.35);  color: var(--buff); font-weight: 600; }
-.tok-time        { background: rgba(93,111,60,0.4);    color: var(--buff); }
-.tok-modifier    { background: rgba(181,61,31,0.35);   color: var(--buff); }
-.tok-wind        { background: rgba(74,123,166,0.55);  color: var(--buff); }
-.tok-wind-var    { background: rgba(74,123,166,0.35);  color: var(--buff); }
-.tok-visibility  { background: rgba(93,111,60,0.45);   color: var(--buff); }
-.tok-rvr         { background: rgba(93,111,60,0.25);   color: var(--buff); }
-.tok-weather     { background: rgba(181,61,31,0.5);    color: var(--buff); }
-.tok-sky         { background: rgba(12,37,65,0.5);     color: var(--buff); }
-.tok-temp        { background: rgba(217,165,33,0.45);  color: var(--buff); }
-.tok-altimeter   { background: rgba(181,61,31,0.35);   color: var(--buff); }
-.tok-remarks-header { background: rgba(100,75,140,0.42); color: var(--buff); font-style: italic; }
-.tok-remarks        { background: rgba(100,75,140,0.28); color: var(--buff); }
+/* Coordinated token colors — one hue per METAR section, matching the homepage
+   sample. Metadata (type, station, time, modifier, altimeter, remarks) is a
+   quiet slate; each condition token carries a distinct hue, so no single color
+   dominates. Cream text reads on the navy raw-METAR panel; the field-breakdown
+   copies (.field-token) follow the theme instead. */
+.tok-type        { background: rgba(120,134,150,0.24); color: var(--buff); }   /* metadata */
+.tok-station     { background: rgba(120,134,150,0.34); color: var(--buff); font-weight: 600; }
+.tok-time        { background: rgba(120,134,150,0.24); color: var(--buff); }
+.tok-modifier    { background: rgba(120,134,150,0.24); color: var(--buff); }
+.tok-wind        { background: rgba(74,123,166,0.52);  color: var(--buff); }   /* wind        → sky blue */
+.tok-wind-var    { background: rgba(74,123,166,0.32);  color: var(--buff); }
+.tok-visibility  { background: rgba(93,111,60,0.48);   color: var(--buff); }   /* visibility  → sage green */
+.tok-rvr         { background: rgba(93,111,60,0.28);   color: var(--buff); }
+.tok-weather     { background: rgba(181,61,31,0.52);   color: var(--buff); }   /* weather     → aviation red */
+.tok-sky         { background: rgba(100,75,140,0.5);   color: var(--buff); }   /* sky/ceiling → violet */
+.tok-temp        { background: rgba(217,165,33,0.45);  color: var(--buff); }   /* temperature → sun gold */
+.tok-altimeter   { background: rgba(120,134,150,0.26); color: var(--buff); }   /* metadata */
+.tok-remarks-header { background: rgba(120,134,150,0.30); color: var(--buff); font-style: italic; }
+.tok-remarks        { background: rgba(120,134,150,0.18); color: var(--buff); }
 
 /* ── Main decoded content layout ── */
 .decoder-main {
@@ -1556,7 +1700,7 @@ footer .container {
 
 /* ── Field breakdown table ── */
 .decoder-fields-wrap {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1.2rem;
 }
@@ -1577,6 +1721,7 @@ footer .container {
 .field-token {
   font-family: var(--font-mono);
   font-size: 0.82rem;
+  color: var(--ink);   /* field copies sit on the light panel: follow the theme, not cream */
   padding: 2px 6px;
   border-radius: 2px;
   display: inline-block;
@@ -1604,7 +1749,7 @@ footer .container {
   gap: 1.5rem;
 }
 .vis-card {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1rem;
 }
@@ -1630,7 +1775,7 @@ footer .container {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--ink-soft);
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 0.8rem 1rem;
   overflow-wrap: anywhere;
@@ -1702,7 +1847,7 @@ footer .container {
   flex-wrap: wrap;
   margin-bottom: 2rem;
   padding: 1.2rem 1.5rem;
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-top: 3px solid var(--sky);   /* was border-left side-stripe */
 }
@@ -1740,7 +1885,7 @@ footer .container {
   margin-bottom: 1rem;
 }
 .taf-group {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-left: 5px solid var(--rule);
   padding: 0.9rem 1.1rem;
@@ -1806,7 +1951,7 @@ footer .container {
 .taf-chip-wind { background: rgba(74,123,166,0.18); color: var(--ink); }
 .taf-chip-vis  { background: rgba(93,111,60,0.18);  color: var(--ink); }
 .taf-chip-wx   { background: rgba(181,61,31,0.18);  color: var(--ink); }
-.taf-chip-sky  { background: rgba(12,37,65,0.12);   color: var(--ink); }
+.taf-chip-sky  { background: rgba(100,75,140,0.16); color: var(--ink); }   /* sky → violet, matching the token scheme */
 .taf-chip-ws   { background: rgba(181,61,31,0.25);  color: var(--ink); }
 .taf-chip-empty { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); font-style: italic; }
 
@@ -1843,7 +1988,7 @@ footer .container {
   .ladder-product-row { grid-template-columns: 1fr; }
 }
 .ladder-product {
-  background: #fffaf0;
+  background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1rem 1rem 0.8rem;
 }
@@ -1901,7 +2046,7 @@ footer .container {
 /* Field breakdown */
 .pirep-fields {
   border: 1px solid var(--rule);
-  background: #fffaf0;
+  background: var(--surface);
   margin-bottom: 1.5rem;
 }
 .pirep-field-row {

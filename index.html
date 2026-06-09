@@ -1,10 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CrosswindWX — aviation weather, decoded</title>
   <meta name="description" content="Aviation weather products translated for student pilots and check-ride preparation.">
+  <script>
+    // Apply saved/system theme before paint so there's no light-mode flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('crosswindwx-theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -15,24 +26,42 @@
       <a href="index.html" class="brand">
         Crosswind<span class="brand-mark">WX</span>
       </a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav class="site-nav" id="primary-nav">
-        <ul class="nav-links">
-          <li><a href="pages/learn.html">Learn</a></li>
-          <li><a href="pages/decoder.html">Decoder</a></li>
-          <li><a href="pages/navlog.html">Nav Log</a></li>
-          <li><a href="pages/acs.html">ACS</a></li>
-          <li class="nav-dropdown">
-            <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
-            <ul class="nav-dropdown-menu">
-              <li><a href="pages/minimums.html">Minimums</a></li>
-              <li><a href="pages/crosswind.html">Crosswind</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div class="header-actions">
+        <nav class="site-nav" id="primary-nav">
+          <ul class="nav-links">
+            <li><a href="pages/learn.html">Learn</a></li>
+            <li><a href="pages/decoder.html">Decoder</a></li>
+            <li><a href="pages/acs.html">ACS</a></li>
+            <li><a href="pages/navlog.html">Nav Log</a></li>
+            <li class="nav-dropdown">
+              <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
+              <ul class="nav-dropdown-menu">
+                <li><a href="pages/minimums.html">Minimums</a></li>
+                <li><a href="pages/crosswind.html">Crosswind</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <line x1="12" y1="2.5" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="4.6" y1="4.6" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.4" y2="19.4"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="4.6" y1="19.4" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.4" y2="4.6"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.2 8.2 0 1 1 9.2 3.5a6.4 6.4 0 0 0 11.3 11.3z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -40,31 +69,35 @@
   <section class="hero">
     <!-- VOR-style compass rose: chart substrate, decorative only -->
     <svg class="hero-chart" viewBox="0 0 200 200" aria-hidden="true" focusable="false" fill="none" stroke="currentColor">
-      <circle cx="100" cy="100" r="96" stroke-width="0.8"/>
-      <circle cx="100" cy="100" r="70" stroke-width="0.6"/>
-      <circle cx="100" cy="100" r="88" stroke-width="6" stroke-dasharray="0.6 5.1" opacity="0.7"/>
-      <g stroke-width="1.1">
-        <line x1="100" y1="16" x2="100" y2="8"/>
-        <line x1="142" y1="27.3" x2="146" y2="20.3"/>
-        <line x1="172.7" y1="58" x2="179.7" y2="54"/>
-        <line x1="184" y1="100" x2="192" y2="100"/>
-        <line x1="172.7" y1="142" x2="179.7" y2="146"/>
-        <line x1="142" y1="172.7" x2="146" y2="179.7"/>
-        <line x1="100" y1="184" x2="100" y2="192"/>
-        <line x1="58" y1="172.7" x2="54" y2="179.7"/>
-        <line x1="27.3" y1="142" x2="20.3" y2="146"/>
-        <line x1="16" y1="100" x2="8" y2="100"/>
-        <line x1="27.3" y1="58" x2="20.3" y2="54"/>
-        <line x1="58" y1="27.3" x2="54" y2="20.3"/>
+      <!-- concentric guide rings -->
+      <circle cx="100" cy="100" r="96" stroke-width="0.6"/>
+      <circle cx="100" cy="100" r="78" stroke-width="0.5"/>
+      <circle cx="100" cy="100" r="54" stroke-width="0.5"/>
+      <!-- fine degree-tick ring (a dash per ~6°) -->
+      <circle cx="100" cy="100" r="90" stroke-width="5" stroke-dasharray="0.6 8.8"/>
+      <!-- major bearing ticks every 30° -->
+      <g stroke-width="1">
+        <line x1="100" y1="14" x2="100" y2="26"/>
+        <line x1="143" y1="25.5" x2="137" y2="35.9"/>
+        <line x1="174.5" y1="57" x2="164.1" y2="63"/>
+        <line x1="186" y1="100" x2="174" y2="100"/>
+        <line x1="174.5" y1="143" x2="164.1" y2="137"/>
+        <line x1="143" y1="174.5" x2="137" y2="164.1"/>
+        <line x1="100" y1="186" x2="100" y2="174"/>
+        <line x1="57" y1="174.5" x2="63" y2="164.1"/>
+        <line x1="25.5" y1="143" x2="35.9" y2="137"/>
+        <line x1="14" y1="100" x2="26" y2="100"/>
+        <line x1="25.5" y1="57" x2="35.9" y2="63"/>
+        <line x1="57" y1="25.5" x2="63" y2="35.9"/>
       </g>
-      <g stroke-width="0.8">
-        <line x1="100" y1="100" x2="100" y2="30"/>
-        <line x1="100" y1="100" x2="170" y2="100"/>
-        <line x1="100" y1="100" x2="100" y2="170"/>
-        <line x1="100" y1="100" x2="30" y2="100"/>
+      <!-- cardinal cross-hairs -->
+      <g stroke-width="0.6">
+        <line x1="100" y1="26" x2="100" y2="174"/>
+        <line x1="26" y1="100" x2="174" y2="100"/>
       </g>
-      <polygon points="100,34 95,50 100,45 105,50" fill="currentColor" stroke="none"/>
-      <text x="100" y="62" text-anchor="middle" font-family="Anton, sans-serif" font-size="13" fill="currentColor" stroke="none">N</text>
+      <!-- north index -->
+      <polygon points="100,30 95.5,44 100,40 104.5,44" fill="currentColor" stroke="none"/>
+      <text x="100" y="60" text-anchor="middle" font-family="Anton, sans-serif" font-size="12" letter-spacing="1" fill="currentColor" stroke="none">N</text>
     </svg>
     <div class="container">
       <div class="hero-stack">
@@ -89,14 +122,14 @@
       <div class="hero-sample-panel">
         <p class="metar-raw">
           KDAB
-          <span class="tag" tabindex="0" aria-label="251753Z: day 25, 17:53 Zulu" data-tip="Day 25, 17:53 Zulu">251753Z</span>
+          <span class="tag tag-time" tabindex="0" aria-label="251753Z: day 25, 17:53 Zulu" data-tip="Day 25, 17:53 Zulu">251753Z</span>
           <span class="tag tag-wind" tabindex="0" aria-label="24014G22KT: wind 240 degrees at 14 knots, gusting 22" data-tip="Wind 240° at 14 knots, gusting 22">24014G22KT</span>
           <span class="tag tag-vis" tabindex="0" aria-label="6SM: visibility 6 statute miles" data-tip="Visibility 6 statute miles">6SM</span>
           <span class="tag tag-wx" tabindex="0" aria-label="-RA: light rain in the vicinity" data-tip="Light rain in the vicinity">-RA</span>
-          <span class="tag" tabindex="0" aria-label="BKN025: broken clouds at 2,500 ft AGL" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
-          <span class="tag" tabindex="0" aria-label="OVC080: overcast at 8,000 ft AGL" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
-          22/19
-          <span class="tag" tabindex="0" aria-label="A2984: altimeter 29.84 inHg" data-tip="Altimeter 29.84 inHg">A2984</span>
+          <span class="tag tag-sky" tabindex="0" aria-label="BKN025: broken clouds at 2,500 ft AGL" data-tip="Broken clouds at 2,500 ft AGL">BKN025</span>
+          <span class="tag tag-sky" tabindex="0" aria-label="OVC080: overcast at 8,000 ft AGL" data-tip="Overcast at 8,000 ft AGL">OVC080</span>
+          <span class="tag tag-temp" tabindex="0" aria-label="22/19: temperature 22°C, dew point 19°C" data-tip="Temp 22°C / dew point 19°C, 3° spread">22/19</span>
+          <span class="tag tag-alt" tabindex="0" aria-label="A2984: altimeter 29.84 inHg" data-tip="Altimeter 29.84 inHg">A2984</span>
         </p>
         <dl class="hero-sample-decode">
           <div><dt>Wind</dt><dd>240° at 14 kt, gusting 22</dd></div>

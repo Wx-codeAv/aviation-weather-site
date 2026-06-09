@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crosswind Calculator — CrosswindWX</title>
   <meta name="description" content="Enter METAR wind and a runway number to see headwind and crosswind components visualized as a live wind triangle. Compare two runways and understand the math.">
+  <script>
+    // Apply saved/system theme before paint so there is no light-mode flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('crosswindwx-theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="../css/main.css">
   <style>
     .cw-hero {
@@ -30,7 +41,7 @@
     @media (max-width: 860px) { .cw-layout { grid-template-columns: 1fr; } }
 
     .cw-inputs-panel { display: flex; flex-direction: column; gap: 1.5rem; }
-    .cw-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1.4rem 1.6rem; }
+    .cw-card { background: var(--surface); border: 1px solid var(--rule); padding: 1.4rem 1.6rem; }
     .cw-card-title {
       font-family: var(--font-display);
       font-size: 1.2rem;
@@ -112,6 +123,7 @@
     .cw-diagram-panel { position: sticky; top: 90px; }
     @media (max-width: 860px) { .cw-diagram-panel { position: static; } }
 
+    /* Stays light in both themes: the wind triangle is a self-colored figure (hardcoded SVG hues). */
     .cw-svg-wrap { background: #fffaf0; border: 1px solid var(--rule); margin-bottom: 1rem; }
     .cw-svg-wrap svg { display: block; width: 100%; height: auto; }
     .cw-svg-caption {
@@ -232,7 +244,7 @@
     .cw-compare-table {
       width: 100%;
       border-collapse: collapse;
-      background: #fffaf0;
+      background: var(--surface);
       border: 1px solid var(--rule);
       font-size: 0.95rem;
     }
@@ -266,7 +278,7 @@
     .cmp-sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); margin-left: 0.3rem; }
     .cw-compare-note { font-size: 0.85rem; color: var(--ink-soft); font-style: italic; margin-top: 0.6rem; }
 
-    .cw-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 4rem 0; }
+    .cw-edu { background: var(--surface); border-top: 1px solid var(--rule); padding: 4rem 0; }
     .cw-edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 3rem; }
     @media (max-width: 860px) { .cw-edu-grid { grid-template-columns: 1fr; } }
     .cw-edu-block { min-width: 0; }
@@ -315,24 +327,42 @@
   <header class="site-header">
     <div class="container">
       <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav class="site-nav" id="primary-nav">
-        <ul class="nav-links">
-          <li><a href="learn.html">Learn</a></li>
-          <li><a href="decoder.html">Decoder</a></li>
-          <li><a href="navlog.html">Nav Log</a></li>
-          <li><a href="acs.html">ACS</a></li>
-          <li class="nav-dropdown">
-            <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
-            <ul class="nav-dropdown-menu">
-              <li><a href="minimums.html">Minimums</a></li>
-              <li><a href="crosswind.html">Crosswind</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div class="header-actions">
+        <nav class="site-nav" id="primary-nav">
+          <ul class="nav-links">
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="decoder.html">Decoder</a></li>
+            <li><a href="acs.html">ACS</a></li>
+            <li><a href="navlog.html">Nav Log</a></li>
+            <li class="nav-dropdown">
+              <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
+              <ul class="nav-dropdown-menu">
+                <li><a href="minimums.html">Minimums</a></li>
+                <li><a href="crosswind.html">Crosswind</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <line x1="12" y1="2.5" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="4.6" y1="4.6" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.4" y2="19.4"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="4.6" y1="19.4" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.4" y2="4.6"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.2 8.2 0 1 1 9.2 3.5a6.4 6.4 0 0 0 11.3 11.3z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 

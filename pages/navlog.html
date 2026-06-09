@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nav Log Calculator — CrosswindWX</title>
   <meta name="description" content="Interactive VFR nav log calculator. Enter waypoints, winds aloft, and TAS — the tool computes WCA, true/magnetic/compass headings, ground speed, ETE, and fuel burn per leg. Shows the math so student pilots learn, not just get answers.">
+  <script>
+    // Apply saved/system theme before paint so there is no light-mode flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('crosswindwx-theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="../css/main.css">
   <style>
     /* ─── Hero ─── */
@@ -27,7 +38,7 @@
     .nl-profile-section { padding: 0; }
     .nl-profile-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem 1.5rem; background: #fffaf0;
+      gap: 1rem 1.5rem; background: var(--surface);
       border: 1px solid var(--rule); padding: 1.4rem 1.6rem; margin-bottom: 1rem;
     }
     .nl-profile-title {
@@ -66,7 +77,7 @@
     /* ─── Airport Information ─── */
     .nl-airport-section { padding: 0; }
     .nl-airport-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.2rem; }
-    .nl-airport-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
+    .nl-airport-card { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
     .nl-airport-title {
       font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.03em; color: var(--ink);
       border-bottom: 2px solid var(--ink); padding-bottom: 0.45rem; margin-bottom: 0.9rem;
@@ -245,7 +256,7 @@
     /* ─── Fuel summary ─── */
     .nl-fuel-section { padding: 0; }
     .nl-fuel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-    .nl-fuel-card { background: #fffaf0; border: 1px solid var(--rule); padding: 1rem 1.2rem; }
+    .nl-fuel-card { background: var(--surface); border: 1px solid var(--rule); padding: 1rem 1.2rem; }
     .nl-fuel-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 0.3rem; }
     .nl-fuel-val { font-family: var(--font-display); font-size: 1.9rem; color: var(--ink); letter-spacing: 0.02em; line-height: 1; }
     .nl-fuel-val span { font-size: 0.85rem; opacity: 0.6; font-family: var(--font-mono); }
@@ -276,7 +287,7 @@
     .nl-gloss-table td:last-child { color: var(--ink-soft); }
 
     /* ─── Educational section ─── */
-    .nl-edu { background: #fffaf0; border-top: 1px solid var(--rule); padding: 3.5rem 0; }
+    .nl-edu { background: var(--surface); border-top: 1px solid var(--rule); padding: 3.5rem 0; }
     .nl-edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem 3rem; }
     .nl-edu-block { min-width: 0; }
     .nl-edu-eyebrow { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--rust); margin: 0 0 0.4rem; }
@@ -339,7 +350,7 @@
       .nl-poh-grid { grid-template-columns: 1fr; }
       .nl-poh-panel--cruise { grid-column: auto; grid-row: auto; }
     }
-    .nl-poh-panel { background: #fffaf0; border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
+    .nl-poh-panel { background: var(--surface); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; }
     .nl-poh-panel-title {
       font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.03em;
       color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 0.4rem; margin-bottom: 0.9rem;
@@ -400,6 +411,27 @@
     .nl-print-header table { width: 100%; border-collapse: collapse; margin-bottom: 0.15in; }
     .nl-print-header td { padding: 0.1rem 0.5rem; border: 0.5pt solid #999; }
     .nl-print-header td:first-child { font-weight: 600; color: #333; width: 130px; }
+
+    /* ─── Dark mode ─── */
+    /* Aircraft strip is navy with cream text in light mode: keep it dark and
+       re-assert --buff so its cream detail text stays light. */
+    html[data-theme="dark"] .nl-ac-strip {
+      background: var(--surface);
+      --buff: #f4ecd6;
+    }
+    /* The planning table is a dense, color-coded worksheet. Keep it on a light
+       "sheet" in dark mode (screen only; print handles itself) so its
+       computed/actual and climb/descent color-coding stays intact and legible. */
+    @media screen {
+      html[data-theme="dark"] .nl-table-wrap {
+        --buff: #f4ecd6; --buff-dark: #e8dcb8;
+        --ink: #0c2541; --ink-soft: #2d4360;
+        --rule: #b9a87a; --surface: #fffaf0;
+        --sage: #5d6f3c; --rust: #b53d1f; --sky: #4a7ba6; --sun: #d9a521;
+        color-scheme: light;
+        background: #fffaf0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -408,31 +440,49 @@
   <header class="site-header">
     <div class="container">
       <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav class="site-nav" id="primary-nav">
-        <ul class="nav-links">
-          <li><a href="learn.html">Learn</a></li>
-          <li><a href="decoder.html">Decoder</a></li>
-          <li><a href="navlog.html" aria-current="page">Nav Log</a></li>
-          <li><a href="acs.html">ACS</a></li>
-          <li class="nav-dropdown">
-            <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
-            <ul class="nav-dropdown-menu">
-              <li><a href="minimums.html">Minimums</a></li>
-              <li><a href="crosswind.html">Crosswind</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div class="header-actions">
+        <nav class="site-nav" id="primary-nav">
+          <ul class="nav-links">
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="decoder.html">Decoder</a></li>
+            <li><a href="acs.html">ACS</a></li>
+            <li><a href="navlog.html" aria-current="page">Nav Log</a></li>
+            <li class="nav-dropdown">
+              <span class="nav-dropdown-label" tabindex="0">Tools ▾</span>
+              <ul class="nav-dropdown-menu">
+                <li><a href="minimums.html">Minimums</a></li>
+                <li><a href="crosswind.html">Crosswind</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <line x1="12" y1="2.5" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="4.6" y1="4.6" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.4" y2="19.4"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="4.6" y1="19.4" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.4" y2="4.6"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.2 8.2 0 1 1 9.2 3.5a6.4 6.4 0 0 0 11.3 11.3z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- ══ Hero ══ -->
   <section class="nl-hero">
     <div class="container">
-      <p class="hero-eyebrow">Tool · Cross-country planning</p>
+      <p class="hero-eyebrow">Section 05 / Nav Log</p>
       <h1>Nav Log <span class="accent">Calculator</span></h1>
       <p class="lede">Enter your route, winds aloft, and altitude. The calculator solves the full heading chain (TC → WCA → TH → MH → CH), ground speed, ETE, and fuel per leg — with cruise TAS and GPH drawn from C172S POH Section 5 tables and step-by-step math shown for every value.</p>
     </div>

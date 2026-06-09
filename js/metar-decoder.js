@@ -429,10 +429,16 @@ function buildCloudSVG(sky, ceiling) {
   if (!sky || sky.length === 0) return '<div class="vis-placeholder">No sky data</div>';
 
   const w = 180, h = 240;
-  const maxAlt = 15000;
   const yTop = 20, yBot = 220;
   const chartH = yBot - yTop;
   const barW = 50, barX = 65;
+
+  // Scale the chart to the highest reported layer (with headroom) so high layers
+  // like BKN250 are never clipped off the top. Floor of 15k keeps typical
+  // low-cloud METARs from over-zooming; round up to a clean 5k step.
+  const layerAlts = sky.filter(l => l.height !== null).map(l => l.height);
+  const highestAlt = layerAlts.length ? Math.max(...layerAlts) : 0;
+  const maxAlt = Math.max(15000, Math.ceil((highestAlt * 1.12) / 5000) * 5000);
 
   function altToY(alt) {
     return yBot - (alt / maxAlt) * chartH;
@@ -487,7 +493,8 @@ function buildCloudSVG(sky, ceiling) {
 
   // Y-axis altitude labels
   let yLabels = '';
-  for (const alt of [3000, 6000, 9000, 12000, 15000]) {
+  for (let i = 1; i <= 5; i++) {
+    const alt = (maxAlt / 5) * i;
     const y = altToY(alt);
     yLabels += `<line x1="${barX - 4}" y1="${y.toFixed(1)}" x2="${barX + barW + 4}" y2="${y.toFixed(1)}" stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="2,3"/>
     <text x="${barX - 8}" y="${(y+3).toFixed(1)}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="8" fill="#b9a87a">${alt/1000}k</text>`;
