@@ -200,14 +200,10 @@
               <!-- Left outflow (tailwind zone for right-to-left approach) -->
               <line x1="322" y1="218" x2="135" y2="218" stroke="#b53d1f" stroke-width="2.5"/>
               <polygon points="120,218 140,210 140,226" fill="#b53d1f"/>
-              <line x1="315" y1="218" x2="162" y2="218" stroke="#b53d1f" stroke-width="1" opacity="0.4"/>
-              <line x1="308" y1="218" x2="175" y2="218" stroke="#b53d1f" stroke-width="1" opacity="0.25"/>
 
               <!-- Right outflow (headwind zone for right-to-left approach) -->
               <line x1="378" y1="218" x2="565" y2="218" stroke="#5d6f3c" stroke-width="2.5"/>
               <polygon points="580,218 560,210 560,226" fill="#5d6f3c"/>
-              <line x1="385" y1="218" x2="538" y2="218" stroke="#5d6f3c" stroke-width="1" opacity="0.4"/>
-              <line x1="392" y1="218" x2="525" y2="218" stroke="#5d6f3c" stroke-width="1" opacity="0.25"/>
 
               <!-- Outflow zone labels -->
               <text x="245" y="184" text-anchor="middle" font-family="Anton,sans-serif" font-size="9.5" fill="#b53d1f" letter-spacing="0.07em">TAILWIND</text>
@@ -218,7 +214,8 @@
 
               <!-- Approach glidepath (dashed, upper right to lower left) -->
               <line x1="645" y1="78" x2="140" y2="222" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="6,3"/>
-              <text x="600" y="150" font-family="Manrope,sans-serif" font-size="7.5" fill="#888" font-style="italic">intended glidepath</text>
+              <line x1="575" y1="165" x2="548" y2="110" stroke="#8a7a52" stroke-width="0.7" stroke-dasharray="2,2"/>
+              <text x="583" y="170" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#8a7a52" letter-spacing="0.05em">INTENDED GLIDESLOPE</text>
 
               <!-- Runway threshold (intended touchdown, far left) -->
               <rect x="92" y="225" width="64" height="4" fill="#0c2541"/>
@@ -226,7 +223,8 @@
 
               <!-- Actual flight path: balloons in the headwind, then sinks through the downdraft + tailwind to an impact short of the runway -->
               <path d="M 645,78 C 600,88 558,92 520,104 C 458,124 408,168 372,200 C 348,218 322,228 300,228" fill="none" stroke="#b53d1f" stroke-width="2"/>
-              <text x="556" y="120" font-family="Manrope,sans-serif" font-size="7.5" fill="#b53d1f" font-style="italic">actual path</text>
+              <line x1="560" y1="83" x2="570" y2="89" stroke="#b53d1f" stroke-width="0.7" stroke-dasharray="2,2"/>
+              <text x="560" y="80" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">ACTUAL PATH</text>
               <!-- Impact short of the runway -->
               <g stroke="#b53d1f" stroke-width="1.6">
                 <line x1="300" y1="227" x2="288" y2="214"/>
@@ -237,21 +235,21 @@
               </g>
               <text x="300" y="244" text-anchor="middle" font-family="Manrope,sans-serif" font-size="8" fill="#b53d1f" font-weight="700">impacts short of runway</text>
 
-              <!-- Aircraft 1: approaching from right, before headwind zone -->
-              <polygon points="610,96 628,89 628,103" fill="#5d6f3c"/>
-              <text x="635" y="92" font-family="Manrope,sans-serif" font-size="8" fill="#5d6f3c" font-weight="600">① Headwind encountered</text>
-              <text x="635" y="103" font-family="Manrope,sans-serif" font-size="7.5" fill="#888">↑ airspeed — instinct: reduce power</text>
+              <!-- Phase markers ON the actual path, keyed to the numbered labels -->
+              <circle cx="612" cy="85" r="8" fill="#fffaf0" stroke="#5d6f3c" stroke-width="1.4"/>
+              <text x="612" y="89" font-family="JetBrains Mono,monospace" font-size="11" fill="#5d6f3c" text-anchor="middle" font-weight="700">1</text>
+              <text x="635" y="92" font-family="Manrope,sans-serif" font-size="9.5" fill="#5d6f3c" font-weight="600">① Headwind encountered</text>
+              <text x="635" y="104" font-family="Manrope,sans-serif" font-size="8.5" fill="#888">↑ airspeed — instinct: reduce power</text>
 
-              <!-- Aircraft 2: in downdraft -->
-              <polygon points="338,154 356,147 356,161" fill="#b53d1f"/>
-              <text x="265" y="148" text-anchor="end" font-family="Manrope,sans-serif" font-size="8" fill="#b53d1f" font-weight="600">② Downdraft core</text>
-              <text x="265" y="159" text-anchor="end" font-family="Manrope,sans-serif" font-size="7.5" fill="#888">↓ altitude — power already reduced</text>
+              <circle cx="372" cy="200" r="8" fill="#fffaf0" stroke="#b53d1f" stroke-width="1.4"/>
+              <text x="372" y="204" font-family="JetBrains Mono,monospace" font-size="11" fill="#b53d1f" text-anchor="middle" font-weight="700">2</text>
+              <text x="265" y="148" text-anchor="end" font-family="Manrope,sans-serif" font-size="9.5" fill="#b53d1f" font-weight="600">② Downdraft core</text>
+              <text x="265" y="160" text-anchor="end" font-family="Manrope,sans-serif" font-size="8.5" fill="#888">↓ altitude — power already reduced</text>
 
-              <!-- Aircraft 3: sinking in the tailwind on the actual path, below the glidepath -->
-              <polygon points="332,214 350,207 350,221" fill="#b53d1f"/>
-              <text x="356" y="219" font-family="Manrope,sans-serif" font-size="9" fill="#b53d1f" font-weight="700">③</text>
-              <text x="150" y="128" text-anchor="end" font-family="Manrope,sans-serif" font-size="8" fill="#b53d1f" font-weight="600">③ Tailwind: airspeed collapses</text>
-              <text x="150" y="139" text-anchor="end" font-family="Manrope,sans-serif" font-size="7.5" fill="#888">low, slow, near idle — cannot recover</text>
+              <circle cx="332" cy="223" r="8" fill="#fffaf0" stroke="#b53d1f" stroke-width="1.4"/>
+              <text x="332" y="227" font-family="JetBrains Mono,monospace" font-size="11" fill="#b53d1f" text-anchor="middle" font-weight="700">3</text>
+              <text x="150" y="128" text-anchor="end" font-family="Manrope,sans-serif" font-size="9.5" fill="#b53d1f" font-weight="600">③ Tailwind: airspeed collapses</text>
+              <text x="150" y="140" text-anchor="end" font-family="Manrope,sans-serif" font-size="8.5" fill="#888">low, slow, near idle — cannot recover</text>
 
               <!-- Outer border -->
               <rect x="1" y="1" width="798" height="258" fill="none" stroke="#b9a87a" stroke-width="0.5"/>

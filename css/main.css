@@ -57,7 +57,7 @@ html[data-theme="dark"] {
   --buff-dark: #21323f;     /* raised tint: hover fills + offset shadows */
   --ink: #e9e4d6;           /* primary text: warm instrument off-white */
   --ink-soft: #9fb1c0;      /* secondary text: muted slate */
-  --sage: #9bb06a;          /* accents brightened to hold on a dark field */
+  --sage: #82c882;          /* mint green (matches Minimums card readouts); reads clean on the dark field */
   --rust: #e0613f;
   --sky: #6ea8d4;
   --sun: #e3ad2e;
@@ -87,6 +87,20 @@ html[data-theme="dark"] .scenario-takeaway {
 html[data-theme="dark"] .pirep-example {
   background: var(--surface);
   --buff: #f4ecd6;
+}
+/* PIREP field-code chips sit on a dark surface in dark mode: keep their text cream,
+   and lighten the two navy chips (/SK, /IC) that would otherwise vanish. */
+html[data-theme="dark"] .pirep-fields {
+  --buff: #f4ecd6;
+}
+html[data-theme="dark"] .ptok-sky,
+html[data-theme="dark"] .ptok-ic {
+  background: rgba(74, 123, 166, 0.45);
+}
+/* Ladder product tags carry colored inline backgrounds; their var(--buff) text
+   flips dark in dark mode and disappears. Pin it to cream. */
+html[data-theme="dark"] .ladder-product-tag {
+  color: #f4ecd6;
 }
 /* Standard-atmosphere table header: dark bar instead of a bright flipped one. */
 html[data-theme="dark"] .atmo-table thead th {

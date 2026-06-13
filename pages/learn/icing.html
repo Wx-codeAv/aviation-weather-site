@@ -107,6 +107,7 @@
           <li><a href="#runback">Runback icing</a></li>
           <li><a href="#tailplane">Tailplane icing</a></li>
           <li><a href="#flaps">The flaps-and-icing scenario</a></li>
+          <li><a href="#pitotstatic">Pitot-static icing errors</a></li>
           <li><a href="#forecasts">Reading icing forecasts</a></li>
           <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
@@ -500,215 +501,316 @@
 
           <!-- Diagram: Tailplane icing and flap extension mechanism — redrawn -->
           <figure class="diagram">
-            <svg viewBox="0 0 740 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tailplane-title">
-              <title id="tailplane-title">Two-panel tailplane icing diagram. Left: stable aircraft, flaps retracted, ice on the horizontal stabilizer — pitch balanced, tail-down force manageable, airflow smooth over the stab. Right: flaps extended — nose-down pitching moment increases, contaminated tail cannot supply required download, tail stalls (separated flow), nose pitches violently downward. Recovery: retract flaps immediately.</title>
-              <rect width="740" height="370" fill="#fffaf0"/>
+            <svg viewBox="0 0 740 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tailplane-title">
+              <title id="tailplane-title">Two-panel tailplane icing diagram, both panels showing a high-wing single-engine airplane in side profile, nose left, with ice on the horizontal stabilizer leading edge. Left panel, flaps retracted: lift acts up at the wing, weight down at the center of gravity, and a manageable tail-down force at the stabilizer balances the pitch; airflow over the tail stays attached. Right panel, flaps extended: the deflected flap increases lift and the nose-down pitching moment, downwash strikes the tail harder, the iced stabilizer stalls with separated flow, the tail-down force fails, and the nose pitches abruptly down.</title>
+              <rect width="740" height="288" fill="#fffaf0"/>
 
               <!-- Panel backgrounds -->
-              <rect x="8"   y="8" width="356" height="348" fill="#4a7ba6" opacity="0.03" rx="3"/>
-              <rect x="376" y="8" width="356" height="348" fill="#b53d1f" opacity="0.04" rx="3"/>
-              <line x1="370" y1="12" x2="370" y2="354" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+              <rect x="8"   y="8" width="356" height="272" fill="#4a7ba6" opacity="0.03" rx="3"/>
+              <rect x="376" y="8" width="356" height="272" fill="#b53d1f" opacity="0.04" rx="3"/>
+              <line x1="370" y1="12" x2="370" y2="276" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
 
               <!-- Panel headers -->
-              <text x="186" y="27" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">STABLE: FLAPS RETRACTED</text>
-              <text x="554" y="27" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">FLAPS EXTENDED — TAIL STALL</text>
+              <text x="186" y="26" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">FLAPS RETRACTED — STABLE</text>
+              <text x="556" y="26" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">FLAPS EXTENDED — TAIL STALL</text>
 
-              <!-- ====== PANEL 1: Stable ====== -->
+              <!-- ====== PANEL 1: side-profile airplane, flaps retracted ====== -->
 
-              <!-- Freestream flow arrows P1 -->
-              <g stroke="#4a7ba6" stroke-width="1" fill="none" opacity="0.35">
-                <path d="M 14,128 L 50,128"/><path d="M 14,140 L 50,140"/>
-                <path d="M 14,152 L 50,152"/><path d="M 14,164 L 50,164"/>
+              <!-- Prop -->
+              <ellipse cx="52" cy="144" rx="2.5" ry="20" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
+              <!-- Fuselage: nose left, high cabin, fin and tail cone right -->
+              <path d="M 56,136 C 70,130 88,128 102,128 L 126,110 L 196,110 C 220,112 240,124 254,132 L 264,134 L 274,104 C 275,100 281,100 282,104 L 288,136 L 296,138 L 296,146 C 280,152 260,154 240,154 L 120,158 C 92,158 68,152 56,144 Z"
+                    fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- Cabin window -->
+              <path d="M 130,113 L 150,113 L 150,124 L 122,124 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.7" opacity="0.8"/>
+              <!-- High wing (side-view chord slab over the cabin) -->
+              <path d="M 112,104 L 218,108 L 218,114 L 112,110 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Strut -->
+              <line x1="150" y1="156" x2="134" y2="112" stroke="#0c2541" stroke-width="0.9" opacity="0.5"/>
+              <!-- Fixed gear -->
+              <circle cx="94" cy="163" r="4.5" fill="#0c2541"/>
+              <circle cx="152" cy="163" r="5" fill="#0c2541"/>
+              <!-- Horizontal stabilizer (leading edge faces forward, left) -->
+              <path d="M 250,141 L 304,136 L 306,142 L 254,147 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Ice on the stab leading edge -->
+              <path d="M 252,140 C 246,137 242,141 245,146 C 247,150 252,149 253,146 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.9"/>
+              <text x="232" y="96" font-family="JetBrains Mono, monospace" font-size="10" fill="#667788" text-anchor="middle">ICE ON STAB</text>
+              <line x1="236" y1="100" x2="247" y2="136" stroke="#667788" stroke-width="0.8" stroke-dasharray="2,2"/>
+
+              <!-- Attached flow over and under the stab -->
+              <g stroke="#4a7ba6" stroke-width="1.3" fill="none" opacity="0.7">
+                <path d="M 226,130 C 248,128 270,128 312,131"/>
+                <path d="M 226,154 C 250,156 274,153 314,148"/>
               </g>
+              <polygon points="316,131 309,128 309,134" fill="#4a7ba6" opacity="0.7"/>
+              <polygon points="318,148 311,145 311,151" fill="#4a7ba6" opacity="0.7"/>
 
-              <!-- Fuselage P1 -->
-              <path d="M 55,150 C 58,139 68,133 84,131 L 95,125 L 106,118 L 116,112 L 138,110 L 175,110 L 205,114 L 244,126 L 285,138 L 290,150 L 285,162 L 245,163 L 205,165 L 85,163 C 68,163 58,160 55,150 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-              <!-- Cockpit window P1 -->
-              <path d="M 106,118 L 116,112 L 138,110 L 141,118 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.8" opacity="0.75"/>
-              <!-- Port wing P1 -->
-              <path d="M 142,110 L 48,95 L 45,104 L 142,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Starboard wing P1 -->
-              <path d="M 142,110 L 222,97 L 224,106 L 144,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Wing struts P1 -->
-              <line x1="80"  y1="163" x2="72"  y2="114" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
-              <line x1="168" y1="163" x2="176" y2="112" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
-              <!-- Vertical fin P1 -->
-              <path d="M 262,130 L 268,102 L 278,105 L 280,128 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Left horizontal stabilizer P1 -->
-              <path d="M 280,150 L 258,142 L 256,148 L 278,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Right horizontal stabilizer P1 -->
-              <path d="M 280,150 L 298,143 L 300,150 L 283,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Prop disk P1 -->
-              <ellipse cx="54" cy="150" rx="3" ry="22" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
-
-              <!-- Ice on left stab LE P1 -->
-              <path d="M 258,142 C 253,138 249,141 250,146 C 251,151 256,152 259,148 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
-              <!-- Ice on right stab LE P1 -->
-              <path d="M 298,143 C 303,139 307,142 306,147 C 305,151 301,151 298,149 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
-              <!-- Ice label P1 -->
-              <text x="270" y="133" font-family="JetBrains Mono, monospace" font-size="8" fill="#888" text-anchor="middle">ice on stab LE</text>
-              <line x1="263" y1="135" x2="259" y2="141" stroke="#888" stroke-width="0.8"/>
-
-              <!-- Smooth attached flow over/under stab P1 -->
-              <g stroke="#4a7ba6" stroke-width="1.2" fill="none" opacity="0.6">
-                <path d="M 248,138 C 264,137 274,138 307,140"/>
-                <path d="M 248,158 C 264,159 274,158 308,156"/>
-              </g>
-              <polygon points="307,139 302,136 302,142" fill="#4a7ba6" opacity="0.6"/>
-              <polygon points="308,155 303,152 303,158" fill="#4a7ba6" opacity="0.6"/>
-              <text x="316" y="137" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" opacity="0.8">smooth</text>
-              <text x="316" y="160" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" opacity="0.8">flow</text>
-
-              <!-- Lift arrow P1 (up, green) -->
+              <!-- Lift at the wing -->
               <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
-                <line x1="145" y1="108" x2="145" y2="74"/>
-                <polygon points="145,68 141,81 149,81"/>
+                <line x1="165" y1="100" x2="165" y2="62"/>
+                <polygon points="165,54 160,68 170,68"/>
               </g>
-              <text x="145" y="61" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">L (Lift) ↑</text>
+              <text x="165" y="48" font-family="JetBrains Mono, monospace" font-size="10" fill="#5d6f3c" text-anchor="middle" font-weight="700">L — LIFT</text>
 
-              <!-- CG marker P1 -->
-              <circle cx="172" cy="150" r="7" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
-              <line x1="165" y1="150" x2="179" y2="150" stroke="#0c2541" stroke-width="1.8"/>
-              <line x1="172" y1="143" x2="172" y2="157" stroke="#0c2541" stroke-width="1.8"/>
-              <text x="172" y="139" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541" text-anchor="middle">CG</text>
-
-              <!-- Weight arrow P1 (down, navy) -->
-              <g stroke="#0c2541" stroke-width="2" fill="#0c2541">
-                <line x1="172" y1="165" x2="172" y2="198"/>
-                <polygon points="172,204 168,192 176,192"/>
+              <!-- CG marker + weight -->
+              <circle cx="172" cy="146" r="6" fill="#fffaf0" stroke="#0c2541" stroke-width="1.6"/>
+              <line x1="166" y1="146" x2="178" y2="146" stroke="#0c2541" stroke-width="1.6"/>
+              <line x1="172" y1="140" x2="172" y2="152" stroke="#0c2541" stroke-width="1.6"/>
+              <g stroke="#0c2541" stroke-width="2.2" fill="#0c2541">
+                <line x1="172" y1="154" x2="172" y2="192"/>
+                <polygon points="172,200 167,186 177,186"/>
               </g>
-              <text x="172" y="215" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">W ↓</text>
+              <text x="196" y="172" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#0c2541">CG</text>
+              <text x="172" y="214" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">W — WEIGHT</text>
 
-              <!-- Moment arm dashed line P1 -->
-              <line x1="145" y1="150" x2="280" y2="150" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
+              <!-- Moment arm -->
+              <line x1="165" y1="146" x2="278" y2="146" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
 
-              <!-- Tail download arrow P1 (down, blue) — manageable -->
+              <!-- Manageable tail-down force -->
               <g stroke="#4a7ba6" stroke-width="2.5" fill="#4a7ba6">
-                <line x1="278" y1="157" x2="278" y2="190"/>
-                <polygon points="278,197 274,184 282,184"/>
+                <line x1="278" y1="150" x2="278" y2="184"/>
+                <polygon points="278,192 273,178 283,178"/>
               </g>
-              <text x="278" y="208" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" font-weight="700">T↓</text>
-              <text x="278" y="220" font-family="Manrope, sans-serif" font-size="7.5" fill="#4a7ba6" text-anchor="middle">(manageable)</text>
+              <text x="278" y="206" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">T — TAIL-DOWN</text>
+              <text x="278" y="219" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#4a7ba6" text-anchor="middle">(manageable)</text>
 
-              <!-- P1 status text -->
-              <text x="186" y="244" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle">Pitch balanced — tail AoA within stall margin</text>
-              <text x="186" y="257" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Ice present but controlled; flaps retracted</text>
-              <text x="186" y="270" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" text-anchor="middle">Flaps: retracted</text>
+              <!-- P1 status -->
+              <text x="186" y="248" font-family="Manrope, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle">Pitch balanced — tail AoA inside its stall margin</text>
+              <text x="186" y="264" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Ice present, but flow over the tail stays attached</text>
 
+              <!-- ====== PANEL 2: same airplane, flaps extended — tail stall ====== -->
 
-              <!-- ====== PANEL 2: Tail stall ====== -->
-
-              <!-- Freestream flow arrows P2 -->
-              <g stroke="#4a7ba6" stroke-width="1" fill="none" opacity="0.35">
-                <path d="M 384,128 L 420,128"/><path d="M 384,140 L 420,140"/>
-                <path d="M 384,152 L 420,152"/><path d="M 384,164 L 420,164"/>
+              <!-- Prop -->
+              <ellipse cx="422" cy="144" rx="2.5" ry="20" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
+              <!-- Fuselage -->
+              <path d="M 426,136 C 440,130 458,128 472,128 L 496,110 L 566,110 C 590,112 610,124 624,132 L 634,134 L 644,104 C 645,100 651,100 652,104 L 658,136 L 666,138 L 666,146 C 650,152 630,154 610,154 L 490,158 C 462,158 438,152 426,144 Z"
+                    fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- Cabin window -->
+              <path d="M 500,113 L 520,113 L 520,124 L 492,124 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.7" opacity="0.8"/>
+              <!-- High wing -->
+              <path d="M 482,104 L 588,108 L 588,114 L 482,110 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <!-- Strut -->
+              <line x1="520" y1="156" x2="504" y2="112" stroke="#0c2541" stroke-width="0.9" opacity="0.5"/>
+              <!-- Fixed gear -->
+              <circle cx="464" cy="163" r="4.5" fill="#0c2541"/>
+              <circle cx="522" cy="163" r="5" fill="#0c2541"/>
+              <!-- FLAP deflected at the wing trailing edge -->
+              <path d="M 562,113 L 584,114 L 592,130 L 570,128 Z" fill="#e0d8c0" stroke="#b53d1f" stroke-width="1.8"/>
+              <text x="614" y="98" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" font-weight="700">FLAP ↓</text>
+              <line x1="618" y1="102" x2="586" y2="122" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <!-- Downwash off the flap toward the tail -->
+              <g stroke="#b53d1f" stroke-width="1.2" fill="#b53d1f" opacity="0.7">
+                <line x1="592" y1="126" x2="610" y2="136"/>
+                <line x1="586" y1="132" x2="604" y2="142"/>
               </g>
+              <polygon points="614,138 605,133 604,140" fill="#b53d1f" opacity="0.7"/>
+              <polygon points="608,144 599,139 598,146" fill="#b53d1f" opacity="0.7"/>
+              <!-- Horizontal stabilizer + ice -->
+              <path d="M 620,141 L 674,136 L 676,142 L 624,147 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
+              <path d="M 622,140 C 616,137 612,141 615,146 C 617,150 622,149 623,146 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.9"/>
 
-              <!-- Fuselage P2 -->
-              <path d="M 425,150 C 428,139 438,133 454,131 L 465,125 L 476,118 L 486,112 L 508,110 L 545,110 L 575,114 L 614,126 L 655,138 L 660,150 L 655,162 L 615,163 L 575,165 L 455,163 C 438,163 428,160 425,150 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-              <!-- Cockpit window P2 -->
-              <path d="M 476,118 L 486,112 L 508,110 L 511,118 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.8" opacity="0.75"/>
-              <!-- Port wing P2 -->
-              <path d="M 512,110 L 418,95 L 415,104 L 512,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Starboard wing P2 (main section) -->
-              <path d="M 512,110 L 592,97 L 594,106 L 514,115 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- FLAP surface (inboard TE, ~28° deflection) -->
-              <path d="M 514,115 L 536,113 L 544,134 L 522,135 Z" fill="#e0d8c0" stroke="#b53d1f" stroke-width="2"/>
-              <text x="560" y="89" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" font-weight="600" text-anchor="middle">FLAP ↓</text>
-              <line x1="552" y1="92" x2="535" y2="128" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
-              <!-- Wing struts P2 -->
-              <line x1="450" y1="163" x2="442" y2="114" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
-              <line x1="538" y1="163" x2="546" y2="112" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
-              <!-- Vertical fin P2 -->
-              <path d="M 632,130 L 638,102 L 648,105 L 650,128 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Left horizontal stabilizer P2 -->
-              <path d="M 650,150 L 628,142 L 626,148 L 648,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Right horizontal stabilizer P2 -->
-              <path d="M 650,150 L 668,143 L 670,150 L 653,155 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Prop disk P2 -->
-              <ellipse cx="424" cy="150" rx="3" ry="22" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
-
-              <!-- Ice on left stab LE P2 -->
-              <path d="M 628,142 C 623,138 619,141 620,146 C 621,151 626,152 629,148 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
-              <!-- Ice on right stab LE P2 -->
-              <path d="M 668,143 C 673,139 677,142 676,147 C 675,151 671,151 668,149 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.8"/>
-
-              <!-- STALL badge above stab -->
-              <rect x="626" y="124" width="52" height="15" fill="#b53d1f" rx="2"/>
-              <text x="652" y="135" font-family="Anton, sans-serif" font-size="10" fill="#fffaf0" text-anchor="middle" letter-spacing="0.06em">STALL</text>
-              <line x1="650" y1="139" x2="645" y2="141" stroke="#b53d1f" stroke-width="1"/>
-
-              <!-- TURBULENT separated flow at stab P2 -->
+              <!-- Separated flow at the iced tail -->
               <g stroke="#b53d1f" fill="none" stroke-width="1.4">
-                <path d="M 634,138 C 639,134 644,141 649,137 C 654,133 659,140 665,136"/>
-                <path d="M 634,143 C 639,139 644,146 649,142 C 654,138 659,145 665,141"/>
-                <path d="M 634,158 C 639,162 644,155 649,159 C 654,163 659,156 665,160"/>
-                <path d="M 634,153 C 639,157 644,150 649,154 C 654,158 659,151 665,155"/>
+                <path d="M 624,128 C 630,123 636,131 642,126 C 648,121 654,129 660,124"/>
+                <path d="M 624,154 C 630,159 636,151 642,156 C 648,161 654,153 660,158"/>
+                <path d="M 664,130 C 670,126 676,132 682,128"/>
               </g>
-              <text x="672" y="140" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">sep.</text>
-              <text x="672" y="150" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">flow</text>
+              <rect x="660" y="92" width="66" height="15" fill="#b53d1f" rx="2"/>
+              <text x="693" y="103" font-family="Anton, sans-serif" font-size="9.5" fill="#fffaf0" text-anchor="middle" letter-spacing="0.05em">TAIL STALLS</text>
 
-              <!-- Lift arrow P2 (taller = more lift from flaps) -->
+              <!-- More lift with flaps -->
               <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
-                <line x1="515" y1="108" x2="515" y2="66"/>
-                <polygon points="515,60 511,73 519,73"/>
+                <line x1="535" y1="98" x2="535" y2="52"/>
+                <polygon points="535,44 530,58 540,58"/>
               </g>
-              <text x="515" y="53" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">L↑↑ (flaps)</text>
+              <text x="535" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#5d6f3c" text-anchor="middle" font-weight="700">L↑↑</text>
 
-              <!-- CG marker P2 -->
-              <circle cx="542" cy="150" r="7" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
-              <line x1="535" y1="150" x2="549" y2="150" stroke="#0c2541" stroke-width="1.8"/>
-              <line x1="542" y1="143" x2="542" y2="157" stroke="#0c2541" stroke-width="1.8"/>
-              <text x="542" y="139" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541" text-anchor="middle">CG</text>
+              <!-- Nose-down pitching moment grows -->
+              <path d="M 470,90 C 472,72 494,64 514,72" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
+              <polygon points="514,72 503,67 506,78" fill="#b53d1f"/>
+              <text x="450" y="58" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle">NOSE-DOWN MOMENT ↑↑</text>
 
-              <!-- Weight arrow P2 (down, navy) -->
-              <g stroke="#0c2541" stroke-width="2" fill="#0c2541">
-                <line x1="542" y1="165" x2="542" y2="198"/>
-                <polygon points="542,204 538,192 546,192"/>
+              <!-- CG + weight -->
+              <circle cx="542" cy="146" r="6" fill="#fffaf0" stroke="#0c2541" stroke-width="1.6"/>
+              <line x1="536" y1="146" x2="548" y2="146" stroke="#0c2541" stroke-width="1.6"/>
+              <line x1="542" y1="140" x2="542" y2="152" stroke="#0c2541" stroke-width="1.6"/>
+              <g stroke="#0c2541" stroke-width="2.2" fill="#0c2541">
+                <line x1="542" y1="154" x2="542" y2="192"/>
+                <polygon points="542,200 537,186 547,186"/>
               </g>
-              <text x="542" y="215" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">W ↓</text>
+              <text x="542" y="214" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">W</text>
 
-              <!-- Moment arm dashed line P2 -->
-              <line x1="515" y1="150" x2="648" y2="150" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
+              <!-- Tail-down force fails -->
+              <line x1="648" y1="150" x2="648" y2="176" stroke="#b53d1f" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
+              <line x1="640" y1="154" x2="656" y2="172" stroke="#b53d1f" stroke-width="2.5"/>
+              <line x1="656" y1="154" x2="640" y2="172" stroke="#b53d1f" stroke-width="2.5"/>
+              <text x="648" y="190" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle" font-weight="700">T FAILS</text>
 
-              <!-- Nose-down pitching moment arc (increased by flaps) -->
-              <path d="M 490,124 C 490,108 508,100 526,107" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
-              <polygon points="526,107 517,105 520,114" fill="#b53d1f"/>
-              <text x="480" y="98" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">nose-down</text>
-              <text x="480" y="108" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">moment ↑↑</text>
+              <!-- Resulting nose-down rotation at the nose -->
+              <path d="M 420,108 C 436,104 446,118 442,134 C 439,148 428,154 416,152" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
+              <polygon points="416,152 427,148 423,158" fill="#b53d1f"/>
+              <text x="404" y="182" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" font-weight="700">NOSE PITCHES DOWN</text>
 
-              <!-- Tail download FAILED — dashed + X -->
-              <line x1="648" y1="157" x2="648" y2="176" stroke="#b53d1f" stroke-width="2" stroke-dasharray="3,3"/>
-              <polygon points="648,182 644,170 652,170" fill="#b53d1f" opacity="0.4"/>
-              <line x1="640" y1="160" x2="656" y2="176" stroke="#b53d1f" stroke-width="2.5"/>
-              <line x1="656" y1="160" x2="640" y2="176" stroke="#b53d1f" stroke-width="2.5"/>
-              <text x="648" y="195" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-weight="700">T↓ FAILS</text>
-
-              <!-- Nose-rotation result arc at the aircraft nose -->
-              <path d="M 438,126 C 452,124 460,137 456,152 C 452,165 441,172 430,170" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
-              <polygon points="430,170 440,166 436,175" fill="#b53d1f"/>
-              <text x="466" y="176" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">NOSE</text>
-              <text x="466" y="187" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">PITCHES</text>
-              <text x="466" y="198" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="700">DOWN ↓</text>
-
-              <!-- P2 warning text -->
-              <text x="554" y="244" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Flaps increase nose-down pitching moment demand</text>
-              <text x="554" y="257" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Contaminated tail cannot supply required tail-down force</text>
-
-              <!-- Recovery box -->
-              <rect x="383" y="270" width="347" height="34" fill="#5d6f3c" opacity="0.1" rx="3"/>
-              <rect x="383" y="270" width="347" height="34" fill="none" stroke="#5d6f3c" stroke-width="1.5" rx="3"/>
-              <text x="556" y="283" font-family="Anton, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.06em">RECOVERY:</text>
-              <text x="556" y="297" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">Retract flaps immediately · Do NOT extend further</text>
+              <!-- P2 status -->
+              <text x="556" y="248" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">Moment demand exceeds what the iced tail can give</text>
+              <text x="556" y="264" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">Tail stalls → abrupt nose-down pitch</text>
 
               <!-- Outer border -->
-              <rect x="1" y="1" width="738" height="368" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <rect x="1" y="1" width="738" height="286" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Tailplane icing and flap extension. Left: flaps retracted — the contaminated horizontal stabilizer is producing a manageable tail-down force (T↓), pitch is balanced, and airflow remains attached over the stab surface. Right: flaps extended — the wing's nose-down pitching moment increases sharply, demanding far more tail-down force from the iced tail. The tail stalls (separated flow shown in red wavy lines, STALL badge), and the nose pitches violently downward (rotation arc at the nose). Force vectors: L=Lift, W=Weight, T↓=Tail-down force, CG=Center of Gravity. Recovery requires immediate flap retraction. (AC 91-74B Ch. 4; FAA-H-8083-28 Ch. 10)</figcaption>
+            <figcaption>Tailplane icing and flap extension, in side profile per AC 91-74B convention. Left: flaps retracted — lift (L) acts up at the wing, weight (W) down at the CG, and the iced horizontal stabilizer still supplies a manageable tail-down force (T) that balances the nose; flow over the tail stays attached. Right: flaps extended — lift rises but the wing's nose-down pitching moment rises faster, and flap downwash strikes the tail at a higher effective angle of attack. The ice-contaminated stabilizer stalls (red separated flow), the tail-down force fails, and the nose pitches abruptly down. <strong>Recovery (AC 91-74B §4.4.3): immediately retract the flaps to the previous setting, add nose-up trim and back pressure as the aircraft allows, increase airspeed, and do not re-extend flaps until clear of icing.</strong> (AC 91-74B Ch. 4; FAA-H-8083-28 Ch. 10)</figcaption>
           </figure>
 
           <p class="callout">
             <strong>The rule, stated plainly (AC 91-74B §5.2):</strong> Do not extend flaps to full deflection in icing conditions or when tailplane icing is suspected. If the nose pitches down after flap extension, retract the flaps immediately. Do not mistake tail-stall buffet for pre-wing-stall buffet — the recovery is opposite. A pilot who pushes forward or extends more flaps in response to a tail stall will not recover.
+          </p>
+        </section>
+
+        <!-- Section: Pitot-static icing errors -->
+        <section id="pitotstatic">
+          <h2>Pitot-static icing errors</h2>
+          <p>
+            Structural ice doesn't only degrade the wing — it blocks the small holes your pressure instruments breathe through. Three instruments live on the pitot-static system: the <strong>airspeed indicator (ASI)</strong>, the <strong>altimeter</strong>, and the <strong>vertical speed indicator (VSI)</strong>. The system has exactly two inputs ice can attack: the <strong>pitot tube</strong> (a ram opening facing the airflow, plus a small drain hole underneath) and the <strong>static port</strong> (a flush opening sensing undisturbed ambient pressure). Which hole the ice plugs determines exactly which instruments lie to you, and how.
+          </p>
+          <p>
+            The key to reasoning through any blockage question is knowing what each instrument compares. The ASI is the only instrument that uses the pitot tube: its diaphragm holds total pressure (dynamic + static) and its case holds static, so the needle shows the difference — dynamic pressure, which is airspeed. The altimeter and VSI use only the static line: the altimeter compares a sealed aneroid wafer against static pressure in the case; the VSI compares current static (inside its diaphragm) against slightly-old static that trickles through a calibrated leak into the case.
+          </p>
+
+          <figure class="diagram">
+            <svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pitot-static-title">
+              <title id="pitot-static-title">Pitot-static system schematic. Three instrument cases in a row: airspeed indicator, vertical speed indicator, and altimeter. A red pitot line runs from the pitot tube at lower left, which has a ram hole facing forward and a drain hole underneath, up into the airspeed indicator's diaphragm carrying total pressure. A blue static line runs from the static port at lower right into all three instrument cases, and directly into the vertical speed indicator's diaphragm, with a calibrated leak feeding the VSI case. The airspeed indicator's diaphragm holds dynamic plus static pressure against static in the case. The altimeter holds a sealed aneroid wafer against static in the case.</title>
+              <rect width="740" height="430" fill="#fffaf0"/>
+
+              <!-- Instrument headers -->
+              <g font-family="Anton, sans-serif" font-size="12" fill="#0c2541" text-anchor="middle" letter-spacing="0.05em">
+                <text x="145" y="46">AIRSPEED INDICATOR (ASI)</text>
+                <text x="370" y="46">VERTICAL SPEED (VSI)</text>
+                <text x="595" y="46">ALTIMETER</text>
+              </g>
+
+              <!-- Instrument cases -->
+              <rect x="50" y="58" width="190" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
+              <rect x="285" y="58" width="170" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
+              <rect x="500" y="58" width="190" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
+
+              <!-- ASI: same flat wafer as the VSI/altimeter, rotated 90° so the corrugations
+                   sit on the top and bottom (it is mounted sideways here). 30 wide x 44 tall, centered (97,112). -->
+              <path d="M 75,97 L 119,97 C 113,103 125,108 119,112 C 125,116 113,121 119,127 L 75,127 C 81,121 69,116 75,112 C 69,108 81,103 75,97 Z"
+                    transform="rotate(90 97 112)"
+                    fill="rgba(181,61,31,0.12)" stroke="#b53d1f" stroke-width="1.4"/>
+              <text x="97" y="116" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle" font-weight="700">DP+SP</text>
+              <text x="97" y="162" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
+              <text x="185" y="120" font-family="JetBrains Mono, monospace" font-size="15" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+
+              <!-- VSI: diaphragm holds current static, case holds delayed static -->
+              <path d="M 310,97 L 354,97 C 348,103 360,108 354,112 C 360,116 348,121 354,127 L 310,127 C 316,121 304,116 310,112 C 304,108 316,103 310,97 Z"
+                    fill="rgba(74,123,166,0.15)" stroke="#4a7ba6" stroke-width="1.4"/>
+              <text x="332" y="116" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <text x="332" y="152" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
+              <text x="420" y="110" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">DELAYED</text>
+              <text x="420" y="126" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+
+              <!-- Altimeter: sealed aneroid wafer against static in the case -->
+              <path d="M 530,97 L 574,97 C 568,103 580,108 574,112 C 580,116 568,121 574,127 L 530,127 C 536,121 524,116 530,112 C 524,108 536,103 530,97 Z"
+                    fill="rgba(93,111,60,0.15)" stroke="#5d6f3c" stroke-width="1.4"/>
+              <text x="552" y="110" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">SEALED</text>
+              <text x="552" y="124" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle">29.92"</text>
+              <text x="552" y="152" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">ANEROID WAFER</text>
+              <text x="645" y="120" font-family="JetBrains Mono, monospace" font-size="15" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+
+              <!-- Pitot line (red): from pitot tube up into the ASI -->
+              <line x1="97" y1="276" x2="97" y2="175" stroke="#b53d1f" stroke-width="2.5"/>
+
+              <!-- Static lines (blue): trunk from the static port into all three cases -->
+              <line x1="160" y1="235" x2="645" y2="235" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="160" y1="235" x2="160" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="332" y1="235" x2="332" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="430" y1="235" x2="430" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="610" y1="235" x2="610" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="645" y1="235" x2="645" y2="270" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="645" y1="270" x2="651" y2="270" stroke="#4a7ba6" stroke-width="2.5"/>
+
+              <!-- Calibrated leak (restrictor) on the VSI case branch -->
+              <polygon points="424,198 430,205 424,212" fill="#4a7ba6"/>
+              <polygon points="436,198 430,205 436,212" fill="#4a7ba6"/>
+              <line x1="430" y1="248" x2="430" y2="216" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <text x="430" y="262" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">CALIBRATED LEAK</text>
+
+              <!-- Pitot tube (lower left): ram opening forward, drain hole underneath -->
+              <path d="M 50,292 L 86,292 L 86,276 L 108,276 L 108,316 L 50,316 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
+              <line x1="16" y1="304" x2="40" y2="304" stroke="#b53d1f" stroke-width="2"/>
+              <polygon points="48,304 38,299 38,309" fill="#b53d1f"/>
+              <circle cx="98" cy="316" r="2.8" fill="#fffaf0" stroke="#0c2541" stroke-width="1.5"/>
+              <line x1="42" y1="331" x2="50" y2="311" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <text x="40" y="344" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">RAM HOLE</text>
+              <line x1="113" y1="331" x2="100" y2="320" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <text x="122" y="344" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">DRAIN HOLE</text>
+
+              <!-- Static port (lower right) -->
+              <rect x="652" y="248" width="16" height="44" fill="#d4c99a" stroke="#0c2541" stroke-width="1"/>
+              <circle cx="652" cy="270" r="4.5" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
+              <line x1="630" y1="304" x2="646" y2="277" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <text x="615" y="318" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">STATIC PORT</text>
+
+              <!-- Legend + the comparison every blockage question hinges on -->
+              <line x1="50" y1="368" x2="78" y2="368" stroke="#b53d1f" stroke-width="2.5"/>
+              <text x="86" y="372" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#2d4360">PITOT LINE — total pressure (DP + SP) — feeds the ASI only</text>
+              <line x1="50" y1="388" x2="78" y2="388" stroke="#4a7ba6" stroke-width="2.5"/>
+              <text x="86" y="392" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#2d4360">STATIC LINE — ambient pressure (SP) — feeds all three</text>
+              <text x="50" y="414" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" font-weight="700">ASI reads TOTAL − STATIC = DYNAMIC PRESSURE (airspeed)</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="738" height="428" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>The pitot-static system. A <strong>diaphragm</strong> expands and contracts with changing pressure; an <strong>aneroid wafer</strong> is sealed at a fixed reference (29.92"Hg). The ASI compares total pressure from the pitot tube against static in its case — the difference is dynamic pressure, displayed as airspeed. The altimeter compares its sealed wafer against static. The VSI compares current static in its diaphragm against delayed static seeping through the calibrated leak — no pressure change, no needle deflection. The pitot tube serves only the ASI; the static port serves all three. (FAA-H-8083-25 Ch. 8)</figcaption>
+          </figure>
+
+          <h3>What ice does to each instrument</h3>
+          <p>
+            Work every blockage the same way: ask what pressure gets trapped, then ask what each instrument compares. The four cases:
+          </p>
+
+          <table class="atmo-table" style="max-width: 100%; width: 100%;">
+            <thead>
+              <tr><th>Ice blocks…</th><th>ASI</th><th>VSI</th><th>Altimeter</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Static port</strong> (pitot clear)</td>
+                <td><strong>Inverse altimeter</strong> — reads low in a climb, high in a descent</td>
+                <td>Freezes at zero</td>
+                <td>Freezes at the blockage altitude</td>
+              </tr>
+              <tr>
+                <td><strong>Pitot ram hole</strong> (drain still open)</td>
+                <td>Bleeds to <strong>zero</strong></td>
+                <td>No effect</td>
+                <td>No effect</td>
+              </tr>
+              <tr>
+                <td><strong>Entire pitot</strong> (ram + drain)</td>
+                <td><strong>Acts as an altimeter</strong> — reads high in a climb, low in a descent</td>
+                <td>No effect</td>
+                <td>No effect</td>
+              </tr>
+              <tr>
+                <td><strong>Both pitot and static</strong></td>
+                <td>Freezes</td>
+                <td>Freezes at zero</td>
+                <td>Freezes</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            The two ASI behaviors are the testable ones, and they're mirror images. <strong>Entire pitot blocked:</strong> total pressure is trapped in the diaphragm while case static keeps changing — climb and the case pressure falls, so the needle rises like an altimeter. This is the insidious one: in a climb the ASI reads <em>higher and higher</em> while the airplane may actually be slowing toward a stall. <strong>Static blocked:</strong> now the case is trapped instead, so the comparison runs backwards — the ASI under-reads in a climb and over-reads in a descent, the "inverse altimeter." Meanwhile the altimeter quietly freezes at the altitude where the ice sealed the port, and the VSI pins to zero no matter what the airplane is doing.
+          </p>
+          <p>
+            Why only the ram hole? When ice plugs the ram opening but the <strong>drain hole</strong> stays clear, the trapped pressure leaks out the drain and the line equalizes with ambient — the diaphragm and case match, and the ASI sinks to zero. It takes both holes iced to trap total pressure and turn the ASI into an altimeter. That little drain hole is the difference between the two failure modes.
+          </p>
+
+          <p class="callout">
+            <strong>The escape hatches — and their own errors:</strong> Pitot heat prevents most of this; turning it on <em>before</em> entering visible moisture near freezing is the habit. If the static port ices, the <strong>alternate static source</strong> (vented inside the cabin in most unpressurized aircraft) restores the instruments, but cabin pressure is slightly lower than ambient — so the ASI and altimeter both read slightly <em>high</em> and the VSI shows a momentary climb when you open it. No alternate static? Breaking the VSI glass exposes the static line to cabin air — same effect, but the VSI then reads backwards. (FAA-H-8083-25 Ch. 8)
           </p>
         </section>
 

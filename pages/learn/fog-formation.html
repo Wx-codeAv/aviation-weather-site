@@ -557,83 +557,92 @@
 
           <!-- Diagram: Frontal fog cross-section -->
           <figure class="diagram">
-            <svg viewBox="0 0 620 275" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="front-fog-title">
-              <title id="front-fog-title">Frontal fog cross-section: warm precipitation falls through cold surface air ahead of a warm front, evaporates, and raises dew point until fog forms</title>
-              <rect width="620" height="275" fill="#fffaf0"/>
+            <svg viewBox="0 0 620 335" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="front-fog-title">
+              <title id="front-fog-title">Frontal fog cross-section. The warm front advances left to right into the cold air on the right. Warm rain falls from the warm air aloft, crosses the shallow frontal surface, and descends through the cold surface air ahead of the front, where it partially evaporates and raises the dew point until fog forms. Numbered markers trace the process: one, rain falls into the cold air; two, it evaporates and raises the dew point; three, temperature meets dew point and fog forms at the surface, ahead of the front.</title>
+              <rect width="620" height="335" fill="#fffaf0"/>
 
-              <!-- Cold air zone background (left, below frontal slope) -->
-              <polygon points="60,248 430,248 185,62 60,62" fill="#4a7ba6" opacity="0.07"/>
+              <!-- Air-mass headers -->
+              <text x="130" y="20" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">WARM AIR · ADVANCING</text>
+              <text x="480" y="20" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">COLD AIR · AHEAD</text>
 
-              <!-- Warm air zone background (right, above frontal slope) -->
-              <polygon points="185,62 560,62 560,248 430,248" fill="#b53d1f" opacity="0.05"/>
+              <!-- Air-mass fills: warm air above the frontal surface, cold wedge below-right -->
+              <path d="M 14,28 L 606,28 L 606,52 L 150,252 L 14,252 Z" fill="rgba(181,61,31,0.04)"/>
+              <path d="M 150,252 L 606,52 L 606,252 Z" fill="rgba(74,123,166,0.07)"/>
 
-              <!-- Ground line -->
-              <line x1="60" y1="248" x2="560" y2="248" stroke="#0c2541" stroke-width="2"/>
+              <!-- Ground -->
+              <rect x="14" y="252" width="592" height="16" fill="#d4c99a" opacity="0.45"/>
+              <line x1="14" y1="252" x2="606" y2="252" stroke="#b9a87a" stroke-width="1.5"/>
 
-              <!-- Warm front slope line -->
-              <line x1="430" y1="248" x2="185" y2="62" stroke="#b53d1f" stroke-width="2"/>
+              <!-- Warm rain source band aloft (in the warm air) -->
+              <text x="189" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle">WARM RAIN SOURCE ALOFT</text>
+              <rect x="24" y="46" width="330" height="20" fill="#b53d1f" opacity="0.12" rx="2"/>
 
-              <!-- Warm front pips: semicircles ON the line, pointing in the direction of movement (left, into the cold air) -->
+              <!-- Rain shafts falling from the warm air, crossing the frontal surface into the cold wedge -->
+              <g stroke="#4a7ba6" stroke-width="1.1" stroke-dasharray="4,5" opacity="0.65">
+                <line x1="170" y1="70" x2="184" y2="228"/>
+                <line x1="210" y1="70" x2="224" y2="228"/>
+                <line x1="250" y1="70" x2="264" y2="228"/>
+                <line x1="290" y1="70" x2="304" y2="228"/>
+                <line x1="330" y1="70" x2="344" y2="228"/>
+                <line x1="370" y1="70" x2="384" y2="228"/>
+              </g>
+
+              <!-- Evaporation arrows: rain evaporating into the cold surface air -->
+              <g stroke="#4a7ba6" stroke-width="0.9" opacity="0.6">
+                <line x1="200" y1="224" x2="200" y2="210"/>
+                <line x1="235" y1="224" x2="235" y2="210"/>
+                <line x1="270" y1="224" x2="270" y2="210"/>
+                <line x1="305" y1="224" x2="305" y2="210"/>
+              </g>
+              <g fill="#4a7ba6" opacity="0.6">
+                <polygon points="200,206 196,213 204,213"/>
+                <polygon points="235,206 231,213 239,213"/>
+                <polygon points="270,206 266,213 274,213"/>
+                <polygon points="305,206 301,213 309,213"/>
+              </g>
+
+              <!-- Fog layer at the surface, in the cold air ahead of the front -->
+              <rect x="158" y="234" width="200" height="16" fill="#4a7ba6" opacity="0.22" rx="2"/>
+              <text x="258" y="246" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.1em">FOG LAYER</text>
+
+              <!-- Frontal surface (shallow warm-front slope) -->
+              <line x1="150" y1="252" x2="606" y2="52" stroke="#b53d1f" stroke-width="2.5"/>
+
+              <!-- Warm-front pips: semicircles ON the line, pointing in the direction of movement (into the cold air) -->
               <g fill="#b53d1f">
-                <path d="M 374.6,206.0 A 8,8 0 0 0 387.4,215.6 Z"/>
-                <path d="M 325.6,168.8 A 8,8 0 0 0 338.4,178.4 Z"/>
-                <path d="M 276.6,131.6 A 8,8 0 0 0 289.4,141.2 Z"/>
-                <path d="M 227.6,94.4 A 8,8 0 0 0 240.4,104.0 Z"/>
+                <path d="M 233.9,215.2 A 8,8 0 0 0 248.5,208.8 Z"/>
+                <path d="M 325.1,175.2 A 8,8 0 0 0 339.7,168.8 Z"/>
+                <path d="M 416.3,135.2 A 8,8 0 0 0 430.9,128.8 Z"/>
+                <path d="M 507.5,95.2 A 8,8 0 0 0 522.1,88.8 Z"/>
               </g>
 
-              <!-- Warm front label -->
-              <text x="455" y="148" font-family="Anton, sans-serif" font-size="10" fill="#b53d1f" letter-spacing="0.07em">WARM FRONT</text>
-              <text x="457" y="161" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">← advancing</text>
+              <!-- Process markers (keyed to the band below) -->
+              <circle cx="352" cy="88" r="8" fill="#fffaf0" stroke="#0c2541" stroke-width="1"/>
+              <text x="352" y="92" font-family="JetBrains Mono, monospace" font-size="11" fill="#0c2541" text-anchor="middle" font-weight="700">1</text>
+              <circle cx="315" cy="188" r="8" fill="#fffaf0" stroke="#0c2541" stroke-width="1"/>
+              <text x="315" y="192" font-family="JetBrains Mono, monospace" font-size="11" fill="#0c2541" text-anchor="middle" font-weight="700">2</text>
+              <circle cx="170" cy="222" r="8" fill="#fffaf0" stroke="#0c2541" stroke-width="1"/>
+              <text x="170" y="226" font-family="JetBrains Mono, monospace" font-size="11" fill="#0c2541" text-anchor="middle" font-weight="700">3</text>
 
-              <!-- Zone labels -->
-              <text x="115" y="168" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">COLD AIR</text>
-              <text x="500" y="105" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">WARM AIR</text>
+              <!-- Front movement: into the cold air -->
+              <line x1="30" y1="228" x2="118" y2="228" stroke="#0c2541" stroke-width="2.5"/>
+              <polygon points="132,228 118,222 118,234" fill="#0c2541"/>
+              <text x="80" y="216" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
 
-              <!-- Warm cloud / precip source band at top of warm air -->
-              <rect x="192" y="62" width="368" height="22" fill="#b53d1f" opacity="0.12" rx="2"/>
-              <text x="376" y="78" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">Warm air aloft — precipitation source</text>
-
-              <!-- Rain shafts (dashed lines) falling in the cold air zone left of front -->
-              <g stroke="#4a7ba6" stroke-width="1.2" stroke-dasharray="4,5" opacity="0.65">
-                <line x1="130" y1="84" x2="130" y2="196"/>
-                <line x1="155" y1="84" x2="162" y2="218"/>
-                <line x1="180" y1="84" x2="200" y2="232"/>
-                <line x1="205" y1="84" x2="232" y2="240"/>
-                <line x1="230" y1="84" x2="258" y2="244"/>
-                <line x1="255" y1="84" x2="280" y2="246"/>
-                <line x1="280" y1="84" x2="302" y2="248"/>
-                <line x1="305" y1="84" x2="320" y2="248"/>
+              <!-- Process label band (keyed by the numbered markers) -->
+              <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
+                <text x="120" y="302" fill="#0c2541" font-weight="700">① RAIN FALLS</text>
+                <text x="120" y="318" fill="#2d4360">into cold air ahead</text>
+                <text x="315" y="302" fill="#0c2541" font-weight="700">② EVAPORATES</text>
+                <text x="315" y="318" fill="#2d4360">raises surface Td</text>
+                <text x="505" y="302" fill="#0c2541" font-weight="700">③ T = Td</text>
+                <text x="505" y="318" fill="#2d4360">fog forms · IFR</text>
               </g>
-
-              <!-- Evaporation arrows in cold zone near surface -->
-              <g stroke="#4a7ba6" stroke-width="0.9" opacity="0.55">
-                <line x1="90" y1="240" x2="90" y2="225"/>
-                <polygon points="90,225 86,232 94,232" fill="#4a7ba6" opacity="0.55"/>
-                <line x1="108" y1="240" x2="108" y2="225"/>
-                <polygon points="108,225 104,232 112,232" fill="#4a7ba6" opacity="0.55"/>
-                <line x1="126" y1="240" x2="126" y2="225"/>
-                <polygon points="126,225 122,232 130,232" fill="#4a7ba6" opacity="0.55"/>
-                <line x1="144" y1="240" x2="144" y2="225"/>
-                <polygon points="144,225 140,232 148,232" fill="#4a7ba6" opacity="0.55"/>
-                <line x1="162" y1="240" x2="162" y2="225"/>
-                <polygon points="162,225 158,232 166,232" fill="#4a7ba6" opacity="0.55"/>
-              </g>
-
-              <!-- Evaporation label -->
-              <text x="125" y="212" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">Rain evaporates</text>
-              <text x="125" y="222" font-family="Manrope, sans-serif" font-size="9" fill="#0c2541" text-anchor="middle">→ raises Td</text>
-
-              <!-- Fog zone at surface -->
-              <rect x="65" y="230" width="195" height="18" fill="#4a7ba6" opacity="0.22" rx="2"/>
-              <text x="162" y="243" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.1em">FOG LAYER</text>
-
-              <!-- Distance callout -->
-              <text x="312" y="267" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">IFR fog commonly 100–300 nm ahead of the surface front</text>
 
               <!-- Outer border -->
-              <rect x="1" y="1" width="618" height="273" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <rect x="1" y="1" width="618" height="333" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Ahead of an advancing warm front, warm precipitation falls from the overriding warm air into the colder surface air mass. As it evaporates, it raises the dew point of the cold surface air until T = Td and fog forms. This IFR layer can extend well ahead of the front — long before conditions "should" be bad based on the front's position alone.</figcaption>
+            <figcaption>Frontal (precipitation-induced) fog — the warm front advances left to right into the cold air, matching the site's frontal cross-section convention. ① Warm rain falls from the overriding warm air through the shallow frontal surface into the colder air ahead of the front. ② As it descends it partially evaporates, adding moisture and raising the cold air's dew point. ③ When T = Td the surface air saturates and fog forms — commonly 100–300 nm ahead of the surface front, long before conditions "should" be bad based on the front's charted position alone.</figcaption>
           </figure>
 
           <p class="callout" style="margin-top: 2.2rem;">

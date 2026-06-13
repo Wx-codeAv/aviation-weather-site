@@ -243,26 +243,45 @@
 
           <!-- Diagram: three-stage lifecycle cross-section -->
           <figure class="diagram">
-            <svg viewBox="0 0 680 325" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tstm-lifecycle-title">
-              <title id="tstm-lifecycle-title">Thunderstorm three-stage lifecycle: cumulus stage with updrafts only and no surface precipitation; mature stage with coexisting updrafts and downdrafts, anvil top, and precipitation; dissipating stage with dominant downdrafts and weakening precipitation</title>
+            <svg viewBox="0 0 740 325" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tstm-lifecycle-title">
+              <title id="tstm-lifecycle-title">Thunderstorm three-stage lifecycle with an altitude scale from the surface to 40,000 feet. Cumulus stage, three to five miles across: updrafts only, no surface precipitation. Mature stage, five to ten miles: updrafts and downdrafts coexist, precipitation reaches the surface, and the anvil spreads at the equilibrium level. Dissipating stage, five to seven miles: downdrafts dominate and precipitation weakens. A dashed freezing-level isotherm runs through all three stages near 15,000 feet, and the equilibrium level is marked near the top where the anvil spreads.</title>
               <defs>
                 <linearGradient id="cloudCool" x1="0" y1="56" x2="0" y2="262" gradientUnits="userSpaceOnUse">
                   <stop offset="0" stop-color="#dce8f4"/>
                   <stop offset="1" stop-color="#9fb8d6"/>
                 </linearGradient>
               </defs>
-              <rect width="680" height="325" fill="#fffaf0"/>
+              <rect width="740" height="325" fill="#fffaf0"/>
 
+              <!-- Altitude axis (thousands of feet; SFC at y=270, ~5.8 px per 1,000 ft) -->
+              <line x1="48" y1="30" x2="48" y2="270" stroke="#0c2541" stroke-width="1.2"/>
+              <g stroke="#0c2541" stroke-width="1">
+                <line x1="43" y1="36.7" x2="48" y2="36.7"/>
+                <line x1="43" y1="95" x2="48" y2="95"/>
+                <line x1="43" y1="153.3" x2="48" y2="153.3"/>
+                <line x1="43" y1="211.7" x2="48" y2="211.7"/>
+                <line x1="43" y1="270" x2="48" y2="270"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="end">
+                <text x="40" y="40">40</text>
+                <text x="40" y="98">30</text>
+                <text x="40" y="156">20</text>
+                <text x="40" y="215">10</text>
+                <text x="40" y="273">SFC</text>
+              </g>
+              <text x="16" y="150" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" transform="rotate(-90,16,150)" text-anchor="middle" letter-spacing="0.06em">ALTITUDE × 1,000 FT</text>
+
+              <g transform="translate(48,0)">
               <!-- Tropopause line -->
               <line x1="20" y1="60" x2="660" y2="60" stroke="#b9a87a" stroke-width="1" stroke-dasharray="8,5" opacity="0.65"/>
-              <text x="655" y="56" font-family="JetBrains Mono, monospace" font-size="8" fill="#b9a87a" text-anchor="end" opacity="0.9">TROPOPAUSE</text>
+              <text x="648" y="54" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="end" opacity="0.95">EQUILIBRIUM LEVEL (EL)</text>
 
               <!-- Ground line -->
               <line x1="20" y1="270" x2="660" y2="270" stroke="#0c2541" stroke-width="2"/>
 
               <!-- ====== PANEL 1: Cumulus Stage ====== -->
               <rect x="22" y="25" width="188" height="248" fill="#5d6f3c" opacity="0.04" rx="3"/>
-              <text x="116" y="42" font-family="Anton, sans-serif" font-size="11" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.1em">CUMULUS STAGE</text>
+              <text x="116" y="42" font-family="Anton, sans-serif" font-size="11" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.1em">CUMULUS · 3–5 MI HEIGHT</text>
 
               <!-- Cloud: building towering cumulus — single billowing silhouette -->
               <path d="M89,258 C85,242 87,222 93,210 C89,196 93,180 105,176 C103,162 115,156 125,162 C135,158 145,170 139,182 C147,194 143,214 135,224 C137,240 135,250 129,258 Z"
@@ -286,7 +305,7 @@
 
               <!-- ====== PANEL 2: Mature Stage ====== -->
               <rect x="216" y="25" width="248" height="248" fill="#b53d1f" opacity="0.04" rx="3"/>
-              <text x="340" y="42" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.1em">MATURE STAGE</text>
+              <text x="340" y="42" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.1em">MATURE · 5–10 MI HEIGHT</text>
 
               <!-- Anvil (incus) spreading downwind under the tropopause; drawn behind the tower -->
               <path d="M268,80 C262,70 276,64 296,64 C330,62 380,62 412,64 C436,64 452,70 456,80 C450,86 438,88 424,90 C432,96 420,100 406,98 C380,102 340,102 312,98 C296,96 278,90 268,80 Z"
@@ -332,7 +351,7 @@
 
               <!-- ====== PANEL 3: Dissipating Stage ====== -->
               <rect x="470" y="25" width="188" height="248" fill="#2d4360" opacity="0.04" rx="3"/>
-              <text x="564" y="42" font-family="Anton, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" letter-spacing="0.08em">DISSIPATING STAGE</text>
+              <text x="564" y="42" font-family="Anton, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle" letter-spacing="0.08em">DISSIPATING · 5–7 MI HEIGHT</text>
 
               <!-- Anvil remnant — sheared off and drifting downwind after the cell collapses -->
               <path d="M560,142 C570,130 594,124 620,126 C638,128 648,136 640,146 C628,144 614,144 600,146 C612,152 598,156 584,152 C570,150 558,150 560,142 Z"
@@ -362,10 +381,18 @@
               <text x="564" y="303" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Precip weakens · Anvil persists</text>
               <text x="564" y="315" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">Still hazardous</text>
 
+              </g>
+
+              <!-- Freezing-level isotherm (32°F / 0°C), bowed upward where updrafts lift it inside the cells -->
+              <path d="M 48,182.5 L 132,182.5 C 144,182.5 146,171 162,171 C 178,171 180,182.5 192,182.5 L 318,182.5 C 332,182.5 338,158 379,158 C 422,158 436,176 452,182.5 L 558,182.5 C 570,182.5 576,166 606,166 C 636,166 642,182.5 654,182.5 L 726,182.5"
+                    fill="none" stroke="#b53d1f" stroke-width="1.3" stroke-dasharray="6,4" opacity="0.75"/>
+              <text x="52" y="177" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f">32°F</text>
+              <text x="724" y="177" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="end">0°C</text>
+
               <!-- Outer border -->
-              <rect x="1" y="1" width="678" height="323" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <rect x="1" y="1" width="738" height="323" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Thunderstorm lifecycle cross-section. Left: cumulus stage — updrafts only, no surface precipitation, rapid vertical growth. Center: mature stage — updrafts and downdrafts coexist, precipitation reaches the surface, anvil spreads at the tropopause, all hazards simultaneously active. Right: dissipating stage — downdrafts dominate, warm inflow cut off, precipitation weakens, but the anvil and turbulence persist well after the cell collapses.</figcaption>
+            <figcaption>Thunderstorm lifecycle cross-section, after the classic FAA three-stage figure. Left: cumulus stage (3–5 mi tall) — updrafts only, no surface precipitation, rapid vertical growth. Center: mature stage (5–10 mi tall) — updrafts and downdrafts coexist, precipitation reaching the surface marks the stage's onset, the anvil spreads at the equilibrium level (≈ the tropopause), and all hazards are simultaneously active. Right: dissipating stage (5–7 mi tall) — downdrafts dominate, warm inflow is cut off, precipitation weakens, but the anvil and turbulence persist well after the cell collapses. The dashed 32°F/0°C isotherm (drawn near 15,000 ft; its height varies by day and season, and updrafts bow it upward inside the cells) marks where icing and hail production concentrate. (AC 00-6B Ch. 19; FAA-H-8083-28)</figcaption>
           </figure>
 
           <p class="callout">

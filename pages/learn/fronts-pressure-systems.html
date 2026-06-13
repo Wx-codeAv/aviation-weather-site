@@ -108,6 +108,7 @@
           <li><a href="#stationary">Stationary fronts</a></li>
           <li><a href="#occluded">Occluded fronts</a></li>
           <li><a href="#dryline">Dryline</a></li>
+          <li><a href="#frontogenesis">Frontogenesis &amp; frontolysis</a></li>
           <li><a href="#comparison">Cold vs. warm — comparison</a></li>
           <li><a href="#surface">Surface analysis chart</a></li>
           <li><a href="#planning">Flight planning with fronts</a></li>
@@ -314,160 +315,120 @@
 
           <!-- Cold front cross-section SVG -->
           <figure class="diagram">
-            <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cf-title">
-              <title id="cf-title">Cold front cross-section. A steep frontal surface rises from the ground at center-left toward the upper-right. Cold air occupies the left side (post-frontal). Warm air occupies the right side (pre-frontal). Near the front in the warm air, cumulonimbus and towering cumulus produce heavy rain and thunderstorms. A squall line is visible further ahead. Cold air behind the front shows clearing skies with scattered cumulus. Arrows show the direction of frontal movement (rightward) and wind shifts.</title>
-              <rect width="740" height="300" fill="#fffaf0"/>
+            <svg viewBox="0 0 740 432" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cf-title">
+              <title id="cf-title">Cold front cross-section. The front advances rightward into the warm air on the right. A steep frontal surface rises from the surface front position toward the upper left, with cold-front triangles on the line pointing in the direction of movement. A cumulonimbus with a sheared anvil sits at the front, producing a heavy rain shaft. A towering cumulus builds just ahead, and a smaller squall-line storm cell stands further ahead. Behind the front, scattered fair-weather cumulus mark rapid clearing. Numbered labels below the artwork run in observer order: station one is the squall line encountered first, far right; station four is the post-frontal clearing.</title>
+              <rect width="740" height="432" fill="#fffaf0"/>
 
-              <!-- Sky -->
-              <rect x="0" y="0" width="740" height="240" fill="rgba(74,123,166,0.03)"/>
+              <!-- Air-mass headers -->
+              <text x="150" y="22" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">COLD AIR · ADVANCING</text>
+              <text x="545" y="22" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">WARM AIR · RETREATING</text>
 
-              <!-- Cold air fill (behind front) -->
-              <path d="M 0,240 L 370,240 L 260,0 L 0,0 Z" fill="rgba(74,123,166,0.06)"/>
-              <!-- Warm air fill (ahead of front) -->
-              <path d="M 370,240 L 740,240 L 740,0 L 260,0 Z" fill="rgba(181,61,31,0.04)"/>
+              <!-- Air-mass fills: steep cold wedge left, warm air right -->
+              <path d="M 310,255 L 195,30 L 14,30 L 14,255 Z" fill="rgba(74,123,166,0.07)"/>
+              <path d="M 310,255 L 195,30 L 726,30 L 726,255 Z" fill="rgba(181,61,31,0.04)"/>
 
               <!-- Ground -->
-              <rect x="0" y="240" width="740" height="60" fill="#d4c99a" opacity="0.4"/>
-              <line x1="0" y1="240" x2="740" y2="240" stroke="#b9a87a" stroke-width="1.5"/>
+              <rect x="14" y="255" width="712" height="18" fill="#d4c99a" opacity="0.45"/>
+              <line x1="14" y1="255" x2="726" y2="255" stroke="#b9a87a" stroke-width="1.5"/>
 
-              <!-- Frontal surface (steep slope) -->
-              <line x1="370" y1="240" x2="258" y2="30" stroke="#4a7ba6" stroke-width="2.5"/>
-
-              <!-- Cold front triangles along the surface (bottom half of line) -->
+              <!-- ④ Post-frontal cumulus (behind the front, clearing) -->
               <g fill="#4a7ba6">
-                <polygon points="370,240 362,222 378,222"/>
-                <polygon points="350,206 342,188 358,188"/>
-                <polygon points="330,172 322,154 338,154"/>
-                <polygon points="310,138 302,120 318,120"/>
-                <polygon points="290,104 282,86 298,86"/>
-                <polygon points="270,70 262,52 278,52"/>
-              </g>
-
-              <!-- Slope label -->
-              <text x="284" y="150" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" transform="rotate(-55, 284, 150)" text-anchor="middle">SLOPE ~1:50–100</text>
-
-              <!-- ===== COLD AIR side (left) ===== -->
-              <text x="130" y="22" font-family="Anton, sans-serif" font-size="12" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.08em">COLD AIR · POST-FRONTAL</text>
-
-              <!-- Post-frontal cumulus (small, scattered) — clean rim + body, no internal seams -->
-              <!-- Cu 1 -->
-              <g fill="#4a7ba6">
-                <ellipse cx="80" cy="190" rx="29.3" ry="15.3"/>
-                <ellipse cx="92" cy="180" rx="19.3" ry="12.3"/>
-                <ellipse cx="70" cy="183" rx="16.3" ry="11.3"/>
+                <ellipse cx="90" cy="195" rx="29.3" ry="15.3"/>
+                <ellipse cx="102" cy="185" rx="19.3" ry="12.3"/>
+                <ellipse cx="80" cy="188" rx="16.3" ry="11.3"/>
               </g>
               <g fill="#dce6f0">
-                <ellipse cx="80" cy="190" rx="28" ry="14"/>
-                <ellipse cx="92" cy="180" rx="18" ry="11"/>
-                <ellipse cx="70" cy="183" rx="15" ry="10"/>
+                <ellipse cx="90" cy="195" rx="28" ry="14"/>
+                <ellipse cx="102" cy="185" rx="18" ry="11"/>
+                <ellipse cx="80" cy="188" rx="15" ry="10"/>
               </g>
-              <!-- Cu 2 -->
               <g fill="#4a7ba6">
-                <ellipse cx="200" cy="194" rx="25.3" ry="13.3"/>
-                <ellipse cx="210" cy="185" rx="17.3" ry="11.3"/>
+                <ellipse cx="175" cy="212" rx="25.3" ry="13.3"/>
+                <ellipse cx="185" cy="203" rx="17.3" ry="11.3"/>
               </g>
               <g fill="#dce6f0">
-                <ellipse cx="200" cy="194" rx="24" ry="12"/>
-                <ellipse cx="210" cy="185" rx="16" ry="10"/>
+                <ellipse cx="175" cy="212" rx="24" ry="12"/>
+                <ellipse cx="185" cy="203" rx="16" ry="10"/>
               </g>
 
-              <!-- Post-frontal wind arrow (NW) -->
-              <g fill="#4a7ba6" stroke="#4a7ba6" stroke-width="1.5">
-                <line x1="130" y1="130" x2="160" y2="155"/>
-                <polygon points="160,155 148,148 155,139"/>
-              </g>
-              <text x="112" y="128" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">NW</text>
-              <text x="106" y="139" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">WIND</text>
-
-              <!-- Post-frontal status labels -->
-              <text x="130" y="222" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle">Clearing rapidly · Cold · Good VIS</text>
-              <text x="130" y="234" font-family="JetBrains Mono, monospace" font-size="8" fill="#4a7ba6" text-anchor="middle">Pressure: rising</text>
-
-              <!-- ===== WARM AIR side (right) ===== -->
-              <text x="570" y="22" font-family="Anton, sans-serif" font-size="12" fill="#b53d1f" text-anchor="middle" letter-spacing="0.08em">WARM AIR · PRE-FRONTAL</text>
-
-              <!-- Pre-frontal CB (right at front ~410) -->
-              <!-- CB base -->
-              <rect x="395" y="160" width="50" height="70" fill="rgba(180,190,210,0.85)" stroke="#0c2541" stroke-width="1"/>
-              <!-- CB tower -->
-              <rect x="402" y="75" width="36" height="90" fill="rgba(160,175,200,0.9)" stroke="#0c2541" stroke-width="1"/>
-              <!-- CB anvil top -->
-              <path d="M 380,75 C 390,60 420,55 440,60 C 460,55 490,60 500,75 L 485,80 C 470,68 450,65 420,68 C 400,65 395,72 380,75 Z"
-                    fill="rgba(210,220,230,0.9)" stroke="#0c2541" stroke-width="1"/>
-              <!-- Rain from CB -->
-              <g stroke="#4a7ba6" stroke-width="1" opacity="0.7">
-                <line x1="405" y1="230" x2="402" y2="240"/>
-                <line x1="413" y1="228" x2="410" y2="240"/>
-                <line x1="421" y1="229" x2="418" y2="240"/>
-                <line x1="429" y1="228" x2="426" y2="240"/>
-                <line x1="437" y1="229" x2="434" y2="240"/>
-              </g>
-              <text x="360" y="120" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle" letter-spacing="0.04em">CB · HEAVY RAIN</text>
-              <text x="360" y="131" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f" text-anchor="middle">thunder · hail</text>
-              <line x1="376" y1="126" x2="398" y2="152" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="2,2"/>
-
-              <!-- TCU (mid ~490) -->
-              <rect x="480" y="130" width="35" height="100" fill="#bcc6d4"/>
-              <g fill="#8a8f99">
-                <ellipse cx="497" cy="128" rx="23.3" ry="15.3"/>
-                <ellipse cx="510" cy="133" rx="15.3" ry="11.3"/>
-                <ellipse cx="484" cy="134" rx="13.3" ry="10.3"/>
-              </g>
-              <g fill="#c3cdda">
-                <ellipse cx="497" cy="128" rx="22" ry="14"/>
-                <ellipse cx="510" cy="133" rx="14" ry="10"/>
-                <ellipse cx="484" cy="134" rx="12" ry="9"/>
-              </g>
-              <text x="520" y="148" font-family="Manrope, sans-serif" font-size="8" fill="#777">TCu</text>
-
-              <!-- Squall line indicator (~570) -->
-              <line x1="570" y1="50" x2="570" y2="240" stroke="#b53d1f" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
-              <text x="574" y="64" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">POSSIBLE</text>
-              <text x="574" y="75" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">PRE-FRONTAL</text>
-              <text x="574" y="86" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" letter-spacing="0.05em">SQUALL LINE</text>
-              <text x="574" y="97" font-family="Manrope, sans-serif" font-size="7.5" fill="#b53d1f">50–200 nm ahead</text>
-
-              <!-- Far warm sector Cu (right ~650) — clean rim + body -->
-              <g fill="#b9a87a">
-                <ellipse cx="640" cy="196" rx="27.3" ry="14.3"/>
-                <ellipse cx="652" cy="187" rx="19.3" ry="12.3"/>
-                <ellipse cx="632" cy="189" rx="15.3" ry="11.3"/>
-              </g>
-              <g fill="#e6dcc8">
-                <ellipse cx="640" cy="196" rx="26" ry="13"/>
-                <ellipse cx="652" cy="187" rx="18" ry="11"/>
-                <ellipse cx="632" cy="189" rx="14" ry="10"/>
+              <!-- ③ Cumulonimbus at the front: billowing tower + anvil sheared downwind (right) -->
+              <path d="M 340,228 C 334,200 338,170 348,150 C 342,130 350,108 364,102 C 360,84 372,70 388,72 C 402,60 422,64 428,80 C 436,96 430,112 420,118 C 428,136 424,160 414,176 C 420,196 416,216 408,228 Z"
+                    fill="rgba(160,175,200,0.6)" stroke="#46688f" stroke-width="1.3"/>
+              <path d="M 372,84 C 380,62 404,52 430,56 C 462,50 506,52 538,60 C 556,64 562,74 552,80 C 534,88 504,90 478,88 C 450,92 418,94 398,90 C 384,90 374,90 372,84 Z"
+                    fill="rgba(200,215,235,0.75)" stroke="#46688f" stroke-width="1.1"/>
+              <!-- Heavy rain shaft from the CB -->
+              <path d="M 344,228 L 404,228 L 396,253 L 352,253 Z" fill="rgba(74,123,166,0.16)"/>
+              <g stroke="#4a7ba6" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.75">
+                <line x1="350" y1="230" x2="347" y2="252"/>
+                <line x1="360" y1="230" x2="357" y2="252"/>
+                <line x1="370" y1="230" x2="367" y2="252"/>
+                <line x1="380" y1="230" x2="377" y2="252"/>
+                <line x1="390" y1="230" x2="387" y2="252"/>
+                <line x1="400" y1="230" x2="397" y2="252"/>
               </g>
 
-              <!-- Pre-frontal wind arrow (SE → SW) -->
-              <g fill="#b53d1f" stroke="#b53d1f" stroke-width="1.5">
-                <line x1="620" y1="148" x2="592" y2="165"/>
-                <polygon points="592,165 600,155 604,166"/>
+              <!-- ② Towering cumulus building just ahead -->
+              <path d="M 452,228 C 448,210 452,192 460,184 C 456,170 464,158 474,160 C 480,148 492,152 496,162 C 502,170 498,182 492,188 C 498,200 494,216 488,228 Z"
+                    fill="rgba(170,185,205,0.5)" stroke="#46688f" stroke-width="1.1"/>
+
+              <!-- ① Possible squall-line cell, well ahead of the front -->
+              <path d="M 578,250 C 574,232 578,216 586,208 C 582,194 590,182 600,184 C 606,170 620,172 624,184 C 632,190 630,202 624,208 C 630,220 626,238 620,250 Z"
+                    fill="rgba(160,175,200,0.45)" stroke="#46688f" stroke-width="1"/>
+              <path d="M 600,184 C 606,170 624,166 640,172 C 650,176 652,184 644,188 C 630,192 612,190 602,186 Z"
+                    fill="rgba(200,215,235,0.6)" stroke="#46688f" stroke-width="0.9"/>
+
+              <!-- Frontal surface (steep slope; true slope ~1:50-100, see caption) -->
+              <line x1="310" y1="255" x2="195" y2="30" stroke="#4a7ba6" stroke-width="2.5"/>
+
+              <!-- Cold-front triangles ON the line, pointing in the direction of movement (into the warm air) -->
+              <g fill="#4a7ba6">
+                <polygon points="208.7,56.7 215.9,70.9 223.9,57.9"/>
+                <polygon points="225.9,90.4 233.1,104.6 241.1,91.6"/>
+                <polygon points="243.2,124.2 250.4,138.4 258.4,125.4"/>
+                <polygon points="260.4,157.9 267.6,172.1 275.6,159.1"/>
+                <polygon points="277.7,191.7 284.9,205.9 292.9,192.9"/>
+                <polygon points="294.9,225.4 302.1,239.6 310.1,226.6"/>
               </g>
-              <text x="628" y="142" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">S/SW</text>
-              <text x="622" y="153" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">WIND</text>
 
-              <!-- Warm sector status labels -->
-              <text x="650" y="222" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle">Warm · hazy · humid</text>
-              <text x="650" y="234" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">Pressure: falling</text>
+              <!-- Front movement: into the warm air -->
+              <line x1="40" y1="240" x2="150" y2="240" stroke="#0c2541" stroke-width="2.5"/>
+              <polygon points="164,240 150,234 150,246" fill="#0c2541"/>
+              <text x="95" y="252" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
 
-              <!-- Movement arrow -->
-              <g fill="#0c2541" stroke="#0c2541" stroke-width="2">
-                <line x1="340" y1="266" x2="406" y2="266"/>
-                <polygon points="406,266 396,261 396,271"/>
+              <!-- Leader lines from each feature down to the label band -->
+              <g stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3">
+                <line x1="100" y1="214" x2="100" y2="294"/>
+                <line x1="370" y1="256" x2="370" y2="294"/>
+                <line x1="480" y1="232" x2="480" y2="340"/>
+                <line x1="610" y1="253" x2="625" y2="336"/>
               </g>
-              <text x="373" y="282" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
 
-              <!-- Weather band bracket -->
-              <line x1="380" y1="290" x2="560" y2="290" stroke="#b53d1f" stroke-width="1"/>
-              <line x1="380" y1="286" x2="380" y2="294" stroke="#b53d1f" stroke-width="1"/>
-              <line x1="560" y1="286" x2="560" y2="294" stroke="#b53d1f" stroke-width="1"/>
-              <text x="470" y="299" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle">Active wx band · ~50–100 nm</text>
+              <!-- Feature label band, row 1 (numbers = observer order: ① is encountered first) -->
+              <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
+                <text x="100" y="306" fill="#0c2541" font-weight="700">④ CLEARING · NW WIND</text>
+                <text x="100" y="322" fill="#2d4360">cold · dry · good vis</text>
+                <text x="370" y="306" fill="#0c2541" font-weight="700">③ CB AT THE FRONT</text>
+                <text x="370" y="322" fill="#2d4360">heavy rain · hail · severe turb</text>
+              </g>
+
+              <!-- Feature label band, row 2 -->
+              <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
+                <text x="480" y="352" fill="#0c2541" font-weight="700">② TOWERING CU (TCu)</text>
+                <text x="480" y="368" fill="#2d4360">building convection</text>
+                <text x="625" y="352" fill="#0c2541" font-weight="700">① SQUALL LINE</text>
+                <text x="625" y="368" fill="#2d4360">50–200 nm ahead</text>
+              </g>
+
+              <!-- Active weather band bracket -->
+              <line x1="310" y1="392" x2="660" y2="392" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="310" y1="388" x2="310" y2="396" stroke="#b53d1f" stroke-width="1"/>
+              <line x1="660" y1="388" x2="660" y2="396" stroke="#b53d1f" stroke-width="1"/>
+              <text x="485" y="412" font-family="JetBrains Mono, monospace" font-size="11" fill="#b53d1f" text-anchor="middle">active weather band ~50–100 nm · squall line possible 50–200 nm ahead</text>
 
               <!-- Outer border -->
-              <rect x="1" y="1" width="738" height="298" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <rect x="1" y="1" width="738" height="430" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Cold front cross-section (view looking north; front moving eastward, left to right). The steep frontal surface undercuts the warm air, forcing it rapidly upward. Near the front in the warm air: cumulonimbus with heavy rain, thunder, and hail. A pre-frontal squall line may develop 50–200 nm ahead. Post-frontal air (left) clears rapidly with excellent visibility, cold temperatures, and northwest winds. The active weather band is typically 50–100 nm wide. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-7)</figcaption>
+            <figcaption>Cold front cross-section — the front advances left to right into the warm air. The steep frontal surface (about 1:50–100, much steeper than a warm front) undercuts the warm air and forces it violently upward, building a cumulonimbus right at the front with its anvil sheared downwind. The numbered stations run in observer order: a pilot ahead of the front may meet ① a pre-frontal squall line 50–200 nm out (often the most dangerous element), then ② towering cumulus, then ③ the frontal cumulonimbus with heavy rain, hail, and severe turbulence — followed by ④ rapid post-frontal clearing with cold, dry northwest winds and excellent visibility. The whole active band is typically only 50–100 nm wide: violent but brief, the opposite of a warm front's gradual, widespread deterioration. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-7)</figcaption>
           </figure>
 
           <p class="callout">
@@ -509,16 +470,16 @@
           <!-- Warm front cross-section SVG -->
           <figure class="diagram">
             <svg viewBox="0 0 740 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wf-title">
-              <title id="wf-title">Warm front cross-section. The front advances leftward, toward the cold air. Warm air overruns a shallow retreating wedge of cold air. Above the wedge, ahead of the surface front, the cloud sequence reads left to right: cirrus furthest ahead, then cirrostratus, altostratus, nimbostratus with steady rain, and stratus or fog at the surface front. A freezing-rain risk zone is marked where warm rain falls through the sub-freezing cold wedge near the front. Numbered labels below the artwork identify the five cloud stages in arrival order.</title>
+              <title id="wf-title">Warm front cross-section. The front advances rightward, toward the cold air on the right. Warm air overruns a shallow retreating wedge of cold air. Above the wedge, ahead of the surface front, the cloud sequence extends to the right: stratus and fog at the surface front, then nimbostratus with steady rain, altostratus, cirrostratus, and cirrus furthest ahead. Numbered labels below the artwork run in observer order: station one is the cirrus seen first, far right; station five is the stratus and fog at the front. A freezing-rain risk zone is marked where warm rain falls through the sub-freezing cold wedge near the front.</title>
               <rect width="740" height="450" fill="#fffaf0"/>
 
               <!-- Air-mass headers -->
-              <text x="180" y="22" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">COLD AIR · RETREATING</text>
-              <text x="600" y="22" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">WARM AIR · ADVANCING</text>
+              <text x="150" y="22" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">WARM AIR · ADVANCING</text>
+              <text x="565" y="22" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">COLD AIR · RETREATING</text>
 
               <!-- Air-mass fills: warm air above the frontal surface, cold wedge below it -->
-              <path d="M 560,255 L 14,38.8 L 14,30 L 726,30 L 726,255 Z" fill="rgba(181,61,31,0.04)"/>
-              <path d="M 560,255 L 14,38.8 L 14,255 Z" fill="rgba(74,123,166,0.07)"/>
+              <path d="M 180,255 L 726,38.8 L 726,30 L 14,30 L 14,255 Z" fill="rgba(181,61,31,0.04)"/>
+              <path d="M 180,255 L 726,38.8 L 726,255 Z" fill="rgba(74,123,166,0.07)"/>
 
               <!-- Ground -->
               <rect x="14" y="255" width="712" height="18" fill="#d4c99a" opacity="0.45"/>
@@ -526,100 +487,100 @@
 
               <!-- ① Cirrus wisps (furthest ahead, high in the overrunning warm air) -->
               <g stroke="#4a7ba6" stroke-width="1.2" opacity="0.6" fill="none">
-                <path d="M 70,50 C 78,46 86,48 94,44"/>
-                <path d="M 98,44 C 104,41 110,43 118,39"/>
-                <path d="M 82,57 C 92,53 100,55 110,51"/>
-                <path d="M 117,48 C 124,45 132,47 142,42"/>
-                <path d="M 96,58 C 106,54 116,56 128,52"/>
+                <path d="M 646,50 C 654,46 662,48 670,44"/>
+                <path d="M 622,44 C 628,41 634,43 642,39"/>
+                <path d="M 630,57 C 640,53 648,55 658,51"/>
+                <path d="M 598,48 C 605,45 613,47 623,42"/>
+                <path d="M 612,58 C 622,54 632,56 644,52"/>
               </g>
 
               <!-- ② Cirrostratus veil -->
-              <rect x="160" y="75" width="120" height="22" fill="rgba(200,215,235,0.5)" stroke="#4a7ba6" stroke-width="0.8" rx="4"/>
+              <rect x="460" y="75" width="120" height="22" fill="rgba(200,215,235,0.5)" stroke="#4a7ba6" stroke-width="0.8" rx="4"/>
 
               <!-- ③ Altostratus deck -->
-              <rect x="300" y="112" width="125" height="34" fill="rgba(180,195,215,0.6)" stroke="#4a7ba6" stroke-width="1" rx="3"/>
+              <rect x="315" y="112" width="125" height="34" fill="rgba(180,195,215,0.6)" stroke="#4a7ba6" stroke-width="1" rx="3"/>
 
               <!-- ④ Nimbostratus, base hugging the frontal surface -->
-              <path d="M 435,138 L 545,138 L 545,247 L 510,236 C 490,228 460,216 435,206 Z" fill="rgba(140,155,175,0.65)" stroke="#0c2541" stroke-width="1"/>
+              <path d="M 305,138 L 195,138 L 195,247 L 230,236 C 250,228 280,216 305,206 Z" fill="rgba(140,155,175,0.65)" stroke="#0c2541" stroke-width="1"/>
 
               <!-- FZRA zone: sub-freezing wedge under the rain, just below the frontal surface -->
-              <path d="M 432,210 L 545,250 L 545,253 L 432,253 Z" fill="rgba(181,61,31,0.10)" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="3,3"/>
+              <path d="M 308,210 L 195,250 L 195,253 L 308,253 Z" fill="rgba(181,61,31,0.10)" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="3,3"/>
 
               <!-- Steady rain falling through the cold wedge -->
               <g stroke="#4a7ba6" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.75">
-                <line x1="440" y1="210" x2="436" y2="252"/>
-                <line x1="452" y1="215" x2="448" y2="252"/>
-                <line x1="464" y1="220" x2="460" y2="252"/>
-                <line x1="476" y1="224" x2="472" y2="252"/>
-                <line x1="488" y1="229" x2="484" y2="252"/>
-                <line x1="500" y1="233" x2="496" y2="252"/>
+                <line x1="300" y1="210" x2="304" y2="252"/>
+                <line x1="288" y1="215" x2="292" y2="252"/>
+                <line x1="276" y1="220" x2="280" y2="252"/>
+                <line x1="264" y1="224" x2="268" y2="252"/>
+                <line x1="252" y1="229" x2="256" y2="252"/>
+                <line x1="240" y1="233" x2="244" y2="252"/>
               </g>
 
               <!-- ⑤ Stratus / fog at the surface front -->
-              <rect x="505" y="241" width="53" height="13" fill="rgba(180,190,200,0.75)" stroke="#777" stroke-width="0.8" rx="2"/>
+              <rect x="182" y="241" width="53" height="13" fill="rgba(180,190,200,0.75)" stroke="#777" stroke-width="0.8" rx="2"/>
 
               <!-- Frontal surface (gentle slope; true slope ~1:100-300 is far gentler, see caption) -->
-              <line x1="560" y1="255" x2="14" y2="38.8" stroke="#b53d1f" stroke-width="2.5"/>
+              <line x1="180" y1="255" x2="726" y2="38.8" stroke="#b53d1f" stroke-width="2.5"/>
 
               <!-- Warm-front pips: semicircles ON the line, pointing in the direction of movement (into the cold air) -->
               <g fill="#b53d1f">
-                <path d="M 494.0,228.9 A 9,9 0 0 0 510.8,235.5 Z"/>
-                <path d="M 422.0,200.4 A 9,9 0 0 0 438.8,207.0 Z"/>
-                <path d="M 350.0,171.9 A 9,9 0 0 0 366.8,178.5 Z"/>
-                <path d="M 278.0,143.4 A 9,9 0 0 0 294.8,150.0 Z"/>
-                <path d="M 206.0,114.9 A 9,9 0 0 0 222.8,121.5 Z"/>
-                <path d="M 134.0,86.4 A 9,9 0 0 0 150.8,93.0 Z"/>
+                <path d="M 229.2,235.5 A 9,9 0 0 0 246.0,228.9 Z"/>
+                <path d="M 301.2,207.0 A 9,9 0 0 0 318.0,200.4 Z"/>
+                <path d="M 373.2,178.5 A 9,9 0 0 0 390.0,171.9 Z"/>
+                <path d="M 445.2,150.0 A 9,9 0 0 0 462.0,143.4 Z"/>
+                <path d="M 517.2,121.5 A 9,9 0 0 0 534.0,114.9 Z"/>
+                <path d="M 589.2,93.0 A 9,9 0 0 0 606.0,86.4 Z"/>
               </g>
 
               <!-- FZRA callout (in clear warm-sector space, leader to the zone) -->
-              <rect x="598" y="148" width="128" height="62" fill="rgba(181,61,31,0.08)" stroke="#b53d1f" stroke-width="1" rx="2"/>
-              <text x="662" y="168" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">FZRA RISK</text>
-              <text x="662" y="184" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">warm rain into the</text>
-              <text x="662" y="198" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">sub-freezing wedge</text>
-              <line x1="600" y1="200" x2="548" y2="246" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <rect x="18" y="148" width="128" height="62" fill="rgba(181,61,31,0.08)" stroke="#b53d1f" stroke-width="1" rx="2"/>
+              <text x="82" y="168" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">FZRA RISK</text>
+              <text x="82" y="184" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">warm rain into the</text>
+              <text x="82" y="198" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">sub-freezing wedge</text>
+              <line x1="146" y1="200" x2="225" y2="235" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
 
               <!-- Front movement: into the cold air -->
-              <line x1="700" y1="232" x2="592" y2="232" stroke="#0c2541" stroke-width="2.5"/>
-              <polygon points="578,232 592,226 592,238" fill="#0c2541"/>
-              <text x="650" y="222" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
+              <line x1="40" y1="232" x2="148" y2="232" stroke="#0c2541" stroke-width="2.5"/>
+              <polygon points="162,232 148,226 148,238" fill="#0c2541"/>
+              <text x="90" y="222" font-family="Anton, sans-serif" font-size="11" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">FRONT MOVEMENT</text>
 
               <!-- Leader lines from each cloud stage down to the label band -->
               <g stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3">
-                <line x1="105" y1="64"  x2="105" y2="304"/>
-                <line x1="235" y1="101" x2="235" y2="350"/>
-                <line x1="330" y1="150" x2="330" y2="304"/>
-                <line x1="470" y1="235" x2="470" y2="350"/>
-                <line x1="558" y1="247" x2="600" y2="296"/>
+                <line x1="635" y1="64"  x2="635" y2="304"/>
+                <line x1="505" y1="101" x2="505" y2="350"/>
+                <line x1="410" y1="150" x2="410" y2="304"/>
+                <line x1="270" y1="235" x2="270" y2="350"/>
+                <line x1="182" y1="247" x2="140" y2="296"/>
               </g>
 
-              <!-- Cloud-sequence label band, row 1 -->
+              <!-- Cloud-sequence label band, row 1 (numbers = observer order: ① is seen first) -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="105" y="314" fill="#0c2541" font-weight="700">① CIRRUS (Ci)</text>
-                <text x="105" y="330" fill="#2d4360">200–400 nm ahead</text>
-                <text x="330" y="314" fill="#0c2541" font-weight="700">③ ALTOSTRATUS (As)</text>
-                <text x="330" y="330" fill="#2d4360">MVFR · 100–200 nm ahead</text>
-                <text x="600" y="314" fill="#0c2541" font-weight="700">⑤ STRATUS / FOG (St)</text>
-                <text x="600" y="330" fill="#2d4360">LIFR at the surface front</text>
+                <text x="140" y="314" fill="#0c2541" font-weight="700">⑤ STRATUS / FOG (St)</text>
+                <text x="140" y="330" fill="#2d4360">LIFR at the surface front</text>
+                <text x="410" y="314" fill="#0c2541" font-weight="700">③ ALTOSTRATUS (As)</text>
+                <text x="410" y="330" fill="#2d4360">MVFR · 100–200 nm ahead</text>
+                <text x="635" y="314" fill="#0c2541" font-weight="700">① CIRRUS (Ci)</text>
+                <text x="635" y="330" fill="#2d4360">200–400 nm ahead</text>
               </g>
 
               <!-- Cloud-sequence label band, row 2 -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="235" y="360" fill="#0c2541" font-weight="700">② CIRROSTRATUS (Cs)</text>
-                <text x="235" y="376" fill="#2d4360">halo · 200–300 nm ahead</text>
-                <text x="470" y="360" fill="#0c2541" font-weight="700">④ NIMBOSTRATUS (Ns)</text>
-                <text x="470" y="376" fill="#2d4360">steady rain · IFR · 50–100 nm</text>
+                <text x="270" y="360" fill="#0c2541" font-weight="700">④ NIMBOSTRATUS (Ns)</text>
+                <text x="270" y="376" fill="#2d4360">steady rain · IFR · 50–100 nm</text>
+                <text x="505" y="360" fill="#0c2541" font-weight="700">② CIRROSTRATUS (Cs)</text>
+                <text x="505" y="376" fill="#2d4360">halo · 200–300 nm ahead</text>
               </g>
 
               <!-- Distance bracket -->
-              <line x1="60" y1="408" x2="560" y2="408" stroke="#4a7ba6" stroke-width="1"/>
-              <line x1="60" y1="404" x2="60" y2="412" stroke="#4a7ba6" stroke-width="1"/>
-              <line x1="560" y1="404" x2="560" y2="412" stroke="#4a7ba6" stroke-width="1"/>
-              <text x="310" y="428" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a7ba6" text-anchor="middle">cloud &amp; precip deck: 300–500+ nm ahead of the surface front</text>
+              <line x1="180" y1="408" x2="680" y2="408" stroke="#4a7ba6" stroke-width="1"/>
+              <line x1="180" y1="404" x2="180" y2="412" stroke="#4a7ba6" stroke-width="1"/>
+              <line x1="680" y1="404" x2="680" y2="412" stroke="#4a7ba6" stroke-width="1"/>
+              <text x="430" y="428" font-family="JetBrains Mono, monospace" font-size="11" fill="#4a7ba6" text-anchor="middle">cloud &amp; precip deck: 300–500+ nm ahead of the surface front</text>
 
               <!-- Outer border -->
               <rect x="1" y="1" width="738" height="448" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Warm front cross-section — the front advances toward the cold air (leftward here) as warm air overruns the shallow retreating cold wedge. The real slope is about 1:100–300 (one mile of height per 100–300 miles of distance), far gentler than drawn. Read the numbered band left to right as an approach timeline: cirrus appears first, hundreds of miles ahead, thickening and lowering through cirrostratus (sun/moon halo), altostratus (sun dims, MVFR), and nimbostratus (steady rain, IFR) to stratus and fog at the surface position. Freezing-rain risk concentrates where warm rain falls through the sub-freezing cold wedge near the front. The shallow slope is the takeaway: gradual, widespread, stratiform weather arriving many hours before the front itself. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-8)</figcaption>
+            <figcaption>Warm front cross-section — the front advances left to right, into the cold air, matching the cold front diagram above so the two can be compared directly. Warm air overruns the shallow retreating cold wedge; the real slope is about 1:100–300 (one mile of height per 100–300 miles of distance), far gentler than drawn. The numbered stations run in observer order: a pilot ahead of the front sees ① cirrus first, hundreds of miles out, then watches the deck thicken and lower through ② cirrostratus (sun/moon halo), ③ altostratus (sun dims, MVFR), and ④ nimbostratus (steady rain, IFR) to ⑤ stratus and fog at the surface position. Freezing-rain risk concentrates where warm rain falls through the sub-freezing cold wedge near the front. The shallow slope is the takeaway: gradual, widespread, stratiform weather arriving many hours before the front itself. (AC 00-6B Ch. 9; FAA-H-8083-25 §12-8)</figcaption>
           </figure>
 
           <p class="callout">
@@ -738,6 +699,63 @@
 
           <p class="callout">
             <strong>Practical rule:</strong> If the surface analysis chart shows a dryline within 200 nm of your planned afternoon route in the central plains during April–June, check the convective outlook (SPC Day 1 or Day 2 product) for any tornado, large hail, or damaging wind threat. A slight risk or higher covering your route is a strong go/no-go flag. The dryline's afternoon eastward surge can bring the convective initiation zone to you even if you planned to stay well east of its morning position. (AC 00-6B §9.5; FAA-H-8083-25 §12-11)
+          </p>
+        </section>
+
+        <!-- Section: Frontogenesis & frontolysis -->
+        <section id="frontogenesis">
+          <h2>Frontogenesis &amp; frontolysis</h2>
+          <p>
+            Fronts are born, strengthen, weaken, and die. <strong>Frontogenesis</strong> is a front forming or strengthening — the temperature contrast across the boundary is tightening, usually because the wind field is pushing contrasting air masses together. <strong>Frontolysis</strong> is the opposite: the front is weakening and dissipating as the temperature contrast washes out. Both appear on WPC surface analysis charts with their own symbology, and both matter operationally: frontogenesis along your route means the frontal weather is likely to get <em>worse</em> than the current observations suggest; frontolysis means improvement is coming, but verify with current obs rather than assuming it.
+          </p>
+
+          <figure class="diagram">
+            <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fgen-title">
+              <title id="fgen-title">Surface-chart symbology for frontogenesis and frontolysis, using a cold front as the example. Frontogenesis: a dashed line with the frontal triangles drawn on every dash segment. Frontolysis: a dashed line with the frontal triangles drawn on every other dash segment.</title>
+              <rect width="680" height="190" fill="#fffaf0"/>
+
+              <!-- Frontogenesis: dashed line, symbols on EVERY segment -->
+              <g stroke="#2a5ba0" stroke-width="2.5">
+                <line x1="40" y1="70" x2="80" y2="70"/>
+                <line x1="94" y1="70" x2="134" y2="70"/>
+                <line x1="148" y1="70" x2="188" y2="70"/>
+                <line x1="202" y1="70" x2="242" y2="70"/>
+                <line x1="256" y1="70" x2="296" y2="70"/>
+              </g>
+              <g fill="#2a5ba0">
+                <polygon points="54,70 66,70 60,81"/>
+                <polygon points="108,70 120,70 114,81"/>
+                <polygon points="162,70 174,70 168,81"/>
+                <polygon points="216,70 228,70 222,81"/>
+                <polygon points="270,70 282,70 276,81"/>
+              </g>
+              <text x="330" y="68" font-family="JetBrains Mono, monospace" font-size="12" fill="#0c2541" font-weight="700">FRONTOGENESIS — forming / strengthening</text>
+              <text x="330" y="84" font-family="Manrope, sans-serif" font-size="10.5" fill="#2d4360">dashed line · symbols on every segment</text>
+
+              <!-- Frontolysis: dashed line, symbols on every OTHER segment -->
+              <g stroke="#2a5ba0" stroke-width="2.5">
+                <line x1="40" y1="135" x2="80" y2="135"/>
+                <line x1="94" y1="135" x2="134" y2="135"/>
+                <line x1="148" y1="135" x2="188" y2="135"/>
+                <line x1="202" y1="135" x2="242" y2="135"/>
+                <line x1="256" y1="135" x2="296" y2="135"/>
+              </g>
+              <g fill="#2a5ba0">
+                <polygon points="54,135 66,135 60,146"/>
+                <polygon points="162,135 174,135 168,146"/>
+                <polygon points="270,135 282,135 276,146"/>
+              </g>
+              <text x="330" y="133" font-family="JetBrains Mono, monospace" font-size="12" fill="#0c2541" font-weight="700">FRONTOLYSIS — weakening / dissipating</text>
+              <text x="330" y="149" font-family="Manrope, sans-serif" font-size="10.5" fill="#2d4360">dashed line · symbols on every other segment</text>
+
+              <!-- Outer border -->
+              <rect x="1" y="1" width="678" height="188" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+            </svg>
+            <figcaption>WPC surface-chart depiction, shown here for a cold front (the same rule applies to warm and stationary fronts with their own symbols). A developing front (frontogenesis) is drawn as a dashed line with the frontal symbols on every segment; a dissipating front (frontolysis) is drawn as a dashed line with the symbols on every other segment. (NWS/WPC, "Fronts and boundaries depicted on WPC surface analyses," wpc.ncep.noaa.gov/html/fntcodes2.shtml)</figcaption>
+          </figure>
+
+          <p class="callout">
+            <strong>Briefing tip:</strong> a dashed front on the surface analysis is a forecast of <em>trend</em>, not just position. Frontogenesis marked ahead of your ETA means the analysis-time weather understates what you will actually meet; check the prog charts for where the strengthening front will be when you get there.
           </p>
         </section>
 
