@@ -179,6 +179,9 @@
         <span class="cat-edu-note">Educational use only · Not for flight planning</span>
       </div>
 
+      <!-- Why this category: ceiling & visibility against the thresholds -->
+      <div id="cat-scale" class="cat-scale"></div>
+
       <div class="decoder-raw-wrap">
         <p class="decoder-raw-label">Raw METAR — hover any token for a tooltip</p>
         <div id="decoded-raw" class="decoder-raw-metar"></div>
@@ -195,6 +198,7 @@
             <p class="decoder-section-label">Wind</p>
             <div id="wind-visual"></div>
             <p id="wind-desc" class="vis-raw"></p>
+            <p id="wind-xlink" class="vis-link" hidden></p>
           </div>
           <div class="vis-card">
             <p class="decoder-section-label">Cloud layers</p>
@@ -238,6 +242,7 @@
 
       <!-- Forecast timeline -->
       <p class="decoder-section-label">Forecast timeline</p>
+      <div id="taf-overview" class="taf-overview"></div>
       <div id="taf-timeline" class="taf-timeline"></div>
 
       <!-- Legend -->

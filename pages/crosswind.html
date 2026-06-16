@@ -136,7 +136,9 @@
       margin: 0;
     }
 
-    .cw-result-card { background: var(--ink); color: var(--buff); padding: 1.4rem 1.6rem; }
+    /* Always a dark navy stat panel (its labels are hardcoded cream), so it must
+       not flip with the theme — pin to literal colors. */
+    .cw-result-card { background: #0c2541; color: #f4ecd6; padding: 1.4rem 1.6rem; }
     .cw-result-rwy {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -158,7 +160,7 @@
       font-family: var(--font-display);
       font-size: 2.2rem;
       letter-spacing: 0.02em;
-      color: var(--buff);
+      color: #f4ecd6;
       line-height: 1;
     }
     .cw-stat-value.zero { color: rgba(244,236,214,0.3); font-size: 1.6rem; }
@@ -183,7 +185,7 @@
       font-family: var(--font-mono);
       font-size: 0.68rem;
       background: var(--rust);
-      color: var(--buff);
+      color: #f4ecd6;
       padding: 1px 7px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -434,11 +436,11 @@
         <!-- Right: diagrams + results + comparison -->
         <div class="cw-diagram-panel">
           <div class="cw-svg-wrap">
-            <svg id="cw-svg" viewBox="0 0 460 280" role="img" aria-label="Wind component diagram for runway 1"></svg>
+            <svg id="cw-svg" viewBox="0 0 360 340" role="img" aria-label="Wind component diagram for runway 1"></svg>
             <p class="cw-svg-caption" id="cw-caption">Enter wind speed and a runway number to see the diagram.</p>
           </div>
           <div id="cw-svg-wrap2" class="cw-svg-wrap" style="display:none; margin-top:0.8rem;">
-            <svg id="cw-svg2" viewBox="0 0 460 280" role="img" aria-label="Wind component diagram for runway 2"></svg>
+            <svg id="cw-svg2" viewBox="0 0 360 340" role="img" aria-label="Wind component diagram for runway 2"></svg>
             <p class="cw-svg-caption" id="cw-caption2"></p>
           </div>
           <div id="cw-result" style="display:none"></div>
@@ -532,9 +534,8 @@
 
 <script>
 // ── SVG constants ──
-const CX = 230, CY = 140;   // center of diagram (aircraft on runway)
-const MAX_ARROW = 88;        // max arrow length px
-const MIN_DRAW  = 0.3;       // minimum kt to bother drawing an arrow
+const C = [180, 170];        // diagram center (compass + runway pivot)
+const MIN_DRAW = 0.3;        // minimum kt to bother drawing an arrow
 
 // ── Colors ──
 const RUST = '#b53d1f', SAGE = '#5d6f3c', SKY = '#4a7ba6', SUN = '#d9a521', INK = '#0c2541';
@@ -619,12 +620,12 @@ function compute() {
     show('cw-svg-wrap2');
   }
 
-  // Result: always show both ends of RWY 1
-  renderResultPair(r1, r1r);
+  // Result cards: both ends of every entered runway
+  const allRunways = r2 ? [r1, r1r, r2, r2r] : [r1, r1r];
+  renderResultPair(allRunways);
   show('cw-result');
 
   // Tailwind warnings across all active runways
-  const allRunways = r2 ? [r1, r1r, r2, r2r] : [r1, r1r];
   const tailHits   = allRunways.filter(r => r.tail);
   if (tailHits.length) { renderTailWarnAll(tailHits); show('cw-tail'); }
 
@@ -641,7 +642,10 @@ function calc(windDir, speed, gusts, rwyNum) {
   while (ad < -180) ad += 360;
   const rad = ad * Math.PI / 180;
   const hw  = speed * Math.cos(rad);   // + = headwind, − = tailwind
-  const cw  = speed * Math.sin(rad);   // + = from right, − = from left
+  // cw sign here is sin(rwyHdg − windDir): negative when the wind is FROM the
+  // right of the runway heading, positive when from the left. The side label
+  // below maps it to the physical from-direction.
+  const cw  = speed * Math.sin(rad);
 
   let gHw = null, gCw = null;
   if (gusts > 0) {
@@ -651,7 +655,7 @@ function calc(windDir, speed, gusts, rwyNum) {
   return {
     rwyNum, rwyHdg, ad, rad, hw, cw,
     hwAbs: Math.abs(hw), cwAbs: Math.abs(cw),
-    side: cw < -0.05 ? 'LEFT' : cw > 0.05 ? 'RIGHT' : 'DIRECT',
+    side: cw < -0.05 ? 'RIGHT' : cw > 0.05 ? 'LEFT' : 'DIRECT',
     tail: hw < -0.05,
     gHw, gCw,
     gHwAbs: gHw !== null ? Math.abs(gHw) : null,
@@ -668,140 +672,170 @@ function parseRwy(raw) {
   return (!isNaN(n) && n >= 1 && n <= 36) ? n : null;
 }
 
-function runwayBase(rwyNum) {
-  const rl = rwyNum ? pad(rwyNum) : '—';
-  const rr = rwyNum ? pad(recip(rwyNum)) : '—';
+// ── Compass + runway geometry (north up, east right) ──
+function bvec(deg) { const r = deg * Math.PI / 180; return [Math.sin(r), -Math.cos(r)]; }
+
+function compass() {
   return `
-    <text x="230" y="22" text-anchor="middle"
-      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}" letter-spacing="0.1em">PORT · L</text>
-    <text x="230" y="268" text-anchor="middle"
-      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}" letter-spacing="0.1em">STBD · R</text>
-    <rect x="70" y="132" width="320" height="16" fill="#9e9480" rx="1"/>
-    <line x1="84" y1="140" x2="376" y2="140"
-      stroke="#fff" stroke-width="1.5" stroke-dasharray="14,10" stroke-linecap="round"/>
-    <text x="42" y="140" text-anchor="middle" dominant-baseline="middle"
-      font-family="Anton,Impact,sans-serif" font-size="15" fill="${INK}">${rr}</text>
-    <text x="418" y="140" text-anchor="middle" dominant-baseline="middle"
-      font-family="Anton,Impact,sans-serif" font-size="15" fill="${INK}">${rl}</text>
-    <polygon points="390,140 381,135 381,145" fill="${INK}" opacity="0.35"/>`;
+    <circle cx="${C[0]}" cy="${C[1]}" r="148" fill="none" stroke="${INK}" stroke-width="0.6" opacity="0.1"/>
+    <g font-family="JetBrains Mono,monospace" font-size="11" fill="${INK}" opacity="0.45" text-anchor="middle">
+      <text x="${C[0]}" y="16">N</text>
+      <text x="${C[0]}" y="${C[1]+156}">S</text>
+      <text x="${C[0]+152}" y="${C[1]+4}">E</text>
+      <text x="${C[0]-152}" y="${C[1]+4}">W</text>
+    </g>`;
+}
+
+// Draws the runway oriented to its true heading: the number you enter sits at the
+// approach (start) end and the aircraft departs toward the reciprocal end, which is
+// where the centerline arrow points. RWY 36 is vertical, RWY 09 is horizontal, etc.
+function runwayShape(rwyNum) {
+  if (!rwyNum) {
+    return `<text x="${C[0]}" y="${C[1]}" text-anchor="middle" dominant-baseline="middle"
+      font-family="JetBrains Mono,monospace" font-size="11" fill="${INK}" opacity="0.4">enter a runway number</text>`;
+  }
+  const H = rwyNum === 36 ? 360 : rwyNum * 10;
+  const a = bvec(H), p = bvec(H + 90);
+  const RL = 122, HW = 8;
+  const ax = C[0] + RL*a[0], ay = C[1] + RL*a[1];   // ahead end (marked with reciprocal)
+  const bx = C[0] - RL*a[0], by = C[1] - RL*a[1];   // behind/approach end (marked rwyNum)
+  const poly = [
+    [bx+p[0]*HW, by+p[1]*HW], [ax+p[0]*HW, ay+p[1]*HW],
+    [ax-p[0]*HW, ay-p[1]*HW], [bx-p[0]*HW, by-p[1]*HW]
+  ].map(q => `${q[0].toFixed(1)},${q[1].toFixed(1)}`).join(' ');
+  const clb = [C[0]-(RL-16)*a[0], C[1]-(RL-16)*a[1]];
+  const cla = [C[0]+(RL-16)*a[0], C[1]+(RL-16)*a[1]];
+  const tip = [cla[0]+a[0]*8, cla[1]+a[1]*8];        // departure-direction arrowhead
+  const bl  = [cla[0]-a[0]*2+p[0]*5, cla[1]-a[1]*2+p[1]*5];
+  const br  = [cla[0]-a[0]*2-p[0]*5, cla[1]-a[1]*2-p[1]*5];
+  const nb = [C[0]-(RL+18)*a[0], C[1]-(RL+18)*a[1]]; // rwyNum (the one in use)
+  const ne = [C[0]+(RL+18)*a[0], C[1]+(RL+18)*a[1]]; // reciprocal
+  return `
+    <polygon points="${poly}" fill="#c7bda1" stroke="${INK}" stroke-width="0.5" opacity="0.85"/>
+    <line x1="${clb[0].toFixed(1)}" y1="${clb[1].toFixed(1)}" x2="${cla[0].toFixed(1)}" y2="${cla[1].toFixed(1)}"
+      stroke="#fff" stroke-width="1.4" stroke-dasharray="10,9" stroke-linecap="round" opacity="0.8"/>
+    <polygon points="${tip[0].toFixed(1)},${tip[1].toFixed(1)} ${bl[0].toFixed(1)},${bl[1].toFixed(1)} ${br[0].toFixed(1)},${br[1].toFixed(1)}" fill="${INK}" opacity="0.4"/>
+    <text x="${nb[0].toFixed(1)}" y="${nb[1].toFixed(1)}" text-anchor="middle" dominant-baseline="middle"
+      font-family="Anton,Impact,sans-serif" font-size="18" fill="${INK}">${pad(rwyNum)}</text>
+    <text x="${ne[0].toFixed(1)}" y="${ne[1].toFixed(1)}" text-anchor="middle" dominant-baseline="middle"
+      font-family="Anton,Impact,sans-serif" font-size="13" fill="${INK}" opacity="0.45">${pad(recip(rwyNum))}</text>`;
 }
 
 function drawRunway(rwyNum, svgId) {
-  document.getElementById(svgId || 'cw-svg').innerHTML = runwayBase(rwyNum);
+  document.getElementById(svgId || 'cw-svg').innerHTML = compass() + runwayShape(rwyNum);
 }
 
 function drawSVG(r, speed, gusts, svgId) {
-  const { hw, cw, cwAbs, hwAbs, gHw, gCw, rwyNum, ad } = r;
+  const { hw, cw, hwAbs, cwAbs, gHw, gCw, rwyNum, rwyHdg, ad, side } = r;
+  const a = bvec(rwyHdg), p = bvec(rwyHdg + 90);
   const maxSpd = Math.max(speed, gusts || 0, 1);
-  const scale  = Math.min(MAX_ARROW / maxSpd, 5.5);
+  const scale  = Math.min(108 / maxSpd, 9);
+  const windDir = ((rwyHdg - ad) % 360 + 360) % 360;
 
-  // Key points
-  const tipX  = CX - hw * scale;           // wind vector tip
-  const tipY  = CY - cw * scale;
-  const hwEndX = tipX;                      // headwind end (same x as tip — shared corner)
-  const hwEndY = CY;
-
-  // Gust tip
-  let gTipX = null, gTipY = null;
-  if (gusts > 0 && gHw !== null) {
-    gTipX = CX - gHw * scale;
-    gTipY = CY - gCw * scale;
-  }
+  // along-runway / cross-runway components (kt) → screen point.
+  // The wind is drawn as a PUSH vector (where the wind shoves the aircraft):
+  //   along = −hw  → a headwind pushes back toward the in-use number's end
+  //   cross =  cw  → toward the runway's right/left
+  const pt = (al, cr) => [
+    C[0] + scale * (al * a[0] + cr * p[0]),
+    C[1] + scale * (al * a[1] + cr * p[1])
+  ];
+  const foot = pt(-hw, 0);
+  const wtip = pt(-hw, cw);
 
   const defs = `<defs>
-    <marker id="aw" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="${RUST}"/></marker>
-    <marker id="ag" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="${RUST}" opacity="0.4"/></marker>
-    <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="${SKY}"/></marker>
-    <marker id="at" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="${SUN}"/></marker>
-    <marker id="ac" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="${SAGE}"/></marker>
+    <marker id="aw" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="${RUST}"/></marker>
+    <marker id="ag" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="${RUST}" opacity="0.4"/></marker>
+    <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="${SKY}"/></marker>
+    <marker id="at" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="${SUN}"/></marker>
+    <marker id="ac" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="${SAGE}"/></marker>
   </defs>`;
 
-  // Gust arrow (behind wind arrow)
+  // Gust push (faint, behind the steady wind; magnitude is folded into the wind label)
   let gustSVG = '';
-  if (gTipX !== null) {
-    const gLen = Math.hypot(gTipX - CX, gTipY - CY);
-    if (gLen > 4) {
-      // Label near the gust tip, offset to the side of the tip
-      const gla = gTipX < CX ? 'end' : 'start';
-      const glx = gTipX + (gTipX < CX ? -6 : 6);
-      const gly = gTipY < CY ? gTipY - 8 : gTipY + 16;
-      gustSVG = `
-      <line x1="${CX}" y1="${CY}" x2="${gTipX}" y2="${gTipY}"
-        stroke="${RUST}" stroke-width="1.8" stroke-opacity="0.4"
-        stroke-dasharray="5,4" marker-end="url(#ag)"/>
-      <text x="${glx}" y="${gly}" text-anchor="${gla}"
-        font-family="JetBrains Mono,monospace" font-size="9" fill="${RUST}" opacity="0.55">${Math.round(gusts)} kt gust</text>`;
+  if (gusts > 0 && gHw !== null) {
+    const g = pt(-gHw, gCw);
+    if (Math.hypot(g[0]-C[0], g[1]-C[1]) > 5) {
+      gustSVG = `<line x1="${C[0]}" y1="${C[1]}" x2="${g[0].toFixed(1)}" y2="${g[1].toFixed(1)}"
+        stroke="${RUST}" stroke-width="1.8" stroke-opacity="0.35" stroke-dasharray="5,4" marker-end="url(#ag)"/>`;
     }
   }
 
-  // Wind vector
-  const windLen = Math.hypot(tipX - CX, tipY - CY);
+  const unit = (vx, vy) => { const l = Math.hypot(vx, vy) || 1; return [vx/l, vy/l]; };
+  // keep a label inside the 360x340 viewBox given its anchor and approx width
+  const pad = 6, VW = 360;
+  const clampX = (x, anchor, text) => {
+    const w = text.length * 6.2;
+    if (anchor === 'end')   return Math.min(Math.max(x, pad + w), VW - pad);
+    if (anchor === 'start') return Math.max(Math.min(x, VW - pad - w), pad);
+    return Math.min(Math.max(x, pad + w/2), VW - pad - w/2);
+  };
+  const clampY = (y) => Math.min(Math.max(y, 14), 300);
+
+  // Wind vector (hypotenuse of the component triangle); label at the midpoint,
+  // offset perpendicular on the side away from the crosswind leg.
   let windSVG = '';
-  if (windLen > 4) {
-    const mx = (CX + tipX) / 2, my = (CY + tipY) / 2;
-    const dx = tipX - CX, dy = tipY - CY;
-    const l  = Math.hypot(dx, dy);
-    const ox = l > 0.1 ? (-dy / l) * 20 : 20;
-    const oy = l > 0.1 ? ( dx / l) * 20 : 0;
-    windSVG = `
-    <line x1="${CX}" y1="${CY}" x2="${tipX}" y2="${tipY}"
+  if (Math.hypot(wtip[0]-C[0], wtip[1]-C[1]) > 5) {
+    const u = unit(wtip[0]-C[0], wtip[1]-C[1]);
+    // perpendicular pointing away from the foot (so the label sits opposite the triangle interior)
+    let nx = -u[1], ny = u[0];
+    if ((nx*(foot[0]-C[0]) + ny*(foot[1]-C[1])) > 0) { nx = -nx; ny = -ny; }
+    const wlbl = `${Math.round(speed)} kt${gusts > 0 ? ' G' + Math.round(gusts) : ''}`;
+    const mx = clampX((C[0]+wtip[0])/2 + nx*10, 'start', wlbl);
+    const my = clampY((C[1]+wtip[1])/2 + ny*10);
+    windSVG = `<line x1="${C[0]}" y1="${C[1]}" x2="${wtip[0].toFixed(1)}" y2="${wtip[1].toFixed(1)}"
       stroke="${RUST}" stroke-width="2.5" marker-end="url(#aw)"/>
-    <text x="${mx + ox}" y="${my + oy}" text-anchor="middle" dominant-baseline="middle"
-      font-family="JetBrains Mono,monospace" font-size="10" fill="${RUST}">${Math.round(speed)} kt</text>`;
+      <text x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="start" dominant-baseline="middle"
+        font-family="JetBrains Mono,monospace" font-size="11" fill="${RUST}">${wlbl}</text>
+      <text x="${mx.toFixed(1)}" y="${(my+10).toFixed(1)}" text-anchor="start" dominant-baseline="middle"
+        font-family="JetBrains Mono,monospace" font-size="9" fill="${RUST}" opacity="0.8">from ${Math.round(windDir)}°</text>`;
   }
 
-  // Headwind / tailwind component
+  // Headwind / tailwind leg (along the runway axis); label beyond the arrowhead.
   let hwSVG = '';
   if (hwAbs > MIN_DRAW) {
-    const isTail  = hw < -0.05;
-    const hwColor = isTail ? SUN : SKY;
-    const hwMark  = isTail ? 'at' : 'ah';
-    // Label at 70% along the HW arrow, well clear of the runway surface
-    const hwLX = CX + 0.7 * (hwEndX - CX);
-    const hwLY = cw <= 0 ? CY - 26 : CY + 28;
-    hwSVG = `
-    <line x1="${CX}" y1="${CY}" x2="${hwEndX}" y2="${hwEndY}"
-      stroke="${hwColor}" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#${hwMark})"/>
-    <text x="${hwLX}" y="${hwLY}" text-anchor="middle"
-      font-family="JetBrains Mono,monospace" font-size="10" fill="${hwColor}">${Math.round(hwAbs)} kt</text>`;
+    const isTail = hw < -0.05;
+    const col = isTail ? SUN : SKY, mk = isTail ? 'at' : 'ah';
+    const u = unit(foot[0]-C[0], foot[1]-C[1]);
+    const hlbl = `${Math.round(hwAbs)} ${isTail?'kt TW':'kt HW'}`;
+    const lx = clampX(foot[0] + u[0]*20, 'middle', hlbl);
+    const ly = clampY(foot[1] + u[1]*20);
+    hwSVG = `<line x1="${C[0]}" y1="${C[1]}" x2="${foot[0].toFixed(1)}" y2="${foot[1].toFixed(1)}"
+      stroke="${col}" stroke-width="2.4" stroke-dasharray="5,3" marker-end="url(#${mk})"/>
+      <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle"
+        font-family="JetBrains Mono,monospace" font-size="11" fill="${col}">${hlbl}</text>`;
   }
 
-  // Crosswind component
+  // Crosswind leg (perpendicular to the runway); label beyond the arrowhead.
   let cwSVG = '';
   if (cwAbs > MIN_DRAW) {
-    // Label anchored at the TIP of the CW arrow, offset sideways — away from the crowded center
-    const cwLX     = hwEndX >= CX - 5 ? hwEndX - 20 : hwEndX + 20;
-    const cwAnchor = hwEndX >= CX - 5 ? 'end' : 'start';
-    const cwSide   = r.side === 'DIRECT' ? '' : r.side;
-    const cwLY     = tipY < CY ? tipY - 8 : tipY + 16;
-    cwSVG = `
-    <line x1="${hwEndX}" y1="${CY}" x2="${hwEndX}" y2="${tipY}"
-      stroke="${SAGE}" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ac)"/>
-    <text x="${cwLX}" y="${cwLY}" text-anchor="${cwAnchor}"
-      font-family="JetBrains Mono,monospace" font-size="10" fill="${SAGE}">${Math.round(cwAbs)} kt ${cwSide}</text>`;
+    const u = unit(wtip[0]-foot[0], wtip[1]-foot[1]);
+    const sd = side === 'DIRECT' ? '' : side;
+    const clbl = `${Math.round(cwAbs)} kt ${sd}`;
+    const anch = u[0] <= 0 ? 'end' : 'start';
+    const lx = clampX(wtip[0] + u[0]*8, anch, clbl);
+    const ly = clampY(wtip[1] + u[1]*8 - 4);
+    cwSVG = `<line x1="${foot[0].toFixed(1)}" y1="${foot[1].toFixed(1)}" x2="${wtip[0].toFixed(1)}" y2="${wtip[1].toFixed(1)}"
+      stroke="${SAGE}" stroke-width="2.4" stroke-dasharray="5,3" marker-end="url(#ac)"/>
+      <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anch}" dominant-baseline="middle"
+        font-family="JetBrains Mono,monospace" font-size="11" fill="${SAGE}">${clbl}</text>`;
   }
 
-  // Right-angle mark at the shared corner (hwEndX, CY)
+  // Right-angle mark at the foot of the perpendicular
   let raMark = '';
   if (hwAbs > MIN_DRAW && cwAbs > MIN_DRAW) {
-    const sq   = 7;
-    const hdir = hw >= 0 ? sq : -sq;  // toward CX from hwEndX
-    const vdir = cw < 0  ? sq : -sq;  // toward tipY from CY
-    raMark = `<path d="M${hwEndX},${CY + vdir} L${hwEndX + hdir},${CY + vdir} L${hwEndX + hdir},${CY}"
-      fill="none" stroke="${INK}" stroke-width="1.2" opacity="0.45"/>`;
+    const uA = [C[0]-foot[0], C[1]-foot[1]], la = Math.hypot(uA[0],uA[1]) || 1;
+    const uB = [wtip[0]-foot[0], wtip[1]-foot[1]], lb = Math.hypot(uB[0],uB[1]) || 1;
+    const s = 7;
+    const a1 = [foot[0]+uA[0]/la*s, foot[1]+uA[1]/la*s];
+    const b1 = [foot[0]+uB[0]/lb*s, foot[1]+uB[1]/lb*s];
+    const c1 = [a1[0]+uB[0]/lb*s, a1[1]+uB[1]/lb*s];
+    raMark = `<path d="M${a1[0].toFixed(1)},${a1[1].toFixed(1)} L${c1[0].toFixed(1)},${c1[1].toFixed(1)} L${b1[0].toFixed(1)},${b1[1].toFixed(1)}"
+      fill="none" stroke="${INK}" stroke-width="1.2" opacity="0.4"/>`;
   }
 
-  // Angle label (top-right area, away from arrows)
-  const angleLbl = `<text x="400" y="42" text-anchor="end"
-    font-family="JetBrains Mono,monospace" font-size="10" fill="${INK}" opacity="0.6">θ = ${Math.round(Math.abs(ad))}°</text>`;
-
   document.getElementById(svgId || 'cw-svg').innerHTML =
-    defs + runwayBase(rwyNum) + gustSVG + windSVG + hwSVG + cwSVG + raMark + angleLbl;
+    defs + compass() + runwayShape(rwyNum) + gustSVG + windSVG + hwSVG + cwSVG + raMark;
 }
 
 // ── Result card helpers ──
@@ -846,11 +880,11 @@ function rwyCard(r, isRecip) {
   </div>`;
 }
 
-function renderResultPair(r1, r1r) {
+function renderResultPair(runways) {
+  // Cards come in [end, reciprocal] pairs, so every odd index is a reciprocal.
   document.getElementById('cw-result').innerHTML = `
     <div class="cw-pair-grid">
-      ${rwyCard(r1, false)}
-      ${rwyCard(r1r, true)}
+      ${runways.map((r, i) => rwyCard(r, i % 2 === 1)).join('')}
     </div>`;
 }
 
@@ -908,6 +942,19 @@ function showErr(msg) {
 
 // ── Init ──
 drawRunway(null);
+
+// Prefill the wind from the URL when linked from the METAR decoder
+// (e.g. crosswind.html?dir=230&speed=15&gust=25). Runway is left blank
+// for the pilot to enter.
+(function () {
+  const p = new URLSearchParams(location.search);
+  const dir = p.get('dir'), speed = p.get('speed'), gust = p.get('gust');
+  if (dir === null && speed === null) return;
+  if (dir   !== null) document.getElementById('cw-dir').value   = dir;
+  if (speed !== null) document.getElementById('cw-speed').value = speed;
+  if (gust  !== null) document.getElementById('cw-gusts').value = gust;
+  compute();
+})();
 </script>
   <script src="../js/main.js"></script>
 </body>

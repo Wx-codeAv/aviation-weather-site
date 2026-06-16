@@ -282,7 +282,11 @@ function renderTaf(parsed) {
   const rawEl = document.getElementById('taf-raw');
   if (rawEl) rawEl.textContent = parsed.raw;
 
-  // Timeline
+  // Visual overview band
+  const overviewEl = document.getElementById('taf-overview');
+  if (overviewEl) overviewEl.innerHTML = buildTafOverview(parsed);
+
+  // Timeline (detailed cards)
   const timelineEl = document.getElementById('taf-timeline');
   if (timelineEl) {
     timelineEl.innerHTML = parsed.groups.map(g => buildGroupCard(g)).join('');
@@ -290,6 +294,54 @@ function renderTaf(parsed) {
 
   output.hidden = false;
   output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Visual overview: prevailing band + change-group overlays ──
+
+function buildTafOverview(parsed) {
+  if (!parsed.validFrom || !parsed.validTo) return '';
+  const absH = t => t.day * 24 + t.hour + (t.min ? t.min / 60 : 0);
+  let startAbs = absH(parsed.validFrom), endAbs = absH(parsed.validTo);
+  if (endAbs <= startAbs) endAbs += 31 * 24;           // month-rollover guard
+  const dur = endAbs - startAbs;
+  if (dur <= 0) return '';
+  const off = t => { let a = absH(t); if (a < startAbs) a += 31 * 24; return Math.max(0, Math.min(dur, a - startAbs)); };
+  const pct = h => (h / dur * 100);
+
+  const CAT = { VFR: '#3a7d44', MVFR: '#1a5ba6', IFR: '#b53d1f', LIFR: '#7b2d8b' };
+
+  // Prevailing band — BASE + FM groups tile the whole period
+  const band = parsed.groups
+    .filter(g => g.type === 'BASE' || g.type === 'FM')
+    .map(g => {
+      const s = off(g.validFrom || parsed.validFrom), e = off(g.validTo || parsed.validTo);
+      const w = pct(e - s);
+      if (w <= 0.2) return '';
+      const cat = g.flightCategory || 'VFR';
+      return `<div class="tl-seg" style="left:${pct(s).toFixed(2)}%;width:${w.toFixed(2)}%;background:${CAT[cat]}" title="${cat} ${buildTimeStr(g)}"><span>${w > 6 ? cat : ''}</span></div>`;
+    }).join('');
+
+  // Change groups — each on its own row so overlapping spans never collide
+  const overlays = parsed.groups
+    .filter(g => ['TEMPO', 'BECMG', 'INTER'].includes(g.type) || g.type.startsWith('PROB'))
+    .map(g => {
+      if (!g.validFrom || !g.validTo) return '';
+      const s = off(g.validFrom), e = off(g.validTo);
+      const w = pct(e - s);
+      if (w <= 0.2) return '';
+      const cat = (g.flightCategory || 'VFR').toLowerCase();
+      const label = (GROUP_META[g.type] && GROUP_META[g.type].label) || g.type;
+      return `<div class="tl-ovrow"><div class="tl-ov tl-ov-${cat}" style="left:${pct(s).toFixed(2)}%;width:${w.toFixed(2)}%" title="${label} · ${buildTimeStr(g)}"><span>${w > 10 ? escHtml(label) : '•'}</span></div></div>`;
+    }).join('');
+
+  // Hour axis every 6 h
+  let ticks = '';
+  for (let h = 0; h <= dur + 0.01; h += 6) {
+    const hr = Math.round((parsed.validFrom.hour + h)) % 24;
+    ticks += `<div class="tl-tick" style="left:${pct(Math.min(h, dur)).toFixed(2)}%"><span>${String(hr).padStart(2, '0')}Z</span></div>`;
+  }
+
+  return `<div class="tl-band">${band}</div>${overlays ? overlays : ''}<div class="tl-axis">${ticks}</div>`;
 }
 
 function buildGroupCard(group) {

@@ -342,19 +342,141 @@
       font-family: var(--font-mono);
     }
 
-    /* ── Print ── */
+    /* ── Card footer (disclaimer lives inside the card so it always prints with it) ── */
+    .card-foot {
+      margin-top: 1.1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(244,236,214,0.2);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.6;
+      color: rgba(244,236,214,0.45);
+      text-align: center;
+    }
+    /* Cut/fold instruction & fold guide — only shown on the printed sheet */
+    .print-hint { display: none; }
+    .fold-line { display: none; }
+
+    /* ── IMSAFE self-check ── */
+    .imsafe-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 600px) { .imsafe-grid { grid-template-columns: 1fr; } }
+    .imsafe-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--ink);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .imsafe-item input {
+      margin-top: 0.15rem;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--sage);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .imsafe-item strong { color: var(--ink); }
+    .imsafe-verdict {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 0.8rem;
+      border-radius: 4px;
+      line-height: 1.5;
+    }
+    .imsafe-verdict.empty   { color: var(--ink-soft); font-weight: 400; background: var(--buff-dark); }
+    .imsafe-verdict.current { color: var(--sage); background: rgba(93,111,60,0.12); }
+    .imsafe-verdict.flag    { color: var(--rust); background: rgba(181,61,31,0.1); }
+
+    /* ── Card: IMSAFE pre-flight reminder (blank checklist for reuse) ── */
+    .card-imsafe {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem 0.75rem;
+      font-size: 0.74rem;
+      color: rgba(244,236,214,0.7);
+      padding: 0.4rem 0 0.1rem;
+    }
+
+    /* ── Print: a one-page card that fills the TOP half of the sheet, so you
+       fold the blank bottom half up behind it (no cutting) for the flight bag. ── */
     @media print {
-      .site-header, .minimums-form-col, .currency-section, footer, .print-btn { display: none !important; }
-      .minimums-layout { display: block; }
+      @page { margin: 0.5in; }
+      body { background: #fff; }
+      .site-header, .minimums-hero, .minimums-form-col, .currency-section,
+      footer, .print-btn, .storage-note { display: none !important; }
+      .container { max-width: none; margin: 0; padding: 0; }
+      .minimums-layout { display: block; padding: 0; }
+
+      .print-hint {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 8pt;
+        color: #555;
+        text-align: center;
+        max-width: 7in;
+        margin: 0 auto 0.1in;
+        letter-spacing: 0.02em;
+      }
       .minimums-card {
         position: static;
-        background: white;
-        color: black;
-        border: 2px solid black;
-        max-width: 380px;
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
+        border-radius: 6px;
+        max-width: 7in;
+        margin: 0 auto;
+        padding: 0.16in 0.26in 0.2in;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
-      .card-title, .card-subtitle, .card-key, .card-section-label { color: black !important; }
-      .card-val { color: black !important; }
+      /* Two short columns so the whole card fits above the centre fold line */
+      .card-body {
+        column-count: 2;
+        column-gap: 0.34in;
+      }
+      .card-sec {
+        break-inside: avoid;
+        -webkit-column-break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      /* Compact everything so the whole card clears the centre fold */
+      .card-header { border-bottom-color: #000; padding-bottom: 0.36rem; margin-bottom: 0.3rem; }
+      .card-title { font-size: 1rem; }
+      .card-row { padding: 0.12rem 0; font-size: 0.78rem; border-bottom-color: rgba(0,0,0,0.25); }
+      .card-section-label { margin-top: 0.24rem; margin-bottom: 0.08rem; font-size: 0.58rem; }
+      .card-imsafe { padding: 0.16rem 0 0.04rem; font-size: 0.7rem; gap: 0.16rem 0.5rem; }
+      .card-foot { margin-top: 0.45rem; padding-top: 0.38rem; font-size: 0.56rem; border-top-color: rgba(0,0,0,0.35); }
+      .card-title, .card-subtitle, .card-key,
+      .card-section-label, .card-val, .card-foot, .card-imsafe { color: #000 !important; }
+
+      /* Fold guide across the middle of the sheet */
+      .fold-line {
+        display: block;
+        position: fixed;
+        left: 0; right: 0;
+        top: 50%;
+        border-top: 1px dashed #bbb;
+        text-align: center;
+      }
+      .fold-line span {
+        position: relative;
+        top: -0.075in;
+        background: #fff;
+        padding: 0 8px;
+        font-family: var(--font-mono);
+        font-size: 7pt;
+        letter-spacing: 0.12em;
+        color: #999;
+      }
     }
 
     /* Dark mode: keep the output card dark with light text (it is navy in
@@ -556,72 +678,117 @@
           </div>
         </div>
 
-        <p class="storage-note">All values save automatically in this browser. Nothing is transmitted.</p>
+        <!-- ─── 05 · Pilot Proficiency ─── -->
+        <div class="min-group">
+          <p class="min-group-label">05 · Pilot Proficiency</p>
+          <p class="ifr-note" style="margin-top:0;">The "P" in PAVE. These are about you, not the weather — set them now and tighten or relax as you build experience.</p>
+
+          <div class="min-row">
+            <div>
+              <div class="min-label">Min hours in make/model</div>
+              <div class="min-sublabel">Treat a type as "familiar" only at or above this<br>Set higher for complex or high-performance aircraft</div>
+            </div>
+            <input type="range" id="prof-hours" min="5" max="50" step="5" value="10">
+            <div class="min-value-display" id="prof-hours-display">10 hr</div>
+          </div>
+
+          <div class="min-row">
+            <div>
+              <div class="min-label">Recency — max days since last flight</div>
+              <div class="min-sublabel">Beyond this gap, fly with an instructor first<br>FAA currency is the legal floor; this is your margin</div>
+            </div>
+            <input type="range" id="prof-recency" min="15" max="90" step="5" value="30">
+            <div class="min-value-display" id="prof-recency-display">30 days</div>
+          </div>
+
+          <div class="min-row">
+            <div>
+              <div class="min-label">Min landings / 90 days</div>
+              <div class="min-sublabel">Personal target above the legal 3 (14 CFR 61.57)<br>Full-stop landings keep your pattern sharp</div>
+            </div>
+            <input type="range" id="prof-landings" min="3" max="15" step="1" value="6">
+            <div class="min-value-display" id="prof-landings-display">6 / 90d</div>
+          </div>
+        </div>
+
+        <!-- ─── 06 · IMSAFE Pre-Flight Self-Check ─── -->
+        <div class="min-group">
+          <p class="min-group-label">06 · IMSAFE — Pre-Flight Fitness</p>
+          <p class="ifr-note" style="margin-top:0;">Run this <em>every</em> flight. Check each item you can honestly confirm — a single one left unchecked is reason to reconsider. This is a day-of self-assessment, so it is not saved or printed pre-filled.</p>
+
+          <div class="imsafe-grid">
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>I</strong>llness — free of illness</span></label>
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>M</strong>edication — nothing impairing</span></label>
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>S</strong>tress — clear of distraction</span></label>
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>A</strong>lcohol — 8+ hr, none in system</span></label>
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>F</strong>atigue — well rested</span></label>
+            <label class="imsafe-item"><input type="checkbox" class="imsafe-box"><span><strong>E</strong>motion — emotionally ready</span></label>
+          </div>
+          <div class="imsafe-verdict empty" id="imsafe-verdict">0 of 6 confirmed — check each item you can honestly verify.</div>
+        </div>
+
+        <p class="storage-note">All slider and toggle values save automatically in this browser. The IMSAFE check resets each visit. Nothing is transmitted.</p>
 
       </div><!-- /form col -->
 
       <!-- ── RIGHT: Minimums Card ── -->
       <div>
+        <p class="print-hint">Print at 100% scale, then fold the sheet in half along the line — no cutting needed — and slip it into your kneeboard or flight bag.</p>
+        <div class="fold-line" aria-hidden="true"><span>↕ fold in half</span></div>
         <div class="minimums-card">
           <div class="card-header">
             <div class="card-title">Personal Minimums</div>
             <div class="card-subtitle">CrosswindWX · Educational use only</div>
           </div>
 
-          <div class="card-section-label">VFR</div>
-          <div class="card-row">
-            <span class="card-key">Ceiling</span>
-            <span class="card-val green" id="card-ceiling">2,500 ft</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">Visibility</span>
-            <span class="card-val green" id="card-visibility">5 SM</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">Night VFR</span>
-            <span class="card-val red" id="card-night">No</span>
+          <div class="card-body">
+            <div class="card-sec">
+              <div class="card-section-label">VFR</div>
+              <div class="card-row"><span class="card-key">Ceiling</span><span class="card-val green" id="card-ceiling">2,500 ft</span></div>
+              <div class="card-row"><span class="card-key">Visibility</span><span class="card-val green" id="card-visibility">5 SM</span></div>
+              <div class="card-row"><span class="card-key">Night VFR</span><span class="card-val red" id="card-night">No</span></div>
+            </div>
+
+            <div class="card-sec">
+              <div class="card-section-label">IFR</div>
+              <div class="card-row"><span class="card-key">Ceiling add-on</span><span class="card-val green" id="card-ifr-ceiling">+200 ft</span></div>
+              <div class="card-row"><span class="card-key">Vis add-on</span><span class="card-val green" id="card-ifr-vis">+¼ SM</span></div>
+              <div class="card-row"><span class="card-key">IMC ops</span><span class="card-val red" id="card-imc">No</span></div>
+            </div>
+
+            <div class="card-sec">
+              <div class="card-section-label">Wind</div>
+              <div class="card-row"><span class="card-key">Crosswind</span><span class="card-val yellow" id="card-crosswind">10 kt</span></div>
+              <div class="card-row"><span class="card-key">Sustained</span><span class="card-val yellow" id="card-wind">15 kt</span></div>
+              <div class="card-row"><span class="card-key">Gusts</span><span class="card-val yellow" id="card-gusts">20 kt</span></div>
+            </div>
+
+            <div class="card-sec">
+              <div class="card-section-label">Convective</div>
+              <div class="card-row"><span class="card-key">Storm distance</span><span class="card-val yellow" id="card-convective">20 NM</span></div>
+            </div>
+
+            <div class="card-sec">
+              <div class="card-section-label">Pilot</div>
+              <div class="card-row"><span class="card-key">Hours in type</span><span class="card-val green" id="card-prof-hours">10 hr</span></div>
+              <div class="card-row"><span class="card-key">Recency limit</span><span class="card-val green" id="card-prof-recency">30 days</span></div>
+              <div class="card-row"><span class="card-key">Landings / 90d</span><span class="card-val green" id="card-prof-landings">6 / 90d</span></div>
+            </div>
+
+            <div class="card-sec">
+              <div class="card-section-label">Pre-flight · IMSAFE</div>
+              <div class="card-imsafe">
+                <span>☐ Illness</span><span>☐ Medication</span>
+                <span>☐ Stress</span><span>☐ Alcohol</span>
+                <span>☐ Fatigue</span><span>☐ Emotion</span>
+              </div>
+            </div>
           </div>
 
-          <div class="card-section-label">IFR</div>
-          <div class="card-row">
-            <span class="card-key">Ceiling add-on</span>
-            <span class="card-val green" id="card-ifr-ceiling">+200 ft</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">Vis add-on</span>
-            <span class="card-val green" id="card-ifr-vis">+¼ SM</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">IMC ops</span>
-            <span class="card-val red" id="card-imc">No</span>
-          </div>
-
-          <div class="card-section-label">Wind</div>
-          <div class="card-row">
-            <span class="card-key">Crosswind</span>
-            <span class="card-val yellow" id="card-crosswind">10 kt</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">Sustained</span>
-            <span class="card-val yellow" id="card-wind">15 kt</span>
-          </div>
-          <div class="card-row">
-            <span class="card-key">Gusts</span>
-            <span class="card-val yellow" id="card-gusts">20 kt</span>
-          </div>
-
-          <div class="card-section-label">Convective</div>
-          <div class="card-row">
-            <span class="card-key">Storm distance</span>
-            <span class="card-val yellow" id="card-convective">20 NM</span>
-          </div>
+          <div class="card-foot">Educational example only · Not for flight planning<br>CrosswindWX · personal minimums card</div>
 
           <button class="print-btn" onclick="window.print()">Print this card</button>
         </div>
-
-        <p style="font-size:0.75rem; color:var(--ink-soft); margin-top:1rem; font-family:var(--font-mono); text-align:center; line-height:1.6;">
-          Educational example only.<br>Not for flight planning.
-        </p>
       </div>
 
     </div><!-- /minimums-layout -->
@@ -721,6 +888,24 @@
         cardId: 'card-convective',
         format: v => v + ' NM',
         color:  () => 'yellow',
+      },
+      {
+        id: 'prof-hours',
+        cardId: 'card-prof-hours',
+        format: v => v + ' hr',
+        color:  v => Number(v) >= 10 ? 'green' : 'yellow',
+      },
+      {
+        id: 'prof-recency',
+        cardId: 'card-prof-recency',
+        format: v => v + ' days',
+        color:  v => Number(v) <= 30 ? 'green' : 'yellow',
+      },
+      {
+        id: 'prof-landings',
+        cardId: 'card-prof-landings',
+        format: v => v + ' / 90d',
+        color:  v => Number(v) >= 6 ? 'green' : 'yellow',
       },
     ];
 
@@ -877,6 +1062,26 @@
 
     checkCurrency('day-date', 'day-result');
     checkCurrency('night-date', 'night-result');
+
+    /* IMSAFE pre-flight self-check — per-flight, not saved */
+    const imsafeBoxes = Array.from(document.querySelectorAll('.imsafe-box'));
+    function updateImsafe() {
+      const total   = imsafeBoxes.length;
+      const checked = imsafeBoxes.filter(b => b.checked).length;
+      const el = document.getElementById('imsafe-verdict');
+      if (checked === 0) {
+        el.className = 'imsafe-verdict empty';
+        el.textContent = '0 of ' + total + ' confirmed — check each item you can honestly verify.';
+      } else if (checked === total) {
+        el.className = 'imsafe-verdict current';
+        el.textContent = 'All ' + total + ' confirmed — no IMSAFE flags. Continue your normal go/no-go.';
+      } else {
+        el.className = 'imsafe-verdict flag';
+        el.textContent = (total - checked) + ' of ' + total + ' not confirmed — reconsider before flying.';
+      }
+    }
+    imsafeBoxes.forEach(b => b.addEventListener('change', updateImsafe));
+    updateImsafe();
   </script>
 
   <script src="../js/main.js"></script>

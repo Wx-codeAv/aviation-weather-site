@@ -256,7 +256,8 @@
     /* ─── Fuel summary ─── */
     .nl-fuel-section { padding: 0; }
     .nl-fuel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-    .nl-fuel-card { background: var(--surface); border: 1px solid var(--rule); padding: 1rem 1.2rem; }
+    .nl-fuel-card { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--sage); padding: 1rem 1.2rem; }
+    .nl-fuel-card:has(.nl-fuel-val.danger) { border-top-color: var(--rust); }
     .nl-fuel-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sage); margin-bottom: 0.3rem; }
     .nl-fuel-val { font-family: var(--font-display); font-size: 1.9rem; color: var(--ink); letter-spacing: 0.02em; line-height: 1; }
     .nl-fuel-val span { font-size: 0.85rem; opacity: 0.6; font-family: var(--font-mono); }

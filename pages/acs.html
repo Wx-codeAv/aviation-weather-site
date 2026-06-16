@@ -109,17 +109,17 @@
       background: var(--surface);
       border-radius: 6px;
       border: 1px solid var(--rule);
-      border-left: 4px solid var(--sky);
+      border-top: 3px solid var(--sky);
       padding: 1rem 1.1rem;
       display: flex;
       flex-direction: column;
       gap: 0.45rem;
-      transition: box-shadow 0.15s;
+      transition: box-shadow 0.15s, transform 0.15s;
     }
-    .acs-card:hover { box-shadow: 0 2px 12px rgba(12,37,65,0.08); }
-    .acs-card.type-knowledge { border-left-color: var(--sky); }
-    .acs-card.type-risk      { border-left-color: var(--rust); }
-    .acs-card.type-skills    { border-left-color: var(--sage); }
+    .acs-card:hover { box-shadow: 0 4px 16px rgba(12,37,65,0.10); transform: translateY(-2px); }
+    .acs-card.type-knowledge { border-top-color: var(--sky); }
+    .acs-card.type-risk      { border-top-color: var(--rust); }
+    .acs-card.type-skills    { border-top-color: var(--sage); }
 
     /* Group/parent cards span full width and have a tinted background */
     .acs-card.is-group {
@@ -202,18 +202,31 @@
       margin-top: 0.1rem;
     }
 
+    mark.acs-hl {
+      background: rgba(217,165,33,0.32);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
       padding: 3rem;
-      color: var(--rule);
+      color: var(--ink-soft);
       font-family: var(--font-mono);
     }
+    .no-results b { color: var(--ink); }
 
     @media (max-width: 640px) {
       .acs-grid { grid-template-columns: 1fr; }
       .acs-card.is-group { grid-column: auto; }
       .acs-filter-row { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .acs-card { transition: none; }
+      .acs-card:hover { transform: none; }
     }
   </style>
 </head>
@@ -588,6 +601,14 @@
       return CERT_PREFIXES[activeCert] + "." + id;
     }
 
+    // Wrap the current search term in <mark> so a match is visible at a glance.
+    // Task labels/descriptions are plain trusted strings (no HTML).
+    function highlight(text) {
+      if (!searchQuery) return text;
+      const q = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return text.replace(new RegExp("(" + q + ")", "gi"), '<mark class="acs-hl">$1</mark>');
+    }
+
     function matchesFilter(task) {
       if (task.certsOnly && !task.certsOnly.includes(activeCert)) return false;
       if (activeType !== "all" && task.type !== activeType) return false;
@@ -619,7 +640,12 @@
       countEl.textContent = "Showing " + filtered.length + " of " + TASKS.length + " task elements";
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<p class="no-results">No tasks match "' + searchQuery + '"</p>';
+        const safe = searchQuery.replace(/[&<>"]/g, function(c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+        grid.innerHTML = '<p class="no-results">No task elements match ' +
+          (safe ? '<b>"' + safe + '"</b>' : 'these filters') +
+          '.<br>Try a broader keyword, or switch the Type filter back to <b>All</b>.</p>';
         return;
       }
 
@@ -650,8 +676,8 @@
             '<span class="acs-card-code">' + code + "</span>" +
             '<span class="acs-type-badge badge-' + task.type + '">' + TYPE_LABELS[task.type] + "</span>" +
           "</div>" +
-          '<p class="acs-card-label">' + task.label + "</p>" +
-          '<p class="acs-card-desc">' + task.desc + "</p>" +
+          '<p class="acs-card-label">' + highlight(task.label) + "</p>" +
+          '<p class="acs-card-desc">' + highlight(task.desc) + "</p>" +
           linksHtml +
           noteHtml +
         "</div>";

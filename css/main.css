@@ -933,6 +933,13 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   .hero .hero-actions  { animation: hero-rise 0.7s var(--ease-out) 0.25s both; }
   .hero .hero-reassure { animation: hero-rise 0.7s var(--ease-out) 0.33s both; }
   .hero-sample-panel   { animation: hero-card-in 0.85s var(--ease-out) 0.3s both; }
+
+  /* Interior-page hero (Learn concept pages, the Learn index, ACS) gets the
+     same staggered entrance so the whole site shares one motion language. */
+  .concept-hero .hero-eyebrow { animation: hero-rise 0.6s var(--ease-out) both; }
+  .concept-hero h1            { animation: hero-rise 0.7s var(--ease-out) 0.07s both; }
+  .concept-hero .lede         { animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
+  .concept-hero .concept-meta { animation: hero-rise 0.7s var(--ease-out) 0.25s both; }
 }
 
 /* ---------- Scroll reveal ----------
@@ -1676,6 +1683,87 @@ footer .container {
   margin-left: auto;
 }
 
+/* ── "Why this category" ceiling/visibility scale ── */
+.cat-scale {
+  margin: -1rem 0 2rem;
+  padding: 1.1rem 1.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.cat-scale:empty { display: none; }
+.cat-scale-row {
+  display: grid;
+  grid-template-columns: 84px 1fr 116px;
+  gap: 0.9rem;
+  align-items: center;
+  margin-bottom: 0.55rem;
+}
+.cat-scale-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sage);
+}
+.cat-scale-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.cat-seg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.28rem 0.2rem;
+  border-radius: 2px;
+  background: var(--buff-dark);
+  border: 1px solid var(--rule);
+}
+.cat-seg b {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+.cat-seg i {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.6rem;
+  color: var(--ink-soft);
+  opacity: 0.75;
+  margin-top: 1px;
+}
+.cat-seg.active { border-color: transparent; }
+.cat-seg.active b, .cat-seg.active i { color: #fff; opacity: 1; }
+.cat-seg.seg-vfr.active  { background: #3a7d44; }
+.cat-seg.seg-mvfr.active { background: #1a5ba6; }
+.cat-seg.seg-ifr.active  { background: #b53d1f; }
+.cat-seg.seg-lifr.active { background: #7b2d8b; }
+.cat-scale-val {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink);
+  text-align: right;
+}
+.cat-scale-note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin: 0.55rem 0 0;
+  line-height: 1.5;
+}
+.cat-scale-note b { color: var(--ink); }
+@media (max-width: 560px) {
+  .cat-scale-row { grid-template-columns: 1fr; gap: 0.3rem; }
+  .cat-scale-val { text-align: left; }
+}
+
+/* Cross-tool link in the wind card */
+.vis-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-align: center;
+  margin: 0.6rem 0 0;
+}
+.vis-link a { color: var(--sky); text-decoration: none; border-bottom: 1px solid transparent; }
+.vis-link a:hover { border-bottom-color: var(--sky); }
+
 /* ── Annotated raw METAR ── */
 .decoder-raw-wrap {
   margin-bottom: 2rem;
@@ -1921,20 +2009,60 @@ footer .container {
 .taf-group {
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-left: 5px solid var(--rule);
+  border-top: 3px solid var(--rule);   /* category color via modifier; was a side-stripe */
   padding: 0.9rem 1.1rem;
 }
 .taf-group--indent {
   margin-left: 2rem;
-  border-left-width: 3px;
-  border-left-style: dashed;
-  background: rgba(255,250,240,0.6);
+  border-top-style: dashed;            /* dashed accent = temporary / probabilistic */
+  background: var(--buff-dark);
 }
-/* Left-border color by flight category */
-.taf-group--vfr  { border-left-color: #3a7d44; }
-.taf-group--mvfr { border-left-color: #1a5ba6; }
-.taf-group--ifr  { border-left-color: #b53d1f; }
-.taf-group--lifr { border-left-color: #7b2d8b; }
+/* Top-accent color by flight category */
+.taf-group--vfr  { border-top-color: #3a7d44; }
+.taf-group--mvfr { border-top-color: #1a5ba6; }
+.taf-group--ifr  { border-top-color: #b53d1f; }
+.taf-group--lifr { border-top-color: #7b2d8b; }
+
+/* ── TAF overview timeline (visual band across the valid period) ── */
+.taf-overview { margin: 0 0 1.5rem; }
+.taf-overview:empty { display: none; }
+.tl-band {
+  position: relative;
+  height: 30px;
+  background: var(--buff-dark);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.tl-seg {
+  position: absolute; top: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.25);
+}
+.tl-seg span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem; color: #fff; letter-spacing: 0.04em;
+  white-space: nowrap; overflow: hidden;
+}
+.tl-ovrow { position: relative; height: 18px; margin-top: 3px; }
+.tl-ov {
+  position: absolute; top: 0; bottom: 0;
+  display: flex; align-items: center; padding: 0 6px;
+  border-radius: 2px;
+  border: 1px dashed rgba(255,255,255,0.65);
+  color: #fff;
+}
+.tl-ov span { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; }
+.tl-ov-vfr  { background: #3a7d44; }
+.tl-ov-mvfr { background: #1a5ba6; }
+.tl-ov-ifr  { background: #b53d1f; }
+.tl-ov-lifr { background: #7b2d8b; }
+.tl-axis { position: relative; height: 15px; margin-top: 5px; }
+.tl-tick { position: absolute; top: 0; border-left: 1px solid var(--rule); height: 5px; }
+.tl-tick span {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-soft);
+  position: absolute; top: 5px; left: 0; transform: translateX(-50%); white-space: nowrap;
+}
 
 .taf-group-header {
   display: flex;
