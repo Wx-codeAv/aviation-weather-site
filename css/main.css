@@ -1808,6 +1808,9 @@ footer .container {
 .tok-altimeter   { background: rgba(120,134,150,0.26); color: var(--buff); }   /* metadata */
 .tok-remarks-header { background: rgba(120,134,150,0.30); color: var(--buff); font-style: italic; }
 .tok-remarks        { background: rgba(120,134,150,0.18); color: var(--buff); }
+/* Unrecognized group — flagged but skipped so the rest of the report still
+   decodes. Dashed red outline marks it as "couldn't parse this one". */
+.tok-unknown     { background: rgba(181,61,31,0.16); color: var(--buff); border: 1px dashed rgba(181,61,31,0.7); }
 
 /* ── Main decoded content layout ── */
 .decoder-main {

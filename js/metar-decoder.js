@@ -34,7 +34,8 @@ const COVER_LABEL = {
   VV: 'Vertical visibility · sky obscured · ceiling',
   SKC: 'Sky clear — no clouds',
   CLR: 'Clear — no clouds below 12,000 ft AGL',
-  NSC: 'No significant cloud (WMO)'
+  NSC: 'No significant cloud (WMO)',
+  NCD: 'No cloud detected — automated sensor found no clouds'
 };
 
 // ── Main METAR parser ────────────────────────────────────────
@@ -76,11 +77,21 @@ function parseMetar(rawInput) {
     altimeter: null,
     remarks: null,
     flightCategory: null,
+    unrecognized: [],
     fields: []
   };
 
   function push(token, type, label, explanation) {
     result.fields.push({ token, type, label, explanation });
+  }
+
+  // A group we can't place. Flag it so it stays visible, but DON'T let it halt
+  // the parse — the caller advances past it and keeps decoding later groups.
+  function pushUnrecognized(token) {
+    result.unrecognized.push(token);
+    push(token, 'unknown', 'Unrecognized group',
+      'Not recognized — skipped so the rest of the report could still decode. ' +
+      'May be a coded element this decoder does not support yet, or a garbled group.');
   }
 
   let i = 0;
@@ -159,6 +170,11 @@ function parseMetar(rawInput) {
           `Direction varying ${from}° to ${to}°`);
         i++;
       }
+    } else if (/^[\d/]{5,6}(KT|MPS|KMH)$/.test(tokens[i]) && tokens[i].includes('/')) {
+      // Wind sensor unavailable: direction and/or speed reported as slashes (/////KT)
+      push(tokens[i], 'wind', 'Wind',
+        'Not available — wind not reported by the automated sensor');
+      i++;
     }
   }
 
@@ -183,6 +199,11 @@ function parseMetar(rawInput) {
       result.visibility = { raw: tok, value: vis, unit: 'm' };
       push(tok, 'visibility', 'Visibility',
         vis >= 9999 ? '10 km or more — visibility unrestricted' : `${vis} metres`);
+      i++;
+    } else if (/^\/{2,4}SM$/.test(tok) || tok === '////') {
+      // Visibility sensor unavailable: ////SM (US) or //// (metric)
+      push(tok, 'visibility', 'Visibility',
+        'Not available — visibility not reported by the automated sensor');
       i++;
     }
   }
@@ -209,59 +230,121 @@ function parseMetar(rawInput) {
       result.sky.push({ raw: tok, cover: tok, height: null, cb: null });
       push(tok, 'sky', 'Sky condition', COVER_LABEL[tok] || tok);
       i++;
-    } else {
-      const sm = tok.match(/^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/);
-      if (!sm) break;
-      const cover = sm[1], height = +sm[2] * 100, cb = sm[3] || null;
+      continue;
+    }
+
+    // Automated slash group: cover and/or height not measured by the sensor.
+    // Forms: //////TCU, //////CB, ////// (bare), ///### (amount n/a),
+    // BKN/// (height n/a). At least one component must be slashes. A station
+    // can name a significant cloud (CB/TCU) without an amount or height.
+    const slash = tok.match(/^(\/{3}|FEW|SCT|BKN|OVC|VV)(\/{3}|\d{3})(CB|TCU|\/{2,3})?$/);
+    if (slash && (slash[1] === '///' || slash[2] === '///' || (slash[3] && slash[3].includes('/')))) {
+      const cover  = slash[1] === '///' ? null : slash[1];
+      const height = slash[2] === '///' ? null : +slash[2] * 100;
+      const cb     = slash[3] && !slash[3].includes('/') ? slash[3] : null;
       result.sky.push({ raw: tok, cover, height, cb });
-      let desc = `${COVER_LABEL[cover] || cover} at ${height.toLocaleString()} ft AGL`;
-      if (cb === 'CB') desc += ' · cumulonimbus — thunderstorm';
-      else if (cb === 'TCU') desc += ' · towering cumulus — developing storm';
+
+      let desc;
+      if (cb === 'TCU')     desc = 'Towering cumulus present';
+      else if (cb === 'CB') desc = 'Cumulonimbus (thunderstorm cloud) present';
+      else if (cover)       desc = COVER_LABEL[cover] || cover;
+      else                  desc = null;
+
+      const missing = [];
+      if (!cover) missing.push('amount');
+      if (height === null) missing.push('height');
+      const naPhrase = missing.join(' and ') + ' not reported by the automated sensor';
+      if (desc === null) desc = 'Cloud ' + naPhrase;        // bare //////
+      else if (missing.length) desc += (cb ? '; ' : ' — ') + naPhrase;
+      if (height !== null) desc += ` (height ${height.toLocaleString()} ft AGL)`;
+
       push(tok, 'sky', 'Sky condition', desc);
       i++;
+      continue;
     }
-  }
 
-  // 10 ── Temperature / Dewpoint: TT/DD
-  if (i < tokens.length && /^M?\d+\/M?\d+$/.test(tokens[i])) {
-    const parts = tokens[i].split('/');
-    result.temp = parseTemp(parts[0]);
-    result.dewpoint = parseTemp(parts[1]);
-    const spread = result.temp - result.dewpoint;
-    let desc = `Temp ${result.temp}°C, dewpoint ${result.dewpoint}°C`;
-    desc += ` — T/D spread ${spread}°C`;
-    if (spread <= 2) desc += ' · fog or low visibility likely as spread closes';
-    else if (spread <= 5) desc += ' · watch for increasing moisture';
-    push(tokens[i], 'temp', 'Temperature / Dewpoint', desc);
+    const sm = tok.match(/^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/);
+    if (!sm) break;
+    const cover = sm[1], height = +sm[2] * 100, cb = sm[3] || null;
+    result.sky.push({ raw: tok, cover, height, cb });
+    let desc = `${COVER_LABEL[cover] || cover} at ${height.toLocaleString()} ft AGL`;
+    if (cb === 'CB') desc += ' · cumulonimbus — thunderstorm';
+    else if (cb === 'TCU') desc += ' · towering cumulus — developing storm';
+    push(tok, 'sky', 'Sky condition', desc);
     i++;
   }
 
-  // 11 ── Altimeter: Adddd (inHg) or Qdddd (hPa)
-  if (i < tokens.length && /^[AQ]\d{4}$/.test(tokens[i])) {
+  // 10–12 ── Temperature/dewpoint, altimeter, remarks — and graceful recovery.
+  // From here on, a token we can't place must NOT abort the parse: we flag it
+  // as unrecognized and keep walking, so a stray or garbled group can never
+  // hide the temp, altimeter, or remarks that follow it. Temp/altimeter stay
+  // guarded by their result fields so each is only filled once.
+  while (i < tokens.length) {
     const tok = tokens[i];
-    if (tok[0] === 'A') {
-      const val = +tok.slice(1) / 100;
-      result.altimeter = { raw: tok, value: val, unit: 'inHg' };
-      const diff = (val - 29.92).toFixed(2);
-      let desc = `${val.toFixed(2)} inHg`;
-      if (val < 29.92) desc += ` (${diff} below standard 29.92 — low pressure area)`;
-      else if (val > 29.92) desc += ` (+${diff} above standard 29.92 — high pressure area)`;
-      else desc += ' — standard atmosphere pressure';
-      push(tok, 'altimeter', 'Altimeter setting', desc);
-    } else {
-      const val = +tok.slice(1);
-      result.altimeter = { raw: tok, value: val, unit: 'hPa' };
-      push(tok, 'altimeter', 'Altimeter setting (QNH)', `${val} hPa`);
-    }
-    i++;
-  }
 
-  // 12 ── Remarks
-  if (i < tokens.length && tokens[i] === 'RMK') {
-    const remarkTokens = tokens.slice(i + 1);
-    result.remarks = remarkTokens.join(' ');
-    push('RMK', 'remarks-header', 'Remarks', 'Supplemental information appended by the observing station');
-    parseRemarks(remarkTokens, push);
+    // Remarks header — consumes everything after it.
+    if (tok === 'RMK') {
+      const remarkTokens = tokens.slice(i + 1);
+      result.remarks = remarkTokens.join(' ');
+      push('RMK', 'remarks-header', 'Remarks', 'Supplemental information appended by the observing station');
+      parseRemarks(remarkTokens, push);
+      break;
+    }
+
+    // Temperature / Dewpoint: TT/DD
+    if (result.temp === null && /^M?\d+\/M?\d+$/.test(tok)) {
+      const parts = tok.split('/');
+      result.temp = parseTemp(parts[0]);
+      result.dewpoint = parseTemp(parts[1]);
+      const spread = result.temp - result.dewpoint;
+      let desc = `Temp ${result.temp}°C, dewpoint ${result.dewpoint}°C — T/D spread ${spread}°C`;
+      if (spread <= 2) desc += ' · fog or low visibility likely as spread closes';
+      else if (spread <= 5) desc += ' · watch for increasing moisture';
+      push(tok, 'temp', 'Temperature / Dewpoint', desc);
+      i++; continue;
+    }
+    // Temperature / dewpoint sensor unavailable: //// or M//// or //M// etc.
+    if (result.temp === null && result.altimeter === null && /^\/{4,5}$/.test(tok)) {
+      push(tok, 'temp', 'Temperature / Dewpoint',
+        'Not available — temperature/dewpoint not reported by the automated sensor');
+      i++; continue;
+    }
+
+    // Altimeter: Adddd (inHg) or Qdddd (hPa)
+    if (result.altimeter === null && /^[AQ]\d{4}$/.test(tok)) {
+      if (tok[0] === 'A') {
+        const val = +tok.slice(1) / 100;
+        result.altimeter = { raw: tok, value: val, unit: 'inHg' };
+        const diff = (val - 29.92).toFixed(2);
+        let desc = `${val.toFixed(2)} inHg`;
+        if (val < 29.92) desc += ` (${diff} below standard 29.92 — low pressure area)`;
+        else if (val > 29.92) desc += ` (+${diff} above standard 29.92 — high pressure area)`;
+        else desc += ' — standard atmosphere pressure';
+        push(tok, 'altimeter', 'Altimeter setting', desc);
+      } else {
+        const val = +tok.slice(1);
+        result.altimeter = { raw: tok, value: val, unit: 'hPa' };
+        push(tok, 'altimeter', 'Altimeter setting (QNH)', `${val} hPa`);
+      }
+      i++; continue;
+    }
+    // Altimeter sensor unavailable: A//// or Q////
+    if (result.altimeter === null && /^[AQ]\/{4}$/.test(tok)) {
+      push(tok, 'altimeter', 'Altimeter setting',
+        'Not available — pressure not reported by the automated sensor');
+      i++; continue;
+    }
+
+    // A group of only slashes in a slot we didn't anchor: sensor data missing.
+    if (/^\/+$/.test(tok)) {
+      push(tok, 'unknown', 'Data not available',
+        'Reported as all slashes — the automated sensor had no value for this group');
+      i++; continue;
+    }
+
+    // Anything else: flag it and move on so the rest of the report still decodes.
+    pushUnrecognized(tok);
+    i++;
   }
 
   result.flightCategory = deriveFlightCategory(result);
@@ -1024,7 +1107,12 @@ document.addEventListener('DOMContentLoaded', () => {
       'METAR KORD 121552Z AUTO 31008KT 1 1/4SM +TSRA BKN009 OVC020CB 18/16 A2979 RMK AO2 PRESRR',
       'METAR KDEN 151835Z 27020G35KT 7SM SKC 32/03 A2964 RMK AO2 SLP028',
       'METAR KSFO 080556Z 00000KT 10SM FEW015 13/11 A3007 RMK AO2 SLP184',
-      'METAR KBOS 202253Z 03018KT 3SM BR OVC003 07/06 A2991 RMK AO2 SLP130'
+      'METAR KBOS 202253Z 03018KT 3SM BR OVC003 07/06 A2991 RMK AO2 SLP130',
+      // Automated slash groups: amount/height not measured. Temp, altimeter and
+      // remarks must still decode after the //////xx group.
+      'METAR KMIA 211853Z AUTO 09012KT 10SM //////TCU 30/23 A3005 RMK AO2 SLP175',
+      'METAR KTPA 211953Z AUTO 27015G22KT 9SM //////CB 31/24 A3002 RMK AO2 LTG DSNT W',
+      'METAR KOKC 212053Z AUTO 18008KT 10SM ////// 28/19 A2995 RMK AO2'
     ];
     let exIdx = 0;
     exampleBtn.addEventListener('click', () => {
