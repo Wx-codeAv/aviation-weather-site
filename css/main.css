@@ -940,6 +940,19 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   .concept-hero h1            { animation: hero-rise 0.7s var(--ease-out) 0.07s both; }
   .concept-hero .lede         { animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
   .concept-hero .concept-meta { animation: hero-rise 0.7s var(--ease-out) 0.25s both; }
+
+  /* Tool-page heroes (Crosswind, Personal Minimums, Nav Log) carry their own
+     wrapper classes but share the identical eyebrow / h1 / lede entrance, so
+     every page on the site opens with the same staggered rise. */
+  .cw-hero .hero-eyebrow,
+  .minimums-hero .hero-eyebrow,
+  .nl-hero .hero-eyebrow { animation: hero-rise 0.6s var(--ease-out) both; }
+  .cw-hero h1,
+  .minimums-hero h1,
+  .nl-hero h1            { animation: hero-rise 0.7s var(--ease-out) 0.07s both; }
+  .cw-hero .lede,
+  .minimums-hero .lede,
+  .nl-hero .lede         { animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
 }
 
 /* ---------- Scroll reveal ----------
