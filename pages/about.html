@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — CrosswindWX</title>
+  <meta name="description" content="Why CrosswindWX exists, and who built it — a free aviation weather education tool for student pilots, by an Embry-Riddle student pilot and meteorology tutor.">
+  <script>
+    // Apply saved/system theme before paint so there is no light-mode flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('crosswindwx-theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <div class="header-actions">
+        <nav class="site-nav" id="primary-nav">
+          <ul class="nav-links">
+            <li><a href="learn.html">Learn</a></li>
+            <li><a href="acs.html">ACS</a></li>
+            <li><a href="decoder.html">Decoder</a></li>
+            <li><a href="navlog.html">Nav Log</a></li>
+            <li><a href="crosswind.html">Crosswind</a></li>
+            <li><a href="minimums.html">Minimums</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <line x1="12" y1="2.5" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="4.6" y1="4.6" x2="6.4" y2="6.4"/>
+            <line x1="17.6" y1="17.6" x2="19.4" y2="19.4"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="4.6" y1="19.4" x2="6.4" y2="17.6"/>
+            <line x1="17.6" y1="6.4" x2="19.4" y2="4.6"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.2 8.2 0 1 1 9.2 3.5a6.4 6.4 0 0 0 11.3 11.3z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="concept-hero">
+    <div class="container">
+      <p class="hero-eyebrow">About · CrosswindWX</p>
+      <h1>Aviation weather,<br><span class="accent">made clear.</span></h1>
+      <p class="lede">
+        Aviation weather shouldn't be so difficult for student pilots — CrosswindWX exists to fix that. It's a free education tool built to make aviation weather clear for anyone learning to fly.
+      </p>
+    </div>
+  </section>
+
+  <main class="about-page">
+    <div class="container">
+      <div class="about-content">
+
+        <p class="section-label">— About me</p>
+        <p>
+          My name is Samuel McDowell, and I'm a student at Embry-Riddle Aeronautical University majoring in Aeronautical Science with a minor in meteorology. I'm an instrument-rated private pilot currently pursuing my commercial certificate, and I serve as the lead tutor at Embry-Riddle's weather lab, where I help my fellow students with meteorology.
+        </p>
+        <p>
+          Tutoring is what inspired this site. Working with other pilots, I saw firsthand where weather knowledge tends to break down — and I wanted to build a learning tool that helps them through their training, prepares them for their checkrides, and, more than anything, helps them develop a genuine love for meteorology like the one I have. Aviation weather matters, and I want my peers not just to understand it, but to enjoy it and apply it to their flying.
+        </p>
+        <p>
+          My dream is to one day fly for NOAA — collecting the atmospheric data that deepens our understanding of Earth's climate and changing weather. As a pilot, my goal is to never stop learning, and this site reflects that: it's actively growing, and I update it regularly with new knowledge and tools.
+        </p>
+
+        <p class="section-label">— A note on use</p>
+        <p>
+          CrosswindWX is for learning, not operational flight planning. Always consult official FAA and Aviation Weather Center sources for current conditions and real-world flight planning.
+        </p>
+
+        <p class="section-label">— Get in touch</p>
+        <p>
+          I welcome any questions or suggestions — and I especially want to hear from pilots using the site, CFIs, and meteorologists. All feedback is genuinely appreciated.
+        </p>
+        <p>
+          Reach me at <a href="mailto:crosswindwx@gmail.com">crosswindwx@gmail.com</a>.
+        </p>
+
+        <div class="about-signoff">
+          <p>Happy flying,</p>
+          <p class="about-name">Samuel McDowell</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
+      <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
+    </div>
+  </footer>
+  <script src="../js/main.js"></script>
+</body>
+</html>
