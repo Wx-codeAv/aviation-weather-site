@@ -2255,6 +2255,13 @@ footer .container {
   color: var(--sage);
 }
 .pirep-field-desc { color: var(--ink-soft); }
+/* Pale field-code chips (UA / OV / TA) carry light translucent fills; on the light
+   fields surface their cream text washes out. Flip to --ink (dark in light mode,
+   light in dark mode) so they stay legible in both themes. The navy example panel
+   above keeps the cream tokens and is unaffected. */
+.pirep-field-code.ptok-type,
+.pirep-field-code.ptok-loc,
+.pirep-field-code.ptok-temp { color: var(--ink); }
 
 /* ============================================
    Polish & accessibility
