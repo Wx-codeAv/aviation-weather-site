@@ -3,8 +3,6 @@
 // and Nav Log tools, the heavy lifting will live here (or in modules
 // imported from here).
 
-console.log('CrosswindWX loaded. Wind 240 at 14, gusting 22.');
-
 // ----- Mobile nav toggle -----
 const navToggle = document.querySelector('.nav-toggle');
 const primaryNav = document.getElementById('primary-nav');

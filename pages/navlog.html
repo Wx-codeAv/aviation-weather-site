@@ -1291,7 +1291,7 @@
   <!-- ══ Footer ══ -->
   <footer>
     <div class="container">
-      <span>CrosswindWX</span>
+      <span>© 2026 Samuel McDowell · CrosswindWX</span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>
@@ -2867,14 +2867,7 @@ function waDiagnoseParse(text) {
   return { headerFound, altLevels, stationCount };
 }
 
-/* ── Fetch ──
-   TODO (deferred): Add a Cloudflare Worker proxy to enable live fetch without CORS issues.
-   AWC's API (aviationweather.gov/api/data/windtemp) does not send Access-Control-Allow-Origin headers,
-   so browsers block the response even though the server returns 200 OK.
-   The fix is a tiny Worker (~15 lines) that fetches from AWC and forwards the response with CORS headers.
-   Wire it up here: replace `url` below with the Worker URL and remove the `details` wrapper from the
-   live-fetch section in the HTML. Right architecture, wrong time — do this when domain/deployment is set up.
-*/
+/* ── Fetch ── */
 
 async function waFetch() {
   const fetchBtn = document.getElementById('nl-wa-fetch');

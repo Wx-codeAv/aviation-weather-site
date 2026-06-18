@@ -1,14 +1,7 @@
-# Python tooling (tools/)
-tools/.venv/
-tools/__pycache__/
-tools/**/__pycache__/
-tools/*.pyc
-
-# Dev-only diagram render previews (throwaway screenshots from render_diagrams.py)
-tools/_diag_preview/
+# Dev tooling — local-only, not part of the deployed site
+tools/
 
 # Sounding data
-tools/data/
 *.OAX
 
 # Environment / secrets
@@ -27,5 +20,5 @@ Thumbs.db
 *.bak
 *.swp
 
-# Third-party Claude Code skill — kept local, not part of this repo
-.claude/skills/impeccable/
+# Claude Code workspace — kept local, not part of this repo
+.claude/
