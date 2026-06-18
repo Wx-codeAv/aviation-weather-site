@@ -310,7 +310,7 @@ html[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
 html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 .nav-links {
   display: flex;
-  gap: 1.8rem;
+  gap: 1.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -327,56 +327,11 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 }
 .nav-links a:hover { border-bottom-color: var(--rust); color: var(--ink); }
 
-@media (max-width: 700px) {
-  .nav-links { gap: 1rem; font-size: 0.85rem; }
-  .nav-links a { font-size: 0.85rem; }
-}
-
-/* ---------- Nav dropdown ---------- */
-.nav-dropdown { position: relative; list-style: none; }
-.nav-dropdown-label {
-  color: var(--ink);
-  font-weight: 600;
-  font-size: 0.92rem;
-  letter-spacing: 0.02em;
-  cursor: default;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.15s;
-  user-select: none;
-}
-.nav-dropdown:hover .nav-dropdown-label,
-.nav-dropdown:focus-within .nav-dropdown-label { border-bottom-color: var(--rust); }
-.nav-dropdown-menu {
-  display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: var(--buff);
-  border: 1px solid var(--rule);
-  list-style: none;
-  padding: 0.3rem 0;
-  margin: 0;
-  min-width: 130px;
-  box-shadow: 4px 4px 0 var(--buff-dark);
-  z-index: 200;
-}
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu { display: block; }
-.nav-dropdown-menu li { display: block; }
-.nav-dropdown-menu a {
-  display: block;
-  padding: 0.45rem 1rem;
-  color: var(--ink);
-  font-weight: 600;
-  font-size: 0.88rem;
-  letter-spacing: 0.02em;
-  border: none;
-  white-space: nowrap;
-}
-.nav-dropdown-menu a:hover { color: var(--rust); background: var(--buff-dark); }
-@media (max-width: 700px) {
-  .nav-dropdown-label { font-size: 0.85rem; }
+/* Medium desktop: tighten the tab gap and type a touch so all seven flat tabs
+   never crowd in the ~1000–1150px band, just before the hamburger takes over. */
+@media (max-width: 1150px) {
+  .nav-links { gap: 1.1rem; }
+  .nav-links a { font-size: 0.88rem; }
 }
 
 /* ---------- Mobile nav toggle ---------- */
@@ -411,7 +366,8 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { top: 0; transform: rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars::after  { top: 0; transform: rotate(-45deg); }
 
-@media (max-width: 700px) {
+/* Switch to the hamburger well before seven tabs would crowd or wrap. */
+@media (max-width: 1000px) {
   .nav-toggle { display: inline-flex; }
 
   .site-nav {
@@ -431,28 +387,13 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
     gap: 0;
     padding: 0 var(--gutter);
   }
-  .site-nav .nav-links a,
-  .site-nav .nav-dropdown-menu a {
+  .site-nav .nav-links a {
     display: block;
     padding: 0.9rem 0;           /* tall tap rows */
     font-size: 1rem;
     border-bottom: 1px solid var(--rule);
   }
-
-  /* flatten the Tools submenu into the panel (no hover flyout on touch) */
-  .site-nav .nav-dropdown { position: static; }
-  .site-nav .nav-dropdown-label { display: none; }
-  .site-nav .nav-dropdown-menu {
-    display: block;
-    position: static;
-    border: none;
-    box-shadow: none;
-    background: none;
-    min-width: 0;
-    padding: 0;
-    margin: 0;
-  }
-  .site-nav .nav-dropdown-menu li:last-child a { border-bottom: none; }
+  .site-nav .nav-links li:last-child a { border-bottom: none; }
 }
 
 /* ---------- Hero ----------
@@ -913,6 +854,23 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 }
 .about p { max-width: 62ch; color: rgba(244, 236, 214, 0.88); font-size: 1.05rem; }
 .about .section-label { color: var(--sun); }
+
+/* Quiet doorway to the About page, sitting under the "why this exists" copy.
+   Mono, cream-on-navy in light mode; the dark band flips to surface, so the
+   text color is re-asserted below. Hover lands on sun in both themes. */
+.about-cta { margin-top: 1.9rem; margin-bottom: 0; }
+.about-cta a {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--buff);
+  border-bottom: 1px solid rgba(244, 236, 214, 0.45);
+  padding-bottom: 2px;
+}
+.about-cta a:hover { color: var(--sun); border-bottom-color: var(--sun); }
+html[data-theme="dark"] .about-cta a { color: var(--ink); border-bottom-color: rgba(233, 228, 214, 0.4); }
+html[data-theme="dark"] .about-cta a:hover { color: var(--sun); border-bottom-color: var(--sun); }
 
 /* ---------- Hero entrance ----------
    One orchestrated reveal on load, the page's single signature moment.
