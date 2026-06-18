@@ -405,25 +405,25 @@
 
               <!-- Feature label band, row 1 (numbers = observer order: ① is encountered first) -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="100" y="306" fill="#0c2541" font-weight="700">④ CLEARING · NW WIND</text>
+                <text x="100" y="306" fill="#0c2541" font-weight="700"><tspan font-size="15">④</tspan> CLEARING · GUSTY NW</text>
                 <text x="100" y="322" fill="#2d4360">cold · dry · good vis</text>
-                <text x="370" y="306" fill="#0c2541" font-weight="700">③ CB AT THE FRONT</text>
+                <text x="370" y="306" fill="#0c2541" font-weight="700"><tspan font-size="15">③</tspan> CB AT THE FRONT</text>
                 <text x="370" y="322" fill="#2d4360">heavy rain · hail · severe turb</text>
               </g>
 
               <!-- Feature label band, row 2 -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="480" y="352" fill="#0c2541" font-weight="700">② TOWERING CU (TCu)</text>
+                <text x="480" y="352" fill="#0c2541" font-weight="700"><tspan font-size="15">②</tspan> TOWERING CU (TCu)</text>
                 <text x="480" y="368" fill="#2d4360">building convection</text>
-                <text x="625" y="352" fill="#0c2541" font-weight="700">① SQUALL LINE</text>
-                <text x="625" y="368" fill="#2d4360">50–200 nm ahead</text>
+                <text x="625" y="352" fill="#0c2541" font-weight="700"><tspan font-size="15">①</tspan> SQUALL LINE</text>
+                <text x="625" y="368" fill="#2d4360">50–300 nm ahead</text>
               </g>
 
               <!-- Active weather band bracket -->
               <line x1="310" y1="392" x2="660" y2="392" stroke="#b53d1f" stroke-width="1"/>
               <line x1="310" y1="388" x2="310" y2="396" stroke="#b53d1f" stroke-width="1"/>
               <line x1="660" y1="388" x2="660" y2="396" stroke="#b53d1f" stroke-width="1"/>
-              <text x="485" y="412" font-family="JetBrains Mono, monospace" font-size="11" fill="#b53d1f" text-anchor="middle">active weather band ~50–100 nm · squall line possible 50–200 nm ahead</text>
+              <text x="485" y="412" font-family="JetBrains Mono, monospace" font-size="11" fill="#b53d1f" text-anchor="middle">active weather band ~50–100 nm · squall line possible 50–300 nm ahead</text>
 
               <!-- Outer border -->
               <rect x="1" y="1" width="738" height="430" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
@@ -494,14 +494,45 @@
                 <path d="M 612,58 C 622,54 632,56 644,52"/>
               </g>
 
-              <!-- ② Cirrostratus veil -->
-              <rect x="460" y="75" width="120" height="22" fill="rgba(200,215,235,0.5)" stroke="#4a7ba6" stroke-width="0.8" rx="4"/>
+              <!-- ② Cirrostratus veil (thin, high, soft layered edges — rim + body, no rectangle) -->
+              <g fill="#aebfd6">
+                <ellipse cx="490" cy="88" rx="38" ry="7"/>
+                <ellipse cx="534" cy="84" rx="40" ry="7.5"/>
+                <ellipse cx="572" cy="89" rx="22" ry="6"/>
+              </g>
+              <g fill="#dce6f0">
+                <ellipse cx="490" cy="88" rx="36" ry="5.4"/>
+                <ellipse cx="534" cy="84" rx="38" ry="5.8"/>
+                <ellipse cx="572" cy="89" rx="20" ry="4.4"/>
+              </g>
 
-              <!-- ③ Altostratus deck -->
-              <rect x="315" y="112" width="125" height="34" fill="rgba(180,195,215,0.6)" stroke="#4a7ba6" stroke-width="1" rx="3"/>
+              <!-- ③ Altostratus deck (mid-level grey deck, soft scalloped edges) -->
+              <g fill="#8092ad">
+                <ellipse cx="338" cy="128" rx="36" ry="12"/>
+                <ellipse cx="386" cy="124" rx="38" ry="13"/>
+                <ellipse cx="424" cy="130" rx="26" ry="11"/>
+              </g>
+              <g fill="#c4d1e3">
+                <ellipse cx="338" cy="128" rx="34" ry="10.2"/>
+                <ellipse cx="386" cy="124" rx="36" ry="11.2"/>
+                <ellipse cx="424" cy="130" rx="24" ry="9.2"/>
+              </g>
 
-              <!-- ④ Nimbostratus, base hugging the frontal surface -->
-              <path d="M 305,138 L 195,138 L 195,247 L 230,236 C 250,228 280,216 305,206 Z" fill="rgba(140,155,175,0.65)" stroke="#0c2541" stroke-width="1"/>
+              <!-- ④ Nimbostratus — thick, dark rain deck, base hugging the frontal surface -->
+              <g fill="#3f5f86">
+                <ellipse cx="228" cy="170" rx="38" ry="30"/>
+                <ellipse cx="270" cy="162" rx="34" ry="30"/>
+                <ellipse cx="296" cy="188" rx="23" ry="25"/>
+                <ellipse cx="250" cy="204" rx="44" ry="25"/>
+                <ellipse cx="214" cy="192" rx="26" ry="25"/>
+              </g>
+              <g fill="#8c9db7">
+                <ellipse cx="228" cy="170" rx="35.5" ry="27.5"/>
+                <ellipse cx="270" cy="162" rx="31.5" ry="27.5"/>
+                <ellipse cx="296" cy="188" rx="20.5" ry="22.5"/>
+                <ellipse cx="250" cy="204" rx="41.5" ry="22.5"/>
+                <ellipse cx="214" cy="192" rx="23.5" ry="22.5"/>
+              </g>
 
               <!-- FZRA zone: sub-freezing wedge under the rain, just below the frontal surface -->
               <path d="M 308,210 L 195,250 L 195,253 L 308,253 Z" fill="rgba(181,61,31,0.10)" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="3,3"/>
@@ -516,8 +547,15 @@
                 <line x1="240" y1="233" x2="244" y2="252"/>
               </g>
 
-              <!-- ⑤ Stratus / fog at the surface front -->
-              <rect x="182" y="241" width="53" height="13" fill="rgba(180,190,200,0.75)" stroke="#777" stroke-width="0.8" rx="2"/>
+              <!-- ⑤ Stratus / fog at the surface front (low, soft layer) -->
+              <g fill="#8b95a2">
+                <ellipse cx="194" cy="247" rx="22" ry="7"/>
+                <ellipse cx="214" cy="244" rx="15" ry="6"/>
+              </g>
+              <g fill="#cdd4dd">
+                <ellipse cx="194" cy="247" rx="20" ry="5.6"/>
+                <ellipse cx="214" cy="244" rx="13" ry="4.8"/>
+              </g>
 
               <!-- Frontal surface (gentle slope; true slope ~1:100-300 is far gentler, see caption) -->
               <line x1="180" y1="255" x2="726" y2="38.8" stroke="#b53d1f" stroke-width="2.5"/>
@@ -555,19 +593,19 @@
 
               <!-- Cloud-sequence label band, row 1 (numbers = observer order: ① is seen first) -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="140" y="314" fill="#0c2541" font-weight="700">⑤ STRATUS / FOG (St)</text>
+                <text x="140" y="314" fill="#0c2541" font-weight="700"><tspan font-size="15">⑤</tspan> STRATUS / FOG (St)</text>
                 <text x="140" y="330" fill="#2d4360">LIFR at the surface front</text>
-                <text x="410" y="314" fill="#0c2541" font-weight="700">③ ALTOSTRATUS (As)</text>
+                <text x="410" y="314" fill="#0c2541" font-weight="700"><tspan font-size="15">③</tspan> ALTOSTRATUS (As)</text>
                 <text x="410" y="330" fill="#2d4360">MVFR · 100–200 nm ahead</text>
-                <text x="635" y="314" fill="#0c2541" font-weight="700">① CIRRUS (Ci)</text>
+                <text x="635" y="314" fill="#0c2541" font-weight="700"><tspan font-size="15">①</tspan> CIRRUS (Ci)</text>
                 <text x="635" y="330" fill="#2d4360">200–400 nm ahead</text>
               </g>
 
               <!-- Cloud-sequence label band, row 2 -->
               <g font-family="JetBrains Mono, monospace" text-anchor="middle" font-size="11">
-                <text x="270" y="360" fill="#0c2541" font-weight="700">④ NIMBOSTRATUS (Ns)</text>
+                <text x="270" y="360" fill="#0c2541" font-weight="700"><tspan font-size="15">④</tspan> NIMBOSTRATUS (Ns)</text>
                 <text x="270" y="376" fill="#2d4360">steady rain · IFR · 50–100 nm</text>
-                <text x="505" y="360" fill="#0c2541" font-weight="700">② CIRROSTRATUS (Cs)</text>
+                <text x="505" y="360" fill="#0c2541" font-weight="700"><tspan font-size="15">②</tspan> CIRROSTRATUS (Cs)</text>
                 <text x="505" y="376" fill="#2d4360">halo · 200–300 nm ahead</text>
               </g>
 
