@@ -158,7 +158,7 @@
             Each wind/temperature entry is encoded as a <strong>4-digit group</strong> (wind only, used at 3,000 ft) or a <strong>6- to 7-character group</strong> (wind plus temperature, used at 6,000 ft and above). The structure:
           </p>
 
-          <div style="background: var(--ink); color: var(--buff); font-family: var(--font-mono); font-size: 0.88rem; padding: 1rem 1.2rem; margin: 1rem 0 1.4rem; line-height: 1.9; border-radius: 2px;">
+          <div style="background: #0c2541; color: #f4ecd6; font-family: var(--font-mono); font-size: 0.88rem; padding: 1rem 1.2rem; margin: 1rem 0 1.4rem; line-height: 1.9; border-radius: 2px;">
             <span style="color: var(--sun); letter-spacing: 0.1em;">DD</span><span style="color: #a8d8a8; letter-spacing: 0.1em;">SS</span><span style="color: #f9cfc6; letter-spacing: 0.1em;">±TT</span>
             <br>
             <span style="color: var(--sun);">DD</span> = wind direction in tens of degrees (23 = 230°)
@@ -450,19 +450,19 @@
               <text x="296" y="66" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" opacity="0.85" font-style="italic" text-anchor="end">isotach</text>
               <line x1="298" y1="63" x2="306" y2="62" stroke="#5d6f3c" stroke-width="0.6" opacity="0.5"/>
 
-              <!-- Surface cold front (below jet) -->
-              <line x1="410" y1="290" x2="560" y2="290" stroke="#4a7ba6" stroke-width="2.5"/>
+              <!-- Surface cold front: anchored below the jet, displaced to the WARM (equatorward/left) side of the core -->
+              <line x1="320" y1="290" x2="470" y2="290" stroke="#4a7ba6" stroke-width="2.5"/>
               <g fill="#4a7ba6">
-                <polygon points="430,290 422,278 438,278"/>
-                <polygon points="455,290 447,278 463,278"/>
-                <polygon points="480,290 472,278 488,278"/>
-                <polygon points="505,290 497,278 513,278"/>
-                <polygon points="530,290 522,278 538,278"/>
+                <polygon points="340,290 332,278 348,278"/>
+                <polygon points="365,290 357,278 373,278"/>
+                <polygon points="390,290 382,278 398,278"/>
+                <polygon points="415,290 407,278 423,278"/>
+                <polygon points="440,290 432,278 448,278"/>
               </g>
-              <text x="480" y="270" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle" font-style="italic">Cold front anchored below jet</text>
+              <text x="395" y="270" font-family="Manrope, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle" font-style="italic">Surface front below jet — on the warm side of the core</text>
 
               <!-- Jet to front connecting arrow -->
-              <line x1="425" y1="84" x2="440" y2="278" stroke="#0c2541" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
+              <line x1="418" y1="84" x2="398" y2="278" stroke="#0c2541" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.4"/>
 
               <!-- CAT extent annotation -->
               <line x1="310" y1="100" x2="590" y2="100" stroke="#b53d1f" stroke-width="0.8"/>
