@@ -2257,7 +2257,37 @@ select:focus-visible,
    A calm, single-column credibility page. One Anton headline in the hero;
    the body is quiet Manrope prose with mono section-labels as subheads. */
 .about-page { padding: 3.5rem 0 5rem; }
-.about-content { max-width: 62ch; }
+/* Wider than the reading measure so the intro can host the photo column;
+   prose blocks inside re-clamp themselves to ~62ch for comfortable line length. */
+.about-content { max-width: 920px; }
+.about-prose { max-width: 62ch; }
+
+/* About-me intro: text beside the cockpit photo on desktop, stacked on mobile. */
+.about-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(230px, 33%, 330px);
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+.about-intro-text { max-width: 62ch; }
+
+.about-photo { margin: 0; }
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  /* same offset-shadow motif used on cards/panels site-wide */
+  box-shadow: 4px 4px 0 var(--buff-dark);
+}
+
+@media (max-width: 760px) {
+  .about-intro { grid-template-columns: 1fr; gap: 1.4rem; }
+  .about-photo { order: -1; }              /* photo stacks above the text on mobile */
+  .about-photo img { max-width: 460px; }   /* keep it from dominating the column */
+}
 
 /* Section subheads keep the mono .section-label DNA but are stepped up from
    the 0.78rem eyebrow size so they read as headings, not labels. */
@@ -2267,7 +2297,7 @@ select:focus-visible,
   letter-spacing: 0.14em;
   margin: 3.25rem 0 1rem;
 }
-.about-content > .section-label:first-child { margin-top: 0; }
+.about-intro-text > .section-label:first-child { margin-top: 0; }
 
 /* Body copy sits at full --ink (not --ink-soft) so it stays crisp on both the
    cream and deep-navy fields — this is a reading page, contrast over softness. */

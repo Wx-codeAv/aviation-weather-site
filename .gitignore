@@ -4,6 +4,9 @@ tools/
 # Sounding data
 *.OAX
 
+# Full-res image originals — only the web-optimized versions get committed
+assets/images/source/
+
 # Environment / secrets
 .env
 .env.local
