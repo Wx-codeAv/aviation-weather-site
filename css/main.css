@@ -157,7 +157,7 @@ html[data-theme="dark"] .taf-type-prob40 { color: var(--sun); }
 
 /* ---------- Reset & base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -165,6 +165,10 @@ body {
   line-height: 1.6;
   color: var(--ink-soft);
   background: var(--buff);
+  /* Contain any stray horizontal overflow so the page never scrolls sideways and
+     the sticky header always spans the full viewport (even pinch-zoomed out).
+     `clip` (not `hidden`) keeps the header's position:sticky working. */
+  overflow-x: clip;
   /* Crisper, more deliberate type rendering site-wide */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -431,6 +435,16 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
           mask-image: radial-gradient(circle, transparent 24%, #000 50%);
 }
 
+/* Mobile: on desktop the compass is large enough that the headline sits inside
+   its masked center. On narrow screens the rose shrinks toward the viewport
+   width and its center drifts well below the type, so raise it to sit behind the
+   headline block. (The eyebrow tick is handled inline in the base rule and needs
+   no mobile override.) */
+@media (max-width: 560px) {
+  .hero { padding-top: clamp(2.5rem, 8vw, 4rem); }
+  .hero-chart { width: min(560px, 94vw); top: 30%; }
+}
+
 .hero-eyebrow {
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -438,10 +452,9 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   letter-spacing: 0.18em;
   color: var(--sage);
   margin-bottom: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;     /* centered eyebrow with its chart tick */
-  gap: 0.6rem;
+  text-align: center;          /* the tick is inline (see ::before), so it flows
+                                  with the label and stays attached whether the
+                                  text sits on one line or wraps to two */
 }
 .hero-eyebrow::before {
   content: "";
@@ -449,6 +462,8 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   width: 24px;
   height: 1px;
   background: var(--sage);
+  vertical-align: middle;
+  margin-right: 0.6rem;        /* gap to the label (was the flex container's gap) */
 }
 
 .hero h1 {
@@ -581,6 +596,7 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   padding: 1px 4px;
   border-radius: 2px;
   cursor: help;
+  white-space: nowrap;                     /* keep tokens whole: -RA never splits to "-" / "RA" */
 }
 .metar-raw .tag-time,
 .metar-raw .tag-alt  { background: rgba(120, 134, 150, 0.18); }  /* metadata: quiet */
@@ -1036,6 +1052,11 @@ footer .container {
 @media (max-width: 900px) {
   .concept-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
+/* The article is a grid item; without this its min-width defaults to auto, so a
+   wide child (e.g. the intensity table) stretches the whole column past the
+   viewport and clips paragraphs/diagrams on the right. Pin it to 0 so the column
+   stays viewport-width and wide tables scroll inside their own overflow wrapper. */
+.concept-grid > * { min-width: 0; }
 
 /* ---------- Sidebar TOC ---------- */
 .concept-toc {
@@ -1116,6 +1137,18 @@ footer .container {
 .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 800px) {
   .card-grid-3 { grid-template-columns: 1fr; }
+}
+/* Grid children default to min-width:auto, so long/unbreakable content can force
+   a track wider than its share and push the whole grid (and the article, and any
+   width:100% diagram inside it) past the viewport. Let every content-grid child
+   shrink so text wraps instead — at all widths, for class- and inline-styled grids. */
+.card-grid > *,
+.concept-article [style*="grid-template-columns"] > * { min-width: 0; }
+/* Phones: collapse every multi-column content grid (class- or inline-styled) in
+   the article to a single column so text always wraps within the screen — no
+   horizontal overflow. !important overrides the inline grid-template-columns. */
+@media (max-width: 560px) {
+  .concept-article [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
 }
 .hazard-card {
   background: var(--surface);
@@ -1322,9 +1355,9 @@ footer .container {
   border-top: 1px solid var(--rule);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  align-items: flex-start;     /* wrapped multi-line titles align at the top edge */
+  flex-wrap: nowrap;           /* stay prev-left / next-right; wrap text within each */
+  gap: 1.25rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
@@ -1332,7 +1365,11 @@ footer .container {
   color: var(--ink);
   border: none;
   font-weight: 600;
+  flex: 0 1 auto;
+  max-width: 48%;              /* long titles wrap inside their half instead of overflowing */
 }
+/* Next link hugs the right edge so its arrow stays at the outer corner. */
+.concept-nav-bottom .concept-nav-link:last-child { text-align: right; }
 .concept-nav-link:hover { color: var(--rust); }
 .concept-nav-next {
   color: var(--ink-soft);
