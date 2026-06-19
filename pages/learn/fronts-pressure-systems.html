@@ -913,7 +913,10 @@
             <article class="hazard-card" style="border-top: 4px solid #4a7ba6;">
               <span class="hazard-label">Symbol 01</span>
               <h3>Cold Front</h3>
-              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #4a7ba6; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">▶▶▶▶▶</div>
+              <svg viewBox="0 0 116 26" role="img" aria-label="Cold front: blue line with triangles pointing up" style="display:block;width:116px;max-width:100%;height:auto;margin:0.5rem 0 0.7rem;">
+                <line x1="2" y1="18" x2="114" y2="18" stroke="#4a7ba6" stroke-width="2"/>
+                <path d="M9,18 L15.5,5 L22,18 Z M35,18 L41.5,5 L48,18 Z M61,18 L67.5,5 L74,18 Z M87,18 L93.5,5 L100,18 Z" fill="#4a7ba6"/>
+              </svg>
               <ul class="hazard-list">
                 <li>Solid blue line with filled blue triangles</li>
                 <li>Triangles point in the direction the front is moving</li>
@@ -924,7 +927,10 @@
             <article class="hazard-card" style="border-top: 4px solid #b53d1f;">
               <span class="hazard-label">Symbol 02</span>
               <h3>Warm Front</h3>
-              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #b53d1f; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">●●●●●</div>
+              <svg viewBox="0 0 116 26" role="img" aria-label="Warm front: red line with semicircles" style="display:block;width:116px;max-width:100%;height:auto;margin:0.5rem 0 0.7rem;">
+                <line x1="2" y1="18" x2="114" y2="18" stroke="#b53d1f" stroke-width="2"/>
+                <path d="M9,18 A6.5,6.5 0 0 1 22,18 Z M35,18 A6.5,6.5 0 0 1 48,18 Z M61,18 A6.5,6.5 0 0 1 74,18 Z M87,18 A6.5,6.5 0 0 1 100,18 Z" fill="#b53d1f"/>
+              </svg>
               <ul class="hazard-list">
                 <li>Solid red line with filled red semicircles</li>
                 <li>Semicircles point in the direction the warm air is advancing (direction of frontal movement)</li>
@@ -934,9 +940,14 @@
             <article class="hazard-card" style="border-top: 4px solid #5d6f3c;">
               <span class="hazard-label">Symbol 03</span>
               <h3>Stationary Front</h3>
-              <div style="font-family: var(--font-mono); font-size: 1.2rem; margin: 0.5rem 0 0.7rem;">
-                <span style="color:#4a7ba6;">▶</span><span style="color:#b53d1f;">●</span><span style="color:#4a7ba6;">▶</span><span style="color:#b53d1f;">●</span>
-              </div>
+              <svg viewBox="0 0 116 26" role="img" aria-label="Stationary front: blue triangles and red semicircles on opposite sides" style="display:block;width:116px;max-width:100%;height:auto;margin:0.5rem 0 0.7rem;">
+                <line x1="2" y1="13" x2="28" y2="13" stroke="#4a7ba6" stroke-width="2"/>
+                <line x1="28" y1="13" x2="54" y2="13" stroke="#b53d1f" stroke-width="2"/>
+                <line x1="54" y1="13" x2="80" y2="13" stroke="#4a7ba6" stroke-width="2"/>
+                <line x1="80" y1="13" x2="114" y2="13" stroke="#b53d1f" stroke-width="2"/>
+                <path d="M9,13 L15.5,2 L22,13 Z M61,13 L67.5,2 L74,13 Z" fill="#4a7ba6"/>
+                <path d="M35,13 A6.5,6.5 0 0 0 48,13 Z M87,13 A6.5,6.5 0 0 0 100,13 Z" fill="#b53d1f"/>
+              </svg>
               <ul class="hazard-list">
                 <li>Alternating blue triangles and red semicircles on <em>opposite</em> sides of the line</li>
                 <li>Triangles point one way; semicircles point the other — the front isn't moving in either direction</li>
@@ -946,7 +957,11 @@
             <article class="hazard-card" style="border-top: 4px solid #7b5aa6;">
               <span class="hazard-label">Symbol 04</span>
               <h3>Occluded Front</h3>
-              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #7b5aa6; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">◆◆◆◆◆</div>
+              <svg viewBox="0 0 116 26" role="img" aria-label="Occluded front: purple line with alternating triangles and semicircles on the same side" style="display:block;width:116px;max-width:100%;height:auto;margin:0.5rem 0 0.7rem;">
+                <line x1="2" y1="18" x2="114" y2="18" stroke="#7b5aa6" stroke-width="2"/>
+                <path d="M9,18 L15.5,5 L22,18 Z M61,18 L67.5,5 L74,18 Z" fill="#7b5aa6"/>
+                <path d="M35,18 A6.5,6.5 0 0 1 48,18 Z M87,18 A6.5,6.5 0 0 1 100,18 Z" fill="#7b5aa6"/>
+              </svg>
               <ul class="hazard-list">
                 <li>Solid purple line with alternating triangles and semicircles on the <em>same</em> side</li>
                 <li>Points in the direction of frontal movement</li>
@@ -956,7 +971,10 @@
             <article class="hazard-card" style="border-top: 4px solid #a07830;">
               <span class="hazard-label">Symbol 05</span>
               <h3>Dryline</h3>
-              <div style="font-family: var(--font-mono); font-size: 1.2rem; color: #a07830; margin: 0.5rem 0 0.7rem; letter-spacing: 0.05em;">○ ○ ○ ○ ○</div>
+              <svg viewBox="0 0 116 26" role="img" aria-label="Dryline: orange-brown line with hollow semicircles toward the moist air" style="display:block;width:116px;max-width:100%;height:auto;margin:0.5rem 0 0.7rem;">
+                <line x1="2" y1="18" x2="114" y2="18" stroke="#a07830" stroke-width="2"/>
+                <path d="M9,18 A6.5,6.5 0 0 1 22,18 M35,18 A6.5,6.5 0 0 1 48,18 M61,18 A6.5,6.5 0 0 1 74,18 M87,18 A6.5,6.5 0 0 1 100,18" fill="none" stroke="#a07830" stroke-width="1.6"/>
+              </svg>
               <ul class="hazard-list">
                 <li>Orange-brown line with <em>hollow</em> (unfilled) semicircles pointing toward the moist air (east)</li>
                 <li>Not a front: marks a moisture boundary, not a temperature contrast</li>

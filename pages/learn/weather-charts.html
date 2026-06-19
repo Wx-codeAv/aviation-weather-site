@@ -215,14 +215,14 @@
                 <path d="M 272,120 C 298,122 320,148 323,178 C 326,206 312,236 286,244 C 258,250 234,242 226,217 C 219,193 223,160 240,142 C 250,130 260,120 272,120 Z" fill="url(#precip)" stroke="#5d6f3c" stroke-width="0.7" opacity="0.5"/>
               </g>
 
-              <text x="574" y="160" font-family="Anton, sans-serif" font-size="30" fill="#0c2541" text-anchor="middle">H</text>
-              <text x="574" y="177" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="middle">1028 mb</text>
-              <text x="574" y="58" font-family="Manrope, sans-serif" font-size="9.5" fill="#0c2541" text-anchor="middle" font-style="italic">sinking air, fair wx</text>
+              <text x="574" y="160" font-family="Anton, sans-serif" font-size="30" fill="#2a5ba0" text-anchor="middle">H</text>
+              <text x="574" y="177" font-family="JetBrains Mono, monospace" font-size="9" fill="#2a5ba0" text-anchor="middle">1028 mb</text>
+              <text x="574" y="58" font-family="Manrope, sans-serif" font-size="9.5" fill="#2a5ba0" text-anchor="middle" font-style="italic">sinking air, fair wx</text>
               <text x="664" y="248" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="end">1020</text>
 
               <text x="188" y="160" font-family="Anton, sans-serif" font-size="30" fill="#b53d1f" text-anchor="middle">L</text>
-              <rect x="166" y="180" width="44" height="12" fill="rgba(255,250,240,0.88)"/>
-              <text x="188" y="189" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">988 mb</text>
+              <text x="188" y="185" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle" stroke="#fffaf0" stroke-width="2.6" paint-order="stroke">988 mb</text>
+
               <text x="188" y="58" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle" font-style="italic">rising air, clouds and precip</text>
               <text x="72" y="240" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="start">1004</text>
 
@@ -260,11 +260,18 @@
               <g fill="none" stroke="#b06a28" stroke-width="1.6">
                 <path d="M 319.6,347 A 6,6 0 0 1 320.9,359"/>
                 <path d="M 321.6,369 A 6,6 0 0 1 322.0,381"/>
-                <path d="M 321.4,389 A 6,6 0 0 1 320.4,400"/>
+                <path d="M 321.4,388 A 6,6 0 0 1 321.0,400"/>
               </g>
               <text x="330" y="378" font-family="Manrope, sans-serif" font-size="8.5" fill="#b06a28" font-style="italic">Dry line</text>
 
-              <line x1="470" y1="358" x2="652" y2="358" stroke="#0c2541" stroke-width="1.6"/>
+              <!-- Stationary front: line alternates blue (under triangles) and red (under semicircles) -->
+              <g stroke-width="1.6">
+                <line x1="470" y1="358" x2="520" y2="358" stroke="#2a5ba0"/>
+                <line x1="520" y1="358" x2="550" y2="358" stroke="#b53d1f"/>
+                <line x1="550" y1="358" x2="580" y2="358" stroke="#2a5ba0"/>
+                <line x1="580" y1="358" x2="610" y2="358" stroke="#b53d1f"/>
+                <line x1="610" y1="358" x2="652" y2="358" stroke="#2a5ba0"/>
+              </g>
               <g fill="#2a5ba0">
                 <polygon points="498,358 505,349 512,358"/>
                 <polygon points="558,358 565,349 572,358"/>
@@ -287,7 +294,8 @@
               <path d="M 242,423 A 5,5 0 0 1 252,423" fill="#b53d1f"/>
               <text x="266" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Warm front</text>
 
-              <line x1="372" y1="423" x2="400" y2="423" stroke="#0c2541" stroke-width="1.6"/>
+              <line x1="372" y1="423" x2="390" y2="423" stroke="#2a5ba0" stroke-width="1.6"/>
+              <line x1="390" y1="423" x2="400" y2="423" stroke="#b53d1f" stroke-width="1.6"/>
               <polygon points="382,423 386,417 390,423" fill="#2a5ba0"/>
               <path d="M 396,423 A 4,4 0 0 0 404,423" fill="#b53d1f"/>
               <text x="410" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Stationary</text>
@@ -304,7 +312,7 @@
               <line x1="232" y1="450" x2="260" y2="450" stroke="#0c2541" stroke-width="1.2"/>
               <text x="266" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Isobar (mb)</text>
 
-              <text x="378" y="454" font-family="Anton, sans-serif" font-size="13" fill="#0c2541" text-anchor="middle">H</text>
+              <text x="378" y="454" font-family="Anton, sans-serif" font-size="13" fill="#2a5ba0" text-anchor="middle">H</text>
               <text x="392" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">High: sinking air</text>
 
               <text x="528" y="454" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle">L</text>
