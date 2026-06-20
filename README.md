@@ -4,7 +4,7 @@ An aviation weather site that translates the dense, cryptic weather products pil
 
 ## Live site
 
-Coming soon — domain not yet purchased.
+[www.crosswindwx.com](https://www.crosswindwx.com)
 
 ## Why this exists
 
