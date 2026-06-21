@@ -694,92 +694,199 @@
           </p>
 
           <figure class="diagram">
-            <svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pitot-static-title">
-              <title id="pitot-static-title">Pitot-static system schematic. Three instrument cases in a row: airspeed indicator, vertical speed indicator, and altimeter. A red pitot line runs from the pitot tube at lower left, which has a ram hole facing forward and a drain hole underneath, up into the airspeed indicator's diaphragm carrying total pressure. A blue static line runs from the static port at lower right into all three instrument cases, and directly into the vertical speed indicator's diaphragm, with a calibrated leak feeding the VSI case. The airspeed indicator's diaphragm holds dynamic plus static pressure against static in the case. The altimeter holds a sealed aneroid wafer against static in the case.</title>
-              <rect width="740" height="430" fill="#fffaf0"/>
+            <svg viewBox="0 0 740 545" role="img" aria-label="Pitot-static system: airspeed, vertical speed and altimeter gauges, fed by a pitot tube (ram/total pressure) and a static port (ambient pressure)">
+              <defs>
+                <marker id="ps-red" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b53d1f"/></marker>
+                <linearGradient id="psMetal" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#e6eaee"/>
+                  <stop offset="0.5" stop-color="#c2c9d0"/>
+                  <stop offset="1" stop-color="#a4adb5"/>
+                </linearGradient>
+              </defs>
 
-              <!-- Instrument headers -->
-              <g font-family="Anton, sans-serif" font-size="12" fill="#0c2541" text-anchor="middle" letter-spacing="0.05em">
-                <text x="145" y="46">AIRSPEED INDICATOR (ASI)</text>
-                <text x="370" y="46">VERTICAL SPEED (VSI)</text>
-                <text x="595" y="46">ALTIMETER</text>
+              <rect x="0" y="0" width="740" height="545" fill="#fffaf0"/>
+
+              <!-- ===== headers ===== -->
+              <g font-family="Anton, sans-serif" font-size="13" fill="#0c2541" text-anchor="middle" letter-spacing="0.04em">
+                <text x="150" y="36">AIRSPEED</text>
+                <text x="370" y="36">VERTICAL SPEED</text>
+                <text x="590" y="36">ALTIMETER</text>
               </g>
 
-              <!-- Instrument cases -->
-              <rect x="50" y="58" width="190" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
-              <rect x="285" y="58" width="170" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
-              <rect x="500" y="58" width="190" height="117" rx="8" fill="#fffefa" stroke="#0c2541" stroke-width="1.5"/>
+              <!-- ============ ASI GAUGE ============ -->
+              <g font-family="JetBrains Mono, monospace">
+                <circle cx="150" cy="100" r="50" fill="#0b0d11"/>
+                <circle cx="150" cy="100" r="50" fill="none" stroke="#0c2541" stroke-width="3"/>
+                <circle cx="150" cy="100" r="44" fill="#16191e"/>
+                <circle cx="150" cy="100" r="42" fill="none" stroke="#cfd5da" stroke-width="0.7" stroke-dasharray="1.2 9.8"/>
+                <!-- arcs: white flap, green normal, yellow caution, red Vne -->
+                <path d="M 175,82 A 31 31 0 0 1 166,127" fill="none" stroke="#ffffff" stroke-width="2.3"/>
+                <path d="M 181,74 A 40 40 0 0 1 147,140" fill="none" stroke="#3a7d44" stroke-width="3"/>
+                <path d="M 143,139 A 40 40 0 0 1 112,88" fill="none" stroke="#e0b51f" stroke-width="3"/>
+                <line x1="120" y1="91" x2="110" y2="88" stroke="#b53d1f" stroke-width="3"/>
+                <!-- numbers 40-240 -->
+                <g font-size="6" fill="#eef1f4" text-anchor="middle">
+                  <text x="167" y="73">40</text><text x="179" y="86">60</text><text x="183" y="102">80</text>
+                  <text x="179" y="118">100</text><text x="167" y="131">120</text><text x="150" y="135">140</text>
+                  <text x="133" y="131">160</text><text x="121" y="118">180</text><text x="117" y="102">200</text>
+                  <text x="121" y="86">220</text><text x="133" y="73">240</text>
+                </g>
+                <!-- needle (~110 kt) + paddle counterweight -->
+                <line x1="150" y1="100" x2="177" y2="127" stroke="#f4f6f8" stroke-width="2.1" stroke-linecap="round"/>
+                <line x1="150" y1="100" x2="140" y2="90" stroke="#f4f6f8" stroke-width="2.3" stroke-linecap="round"/>
+                <circle cx="138" cy="88" r="2.4" fill="#f4f6f8"/>
+                <circle cx="150" cy="100" r="3.2" fill="#f4f6f8"/>
+                <text x="150" y="118" font-size="6.5" fill="#aeb8c0" text-anchor="middle" letter-spacing="0.12em">KNOTS</text>
+              </g>
 
-              <!-- ASI: same flat wafer as the VSI/altimeter, rotated 90° so the corrugations
-                   sit on the top and bottom (it is mounted sideways here). 30 wide x 44 tall, centered (97,112). -->
-              <path d="M 75,97 L 119,97 C 113,103 125,108 119,112 C 125,116 113,121 119,127 L 75,127 C 81,121 69,116 75,112 C 69,108 81,103 75,97 Z"
-                    transform="rotate(90 97 112)"
-                    fill="rgba(181,61,31,0.12)" stroke="#b53d1f" stroke-width="1.4"/>
-              <text x="97" y="116" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle" font-weight="700">DP+SP</text>
-              <text x="97" y="162" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
-              <text x="185" y="120" font-family="JetBrains Mono, monospace" font-size="15" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <!-- ============ VSI GAUGE ============ -->
+              <g font-family="JetBrains Mono, monospace">
+                <circle cx="370" cy="100" r="50" fill="#0b0d11"/>
+                <circle cx="370" cy="100" r="50" fill="none" stroke="#0c2541" stroke-width="3"/>
+                <circle cx="370" cy="100" r="44" fill="#16191e"/>
+                <circle cx="370" cy="100" r="42" fill="none" stroke="#cfd5da" stroke-width="0.7" stroke-dasharray="1.2 9.8"/>
+                <text x="370" y="84" font-size="5.4" fill="#eef1f4" text-anchor="middle" letter-spacing="0.05em">VERTICAL</text>
+                <text x="370" y="92" font-size="5.4" fill="#eef1f4" text-anchor="middle" letter-spacing="0.05em">SPEED</text>
+                <text x="370" y="122" font-size="5" fill="#aeb8c0" text-anchor="middle">1000 FT / MIN</text>
+                <g font-size="6" fill="#eef1f4" text-anchor="middle">
+                  <text x="335" y="102">0</text>
+                  <text x="344" y="82">.5</text><text x="360" y="71">1</text><text x="381" y="71">1.5</text><text x="398" y="83">2</text>
+                  <text x="344" y="122">.5</text><text x="360" y="134">1</text><text x="381" y="134">1.5</text><text x="398" y="122">2</text>
+                </g>
+                <text x="352" y="95" font-size="5" fill="#7fbf86" text-anchor="middle">UP</text>
+                <text x="352" y="112" font-size="5" fill="#e08a72" text-anchor="middle">DN</text>
+                <!-- needle (level, slight climb) + counterweight -->
+                <line x1="370" y1="100" x2="333" y2="96" stroke="#f4f6f8" stroke-width="2.3" stroke-linecap="round"/>
+                <line x1="370" y1="100" x2="383" y2="101" stroke="#f4f6f8" stroke-width="2.3" stroke-linecap="round"/>
+                <circle cx="370" cy="100" r="3.2" fill="#f4f6f8"/>
+              </g>
 
-              <!-- VSI: diaphragm holds current static, case holds delayed static -->
-              <path d="M 310,97 L 354,97 C 348,103 360,108 354,112 C 360,116 348,121 354,127 L 310,127 C 316,121 304,116 310,112 C 304,108 316,103 310,97 Z"
-                    fill="rgba(74,123,166,0.15)" stroke="#4a7ba6" stroke-width="1.4"/>
-              <text x="332" y="116" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
-              <text x="332" y="152" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
-              <text x="420" y="110" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">DELAYED</text>
-              <text x="420" y="126" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <!-- ============ ALTIMETER GAUGE ============ -->
+              <g font-family="JetBrains Mono, monospace">
+                <circle cx="590" cy="100" r="50" fill="#0b0d11"/>
+                <circle cx="590" cy="100" r="50" fill="none" stroke="#0c2541" stroke-width="3"/>
+                <circle cx="590" cy="100" r="44" fill="#16191e"/>
+                <circle cx="590" cy="100" r="42" fill="none" stroke="#cfd5da" stroke-width="0.7" stroke-dasharray="1.2 9.8"/>
+                <g font-size="7.5" fill="#eef1f4" text-anchor="middle">
+                  <text x="590" y="66">0</text><text x="612" y="73">1</text><text x="626" y="91">2</text>
+                  <text x="626" y="115">3</text><text x="612" y="134">4</text><text x="590" y="141">5</text>
+                  <text x="568" y="134">6</text><text x="554" y="115">7</text><text x="554" y="91">8</text><text x="568" y="73">9</text>
+                </g>
+                <text x="590" y="87" font-size="5" fill="#aeb8c0" text-anchor="middle" letter-spacing="0.06em">100 FEET</text>
+                <!-- Kollsman window -->
+                <rect x="609" y="95" width="30" height="11" rx="1.5" fill="#0b0d11" stroke="#cfd5da" stroke-width="0.7"/>
+                <text x="624" y="103.5" font-size="6.5" fill="#eef1f4" text-anchor="middle">29.9</text>
+                <!-- hands: 1000 ft (short fat), 100 ft (long thin), hub -->
+                <line x1="590" y1="100" x2="611" y2="93" stroke="#f4f6f8" stroke-width="3" stroke-linecap="round"/>
+                <line x1="590" y1="100" x2="626" y2="112" stroke="#f4f6f8" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="590" cy="100" r="3.2" fill="#f4f6f8"/>
+                <text x="590" y="122" font-size="5" fill="#aeb8c0" text-anchor="middle" letter-spacing="0.1em">ALTITUDE</text>
+              </g>
 
-              <!-- Altimeter: sealed aneroid wafer against static in the case -->
-              <path d="M 530,97 L 574,97 C 568,103 580,108 574,112 C 580,116 568,121 574,127 L 530,127 C 536,121 524,116 530,112 C 524,108 536,103 530,97 Z"
-                    fill="rgba(93,111,60,0.15)" stroke="#5d6f3c" stroke-width="1.4"/>
-              <text x="552" y="110" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle" font-weight="700">SEALED</text>
-              <text x="552" y="124" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle">29.92"</text>
-              <text x="552" y="152" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">ANEROID WAFER</text>
-              <text x="645" y="120" font-family="JetBrains Mono, monospace" font-size="15" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <!-- stems gauge → case -->
+              <line x1="150" y1="150" x2="150" y2="192" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="370" y1="150" x2="370" y2="192" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="590" y1="150" x2="590" y2="192" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3"/>
 
-              <!-- Pitot line (red): from pitot tube up into the ASI -->
-              <line x1="97" y1="276" x2="97" y2="175" stroke="#b53d1f" stroke-width="2.5"/>
+              <!-- ============ SENSOR CASES ============ -->
+              <!-- ASI case: diaphragm = total (DP+SP); case = static -->
+              <rect x="66" y="192" width="168" height="92" rx="6" fill="#fffefa" stroke="#0c2541" stroke-width="1.3"/>
+              <path d="M 88,210 L 132,210 C 126,216 138,221 132,225 C 138,229 126,234 132,240 L 88,240 C 94,234 82,229 88,225 C 82,221 94,216 88,210 Z" transform="rotate(90 110 225)" fill="rgba(181,61,31,0.12)" stroke="#b53d1f" stroke-width="1.3"/>
+              <text x="110" y="228" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle" font-weight="700">DP+SP</text>
+              <text x="110" y="258" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
+              <text x="196" y="224" font-family="JetBrains Mono, monospace" font-size="13" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <text x="196" y="240" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#2d4360" text-anchor="middle">in case</text>
 
-              <!-- Static lines (blue): trunk from the static port into all three cases -->
-              <line x1="160" y1="235" x2="645" y2="235" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="160" y1="235" x2="160" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="332" y1="235" x2="332" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="430" y1="235" x2="430" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="610" y1="235" x2="610" y2="175" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="645" y1="235" x2="645" y2="270" stroke="#4a7ba6" stroke-width="2.5"/>
-              <line x1="645" y1="270" x2="651" y2="270" stroke="#4a7ba6" stroke-width="2.5"/>
+              <!-- VSI case: diaphragm = current static; case = delayed static via leak -->
+              <rect x="286" y="192" width="168" height="92" rx="6" fill="#fffefa" stroke="#0c2541" stroke-width="1.3"/>
+              <path d="M 308,210 L 352,210 C 346,216 358,221 352,225 C 358,229 346,234 352,240 L 308,240 C 314,234 302,229 308,225 C 302,221 314,216 308,210 Z" fill="rgba(74,123,166,0.15)" stroke="#4a7ba6" stroke-width="1.3"/>
+              <text x="330" y="228" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <text x="330" y="258" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">DIAPHRAGM</text>
+              <text x="416" y="222" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="middle" font-weight="700">DELAYED</text>
+              <text x="416" y="236" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
 
-              <!-- Calibrated leak (restrictor) on the VSI case branch -->
-              <polygon points="424,198 430,205 424,212" fill="#4a7ba6"/>
-              <polygon points="436,198 430,205 436,212" fill="#4a7ba6"/>
-              <line x1="430" y1="248" x2="430" y2="216" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
-              <text x="430" y="262" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">CALIBRATED LEAK</text>
+              <!-- ALT case: sealed aneroid against static -->
+              <rect x="506" y="192" width="168" height="92" rx="6" fill="#fffefa" stroke="#0c2541" stroke-width="1.3"/>
+              <path d="M 528,210 L 572,210 C 566,216 578,221 572,225 C 578,229 566,234 572,240 L 528,240 C 534,234 522,229 528,225 C 522,221 534,216 528,210 Z" fill="rgba(93,111,60,0.15)" stroke="#5d6f3c" stroke-width="1.3"/>
+              <text x="550" y="221" font-family="JetBrains Mono, monospace" font-size="7" fill="#5d6f3c" text-anchor="middle" font-weight="700">SEALED</text>
+              <text x="550" y="233" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle" font-weight="700">29.92"</text>
+              <text x="550" y="258" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">ANEROID WAFER</text>
+              <text x="590" y="270" font-family="JetBrains Mono, monospace" font-size="7" fill="#2d4360" text-anchor="middle">29.92 inHg sealed inside</text>
+              <text x="636" y="224" font-family="JetBrains Mono, monospace" font-size="13" fill="#4a7ba6" text-anchor="middle" font-weight="700">SP</text>
+              <text x="636" y="240" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#2d4360" text-anchor="middle">in case</text>
 
-              <!-- Pitot tube (lower left): ram opening forward, drain hole underneath -->
-              <path d="M 50,292 L 86,292 L 86,276 L 108,276 L 108,316 L 50,316 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-              <line x1="16" y1="304" x2="40" y2="304" stroke="#b53d1f" stroke-width="2"/>
-              <polygon points="48,304 38,299 38,309" fill="#b53d1f"/>
-              <circle cx="98" cy="316" r="2.8" fill="#fffaf0" stroke="#0c2541" stroke-width="1.5"/>
-              <line x1="42" y1="331" x2="50" y2="311" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
-              <text x="40" y="344" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">RAM HOLE</text>
-              <line x1="113" y1="331" x2="100" y2="320" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
-              <text x="122" y="344" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">DRAIN HOLE</text>
+              <!-- ============ PLUMBING ============ -->
+              <!-- static manifold (blue) -->
+              <line x1="194" y1="338" x2="660" y2="338" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="194" y1="338" x2="194" y2="284" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="330" y1="338" x2="330" y2="284" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="416" y1="338" x2="416" y2="284" stroke="#4a7ba6" stroke-width="2.5"/>
+              <line x1="636" y1="338" x2="636" y2="284" stroke="#4a7ba6" stroke-width="2.5"/>
+              <circle cx="194" cy="338" r="3" fill="#4a7ba6"/>
+              <circle cx="330" cy="338" r="3" fill="#4a7ba6"/>
+              <circle cx="416" cy="338" r="3" fill="#4a7ba6"/>
+              <circle cx="636" cy="338" r="3" fill="#4a7ba6"/>
 
-              <!-- Static port (lower right) -->
-              <rect x="652" y="248" width="16" height="44" fill="#d4c99a" stroke="#0c2541" stroke-width="1"/>
-              <circle cx="652" cy="270" r="4.5" fill="#fffaf0" stroke="#0c2541" stroke-width="1.8"/>
-              <line x1="630" y1="304" x2="646" y2="277" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
-              <text x="615" y="318" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">STATIC PORT</text>
+              <!-- calibrated leak (restrictor) on the VSI case branch -->
+              <polygon points="410,300 416,307 410,314" fill="#4a7ba6"/>
+              <polygon points="422,300 416,307 422,314" fill="#4a7ba6"/>
+              <text x="416" y="328" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">leak</text>
+              <line x1="424" y1="307" x2="450" y2="307" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+              <text x="454" y="310" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360">6–9 sec delay</text>
 
-              <!-- Legend + the comparison every blockage question hinges on -->
-              <line x1="50" y1="368" x2="78" y2="368" stroke="#b53d1f" stroke-width="2.5"/>
-              <text x="86" y="372" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#2d4360">PITOT LINE — total pressure (DP + SP) — feeds the ASI only</text>
-              <line x1="50" y1="388" x2="78" y2="388" stroke="#4a7ba6" stroke-width="2.5"/>
-              <text x="86" y="392" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#2d4360">STATIC LINE — ambient pressure (SP) — feeds all three</text>
-              <text x="50" y="414" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" font-weight="700">ASI reads TOTAL − STATIC = DYNAMIC PRESSURE (airspeed)</text>
+              <!-- pitot line (red) down from ASI diaphragm to the pitot, through the skin -->
+              <line x1="110" y1="284" x2="110" y2="356" stroke="#b53d1f" stroke-width="2.5"/>
 
-              <!-- Outer border -->
-              <rect x="1" y="1" width="738" height="428" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
+              <!-- ============ PITOT TUBE (wing-mounted: skin on top, probe forward) ============ -->
+              <g>
+                <!-- wing skin (mounting surface, on top) -->
+                <rect x="84" y="352" width="82" height="9" fill="#c8bda0" stroke="#0c2541" stroke-width="1"/>
+                <!-- mast hanging down from the skin -->
+                <rect x="102" y="361" width="16" height="40" fill="url(#psMetal)" stroke="#0c2541" stroke-width="1.5"/>
+                <!-- probe at the bottom, pointed nose facing forward (left) -->
+                <path d="M 118,398 L 64,398 L 44,407 L 64,416 L 118,416 Z" fill="url(#psMetal)" stroke="#0c2541" stroke-width="1.5" stroke-linejoin="round"/>
+                <!-- ram opening at the tip -->
+                <ellipse cx="49" cy="407" rx="2.4" ry="4" fill="#0c2541"/>
+                <!-- drain hole on the underside, aft -->
+                <circle cx="104" cy="416" r="2.6" fill="#fffaf0" stroke="#0c2541" stroke-width="1.3"/>
+                <!-- ram air into the tip -->
+                <line x1="8" y1="407" x2="38" y2="407" stroke="#b53d1f" stroke-width="2.4" marker-end="url(#ps-red)"/>
+                <text x="8" y="396" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f">RAM AIR</text>
+                <!-- labels -->
+                <line x1="49" y1="411" x2="42" y2="430" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+                <text x="38" y="441" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">ram hole</text>
+                <line x1="104" y1="419" x2="116" y2="432" stroke="#b9a87a" stroke-width="0.9" stroke-dasharray="2,2"/>
+                <text x="126" y="442" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">drain hole</text>
+                <text x="150" y="462" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">PITOT TUBE</text>
+              </g>
+
+              <!-- ============ STATIC PORT (lower-right) ============ -->
+              <g>
+                <!-- fuselage skin -->
+                <rect x="682" y="356" width="10" height="74" fill="#c8bda0" stroke="#0c2541" stroke-width="1"/>
+                <!-- flush port + center hole -->
+                <ellipse cx="682" cy="388" rx="6" ry="15" fill="url(#psMetal)" stroke="#0c2541" stroke-width="1.3"/>
+                <ellipse cx="682" cy="388" rx="1.5" ry="3" fill="#0c2541"/>
+                <!-- riser to manifold -->
+                <line x1="676" y1="388" x2="660" y2="388" stroke="#4a7ba6" stroke-width="2.5"/>
+                <line x1="660" y1="388" x2="660" y2="338" stroke="#4a7ba6" stroke-width="2.5"/>
+                <text x="648" y="430" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541" text-anchor="middle" font-weight="700">STATIC PORT</text>
+                <text x="648" y="444" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360" text-anchor="middle">flush · ambient</text>
+              </g>
+
+              <!-- ============ LEGEND ============ -->
+              <line x1="66" y1="482" x2="96" y2="482" stroke="#b53d1f" stroke-width="2.6"/>
+              <text x="104" y="486" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360">PITOT — total pressure (DP + SP) — feeds the ASI only</text>
+              <line x1="66" y1="502" x2="96" y2="502" stroke="#4a7ba6" stroke-width="2.6"/>
+              <text x="104" y="506" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360">STATIC — ambient pressure (SP) — feeds all three</text>
+              <text x="66" y="528" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#0c2541" font-weight="700">ASI shows TOTAL − STATIC = DYNAMIC PRESSURE (airspeed)</text>
+
+              <rect x="1" y="1" width="738" height="543" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
             </svg>
-            <figcaption>The pitot-static system. A <strong>diaphragm</strong> expands and contracts with changing pressure; an <strong>aneroid wafer</strong> is sealed at a fixed reference (29.92"Hg). The ASI compares total pressure from the pitot tube against static in its case — the difference is dynamic pressure, displayed as airspeed. The altimeter compares its sealed wafer against static. The VSI compares current static in its diaphragm against delayed static seeping through the calibrated leak — no pressure change, no needle deflection. The pitot tube serves only the ASI; the static port serves all three. (FAA-H-8083-25 Ch. 8)</figcaption>
+            <figcaption>
+              The three pitot-static instruments and the plumbing that drives them. A <strong>diaphragm</strong> expands and contracts with pressure change; a sealed <strong>aneroid wafer</strong> references 29.92". The <strong>airspeed indicator</strong> compares total (ram) pressure from the <strong>pitot tube</strong> against static in its case — the difference is dynamic pressure, shown as airspeed. The <strong>altimeter</strong> and <strong>VSI</strong> use the <strong>static port</strong> only (the VSI through a calibrated leak). So the pitot tube serves the ASI alone; the static port serves all three — which is exactly why a blocked pitot affects only airspeed, while a blocked static throws off all three.
+              <span class="src">Ref: FAA-H-8083-25 Pilot's Handbook of Aeronautical Knowledge, Ch. 8</span>
+            </figcaption>
           </figure>
 
           <h3>What ice does to each instrument</h3>
