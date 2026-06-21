@@ -278,85 +278,116 @@
 
           <!-- Diagram: Airfoil cross-section showing the three ice shapes -->
           <figure class="diagram">
-            <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ice-types-title">
-              <title id="ice-types-title">Three ice types on an airfoil leading edge: rime ice forms a small blunt deposit at the stagnation point; clear ice forms a larger glassy deposit that wraps around and creates dangerous double horns; mixed ice forms an irregular jagged deposit combining both types.</title>
-              <rect width="700" height="270" fill="#fffaf0"/>
+                <svg viewBox="0 0 720 320" role="img" aria-label="Airfoil cross-sections showing rime, clear and mixed ice on the leading edge">
+                  <defs>
+                    <linearGradient id="wingMetal" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#eef1f4"/>
+                      <stop offset="0.5" stop-color="#d4dbe2"/>
+                      <stop offset="1" stop-color="#b9c2cb"/>
+                    </linearGradient>
+                    <linearGradient id="clearGlaze" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#dcebf7" stop-opacity="0.55"/>
+                      <stop offset="0.5" stop-color="#bcd8ec" stop-opacity="0.34"/>
+                      <stop offset="1" stop-color="#dcebf7" stop-opacity="0.55"/>
+                    </linearGradient>
+                    <marker id="ic-air" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5d6f3c"/></marker>
+                  </defs>
 
-              <!-- Panel backgrounds -->
-              <rect x="8"   y="8" width="218" height="240" fill="#4a7ba6" opacity="0.04" rx="3"/>
-              <rect x="234" y="8" width="232" height="240" fill="#b53d1f" opacity="0.04" rx="3"/>
-              <rect x="474" y="8" width="218" height="240" fill="#d9a521" opacity="0.04" rx="3"/>
+                  <rect x="0" y="0" width="720" height="320" fill="#fffaf0"/>
 
-              <!-- Panel dividers -->
-              <line x1="230" y1="12" x2="230" y2="242" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
-              <line x1="470" y1="12" x2="470" y2="242" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+                  <!-- panel tints -->
+                  <rect x="8"   y="8" width="222" height="304" fill="#4a7ba6" opacity="0.045"/>
+                  <rect x="249" y="8" width="222" height="304" fill="#b53d1f" opacity="0.045"/>
+                  <rect x="490" y="8" width="222" height="304" fill="#d9a521" opacity="0.05"/>
+                  <line x1="240" y1="14" x2="240" y2="306" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.6"/>
+                  <line x1="481" y1="14" x2="481" y2="306" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.6"/>
 
-              <!-- Panel headers -->
-              <text x="117" y="30" font-family="Anton, sans-serif" font-size="11" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.1em">RIME ICE</text>
-              <text x="350" y="30" font-family="Anton, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" letter-spacing="0.1em">CLEAR ICE (GLAZE)</text>
-              <text x="583" y="30" font-family="Anton, sans-serif" font-size="11" fill="#d9a521" text-anchor="middle" letter-spacing="0.1em">MIXED ICE</text>
+                  <!-- headers -->
+                  <text x="119" y="34" font-family="Anton, sans-serif" font-size="14" fill="#1a5ba6" text-anchor="middle" letter-spacing="0.06em">RIME ICE</text>
+                  <text x="360" y="34" font-family="Anton, sans-serif" font-size="14" fill="#b53d1f" text-anchor="middle" letter-spacing="0.06em">CLEAR ICE</text>
+                  <text x="601" y="34" font-family="Anton, sans-serif" font-size="14" fill="#c8901a" text-anchor="middle" letter-spacing="0.06em">MIXED ICE</text>
 
-              <!-- ====== PANEL 1: Rime Ice ====== -->
-              <g transform="translate(50,135)">
-                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
-                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-                <path d="M 0,0 C -2,-6 -9,-8 -14,-6 C -18,-3 -19,0 -18,3 C -16,6 -10,8 -5,6 C -2,4 0,2 0,0 Z"
-                      fill="#dcdcdc" stroke="#999" stroke-width="1.2"/>
-                <circle cx="-9" cy="-3" r="1.5" fill="#bbb"/>
-                <circle cx="-13" cy="1"  r="1.5" fill="#bbb"/>
-                <circle cx="-8"  cy="4"  r="1.5" fill="#bbb"/>
-                <circle cx="-5"  cy="-5" r="1"   fill="#bbb"/>
-                <circle cx="-3"  cy="5"  r="1"   fill="#bbb"/>
-                <circle cx="0" cy="0" r="3" fill="none" stroke="#4a7ba6" stroke-width="1" stroke-dasharray="2,2"/>
-              </g>
-              <text x="117" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="middle" font-style="italic">Small, blunt — confined to stagnation pt.</text>
-              <text x="117" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Opaque · Rough · Brittle</text>
-              <text x="117" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="middle">−15°C to −20°C</text>
+                  <!-- ============ PANEL 1 · RIME ============ -->
+                  <g transform="translate(58,150)">
+                    <!-- airflow -->
+                    <line x1="-46" y1="2" x2="-22" y2="2" stroke="#5d6f3c" stroke-width="1.6" marker-end="url(#ic-air)"/>
+                    <!-- clean wing -->
+                    <path d="M0,0 C7,-22 34,-32 70,-30 C108,-28 142,-18 164,-8 C140,-2 98,9 60,10 C32,10 8,6 0,0 Z" fill="url(#wingMetal)" stroke="#0c2541" stroke-width="1.6"/>
+                    <path d="M10,-6 C30,-15 70,-19 120,-15" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+                    <!-- rime: opaque white, rough/granular, builds upwind into the airflow -->
+                    <path d="M2,-9 C-5,-12 -6,-20 -13,-18 C-12,-13 -20,-14 -18,-7 C-25,-7 -24,0 -17,0 C-23,4 -16,11 -10,6 C-11,13 -1,13 1,6 C5,9 9,3 5,-1 C11,-2 9,-9 2,-9 Z"
+                          fill="#f1f5f8" stroke="#a9b7c1" stroke-width="1.2" stroke-linejoin="round"/>
+                    <!-- granular stipple -->
+                    <g fill="#cdd8df">
+                      <circle cx="-13" cy="-9" r="1.4"/><circle cx="-17" cy="-2" r="1.4"/><circle cx="-12" cy="3" r="1.4"/>
+                      <circle cx="-7" cy="-5" r="1.1"/><circle cx="-5" cy="6" r="1.1"/><circle cx="-9" cy="8" r="1.1"/><circle cx="-2" cy="1" r="1"/>
+                    </g>
+                    <g fill="#ffffff" opacity="0.8"><circle cx="-15" cy="-6" r="1"/><circle cx="-10" cy="-1" r="1"/></g>
+                    <circle cx="0" cy="0" r="2.6" fill="none" stroke="#1a5ba6" stroke-width="1" stroke-dasharray="2,2"/>
+                  </g>
+                  <text x="119" y="232" font-family="Manrope, sans-serif" font-size="11" fill="#1a5ba6" text-anchor="middle" font-style="italic">Milky-white, snow-like, opaque</text>
+                  <text x="119" y="250" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Rough · brittle · blunt deposit</text>
+                  <text x="119" y="266" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Forms at the stagnation point</text>
+                  <text x="119" y="288" font-family="JetBrains Mono, monospace" font-size="10" fill="#1a5ba6" text-anchor="middle">−15°C to −20°C · cold/dry</text>
 
-              <!-- ====== PANEL 2: Clear Ice ====== -->
-              <g transform="translate(283,135)">
-                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
-                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-                <path d="M 8,-18 C 4,-23 -4,-26 -10,-22 C -18,-16 -20,-8 -18,-2 C -16,4 -10,10 0,0 C -2,-6 0,-13 8,-18 Z"
-                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1.5" opacity="0.85"/>
-                <path d="M 8,14 C 4,20 -5,24 -11,19 C -18,14 -19,6 -17,0 C -14,-5 -8,-8 0,0 C -2,5 0,11 8,14 Z"
-                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1.5" opacity="0.85"/>
-                <line x1="-10" y1="-22" x2="-28" y2="-32" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
-                <text x="-30" y="-38" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Upper horn</text>
-                <line x1="-11" y1="19" x2="-28" y2="30" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
-                <text x="-30" y="43" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Lower horn</text>
-              </g>
-              <text x="350" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" font-style="italic">Double-horn shape · runs back along surface</text>
-              <text x="350" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Transparent · Dense · Most dangerous</text>
-              <text x="350" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle">0°C to −10°C</text>
+                  <!-- ============ PANEL 2 · CLEAR ============ -->
+                  <g transform="translate(299,150)">
+                    <line x1="-46" y1="2" x2="-22" y2="2" stroke="#5d6f3c" stroke-width="1.6" marker-end="url(#ic-air)"/>
+                    <!-- ghost of clean wing shows THROUGH the glassy ice -->
+                    <path d="M0,0 C7,-22 34,-32 70,-30 C108,-28 142,-18 164,-8 C140,-2 98,9 60,10 C32,10 8,6 0,0 Z" fill="url(#wingMetal)" stroke="#0c2541" stroke-width="1.6"/>
+                    <path d="M10,-6 C30,-15 70,-19 120,-15" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+                    <!-- clear ice double horns: translucent glaze that runs back along the surface -->
+                    <path d="M6,-16 C0,-25 -12,-27 -19,-20 C-25,-13 -24,-4 -18,0 C-10,-3 -3,-9 6,-16 Z"
+                          fill="url(#clearGlaze)" stroke="#7ba6c4" stroke-width="1.3" stroke-opacity="0.8"/>
+                    <path d="M6,16 C1,25 -12,27 -19,19 C-26,11 -23,2 -17,0 C-9,4 -2,9 6,16 Z"
+                          fill="url(#clearGlaze)" stroke="#7ba6c4" stroke-width="1.3" stroke-opacity="0.8"/>
+                    <!-- glossy highlight streaks -->
+                    <path d="M-15,-16 C-10,-12 -6,-10 -2,-10" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.75" stroke-linecap="round"/>
+                    <path d="M-16,15 C-11,11 -7,9 -3,9" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.7" stroke-linecap="round"/>
+                    <circle cx="0" cy="0" r="2.6" fill="none" stroke="#b53d1f" stroke-width="1" stroke-dasharray="2,2"/>
+                    <!-- horn callouts -->
+                    <line x1="-17" y1="-21" x2="-30" y2="-34" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
+                    <text x="-30" y="-39" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">upper horn</text>
+                    <line x1="-18" y1="20" x2="-30" y2="33" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
+                    <text x="-30" y="46" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle">lower horn</text>
+                  </g>
+                  <text x="360" y="232" font-family="Manrope, sans-serif" font-size="11" fill="#b53d1f" text-anchor="middle" font-style="italic">Glassy, transparent — hard to see</text>
+                  <text x="360" y="250" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Dense · smooth · double horns</text>
+                  <text x="360" y="266" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Runs back, wraps the surface</text>
+                  <text x="360" y="288" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle">0°C to −10°C · warm/wet</text>
 
-              <!-- ====== PANEL 3: Mixed Ice ====== -->
-              <g transform="translate(517,135)">
-                <path d="M 0,0 C 4,-17 32,-26 60,-22 C 88,-18 112,-10 138,-3 C 138,3 112,10 80,14 C 48,16 12,9 0,0 Z"
-                      fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-                <path d="M 6,-15 C 2,-22 -6,-24 -12,-19 C -19,-13 -19,-5 -15,1 C -12,8 -5,14 4,12 C -1,8 -3,3 -3,0 C -3,-5 -1,-11 6,-15 Z"
-                      fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1" opacity="0.7"/>
-                <path d="M 0,0 C -2,-7 -8,-9 -12,-7 C -16,-4 -16,0 -13,4 C -10,7 -4,7 0,0 Z"
-                      fill="#d8d8d8" stroke="#999" stroke-width="1"/>
-                <path d="M -12,-7 L -16,-12 L -13,-7" fill="#bbb" stroke="#999" stroke-width="0.8"/>
-                <path d="M -13,4 L -16,9 L -12,4" fill="#bbb" stroke="#999" stroke-width="0.8"/>
-                <circle cx="-10" cy="-4" r="1.5" fill="#bbb"/>
-                <circle cx="-9"  cy="2"  r="1.5" fill="#bbb"/>
-                <!-- annotations: mixed = rime core + clear extensions (fills the panel, reinforces the concept) -->
-                <line x1="-7" y1="-20" x2="24" y2="-44" stroke="#4a7ba6" stroke-width="0.8" stroke-dasharray="2,2"/>
-                <text x="27" y="-42" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="start">clear horn</text>
-                <line x1="-9" y1="-1" x2="40" y2="24" stroke="#8a8a8a" stroke-width="0.8" stroke-dasharray="2,2"/>
-                <text x="43" y="27" font-family="Manrope, sans-serif" font-size="8" fill="#8a8a8a" text-anchor="start">rime core</text>
-              </g>
-              <text x="583" y="205" font-family="Manrope, sans-serif" font-size="9" fill="#d9a521" text-anchor="middle" font-style="italic">Irregular — rime core, clear extensions</text>
-              <text x="583" y="218" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" text-anchor="middle">Jagged · Unpredictable shape</text>
-              <text x="583" y="231" font-family="JetBrains Mono, monospace" font-size="9" fill="#d9a521" text-anchor="middle">−10°C to −15°C</text>
+                  <!-- ============ PANEL 3 · MIXED ============ -->
+                  <g transform="translate(540,150)">
+                    <line x1="-46" y1="2" x2="-22" y2="2" stroke="#5d6f3c" stroke-width="1.6" marker-end="url(#ic-air)"/>
+                    <path d="M0,0 C7,-22 34,-32 70,-30 C108,-28 142,-18 164,-8 C140,-2 98,9 60,10 C32,10 8,6 0,0 Z" fill="url(#wingMetal)" stroke="#0c2541" stroke-width="1.6"/>
+                    <path d="M10,-6 C30,-15 70,-19 120,-15" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+                    <!-- clear translucent extensions -->
+                    <path d="M6,-15 C1,-23 -11,-25 -18,-18 C-23,-11 -22,-3 -17,0 C-9,-3 -2,-8 6,-15 Z"
+                          fill="url(#clearGlaze)" stroke="#7ba6c4" stroke-width="1.1" stroke-opacity="0.7"/>
+                    <path d="M5,15 C1,22 -10,24 -17,17 C-23,10 -20,3 -16,1 C-9,4 -2,9 5,15 Z"
+                          fill="url(#clearGlaze)" stroke="#7ba6c4" stroke-width="1.1" stroke-opacity="0.65"/>
+                    <!-- opaque white rime core -->
+                    <path d="M0,-7 C-6,-10 -7,-2 -14,-3 C-19,0 -16,5 -11,5 C-13,9 -5,10 -3,5 C0,8 3,3 0,-7 Z"
+                          fill="#f1f5f8" stroke="#a9b7c1" stroke-width="1.1" stroke-linejoin="round"/>
+                    <g fill="#cdd8df"><circle cx="-11" cy="-1" r="1.2"/><circle cx="-8" cy="3" r="1.2"/><circle cx="-5" cy="-3" r="1"/></g>
+                    <circle cx="0" cy="0" r="2.6" fill="none" stroke="#c8901a" stroke-width="1" stroke-dasharray="2,2"/>
+                    <line x1="-16" y1="-19" x2="-30" y2="-32" stroke="#7ba6c4" stroke-width="0.9" stroke-dasharray="2,2"/>
+                    <text x="-30" y="-37" font-family="Manrope, sans-serif" font-size="9" fill="#5e7d96" text-anchor="middle">clear horns</text>
+                    <line x1="-10" y1="3" x2="-30" y2="34" stroke="#a9b7c1" stroke-width="0.9" stroke-dasharray="2,2"/>
+                    <text x="-30" y="46" font-family="Manrope, sans-serif" font-size="9" fill="#8a8a8a" text-anchor="middle">rime core</text>
+                  </g>
+                  <text x="601" y="232" font-family="Manrope, sans-serif" font-size="11" fill="#c8901a" text-anchor="middle" font-style="italic">White core + glassy extensions</text>
+                  <text x="601" y="250" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Irregular · jagged · unpredictable</text>
+                  <text x="601" y="266" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Both types form together</text>
+                  <text x="601" y="288" font-family="JetBrains Mono, monospace" font-size="10" fill="#c8901a" text-anchor="middle">−10°C to −15°C · mixed</text>
 
-              <!-- Outer border -->
-              <rect x="1" y="1" width="698" height="268" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
-            </svg>
-            <figcaption>Airfoil leading-edge cross-sections (exaggerated for clarity) showing the three structural ice types. Rime ice forms a small, blunt, opaque deposit at the stagnation point. Clear ice wraps around and forms dangerous "double horns" that dramatically disrupt airflow. Mixed ice combines both types in an irregular, unpredictable shape. (AC 91-51A Table 1; AC 91-74B §4.1.2; FAA-H-8083-28 Ch. 10)</figcaption>
-          </figure>
+                  <rect x="1" y="1" width="718" height="318" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
+                </svg>
+                <figcaption>
+                  Airfoil leading-edge cross-sections (ice exaggerated for clarity). <strong>Rime ice</strong> is milky-white and snow-like — supercooled droplets freeze on contact, trapping air, so it builds a rough, opaque, brittle deposit at the stagnation point in cold, dry cloud. <strong>Clear ice</strong> is glassy and nearly transparent — droplets flow back before freezing into a dense, smooth sheet, forming the "double horns" that most disrupt airflow; it's the hardest to see and the most dangerous. <strong>Mixed ice</strong> combines a white rime core with clear extensions into an irregular shape.
+                  <span class="src">Ref: AC 91-74B §4.1.2 · AC 91-51A · FAA-H-8083-28 Ch. 10</span>
+                </figcaption>
+              </figure>
         </section>
 
         <!-- Section: Clear ice — most dangerous -->
