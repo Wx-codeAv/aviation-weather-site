@@ -495,167 +495,157 @@
             <li><strong>Do not re-extend flaps</strong> until the tailplane has been deiced or the icing environment has been exited.</li>
           </ul>
 
-          <!-- Diagram: Tailplane icing and flap extension mechanism — redrawn -->
+          <!-- Diagram: Tailplane icing & flap extension — iced tail, flaps up vs flaps down (AC 91-74B §4.4) -->
           <figure class="diagram">
-            <svg viewBox="0 0 740 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tailplane-title">
-              <title id="tailplane-title">Two-panel tailplane icing diagram, both panels showing a high-wing single-engine airplane in side profile, nose left, with ice on the horizontal stabilizer leading edge. Left panel, flaps retracted: lift acts up at the wing, weight down at the center of gravity, and a manageable tail-down force at the stabilizer balances the pitch; airflow over the tail stays attached. Right panel, flaps extended: the deflected flap increases lift and the nose-down pitching moment, downwash strikes the tail harder, the iced stabilizer stalls with separated flow, the tail-down force fails, and the nose pitches abruptly down.</title>
-              <rect width="740" height="288" fill="#fffaf0"/>
+                <svg viewBox="0 0 720 560" role="img" aria-label="Cessna 172 side profile: iced tail with flaps up versus flaps down, showing the tail stall and nose-down pitch">
+                  <defs>
+                    <marker id="ar-ink" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#0c2541"/></marker>
+                    <marker id="ar-rust" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#b53d1f"/></marker>
+                    <marker id="ar-sky" markerWidth="6.5" markerHeight="6.5" refX="5" refY="3.25" orient="auto"><path d="M0,0 L6.5,3.25 L0,6.5 Z" fill="#4a7ba6"/></marker>
 
-              <!-- Panel backgrounds -->
-              <rect x="8"   y="8" width="356" height="272" fill="#4a7ba6" opacity="0.03" rx="3"/>
-              <rect x="376" y="8" width="356" height="272" fill="#b53d1f" opacity="0.04" rx="3"/>
-              <line x1="370" y1="12" x2="370" y2="276" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.7"/>
+                    <!-- ================= Cessna 172 side profile (nose left): short stubby cowl, high wing on the roof ================= -->
+                    <g id="c172">
+                      <!-- prop disc + short spinner, well forward -->
+                      <ellipse cx="92" cy="118" rx="3.4" ry="28" fill="#0c2541" opacity="0.5"/>
+                      <path d="M112,109 Q99,109 95,118 Q99,128 112,127 Z" fill="#b9b3a0" stroke="#0c2541" stroke-width="1.3"/>
+                      <!-- fuselage: stubby cowl up front, tapered tailcone aft -->
+                      <path d="M112,109 L150,105 L174,84 Q210,80 248,82 L300,91 Q368,99 430,109 L452,114 L452,125 Q368,132 300,134 Q210,135 150,134 L112,130 Q104,119 112,109 Z"
+                            fill="#e8dfc8" stroke="#0c2541" stroke-width="2"/>
+                      <path d="M120,122 L444,119" stroke="#4a7ba6" stroke-width="1.7" opacity="0.5"/>
+                      <path d="M120,125.4 L444,122.4" stroke="#b53d1f" stroke-width="1.1" opacity="0.45"/>
+                      <!-- windscreen + cabin glass -->
+                      <path d="M150,103 L174,85 L195,84 L197,103 Z" fill="#9fc2dc" stroke="#0c2541" stroke-width="1.1" opacity="0.9"/>
+                      <path d="M202,84 L248,83 L248,102 L203,103 Z" fill="#9fc2dc" stroke="#0c2541" stroke-width="1.1" opacity="0.82"/>
+                      <path d="M254,84 L298,92 L298,102 L254,102 Z" fill="#9fc2dc" stroke="#0c2541" stroke-width="1" opacity="0.66"/>
+                      <!-- high wing (edge-on airfoil) sitting ON the cabin roof -->
+                      <path d="M150,83 C144,75 156,71 176,71 L286,73 L300,80 L176,84 C160,85 154,84 150,83 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.7"/>
+                      <path d="M210,134 L194,84" stroke="#0c2541" stroke-width="2.5" fill="none"/>
+                      <!-- dorsal fillet + upright swept fin + rudder -->
+                      <path d="M404,110 L446,104 L448,110 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1"/>
+                      <path d="M446,110 L484,60 L497,60 L502,110 Z" fill="#e8dfc8" stroke="#0c2541" stroke-width="1.7"/>
+                      <line x1="491" y1="64" x2="499" y2="108" stroke="#0c2541" stroke-width="0.9" opacity="0.55"/>
+                      <!-- horizontal stabilizer (tailplane), slight negative incidence -->
+                      <path d="M416,116 Q416,109 434,109 L506,111 L510,115 L506,119 L434,123 Q416,123 416,116 Z" fill="#eef1e3" stroke="#0c2541" stroke-width="1.7"/>
+                      <line x1="468" y1="110.5" x2="468" y2="121.5" stroke="#0c2541" stroke-width="0.8" opacity="0.5"/>
+                      <!-- nose gear -->
+                      <path d="M150,134 L150,160" stroke="#0c2541" stroke-width="2.3"/>
+                      <ellipse cx="150" cy="162" rx="8" ry="6" fill="#d8cdb2" stroke="#0c2541" stroke-width="1.1"/>
+                      <circle cx="150" cy="168" r="8.4" fill="#2b2b2b" stroke="#0c2541" stroke-width="1.1"/>
+                      <circle cx="150" cy="168" r="3.1" fill="#d8cdb2"/>
+                      <!-- main gear + wheel pant -->
+                      <path d="M252,134 Q262,151 274,162" stroke="#0c2541" stroke-width="2.7" fill="none"/>
+                      <path d="M260,164 Q274,152 290,164 Q282,178 274,178 Q264,178 260,164 Z" fill="#d8cdb2" stroke="#0c2541" stroke-width="1.1"/>
+                      <circle cx="275" cy="171" r="9" fill="#2b2b2b" stroke="#0c2541" stroke-width="1.1"/>
+                      <circle cx="275" cy="171" r="3.3" fill="#d8cdb2"/>
+                    </g>
 
-              <!-- Panel headers -->
-              <text x="186" y="26" font-family="Anton, sans-serif" font-size="13" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.07em">FLAPS RETRACTED — STABLE</text>
-              <text x="556" y="26" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle" letter-spacing="0.07em">FLAPS EXTENDED — TAIL STALL</text>
+                    <!-- ice glaze on the tailplane leading edge -->
+                    <g id="tail-ice">
+                      <path d="M416,116 C406,107 408,99 418,99 C424,103 428,99 430,105 C434,103 434,111 428,113 C434,117 428,125 418,125 C410,125 408,121 416,116 Z"
+                            fill="#c5ddf0" stroke="#4a7ba6" stroke-width="1.2" opacity="0.92"/>
+                      <circle cx="416" cy="108" r="1.3" fill="#9fb8cc"/><circle cx="420" cy="117" r="1.3" fill="#9fb8cc"/><circle cx="413" cy="114" r="1.1" fill="#9fb8cc"/>
+                    </g>
 
-              <!-- ====== PANEL 1: side-profile airplane, flaps retracted ====== -->
+                    <!-- classic checkered center-of-gravity symbol -->
+                    <g id="cg-sym">
+                      <circle r="8" fill="#fffaf0" stroke="#0c2541" stroke-width="1.2"/>
+                      <path d="M0,0 L0,-8 A8,8 0 0,1 8,0 Z" fill="#0c2541"/>
+                      <path d="M0,0 L0,8 A8,8 0 0,1 -8,0 Z" fill="#0c2541"/>
+                    </g>
+                  </defs>
 
-              <!-- Prop -->
-              <ellipse cx="52" cy="144" rx="2.5" ry="20" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
-              <!-- Fuselage: nose left, high cabin, fin and tail cone right -->
-              <path d="M 56,136 C 70,130 88,128 102,128 L 126,110 L 196,110 C 220,112 240,124 254,132 L 264,134 L 274,104 C 275,100 281,100 282,104 L 288,136 L 296,138 L 296,146 C 280,152 260,154 240,154 L 120,158 C 92,158 68,152 56,144 Z"
-                    fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-              <!-- Cabin window -->
-              <path d="M 130,113 L 150,113 L 150,124 L 122,124 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.7" opacity="0.8"/>
-              <!-- High wing (side-view chord slab over the cabin) -->
-              <path d="M 112,104 L 218,108 L 218,114 L 112,110 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Strut -->
-              <line x1="150" y1="156" x2="134" y2="112" stroke="#0c2541" stroke-width="0.9" opacity="0.5"/>
-              <!-- Fixed gear -->
-              <circle cx="94" cy="163" r="4.5" fill="#0c2541"/>
-              <circle cx="152" cy="163" r="5" fill="#0c2541"/>
-              <!-- Horizontal stabilizer (leading edge faces forward, left) -->
-              <path d="M 250,141 L 304,136 L 306,142 L 254,147 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Ice on the stab leading edge -->
-              <path d="M 252,140 C 246,137 242,141 245,146 C 247,150 252,149 253,146 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.9"/>
-              <text x="232" y="96" font-family="JetBrains Mono, monospace" font-size="10" fill="#667788" text-anchor="middle">ICE ON STAB</text>
-              <line x1="236" y1="100" x2="247" y2="136" stroke="#667788" stroke-width="0.8" stroke-dasharray="2,2"/>
+                  <!-- figure background (stays light) -->
+                  <rect x="0" y="0" width="720" height="560" fill="#fffaf0"/>
+                  <rect x="1" y="1" width="718" height="558" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
+                  <line x1="20" y1="282" x2="700" y2="282" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="5,4" opacity="0.7"/>
 
-              <!-- Attached flow over and under the stab -->
-              <g stroke="#4a7ba6" stroke-width="1.3" fill="none" opacity="0.7">
-                <path d="M 226,130 C 248,128 270,128 312,131"/>
-                <path d="M 226,154 C 250,156 274,153 314,148"/>
-              </g>
-              <polygon points="316,131 309,128 309,134" fill="#4a7ba6" opacity="0.7"/>
-              <polygon points="318,148 311,145 311,151" fill="#4a7ba6" opacity="0.7"/>
+                  <!-- ============================ PANEL A : ICED TAIL · FLAPS UP ============================ -->
+                  <g transform="translate(0,16)">
+                    <text x="28" y="20" font-family="Anton, sans-serif" font-size="15" letter-spacing="0.05em" fill="#5d6f3c">ICED TAIL · FLAPS UP</text>
+                    <text x="28" y="37" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360">tail-down force holds</text>
 
-              <!-- Lift at the wing -->
-              <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
-                <line x1="165" y1="100" x2="165" y2="62"/>
-                <polygon points="165,54 160,68 170,68"/>
-              </g>
-              <text x="165" y="48" font-family="JetBrains Mono, monospace" font-size="10" fill="#5d6f3c" text-anchor="middle" font-weight="700">L — LIFT</text>
+                    <use href="#c172"/>
+                    <use href="#tail-ice"/>
 
-              <!-- CG marker + weight -->
-              <circle cx="172" cy="146" r="6" fill="#fffaf0" stroke="#0c2541" stroke-width="1.6"/>
-              <line x1="166" y1="146" x2="178" y2="146" stroke="#0c2541" stroke-width="1.6"/>
-              <line x1="172" y1="140" x2="172" y2="152" stroke="#0c2541" stroke-width="1.6"/>
-              <g stroke="#0c2541" stroke-width="2.2" fill="#0c2541">
-                <line x1="172" y1="154" x2="172" y2="192"/>
-                <polygon points="172,200 167,186 177,186"/>
-              </g>
-              <text x="196" y="172" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#0c2541">CG</text>
-              <text x="172" y="214" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">W — WEIGHT</text>
+                    <!-- attached airflow over the tail (gentle downwash) -->
+                    <path d="M306,88 C352,98 396,107 460,114" fill="none" stroke="#4a7ba6" stroke-width="1.5" marker-end="url(#ar-sky)" opacity="0.8"/>
+                    <text x="356" y="98" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6">smooth flow over tail</text>
 
-              <!-- Moment arm -->
-              <line x1="165" y1="146" x2="278" y2="146" stroke="#0c2541" stroke-width="0.7" stroke-dasharray="5,3" opacity="0.35"/>
+                    <!-- LIFT and WEIGHT oppose on the CG (x=250) -->
+                    <line x1="250" y1="68" x2="250" y2="44" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)"/>
+                    <text x="250" y="38" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="middle">LIFT (L)</text>
+                    <line x1="250" y1="130" x2="250" y2="178" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)"/>
+                    <text x="250" y="193" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="middle">WEIGHT (W)</text>
+                    <!-- CG symbol + tight label -->
+                    <use href="#cg-sym" transform="translate(250,120)"/>
+                    <text x="262" y="112" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="start">CG</text>
 
-              <!-- Manageable tail-down force -->
-              <g stroke="#4a7ba6" stroke-width="2.5" fill="#4a7ba6">
-                <line x1="278" y1="150" x2="278" y2="184"/>
-                <polygon points="278,192 273,178 283,178"/>
-              </g>
-              <text x="278" y="206" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a7ba6" text-anchor="middle" font-weight="700">T — TAIL-DOWN</text>
-              <text x="278" y="219" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#4a7ba6" text-anchor="middle">(manageable)</text>
+                    <!-- moment arm CG → tail -->
+                    <line x1="250" y1="210" x2="468" y2="210" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="250" y1="205" x2="250" y2="215" stroke="#b9a87a" stroke-width="1"/>
+                    <line x1="468" y1="205" x2="468" y2="215" stroke="#b9a87a" stroke-width="1"/>
+                    <text x="359" y="207" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle">tail moment arm</text>
 
-              <!-- P1 status -->
-              <text x="186" y="248" font-family="Manrope, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle">Pitch balanced — tail AoA inside its stall margin</text>
-              <text x="186" y="264" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Ice present, but flow over the tail stays attached</text>
+                    <!-- TAIL-DOWN FORCE (down, intact) -->
+                    <line x1="468" y1="124" x2="468" y2="178" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)"/>
+                    <text x="468" y="193" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle">TAIL-DOWN FORCE</text>
+                  </g>
 
-              <!-- ====== PANEL 2: same airplane, flaps extended — tail stall ====== -->
+                  <!-- ============================ PANEL B : ICED TAIL · FLAPS DOWN ============================ -->
+                  <g transform="translate(0,298)">
+                    <text x="28" y="20" font-family="Anton, sans-serif" font-size="15" letter-spacing="0.05em" fill="#b53d1f">ICED TAIL · FLAPS DOWN</text>
+                    <text x="28" y="37" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360">tail stalls → nose drops</text>
 
-              <!-- Prop -->
-              <ellipse cx="422" cy="144" rx="2.5" ry="20" fill="none" stroke="#888" stroke-width="1.2" opacity="0.5" stroke-dasharray="3,2"/>
-              <!-- Fuselage -->
-              <path d="M 426,136 C 440,130 458,128 472,128 L 496,110 L 566,110 C 590,112 610,124 624,132 L 634,134 L 644,104 C 645,100 651,100 652,104 L 658,136 L 666,138 L 666,146 C 650,152 630,154 610,154 L 490,158 C 462,158 438,152 426,144 Z"
-                    fill="#e8dfc8" stroke="#0c2541" stroke-width="1.5"/>
-              <!-- Cabin window -->
-              <path d="M 500,113 L 520,113 L 520,124 L 492,124 Z" fill="#d0e8f5" stroke="#0c2541" stroke-width="0.7" opacity="0.8"/>
-              <!-- High wing -->
-              <path d="M 482,104 L 588,108 L 588,114 L 482,110 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <!-- Strut -->
-              <line x1="520" y1="156" x2="504" y2="112" stroke="#0c2541" stroke-width="0.9" opacity="0.5"/>
-              <!-- Fixed gear -->
-              <circle cx="464" cy="163" r="4.5" fill="#0c2541"/>
-              <circle cx="522" cy="163" r="5" fill="#0c2541"/>
-              <!-- FLAP deflected at the wing trailing edge -->
-              <path d="M 562,113 L 584,114 L 592,130 L 570,128 Z" fill="#e0d8c0" stroke="#b53d1f" stroke-width="1.8"/>
-              <text x="614" y="98" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" font-weight="700">FLAP ↓</text>
-              <line x1="618" y1="102" x2="586" y2="122" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
-              <!-- Downwash off the flap toward the tail -->
-              <g stroke="#b53d1f" stroke-width="1.2" fill="#b53d1f" opacity="0.7">
-                <line x1="592" y1="126" x2="610" y2="136"/>
-                <line x1="586" y1="132" x2="604" y2="142"/>
-              </g>
-              <polygon points="614,138 605,133 604,140" fill="#b53d1f" opacity="0.7"/>
-              <polygon points="608,144 599,139 598,146" fill="#b53d1f" opacity="0.7"/>
-              <!-- Horizontal stabilizer + ice -->
-              <path d="M 620,141 L 674,136 L 676,142 L 624,147 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-              <path d="M 622,140 C 616,137 612,141 615,146 C 617,150 622,149 623,146 Z" fill="#d8d8d8" stroke="#999" stroke-width="0.9"/>
+                    <use href="#c172"/>
+                    <use href="#tail-ice"/>
 
-              <!-- Separated flow at the iced tail -->
-              <g stroke="#b53d1f" fill="none" stroke-width="1.4">
-                <path d="M 624,128 C 630,123 636,131 642,126 C 648,121 654,129 660,124"/>
-                <path d="M 624,154 C 630,159 636,151 642,156 C 648,161 654,153 660,158"/>
-                <path d="M 664,130 C 670,126 676,132 682,128"/>
-              </g>
-              <rect x="660" y="92" width="66" height="15" fill="#b53d1f" rx="2"/>
-              <text x="693" y="103" font-family="Anton, sans-serif" font-size="9.5" fill="#fffaf0" text-anchor="middle" letter-spacing="0.05em">TAIL STALLS</text>
+                    <!-- flap deflected DOWN, tucked under the wing trailing edge — highlighted in rust -->
+                    <path d="M291,80 L303,81 L310,95 L298,89 Z" fill="#b53d1f" fill-opacity="0.3" stroke="#b53d1f" stroke-width="1.8"/>
+                    <line x1="301" y1="60" x2="301" y2="79" stroke="#b53d1f" stroke-width="0.9" stroke-dasharray="2,2"/>
+                    <text x="301" y="54" font-family="Manrope, sans-serif" font-size="10.5" font-weight="600" fill="#b53d1f" text-anchor="middle">flaps down</text>
 
-              <!-- More lift with flaps -->
-              <g stroke="#5d6f3c" stroke-width="2.5" fill="#5d6f3c">
-                <line x1="535" y1="98" x2="535" y2="52"/>
-                <polygon points="535,44 530,58 540,58"/>
-              </g>
-              <text x="535" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#5d6f3c" text-anchor="middle" font-weight="700">L↑↑</text>
+                    <!-- steeper, more-vertical downwash, then SEPARATED flow over the iced tail -->
+                    <path d="M308,95 C346,116 376,124 404,126" fill="none" stroke="#4a7ba6" stroke-width="1.6" marker-end="url(#ar-sky)" opacity="0.85"/>
+                    <line x1="372" y1="130" x2="372" y2="156" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="2,2"/>
+                    <text x="372" y="168" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#2d4360" text-anchor="middle">steeper, more-vertical flow</text>
+                    <text x="372" y="180" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle">→ higher tail AoA</text>
+                    <!-- separation curls aft of the iced LE -->
+                    <path d="M430,112 q10,-7 18,-1 q-9,2 -4,10 q-8,-3 -14,4" fill="none" stroke="#4a7ba6" stroke-width="1.4" stroke-dasharray="3,2.5" opacity="0.85"/>
+                    <line x1="476" y1="110" x2="512" y2="92" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="2,2"/>
+                    <text x="516" y="88" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a7ba6" text-anchor="start">flow separates</text>
+                    <text x="516" y="99" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="start">tail stalls</text>
 
-              <!-- Nose-down pitching moment grows -->
-              <path d="M 470,90 C 472,72 494,64 514,72" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
-              <polygon points="514,72 503,67 506,78" fill="#b53d1f"/>
-              <text x="450" y="58" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle">NOSE-DOWN MOMENT ↑↑</text>
+                    <!-- LIFT and WEIGHT oppose on the CG (identical) -->
+                    <line x1="250" y1="68" x2="250" y2="44" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)"/>
+                    <text x="250" y="38" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="middle">LIFT (L)</text>
+                    <line x1="250" y1="130" x2="250" y2="178" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)"/>
+                    <text x="250" y="193" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="middle">WEIGHT (W)</text>
+                    <use href="#cg-sym" transform="translate(250,120)"/>
+                    <text x="262" y="112" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="start">CG</text>
 
-              <!-- CG + weight -->
-              <circle cx="542" cy="146" r="6" fill="#fffaf0" stroke="#0c2541" stroke-width="1.6"/>
-              <line x1="536" y1="146" x2="548" y2="146" stroke="#0c2541" stroke-width="1.6"/>
-              <line x1="542" y1="140" x2="542" y2="152" stroke="#0c2541" stroke-width="1.6"/>
-              <g stroke="#0c2541" stroke-width="2.2" fill="#0c2541">
-                <line x1="542" y1="154" x2="542" y2="192"/>
-                <polygon points="542,200 537,186 547,186"/>
-              </g>
-              <text x="542" y="214" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">W</text>
+                    <!-- tail moment arm CG → tail (matches panel A) -->
+                    <line x1="250" y1="218" x2="468" y2="218" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="250" y1="213" x2="250" y2="223" stroke="#b9a87a" stroke-width="1"/>
+                    <line x1="468" y1="213" x2="468" y2="223" stroke="#b9a87a" stroke-width="1"/>
+                    <text x="359" y="215" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" text-anchor="middle">tail moment arm</text>
 
-              <!-- Tail-down force fails -->
-              <line x1="648" y1="150" x2="648" y2="176" stroke="#b53d1f" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
-              <line x1="640" y1="154" x2="656" y2="172" stroke="#b53d1f" stroke-width="2.5"/>
-              <line x1="656" y1="154" x2="640" y2="172" stroke="#b53d1f" stroke-width="2.5"/>
-              <text x="648" y="190" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="middle" font-weight="700">T FAILS</text>
+                    <!-- TAIL-DOWN FORCE — LOST: greyed, dashed, struck through -->
+                    <line x1="468" y1="124" x2="468" y2="178" stroke="#0c2541" stroke-width="2.4" marker-end="url(#ar-ink)" opacity="0.2" stroke-dasharray="6,4"/>
+                    <line x1="459" y1="144" x2="477" y2="162" stroke="#b53d1f" stroke-width="2.4"/>
+                    <line x1="477" y1="144" x2="459" y2="162" stroke="#b53d1f" stroke-width="2.4"/>
+                    <text x="468" y="193" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" opacity="0.5">TAIL-DOWN FORCE</text>
+                    <text x="468" y="205" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle">LOST</text>
 
-              <!-- Resulting nose-down rotation at the nose -->
-              <path d="M 420,108 C 436,104 446,118 442,134 C 439,148 428,154 416,152" stroke="#b53d1f" stroke-width="2.5" fill="none"/>
-              <polygon points="416,152 427,148 423,158" fill="#b53d1f"/>
-              <text x="404" y="182" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" font-weight="700">NOSE PITCHES DOWN</text>
-
-              <!-- P2 status -->
-              <text x="556" y="248" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">Moment demand exceeds what the iced tail can give</text>
-              <text x="556" y="264" font-family="Manrope, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle">Tail stalls → abrupt nose-down pitch</text>
-
-              <!-- Outer border -->
-              <rect x="1" y="1" width="738" height="286" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
-            </svg>
-            <figcaption>Tailplane icing and flap extension, in side profile per AC 91-74B convention. Left: flaps retracted — lift (L) acts up at the wing, weight (W) down at the CG, and the iced horizontal stabilizer still supplies a manageable tail-down force (T) that balances the nose; flow over the tail stays attached. Right: flaps extended — lift rises but the wing's nose-down pitching moment rises faster, and flap downwash strikes the tail at a higher effective angle of attack. The ice-contaminated stabilizer stalls (red separated flow), the tail-down force fails, and the nose pitches abruptly down. <strong>Recovery (AC 91-74B §4.4.3): immediately retract the flaps to the previous setting, add nose-up trim and back pressure as the aircraft allows, increase airspeed, and do not re-extend flaps until clear of icing.</strong> (AC 91-74B Ch. 4; FAA-H-8083-28 Ch. 10)</figcaption>
-          </figure>
+                    <!-- NOSE PITCHES DOWN — compact rotational arc off the nose, ending downward -->
+                    <path d="M122,150 Q92,162 88,196" fill="none" stroke="#b53d1f" stroke-width="2.6" marker-end="url(#ar-rust)"/>
+                    <text x="64" y="214" font-family="Anton, sans-serif" font-size="13" letter-spacing="0.03em" fill="#b53d1f">NOSE PITCHES DOWN</text>
+                  </g>
+                </svg>
+                <figcaption>
+                  Both aircraft have <strong>ice on the tailplane</strong> — the variable is flap position. The horizontal stabilizer flies at a <strong>negative</strong> angle of attack, producing a <strong>downward</strong> force; because the wing's center of lift sits <strong>behind the CG</strong>, that tail-down force is what cancels the resulting nose-down moment and holds the nose up. <strong>Deploying flaps shifts the center of lift</strong> — changing that moment — and drives more downwash onto the tail, so the air meets it <strong>more steeply, at a higher (absolute) angle of attack</strong>. Past the stall angle the ice has already lowered, the iced tail stalls, its down-force collapses, and the nose pitches down. Recovery is the opposite of a wing stall: <strong>retract flaps, ease back pressure, add power</strong>.
+                  <span class="src">Ref: AC 91-74B §4.4 · NASA/FAA Tailplane Icing Program · FAA-H-8083-28 Ch. 10</span>
+                </figcaption>
+              </figure>
 
           <p class="callout">
             <strong>The rule, stated plainly (AC 91-74B §5.2):</strong> Do not extend flaps to full deflection in icing conditions or when tailplane icing is suspected. If the nose pitches down after flap extension, retract the flaps immediately. Do not mistake tail-stall buffet for pre-wing-stall buffet — the recovery is opposite. A pilot who pushes forward or extends more flaps in response to a tail stall will not recover.
