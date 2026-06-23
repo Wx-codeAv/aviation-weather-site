@@ -172,158 +172,123 @@
 
           <!-- SVG: Surface Analysis Chart -->
           <figure class="diagram">
-            <svg viewBox="0 0 700 474" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="surface-chart-title">
-              <title id="surface-chart-title">Simplified surface analysis chart. A low-pressure center (L, 988 mb) on the left has tightly packed isobars, an occluded front spiralling out to a triple point where a cold front trails to the southwest and a warm front extends east enclosing a warm sector. A high-pressure center (H, 1028 mb) on the right has widely spaced isobars. A stationary front lies across the southeast and a dry line sits in the warm sector. Surface winds spiral counter-clockwise and inward around the low and clockwise and outward around the high. Air rises at the low and sinks at the high.</title>
-              <rect width="700" height="474" fill="#fffaf0"/>
+              <svg viewBox="0 0 720 600" role="img" aria-label="Surface analysis chart with a low and high pressure system, fronts, isobars, winds, and a station-model callout">
+            <defs>
+              <marker id="wind" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4a7ba6"/></marker>
+              <clipPath id="map"><rect x="10" y="36" width="700" height="368"/></clipPath>
+            </defs>
+            <rect x="0" y="0" width="720" height="600" fill="#fffaf0"/>
 
-              <defs>
-                <pattern id="precip" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="7" stroke="#5d6f3c" stroke-width="1" opacity="0.5"/>
-                </pattern>
-                <clipPath id="map"><rect x="10" y="36" width="680" height="368"/></clipPath>
-                <marker id="wind" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill="#4a7ba6"/>
-                </marker>
-              </defs>
+            <!-- title bar -->
+            <rect x="10" y="10" width="700" height="26" fill="#0c2541"/>
+            <text x="360" y="27" font-family="Anton, sans-serif" font-size="11" fill="#f4ecd6" text-anchor="middle" letter-spacing="0.12em">SURFACE ANALYSIS CHART · VALID 1200Z</text>
+            <rect x="10" y="36" width="700" height="368" fill="rgba(74,123,166,0.04)" stroke="#b9a87a" stroke-width="0.8"/>
 
-              <rect x="10" y="36" width="680" height="368" fill="rgba(74,123,166,0.04)" stroke="#b9a87a" stroke-width="0.8"/>
-              <rect x="10" y="10" width="680" height="26" fill="#0c2541"/>
-              <text x="350" y="27" font-family="Anton, sans-serif" font-size="11" fill="#f4ecd6" text-anchor="middle" letter-spacing="0.12em">SURFACE ANALYSIS CHART · VALID 1200Z</text>
-
-              <g clip-path="url(#map)">
-                <g fill="none" stroke="#0c2541" stroke-width="1">
-                  <ellipse cx="574" cy="150" rx="24" ry="18"/>
-                  <ellipse cx="574" cy="150" rx="58" ry="44"/>
-                  <ellipse cx="574" cy="150" rx="96" ry="74"/>
-                  <ellipse cx="574" cy="150" rx="138" ry="108"/>
-                </g>
-                <g fill="none" stroke="#0c2541" stroke-width="1">
-                  <ellipse cx="188" cy="150" rx="15" ry="12"/>
-                  <ellipse cx="188" cy="150" rx="32" ry="26"/>
-                  <ellipse cx="188" cy="150" rx="52" ry="42"/>
-                  <ellipse cx="188" cy="150" rx="76" ry="62"/>
-                  <ellipse cx="188" cy="150" rx="104" ry="84"/>
-                </g>
-                <g stroke="#4a7ba6" stroke-width="1.4" fill="none" opacity="0.85">
-                  <path d="M 188,84 C 165,87 148,96 139,113" marker-end="url(#wind)"/>
-                  <path d="M 108,150 C 110,173 120,191 138,201" marker-end="url(#wind)"/>
-                  <path d="M 188,216 C 213,213 232,203 244,186" marker-end="url(#wind)"/>
-                  <path d="M 268,150 C 266,127 256,109 238,99" marker-end="url(#wind)"/>
-                </g>
-                <g stroke="#4a7ba6" stroke-width="1.4" fill="none" opacity="0.55">
-                  <path d="M 550,84 C 570,76 596,75 616,82" marker-end="url(#wind)"/>
-                  <path d="M 632,116 C 642,136 643,164 634,184" marker-end="url(#wind)"/>
-                  <path d="M 598,216 C 578,224 552,225 532,218" marker-end="url(#wind)"/>
-                  <path d="M 514,184 C 504,164 503,136 512,116" marker-end="url(#wind)"/>
-                </g>
-                <path d="M 272,120 C 298,122 320,148 323,178 C 326,206 312,236 286,244 C 258,250 234,242 226,217 C 219,193 223,160 240,142 C 250,130 260,120 272,120 Z" fill="url(#precip)" stroke="#5d6f3c" stroke-width="0.7" opacity="0.5"/>
+            <g clip-path="url(#map)">
+              <!-- LOW isobars -->
+              <g fill="none" stroke="#0c2541" stroke-width="1">
+                <ellipse cx="188" cy="150" rx="18" ry="14"/><ellipse cx="188" cy="150" rx="38" ry="30"/>
+                <ellipse cx="188" cy="150" rx="62" ry="50"/><ellipse cx="188" cy="150" rx="90" ry="72"/>
+                <ellipse cx="188" cy="150" rx="120" ry="96"/>
               </g>
-
-              <text x="574" y="160" font-family="Anton, sans-serif" font-size="30" fill="#2a5ba0" text-anchor="middle">H</text>
-              <text x="574" y="177" font-family="JetBrains Mono, monospace" font-size="9" fill="#2a5ba0" text-anchor="middle">1028 mb</text>
-              <text x="574" y="58" font-family="Manrope, sans-serif" font-size="9.5" fill="#2a5ba0" text-anchor="middle" font-style="italic">sinking air, fair wx</text>
-              <text x="664" y="248" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="end">1020</text>
-
-              <text x="188" y="160" font-family="Anton, sans-serif" font-size="30" fill="#b53d1f" text-anchor="middle">L</text>
-              <text x="188" y="185" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle" stroke="#fffaf0" stroke-width="2.6" paint-order="stroke">988 mb</text>
-
-              <text x="188" y="58" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle" font-style="italic">rising air, clouds and precip</text>
-              <text x="72" y="240" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="start">1004</text>
-
-              <path d="M 200,162 C 232,178 262,212 290,254" fill="none" stroke="#7a4f9e" stroke-width="2.5"/>
-              <!-- Occluded markers: triangle + semicircle alternating on the SAME side, base on the line, pointing/bulging to the leading side -->
-              <g fill="#7a4f9e">
-                <g transform="translate(224,177) rotate(38)"><polygon points="0,-8 -5,0 5,0"/></g>
-                <g transform="translate(246,198) rotate(46)"><path d="M -6,0 A 6,6 0 0 1 6,0 Z"/></g>
-                <g transform="translate(268,224) rotate(52)"><polygon points="0,-8 -5,0 5,0"/></g>
+              <!-- HIGH isobars -->
+              <g fill="none" stroke="#0c2541" stroke-width="1">
+                <ellipse cx="560" cy="150" rx="26" ry="20"/><ellipse cx="560" cy="150" rx="60" ry="46"/>
+                <ellipse cx="560" cy="150" rx="98" ry="76"/><ellipse cx="560" cy="150" rx="140" ry="110"/>
               </g>
-              <line x1="240" y1="244" x2="262" y2="221" stroke="#7a4f9e" stroke-width="0.7" stroke-dasharray="2,2"/>
-              <text x="166" y="252" font-family="Manrope, sans-serif" font-size="9" fill="#7a4f9e" font-style="italic">Occluded front</text>
+              <g stroke="#4a7ba6" stroke-width="1.5" fill="none" opacity="0.9"><path d="M 258.06,161.29 Q 256.82,148.98 249.94,138.71" marker-end="url(#wind)"/><path d="M 213.25,216.32 Q 223.29,209.09 228.75,197.99" marker-end="url(#wind)"/><path d="M 143.19,205.03 Q 154.47,210.11 166.81,209.28" marker-end="url(#wind)"/><path d="M 117.94,138.71 Q 119.18,151.02 126.06,161.29" marker-end="url(#wind)"/><path d="M 162.75,83.68 Q 152.71,90.91 147.25,102.01" marker-end="url(#wind)"/><path d="M 232.81,94.97 Q 221.53,89.89 209.19,90.72" marker-end="url(#wind)"/></g>
+              <g stroke="#4a7ba6" stroke-width="1.5" fill="none" opacity="0.6"><path d="M 629.94,138.71 Q 636.82,148.98 638.06,161.29" marker-end="url(#wind)"/><path d="M 604.75,204.92 Q 599.29,216.02 589.25,223.25" marker-end="url(#wind)"/><path d="M 534.81,216.21 Q 522.47,217.04 511.19,211.96" marker-end="url(#wind)"/><path d="M 490.06,161.29 Q 483.18,151.02 481.94,138.71" marker-end="url(#wind)"/><path d="M 515.25,95.08 Q 520.71,83.98 530.75,76.75" marker-end="url(#wind)"/><path d="M 585.19,83.79 Q 597.53,82.96 608.81,88.04" marker-end="url(#wind)"/></g>
+            </g>
 
-              <!-- Cold and warm fronts diverge from the triple point in a narrow wedge (the warm sector) — an "unzipped zipper" below the zipped-up occluded front -->
-              <line x1="290" y1="254" x2="250" y2="398" stroke="#2a5ba0" stroke-width="2.5"/>
-              <g fill="#2a5ba0">
-                <polygon points="286.7,299.6 276.4,302.9 279.6,291.3"/>
-                <polygon points="276.7,335.6 266.4,338.9 269.6,327.3"/>
-                <polygon points="266.7,371.6 256.4,374.9 259.6,363.3"/>
-              </g>
-              <text x="238" y="372" font-family="Manrope, sans-serif" font-size="9" fill="#2a5ba0" text-anchor="end" font-style="italic">Cold front</text>
+            <!-- isobar value labels -->
+            <text x="291" y="150" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle" stroke="#fffaf0" stroke-width="2.4" paint-order="stroke">996</text>
+            <text x="356" y="150" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle" stroke="#fffaf0" stroke-width="2.4" paint-order="stroke">1004</text>
+            <text x="690" y="250" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="end">1020</text>
 
-              <line x1="290" y1="254" x2="400" y2="395" stroke="#b53d1f" stroke-width="2.5"/>
-              <g fill="#b53d1f">
-                <path d="M 313.2,283.73 A 7,7 0 0 1 321.8,294.77"/>
-                <path d="M 340.7,318.98 A 7,7 0 0 1 349.3,330.02"/>
-                <path d="M 368.2,354.23 A 7,7 0 0 1 376.8,365.27"/>
-              </g>
-              <text x="360" y="332" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" font-style="italic">Warm front</text>
+            <!-- LOW / HIGH centers -->
+            <text x="188" y="161" font-family="Anton, sans-serif" font-size="30" fill="#b53d1f" text-anchor="middle">L</text>
+            <text x="188" y="185" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" text-anchor="middle" stroke="#fffaf0" stroke-width="2.6" paint-order="stroke">988 mb</text>
+            <text x="188" y="50" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle" font-style="italic" stroke="#fffaf0" stroke-width="2.8" paint-order="stroke">rising air · clouds & precip</text>
+            <text x="560" y="161" font-family="Anton, sans-serif" font-size="30" fill="#2a5ba0" text-anchor="middle">H</text>
+            <text x="560" y="185" font-family="JetBrains Mono, monospace" font-size="9" fill="#2a5ba0" text-anchor="middle">1028 mb</text>
+            <text x="560" y="50" font-family="Manrope, sans-serif" font-size="9.5" fill="#2a5ba0" text-anchor="middle" font-style="italic" stroke="#fffaf0" stroke-width="2.8" paint-order="stroke">sinking air · fair weather</text>
 
-              <text x="284" y="386" font-family="Manrope, sans-serif" font-size="8" fill="#9a8f7a" text-anchor="middle" font-style="italic">warm sector</text>
 
-              <!-- Dry line: trails south through the warm sector, clear of both fronts; scallops face the moist (east) side -->
-              <path d="M 315,335 C 322,357 322,379 321,400" fill="none" stroke="#b06a28" stroke-width="2"/>
-              <g fill="none" stroke="#b06a28" stroke-width="1.6">
-                <path d="M 319.6,347 A 6,6 0 0 1 320.9,359"/>
-                <path d="M 321.6,369 A 6,6 0 0 1 322.0,381"/>
-                <path d="M 321.4,388 A 6,6 0 0 1 321.0,400"/>
-              </g>
-              <text x="330" y="378" font-family="Manrope, sans-serif" font-size="8.5" fill="#b06a28" font-style="italic">Dry line</text>
+            <!-- occluded front -->
+            <path d="M 200,162 C 232,178 262,212 290,254" fill="none" stroke="#7a4f9e" stroke-width="2.5"/>
+            <polygon points="224.28,177.64 232.24,184.34 233.73,174.48" fill="#7a4f9e"/><path d="M 247.49,199.22 L 248.60,198.45 L 249.88,197.99 L 251.23,197.88 L 252.57,198.12 L 253.80,198.70 L 254.83,199.57 L 255.61,200.69 L 256.07,201.97 L 256.18,203.32 L 255.94,204.65 L 255.36,205.88 L 254.48,206.92 Z" fill="#7a4f9e"/><polygon points="269.84,225.68 276.08,234.00 279.76,224.74" fill="#7a4f9e"/>
+            <text x="234" y="240" font-family="Manrope, sans-serif" font-size="9" fill="#7a4f9e" font-style="italic" text-anchor="middle" stroke="#fffaf0" stroke-width="2.6" paint-order="stroke">Occluded front</text>
 
-              <!-- Stationary front: line alternates blue (under triangles) and red (under semicircles) -->
-              <g stroke-width="1.6">
-                <line x1="470" y1="358" x2="520" y2="358" stroke="#2a5ba0"/>
-                <line x1="520" y1="358" x2="550" y2="358" stroke="#b53d1f"/>
-                <line x1="550" y1="358" x2="580" y2="358" stroke="#2a5ba0"/>
-                <line x1="580" y1="358" x2="610" y2="358" stroke="#b53d1f"/>
-                <line x1="610" y1="358" x2="652" y2="358" stroke="#2a5ba0"/>
-              </g>
-              <g fill="#2a5ba0">
-                <polygon points="498,358 505,349 512,358"/>
-                <polygon points="558,358 565,349 572,358"/>
-                <polygon points="618,358 625,349 632,358"/>
-              </g>
-              <g fill="#b53d1f">
-                <path d="M 528,358 A 7,7 0 0 1 542,358"/>
-                <path d="M 588,358 A 7,7 0 0 1 602,358"/>
-              </g>
-              <text x="470" y="378" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541" font-style="italic">Stationary front</text>
+            <!-- cold front -->
+            <line x1="290" y1="254" x2="250" y2="402" stroke="#2a5ba0" stroke-width="2.5"/>
+            <polygon points="281.36,285.98 278.64,296.02 288.21,293.22" fill="#2a5ba0"/><polygon points="271.36,322.98 268.64,333.02 278.21,330.22" fill="#2a5ba0"/><polygon points="261.36,359.98 258.64,370.02 268.21,367.22" fill="#2a5ba0"/>
+            <text x="252" y="332" font-family="Manrope, sans-serif" font-size="9" fill="#2a5ba0" text-anchor="end" font-style="italic">Cold front</text>
 
-              <rect x="10" y="410" width="680" height="58" fill="rgba(255,250,240,0.95)" stroke="#b9a87a" stroke-width="0.8"/>
-              <text x="20" y="426" font-family="Anton, sans-serif" font-size="9" fill="#0c2541" letter-spacing="0.06em">LEGEND</text>
+            <!-- warm front -->
+            <line x1="290" y1="254" x2="404.30" y2="366.39" stroke="#b53d1f" stroke-width="2.5"/>
+            <path d="M 327.09,290.47 L 328.16,289.64 L 329.41,289.11 L 330.76,288.92 L 332.10,289.09 L 333.36,289.59 L 334.45,290.41 L 335.28,291.48 L 335.81,292.73 L 336.00,294.08 L 335.83,295.42 L 335.33,296.68 L 334.51,297.77 Z" fill="#b53d1f"/><path d="M 355.89,318.79 L 356.96,317.96 L 358.21,317.43 L 359.56,317.24 L 360.90,317.41 L 362.16,317.91 L 363.25,318.73 L 364.08,319.80 L 364.61,321.05 L 364.80,322.40 L 364.63,323.74 L 364.13,325.00 L 363.31,326.09 Z" fill="#b53d1f"/><path d="M 384.69,347.11 L 385.76,346.28 L 387.01,345.75 L 388.36,345.56 L 389.70,345.73 L 390.96,346.23 L 392.05,347.05 L 392.88,348.12 L 393.41,349.37 L 393.60,350.72 L 393.43,352.06 L 392.93,353.32 L 392.11,354.41 Z" fill="#b53d1f"/>
+            <text x="372" y="332" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" font-style="italic">Warm front</text>
 
-              <line x1="92" y1="423" x2="120" y2="423" stroke="#2a5ba0" stroke-width="2"/>
-              <polygon points="100,423 108,423 104,415" fill="#2a5ba0"/>
-              <text x="126" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Cold front</text>
+            <text x="312" y="326" font-family="Manrope, sans-serif" font-size="8" fill="#9a8f7a" text-anchor="middle" font-style="italic" stroke="#fffaf0" stroke-width="2.4" paint-order="stroke">warm sector</text>
 
-              <line x1="232" y1="423" x2="260" y2="423" stroke="#b53d1f" stroke-width="2"/>
-              <path d="M 242,423 A 5,5 0 0 1 252,423" fill="#b53d1f"/>
-              <text x="266" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Warm front</text>
+            <!-- dry line (label drawn first, so the line sits on top / in front) -->
+            <text x="312" y="382" font-family="Manrope, sans-serif" font-size="8.5" fill="#b06a28" text-anchor="middle" font-style="italic">Dry line</text>
+            <path d="M 338,332 C 346,354 346,376 345,398" fill="none" stroke="#b06a28" stroke-width="2"/>
+            <g><path d="M 338.92,334.14 L 340.79,333.92 L 342.63,334.29 L 344.27,335.21 L 345.54,336.59 L 346.32,338.30 L 346.54,340.16 L 346.17,342.00 L 345.25,343.64 L 343.87,344.91 L 342.17,345.70 " fill="none" stroke="#b06a28" stroke-width="1.6"/><path d="M 342.75,348.51 L 344.63,348.52 L 346.41,349.11 L 347.93,350.22 L 349.02,351.74 L 349.59,353.53 L 349.58,355.41 L 348.99,357.19 L 347.88,358.70 L 346.36,359.80 L 344.57,360.37 " fill="none" stroke="#b06a28" stroke-width="1.6"/><path d="M 344.81,362.97 L 346.67,363.16 L 348.39,363.92 L 349.79,365.17 L 350.74,366.79 L 351.13,368.62 L 350.94,370.49 L 350.19,372.21 L 348.94,373.61 L 347.31,374.55 L 345.48,374.95 " fill="none" stroke="#b06a28" stroke-width="1.6"/><path d="M 345.50,377.48 L 347.35,377.79 L 349.02,378.66 L 350.33,380.00 L 351.16,381.68 L 351.44,383.54 L 351.13,385.39 L 350.26,387.06 L 348.92,388.37 L 347.24,389.20 L 345.38,389.48 " fill="none" stroke="#b06a28" stroke-width="1.6"/></g>
 
-              <line x1="372" y1="423" x2="390" y2="423" stroke="#2a5ba0" stroke-width="1.6"/>
-              <line x1="390" y1="423" x2="400" y2="423" stroke="#b53d1f" stroke-width="1.6"/>
-              <polygon points="382,423 386,417 390,423" fill="#2a5ba0"/>
-              <path d="M 396,423 A 4,4 0 0 0 404,423" fill="#b53d1f"/>
-              <text x="410" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Stationary</text>
+            <!-- stationary front: trails east off the warm-front tail (warm front stalls) -->
+            <line x1="418.00" y1="372" x2="463.00" y2="372" stroke="#2a5ba0" stroke-width="2"/><line x1="463.00" y1="372" x2="508.00" y2="372" stroke="#b53d1f" stroke-width="2"/><line x1="508.00" y1="372" x2="553.00" y2="372" stroke="#2a5ba0" stroke-width="2"/><line x1="553.00" y1="372" x2="598.00" y2="372" stroke="#b53d1f" stroke-width="2"/><line x1="598.00" y1="372" x2="643.00" y2="372" stroke="#2a5ba0" stroke-width="2"/><line x1="643.00" y1="372" x2="688.00" y2="372" stroke="#b53d1f" stroke-width="2"/>
+            <polygon points="435.50,372.00 445.50,372.00 440.50,364.00" fill="#2a5ba0"/><path d="M 480.50,372.00 L 480.67,373.29 L 481.17,374.50 L 481.96,375.54 L 483.00,376.33 L 484.21,376.83 L 485.50,377.00 L 486.79,376.83 L 488.00,376.33 L 489.04,375.54 L 489.83,374.50 L 490.33,373.29 L 490.50,372.00 Z" fill="#b53d1f"/><polygon points="525.50,372.00 535.50,372.00 530.50,364.00" fill="#2a5ba0"/><path d="M 570.50,372.00 L 570.67,373.29 L 571.17,374.50 L 571.96,375.54 L 573.00,376.33 L 574.21,376.83 L 575.50,377.00 L 576.79,376.83 L 578.00,376.33 L 579.04,375.54 L 579.83,374.50 L 580.33,373.29 L 580.50,372.00 Z" fill="#b53d1f"/><polygon points="615.50,372.00 625.50,372.00 620.50,364.00" fill="#2a5ba0"/><path d="M 660.50,372.00 L 660.67,373.29 L 661.17,374.50 L 661.96,375.54 L 663.00,376.33 L 664.21,376.83 L 665.50,377.00 L 666.79,376.83 L 668.00,376.33 L 669.04,375.54 L 669.83,374.50 L 670.33,373.29 L 670.50,372.00 Z" fill="#b53d1f"/>
+            <defs><linearGradient id="frontFillet" x1="404.30" y1="366.39" x2="418.00" y2="372.00" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b53d1f"/><stop offset="1" stop-color="#2a5ba0"/></linearGradient></defs>
+            <path d="M 404.30,366.39 Q 410.00,372.00 418.00,372.00" fill="none" stroke="url(#frontFillet)" stroke-width="2.3" stroke-linecap="round"/>
+            <text x="560" y="362" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541" font-style="italic" text-anchor="middle">Stationary front</text>
 
-              <line x1="520" y1="423" x2="548" y2="423" stroke="#7a4f9e" stroke-width="2"/>
-              <polygon points="528,423 536,423 532,415" fill="#7a4f9e"/>
-              <path d="M 540,423 A 4,4 0 0 1 548,423" fill="#7a4f9e"/>
-              <text x="556" y="426" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Occluded</text>
+            <!-- a plotted station ON the map (cold air behind the cold front → NW wind) -->
+            <g>
+             <circle cx="168" cy="332" r="7" fill="#fffefa" stroke="#0c2541" stroke-width="1.3"/>
+             <path d="M 168,332 L 168,325 A 7 7 0 1 1 161,332 Z" fill="#0c2541"/>
+             <circle cx="168" cy="332" r="7" fill="none" stroke="#0c2541" stroke-width="1.3"/>
+             <line x1="162.05" y1="326.05" x2="138" y2="302" stroke="#0c2541" stroke-width="1.6"/>
+             <line x1="138" y1="302" x2="130" y2="292" stroke="#0c2541" stroke-width="1.6"/>
+             <line x1="144" y1="308" x2="136" y2="298" stroke="#0c2541" stroke-width="1.6"/>
+             <text x="156" y="328" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="end" font-weight="700">64</text>
+             <text x="150" y="336" font-family="JetBrains Mono, monospace" font-size="7" fill="#2d4360" text-anchor="end">6</text>
+             <text x="156" y="344" font-family="JetBrains Mono, monospace" font-size="8" fill="#3a7d44" text-anchor="end" font-weight="700">58</text>
+             <text x="180" y="328" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="start" font-weight="700">012</text>
+             <text x="180" y="344" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="start">30</text>
+              <line x1="172" y1="341" x2="180" y2="360" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="2,2"/>
+              <text x="180" y="372" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle" font-weight="700">KLYH</text>
+            </g>
 
-              <line x1="92" y1="450" x2="120" y2="450" stroke="#b06a28" stroke-width="2"/>
-              <path d="M 100,450 A 4,4 0 0 1 108,450" fill="none" stroke="#b06a28" stroke-width="1.4"/>
-              <text x="126" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Dry line</text>
+            <!-- ===== station model callout ===== -->
+            <rect x="14" y="424" width="346" height="166" rx="2" fill="#fffefa" stroke="#b9a87a" stroke-width="0.9"/>
+            <text x="24" y="442" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" letter-spacing="0.08em">STATION MODEL</text>
+            <text x="24" y="455" font-family="Manrope, sans-serif" font-size="8.5" fill="#9a8f7a" font-style="italic">how each station is plotted</text>
+            <!-- sample plot: aviation station model (matches AWC) -->
+             <circle cx="96" cy="508" r="11" fill="#fffefa" stroke="#0c2541" stroke-width="1.4"/>
+             <path d="M 96,508 L 96,497 A 11 11 0 1 1 85,508 Z" fill="#0c2541"/>
+             <circle cx="96" cy="508" r="11" fill="none" stroke="#0c2541" stroke-width="1.4"/>
+             <line x1="88.22" y1="500.22" x2="62" y2="474" stroke="#0c2541" stroke-width="1.6"/>
+             <line x1="62" y1="474" x2="51" y2="460" stroke="#0c2541" stroke-width="1.6"/>
+             <line x1="70" y1="482" x2="59" y2="468" stroke="#0c2541" stroke-width="1.6"/>
+             <text x="82" y="503" font-family="JetBrains Mono, monospace" font-size="11" fill="#b53d1f" text-anchor="end" font-weight="700">64</text>
+             <text x="68" y="513" font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360" text-anchor="end">6</text>
+             <text x="82" y="525" font-family="JetBrains Mono, monospace" font-size="11" fill="#3a7d44" text-anchor="end" font-weight="700">58</text>
+             <text x="110" y="501" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="start" font-weight="700">012</text>
+             <text x="110" y="516" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#0c2541" text-anchor="start">30</text>
+             <text x="110" y="528" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#9a8f7a" text-anchor="start">KLYH</text>
+            <rect x="176" y="466" width="17" height="11" rx="1.5" fill="none" stroke="#b53d1f" stroke-width="1"/><text x="184.5" y="474" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f" text-anchor="middle" font-weight="700">64</text><text x="206" y="475" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">temperature (°F) — upper left</text><rect x="176" y="481" width="17" height="11" rx="1.5" fill="none" stroke="#3a7d44" stroke-width="1"/><text x="184.5" y="489" font-family="JetBrains Mono, monospace" font-size="8" fill="#3a7d44" text-anchor="middle" font-weight="700">58</text><text x="206" y="490" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">dew point (°F) — lower left</text><text x="184.5" y="504" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">6</text><text x="206" y="505" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">visibility (SM) — middle left</text><rect x="176" y="511" width="17" height="11" rx="1.5" fill="none" stroke="#0c2541" stroke-width="1"/><text x="184.5" y="519" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle" font-weight="700">012</text><text x="206" y="520" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">altimeter setting — 30.12 in Hg</text><rect x="176" y="526" width="17" height="11" rx="1.5" fill="none" stroke="#0c2541" stroke-width="1"/><text x="184.5" y="534" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle" font-weight="700">30</text><text x="206" y="535" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">ceiling — 3,000 ft (hundreds)</text><circle cx="184" cy="546" r="5.5" fill="#fffefa" stroke="#0c2541" stroke-width="1.1"/><path d="M 184,546 L 184,540.5 A 5.5 5.5 0 1 1 178.5,546 Z" fill="#0c2541"/><circle cx="184" cy="546" r="5.5" fill="none" stroke="#0c2541" stroke-width="1.1"/><text x="206" y="550" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">sky cover — broken (¾ filled)</text><line x1="176" y1="561" x2="192" y2="561" stroke="#0c2541" stroke-width="1.4"/><line x1="192" y1="561" x2="197" y2="556" stroke="#0c2541" stroke-width="1.4"/><text x="206" y="565" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">wind — barb shows speed &amp; dir</text><text x="184.5" y="579" font-family="JetBrains Mono, monospace" font-size="7" fill="#9a8f7a" text-anchor="middle">KLYH</text><text x="206" y="580" font-family="Manrope, sans-serif" font-size="8.5" fill="#2d4360">station identifier — lower right</text>
 
-              <line x1="232" y1="450" x2="260" y2="450" stroke="#0c2541" stroke-width="1.2"/>
-              <text x="266" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Isobar (mb)</text>
-
-              <text x="378" y="454" font-family="Anton, sans-serif" font-size="13" fill="#2a5ba0" text-anchor="middle">H</text>
-              <text x="392" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">High: sinking air</text>
-
-              <text x="528" y="454" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f" text-anchor="middle">L</text>
-              <text x="542" y="453" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541">Low: rising air</text>
-            </svg>
-            <figcaption>Simplified surface analysis chart. The Low (L, 988 mb) has tightly packed isobars and an occluded front spiralling out to a triple point, where a cold front trails southwest and a warm front extends east, enclosing the warm sector. Air converges and rises at the Low (clouds and precipitation); surface winds spiral counter-clockwise and inward around it. The High (H, 1028 mb) has widely spaced isobars with air sinking and winds spiralling clockwise and outward (fair weather). A stationary front lies to the southeast and a dry line sits in the warm sector. Real NWS charts add full station models and more detail, but every symbol here is one a DPE can ask you to identify. (AC 00-6B Ch. 9)</figcaption>
-          </figure>
+            <!-- ===== legend ===== -->
+            <rect x="372" y="424" width="338" height="166" rx="2" fill="#fffefa" stroke="#b9a87a" stroke-width="0.9"/>
+            <text x="384" y="442" font-family="Anton, sans-serif" font-size="10" fill="#0c2541" letter-spacing="0.08em">LEGEND</text>
+            <line x1="384" y1="462" x2="414" y2="462" stroke="#2a5ba0" stroke-width="2"/><polygon points="395,462 403,462 399,454" fill="#2a5ba0"/><text x="422" y="465" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Cold front</text><line x1="552" y1="462" x2="582" y2="462" stroke="#b53d1f" stroke-width="2"/><path d="M 562,462 A 5 5 0 0 1 572,462" fill="#b53d1f"/><text x="590" y="465" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Warm front</text><line x1="384" y1="488" x2="399" y2="488" stroke="#2a5ba0" stroke-width="1.8"/><line x1="399" y1="488" x2="414" y2="488" stroke="#b53d1f" stroke-width="1.8"/><polygon points="386,488 394,488 390,481" fill="#2a5ba0"/><path d="M 402,488 A 4 4 0 0 0 410,488" fill="#b53d1f"/><text x="422" y="491" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Stationary</text><line x1="552" y1="488" x2="582" y2="488" stroke="#7a4f9e" stroke-width="2"/><polygon points="560,488 568,488 564,480" fill="#7a4f9e"/><path d="M 570,488 A 4 4 0 0 1 578,488" fill="#7a4f9e"/><text x="590" y="491" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Occluded</text><line x1="384" y1="514" x2="414" y2="514" stroke="#b06a28" stroke-width="2"/><path d="M 395,514 A 4 4 0 0 1 403,514" fill="none" stroke="#b06a28" stroke-width="1.4"/><text x="422" y="517" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Dry line</text><line x1="552" y1="514" x2="582" y2="514" stroke="#0c2541" stroke-width="1.2"/><text x="590" y="517" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Isobar (mb)</text><text x="384" y="544" font-family="Anton, sans-serif" font-size="13" fill="#2a5ba0">H</text><text x="398" y="543" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">High · sinking air</text><text x="552" y="544" font-family="Anton, sans-serif" font-size="13" fill="#b53d1f">L</text><text x="566" y="543" font-family="Manrope, sans-serif" font-size="8.5" fill="#0c2541">Low · rising air</text>
+          </svg>
+              <figcaption>
+                A simplified <strong>surface analysis chart</strong>. The <strong>Low</strong> (988 mb) has tightly packed isobars; air converges and rises (clouds, precip) and surface winds spiral <strong>counter-clockwise and inward</strong>. An occluded front spirals out to a <strong>triple point</strong>, where a <strong>cold front</strong> (blue triangles) trails southwest and a <strong>warm front</strong> (red semicircles) extends east, enclosing the warm sector. The <strong>High</strong> (1028 mb) has widely spaced isobars with sinking air and winds spiralling <strong>clockwise and outward</strong> (fair weather). A stationary front and dry line lie to the south. Each station is plotted with the <strong>station model</strong> shown at left — temperature and dew point on the left, visibility to the far left, the <strong>altimeter setting</strong> and <strong>ceiling height</strong> (hundreds of ft) on the right, sky cover in the center circle, and a wind barb.
+                <span class="src">Ref: AC 00-6B Ch. 9 · AC 00-45H §9</span>
+              </figcaption>
+            </figure>
 
           <h3>Reading the pressure gradient</h3>
           <p>
