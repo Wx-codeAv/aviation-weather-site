@@ -132,120 +132,134 @@
 
           <!-- Diagram: correct vs wrong altimeter setting -->
           <figure class="diagram">
-            <svg viewBox="0 0 680 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="altimeter-diagram-title">
-              <title id="altimeter-diagram-title">Two-panel diagram: left shows correct altimeter setting with airplane at 3,000 ft true and 1,500 ft terrain clearance; right shows setting 0.30 Hg too low, airplane at 2,700 ft true while altimeter reads 3,000 ft, with only 1,200 ft clearance</title>
-              <rect width="680" height="370" fill="#fffaf0"/>
+                <svg viewBox="0 0 720 600" role="img" aria-label="Why the altimeter setting matters: flying from high to low pressure without resetting makes the altimeter over-read, leaving less terrain clearance than indicated">
+                  <defs>
+                    <!-- side-profile light aircraft, nose right, ~52px wide -->
+                    <g id="acft">
+                      <path d="M-26,1 L-28,-12 L-19,-12 L-13,-2 Z" fill="#0c2541"/>
+                      <path d="M-26,0 L-13,0 L-17,-6 L-27,-6 Z" fill="#0c2541"/>
+                      <path d="M-27,1 Q-27,-3.5 -14,-4.5 L13,-4.5 Q26,-3.5 30,1 Q26,4.5 13,5 L-14,5 Q-27,4.5 -27,1 Z" fill="#0c2541"/>
+                      <path d="M2,5 L16,5 L9,15 L-4,15 Z" fill="#0c2541"/>
+                      <circle cx="20" cy="-1" r="1.7" fill="#f4ecd6"/>
+                      <circle cx="13" cy="-1" r="1.7" fill="#f4ecd6"/>
+                    </g>
+                    <marker id="al-red" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b53d1f"/></marker>
+                    <marker id="al-ink" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0c2541"/></marker>
+                  </defs>
 
-              <!-- Panel headers -->
-              <text x="170" y="28" font-family="Anton, sans-serif" font-size="14" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.04em">SETTING CORRECT</text>
-              <text x="510" y="28" font-family="Anton, sans-serif" font-size="14" fill="#b53d1f" text-anchor="middle" letter-spacing="0.04em">SETTING TOO LOW</text>
-              <line x1="340" y1="35" x2="340" y2="345" stroke="#b9a87a" stroke-width="0.5" stroke-dasharray="2,4"/>
+                  <rect x="0" y="0" width="720" height="600" fill="#fffaf0"/>
 
-              <!-- Scale: 0-4000 ft, y=310 at 0 ft, y=50 at 4000 ft → 0.065 px/ft -->
+                  <!-- ================= CAUSE STRIP ================= -->
+                  <rect x="16" y="16" width="688" height="132" rx="3" fill="#f4ecd6" stroke="#b9a87a" stroke-width="1"/>
+                  <text x="30" y="38" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="0.12em" fill="#5d6f3c">THE CAUSE — "HIGH TO LOW, LOOK OUT BELOW"</text>
 
-              <!-- LEFT PANEL (x: 30-320) -->
-              <rect x="30" y="50" width="290" height="260" fill="rgba(74,123,166,0.04)" rx="2"/>
-              <rect x="30" y="310" width="290" height="22" fill="#5d6f3c" rx="2"/>
+                  <!-- HIGH region (left) -->
+                  <g>
+                    <ellipse cx="118" cy="86" rx="64" ry="36" fill="none" stroke="#2a5ba0" stroke-width="1"/>
+                    <ellipse cx="118" cy="86" rx="44" ry="24" fill="none" stroke="#2a5ba0" stroke-width="1"/>
+                    <ellipse cx="118" cy="86" rx="24" ry="13" fill="none" stroke="#2a5ba0" stroke-width="1"/>
+                    <text x="118" y="92" font-family="Anton, sans-serif" font-size="22" fill="#2a5ba0" text-anchor="middle">H</text>
+                    <text x="118" y="136" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">departure · set 30.19"</text>
+                  </g>
+                  <!-- LOW region (right) -->
+                  <g>
+                    <ellipse cx="602" cy="86" rx="64" ry="36" fill="none" stroke="#b53d1f" stroke-width="1"/>
+                    <ellipse cx="602" cy="86" rx="44" ry="24" fill="none" stroke="#b53d1f" stroke-width="1"/>
+                    <ellipse cx="602" cy="86" rx="24" ry="13" fill="none" stroke="#b53d1f" stroke-width="1"/>
+                    <text x="602" y="92" font-family="Anton, sans-serif" font-size="22" fill="#b53d1f" text-anchor="middle">L</text>
+                    <text x="602" y="136" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">now here · actually 29.89"</text>
+                  </g>
+                  <!-- flight path arrow -->
+                  <line x1="196" y1="70" x2="520" y2="70" stroke="#0c2541" stroke-width="1.6" stroke-dasharray="6,4" marker-end="url(#al-ink)"/>
+                  <use href="#acft" transform="translate(360,70) scale(0.62)"/>
+                  <text x="360" y="52" font-family="Manrope, sans-serif" font-size="9.5" fill="#0c2541" text-anchor="middle" font-style="italic">altimeter never reset in flight</text>
 
-              <!-- Terrain hill: peak at 1500 ft → y=310-97.5=212 -->
-              <polygon points="75,310 130,212 185,310" fill="#5d6f3c" opacity="0.45"/>
-              <text x="78" y="206" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#5d6f3c" text-anchor="middle">1,500 ft terrain</text>
+                  <!-- ================= PANELS ================= -->
+                  <!-- panel frames -->
+                  <rect x="16" y="156" width="338" height="396" rx="3" fill="#fbf6ea" stroke="#b9a87a" stroke-width="1"/>
+                  <rect x="366" y="156" width="338" height="396" rx="3" fill="#fbf2ee" stroke="#b9a87a" stroke-width="1"/>
+                  <text x="185" y="180" font-family="Anton, sans-serif" font-size="15" letter-spacing="0.04em" fill="#3a7d44" text-anchor="middle">SETTING CORRECT</text>
+                  <text x="535" y="180" font-family="Anton, sans-serif" font-size="15" letter-spacing="0.04em" fill="#b53d1f" text-anchor="middle">SETTING TOO LOW</text>
 
-              <!-- Altitude reference lines -->
-              <g stroke="#b9a87a" stroke-width="0.4" stroke-dasharray="2,4" opacity="0.5">
-                <line x1="30" y1="245" x2="320" y2="245"/>
-                <line x1="30" y1="180" x2="320" y2="180"/>
-                <line x1="30" y1="115" x2="320" y2="115"/>
-              </g>
-              <g font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b9a87a" opacity="0.7">
-                <text x="33" y="242">1,000 ft</text>
-                <text x="33" y="177">2,000 ft</text>
-                <text x="33" y="112">3,000 ft</text>
-              </g>
+                  <!-- ===== altitude gridlines (shared mapping: 0ft=y500, 60px/1000ft) ===== -->
+                  <g font-family="JetBrains Mono, monospace" font-size="8" fill="#9a8f7a">
+                    <line x1="60" y1="320" x2="330" y2="320" stroke="#e2d8bd" stroke-width="1"/><text x="34" y="323">3,000</text>
+                    <line x1="60" y1="380" x2="330" y2="380" stroke="#e2d8bd" stroke-width="1"/><text x="34" y="383">2,000</text>
+                    <line x1="60" y1="440" x2="330" y2="440" stroke="#e2d8bd" stroke-width="1"/><text x="34" y="443">1,000</text>
+                    <line x1="410" y1="320" x2="680" y2="320" stroke="#e8d8cf" stroke-width="1"/><text x="384" y="323">3,000</text>
+                    <line x1="410" y1="380" x2="680" y2="380" stroke="#e8d8cf" stroke-width="1"/><text x="384" y="383">2,000</text>
+                    <line x1="410" y1="440" x2="680" y2="440" stroke="#e8d8cf" stroke-width="1"/><text x="384" y="443">1,000</text>
+                  </g>
 
-              <!-- Airplane at 3000 ft true: y=115 -->
-              <g transform="translate(240,115)">
-                <polygon points="-20,0 20,0 8,7 -8,7" fill="#0c2541"/>
-                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#0c2541"/>
-                <rect x="-2" y="5" width="4" height="4" fill="#0c2541"/>
-              </g>
+                  <!-- ===== terrain (mountain ridge) — both panels, peak at 1,500 ft (y=410) ===== -->
+                  <!-- LEFT -->
+                  <g>
+                    <polygon points="60,500 130,440 175,410 215,438 270,470 330,500" fill="#5d6f3c"/>
+                    <polygon points="175,410 200,425 188,432 175,424 162,432 150,425" fill="#eef0e6" opacity="0.85"/>
+                    <polyline points="130,440 160,470 200,452 240,486" fill="none" stroke="#46552d" stroke-width="1" opacity="0.6"/>
+                    <rect x="60" y="500" width="270" height="10" fill="#46552d"/>
+                  </g>
+                  <!-- RIGHT -->
+                  <g>
+                    <polygon points="410,500 480,440 525,410 565,438 620,470 680,500" fill="#5d6f3c"/>
+                    <polygon points="525,410 550,425 538,432 525,424 512,432 500,425" fill="#eef0e6" opacity="0.85"/>
+                    <polyline points="480,440 510,470 550,452 590,486" fill="none" stroke="#46552d" stroke-width="1" opacity="0.6"/>
+                    <rect x="410" y="500" width="270" height="10" fill="#46552d"/>
+                  </g>
+                  <text x="175" y="462" font-family="JetBrains Mono, monospace" font-size="8" fill="#eef0e6" text-anchor="middle">1,500 ft peak</text>
+                  <text x="525" y="462" font-family="JetBrains Mono, monospace" font-size="8" fill="#eef0e6" text-anchor="middle">1,500 ft peak</text>
 
-              <!-- Labels (correct) — box raised so it clears the airplane icon -->
-              <rect x="190" y="58" width="125" height="34" fill="#fffaf0" stroke="#5d6f3c" stroke-width="1" rx="2"/>
-              <text x="253" y="73" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">Reads: 3,000 ft</text>
-              <text x="253" y="86" font-family="Manrope, sans-serif" font-size="9.5" fill="#5d6f3c" text-anchor="middle">True alt: 3,000 ft ✓</text>
+                  <!-- ===== LEFT: correct, aircraft at 3,000 true = indicated ===== -->
+                  <use href="#acft" transform="translate(120,320) scale(0.92)"/>
+                  <line x1="250" y1="320" x2="250" y2="410" stroke="#3a7d44" stroke-width="1" stroke-dasharray="3,3"/>
+                  <line x1="244" y1="320" x2="256" y2="320" stroke="#3a7d44" stroke-width="1.4"/>
+                  <line x1="244" y1="410" x2="256" y2="410" stroke="#3a7d44" stroke-width="1.4"/>
+                  <line x1="175" y1="410" x2="250" y2="410" stroke="#3a7d44" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.6"/>
+                  <text x="262" y="360" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#3a7d44">1,500 ft</text>
+                  <text x="262" y="372" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#3a7d44">above peak</text>
+                  <!-- readout card -->
+                  <rect x="60" y="200" width="150" height="44" rx="2" fill="#fffefa" stroke="#3a7d44" stroke-width="1"/>
+                  <rect x="60" y="200" width="150" height="3" fill="#3a7d44"/>
+                  <text x="70" y="219" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541">Reads&#160;&#160;3,000 ft</text>
+                  <text x="70" y="234" font-family="JetBrains Mono, monospace" font-size="9" fill="#3a7d44">True&#160;&#160;&#160;&#160;3,000 ft ✓</text>
+                  <!-- kollsman -->
+                  <rect x="60" y="516" width="150" height="20" rx="2" fill="#3a7d44"/>
+                  <text x="135" y="530" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4ecd6" text-anchor="middle" font-weight="700">SET 30.19" ✓</text>
 
-              <!-- Clearance bracket -->
-              <line x1="138" y1="115" x2="138" y2="212" stroke="#5d6f3c" stroke-width="1"/>
-              <line x1="133" y1="115" x2="143" y2="115" stroke="#5d6f3c" stroke-width="1"/>
-              <line x1="133" y1="212" x2="143" y2="212" stroke="#5d6f3c" stroke-width="1"/>
-              <text x="150" y="156" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#5d6f3c" text-anchor="middle" transform="rotate(-90,150,156)">1,500 ft clearance</text>
+                  <!-- ===== RIGHT: too low — true 2,700 (y=338), indicated ghost at 3,000 (y=320) ===== -->
+                  <use href="#acft" transform="translate(470,338) scale(0.92)"/>
+                  <use href="#acft" transform="translate(470,320) scale(0.92)" opacity="0.22"/>
+                  <!-- gap bracket 300 ft -->
+                  <line x1="556" y1="320" x2="556" y2="338" stroke="#b53d1f" stroke-width="1.4"/>
+                  <line x1="551" y1="320" x2="561" y2="320" stroke="#b53d1f" stroke-width="1.4"/>
+                  <line x1="551" y1="338" x2="561" y2="338" stroke="#b53d1f" stroke-width="1.4"/>
+                  <text x="566" y="332" font-family="JetBrains Mono, monospace" font-size="8" fill="#b53d1f">300 ft high</text>
+                  <text x="566" y="316" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#9a8f7a">indicated</text>
+                  <text x="566" y="348" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#0c2541">true</text>
+                  <!-- clearance now only 1,200 -->
+                  <line x1="640" y1="338" x2="640" y2="410" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3"/>
+                  <line x1="634" y1="338" x2="646" y2="338" stroke="#b53d1f" stroke-width="1.4"/>
+                  <line x1="634" y1="410" x2="646" y2="410" stroke="#b53d1f" stroke-width="1.4"/>
+                  <line x1="525" y1="410" x2="640" y2="410" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.6"/>
+                  <text x="600" y="368" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" text-anchor="middle">1,200 ft</text>
+                  <text x="600" y="380" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f" text-anchor="middle">above peak</text>
+                  <!-- readout card -->
+                  <rect x="410" y="200" width="160" height="58" rx="2" fill="#fffefa" stroke="#b53d1f" stroke-width="1"/>
+                  <rect x="410" y="200" width="160" height="3" fill="#b53d1f"/>
+                  <text x="420" y="219" font-family="JetBrains Mono, monospace" font-size="9" fill="#0c2541">Reads&#160;&#160;3,000 ft</text>
+                  <text x="420" y="234" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">True&#160;&#160;&#160;&#160;2,700 ft ✗</text>
+                  <text x="420" y="249" font-family="JetBrains Mono, monospace" font-size="8" fill="#2d4360">300 ft below where you think</text>
+                  <!-- kollsman -->
+                  <rect x="410" y="516" width="160" height="20" rx="2" fill="#b53d1f"/>
+                  <text x="490" y="530" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4ecd6" text-anchor="middle" font-weight="700">SET 30.19" — STALE ✗</text>
 
-              <!-- Altimeter setting badge -->
-              <rect x="35" y="316" width="112" height="14" fill="#0c2541" rx="1"/>
-              <text x="91" y="327" font-family="JetBrains Mono, monospace" font-size="10" fill="#d9a521" text-anchor="middle">Set: 30.19" Hg ✓</text>
-
-              <!-- RIGHT PANEL (x: 360-650) -->
-              <rect x="360" y="50" width="290" height="260" fill="rgba(181,61,31,0.03)" rx="2"/>
-              <rect x="360" y="310" width="290" height="22" fill="#5d6f3c" rx="2"/>
-
-              <!-- Same terrain -->
-              <polygon points="405,310 460,212 515,310" fill="#5d6f3c" opacity="0.45"/>
-              <text x="408" y="206" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#5d6f3c" text-anchor="middle">1,500 ft terrain</text>
-
-              <!-- Altitude reference lines -->
-              <g stroke="#b9a87a" stroke-width="0.4" stroke-dasharray="2,4" opacity="0.5">
-                <line x1="360" y1="245" x2="650" y2="245"/>
-                <line x1="360" y1="180" x2="650" y2="180"/>
-                <line x1="360" y1="115" x2="650" y2="115"/>
-              </g>
-              <g font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b9a87a" opacity="0.7">
-                <text x="363" y="242">1,000 ft</text>
-                <text x="363" y="177">2,000 ft</text>
-                <text x="363" y="112">3,000 ft</text>
-              </g>
-
-              <!-- Ghost at 3000 ft indicated: y=115 — labeled to the right in clear space -->
-              <g transform="translate(560,115)" opacity="0.2">
-                <polygon points="-20,0 20,0 8,7 -8,7" fill="#0c2541"/>
-                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#0c2541"/>
-              </g>
-              <line x1="581" y1="115" x2="598" y2="115" stroke="#b9a87a" stroke-width="0.8" stroke-dasharray="3,3"/>
-              <text x="601" y="118" font-family="JetBrains Mono, monospace" font-size="9" fill="#9a8a5c">indicated</text>
-
-              <!-- Airplane at 2700 ft true: y=310-175.5=134.5→135 — labeled to the right -->
-              <g transform="translate(560,135)">
-                <polygon points="-20,0 20,0 8,7 -8,7" fill="#b53d1f"/>
-                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#b53d1f"/>
-                <rect x="-2" y="5" width="4" height="4" fill="#b53d1f"/>
-              </g>
-              <line x1="581" y1="135" x2="598" y2="135" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="3,3"/>
-              <text x="601" y="138" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f">true</text>
-
-              <!-- Gap bracket: 300 ft (y=115 to y=135), set LEFT of the aircraft in clear space -->
-              <line x1="532" y1="115" x2="532" y2="135" stroke="#b53d1f" stroke-width="1.5"/>
-              <line x1="527" y1="115" x2="537" y2="115" stroke="#b53d1f" stroke-width="1.5"/>
-              <line x1="527" y1="135" x2="537" y2="135" stroke="#b53d1f" stroke-width="1.5"/>
-              <text x="524" y="128" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="end">300 ft</text>
-
-              <!-- Labels (wrong) — box raised so it clears the 3,000 ft gridline label -->
-              <rect x="360" y="50" width="152" height="56" fill="rgba(181,61,31,0.07)" stroke="#b53d1f" stroke-width="1" rx="2"/>
-              <text x="436" y="66" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" text-anchor="middle" font-weight="700">Reads: 3,000 ft</text>
-              <text x="436" y="81" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle">True alt: 2,700 ft ✗</text>
-              <text x="436" y="96" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle" font-style="italic">300 ft below where you think</text>
-
-              <!-- Reduced clearance bracket -->
-              <line x1="468" y1="135" x2="468" y2="212" stroke="#b53d1f" stroke-width="1"/>
-              <line x1="463" y1="135" x2="473" y2="135" stroke="#b53d1f" stroke-width="1"/>
-              <line x1="463" y1="212" x2="473" y2="212" stroke="#b53d1f" stroke-width="1"/>
-              <text x="480" y="166" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#b53d1f" text-anchor="middle" transform="rotate(-90,480,166)">1,200 ft clearance</text>
-
-              <!-- Altimeter setting badge (wrong) -->
-              <rect x="365" y="316" width="112" height="14" fill="#b53d1f" rx="1"/>
-              <text x="421" y="327" font-family="JetBrains Mono, monospace" font-size="10" fill="#fffaf0" text-anchor="middle">Set: 29.92" Hg ✗</text>
-            </svg>
-            <figcaption>Left: correct setting — indicated altitude matches true altitude, terrain clearance is as planned. Right: the Kollsman is 0.30"Hg too low (flew from high to low pressure without updating) — the altimeter reads 3,000 ft but the aircraft is at 2,700 ft true. Terrain clearance is 300 ft less than the pilot believes. Near mountainous terrain, this kills people.</figcaption>
-          </figure>
+                  <rect x="1" y="1" width="718" height="598" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
+                </svg>
+                <figcaption>
+                  <strong>Set the altimeter, or the altimeter lies to you.</strong> Fly from a <strong>high-pressure</strong> area into <strong>lower pressure</strong> without resetting the Kollsman window and the altimeter <strong>over-reads</strong> — about 100 ft per 0.01" of difference. <strong>Left:</strong> setting current, indicated altitude matches true, full 1,500 ft of terrain clearance. <strong>Right:</strong> the setting is 0.30" stale, so the altimeter still reads 3,000 ft while the aircraft is really at 2,700 — only 1,200 ft above the ridge it thinks it has 1,500 above. <em>"High to low, look out below."</em>
+                  <span class="src">Ref: FAA-H-8083-25 Pilot's Handbook of Aeronautical Knowledge, Ch. 8</span>
+                </figcaption>
+              </figure>
 
           <p class="callout">
             <strong>14 CFR §91.121 requirement:</strong> Below 18,000 ft MSL, set the altimeter to the current reported setting from a station along the route and within 100 nm. Above 18,000 ft (Class A airspace), all aircraft use 29.92"Hg — they fly "flight levels" referenced to a common baseline, not local pressure.
@@ -440,63 +454,104 @@
 
           <!-- Diagram: warm vs cold air columns — the mechanism behind the mnemonic -->
           <figure class="diagram">
-            <svg viewBox="0 0 680 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="columns-title">
-              <title id="columns-title">Two air columns side by side. In the warm column on the left, pressure levels from 29.00 down to 26.00 inches of mercury are spread far apart vertically. In the cold column on the right, the same pressure levels are compressed toward the ground. Each pressure surface slopes downward from the warm column to the cold column. An airplane flying a constant indicated altitude follows the 26.00 inch surface, so while the altimeter keeps reading about 4,000 feet, the airplane truly descends about 1,200 feet as it moves from warm air into cold air.</title>
-              <rect width="680" height="370" fill="#fffaf0"/>
+                <svg viewBox="0 0 720 560" role="img" aria-label="Pressure surfaces spread apart in warm air and compress in cold air; an aircraft holding a constant indicated altitude follows one pressure surface and truly descends as it flies from warm into cold air">
+                  <defs>
+                    <g id="acft2">
+                      <path d="M-26,1 L-28,-12 L-19,-12 L-13,-2 Z" fill="#0c2541"/>
+                      <path d="M-26,0 L-13,0 L-17,-6 L-27,-6 Z" fill="#0c2541"/>
+                      <path d="M-27,1 Q-27,-3.5 -14,-4.5 L13,-4.5 Q26,-3.5 30,1 Q26,4.5 13,5 L-14,5 Q-27,4.5 -27,1 Z" fill="#0c2541"/>
+                      <path d="M2,5 L16,5 L9,15 L-4,15 Z" fill="#0c2541"/>
+                      <circle cx="20" cy="-1" r="1.7" fill="#f4ecd6"/>
+                      <circle cx="13" cy="-1" r="1.7" fill="#f4ecd6"/>
+                    </g>
+                    <marker id="ac-red" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b53d1f"/></marker>
+                    <marker id="ac-ink" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#0c2541"/></marker>
+                  </defs>
 
-              <!-- Column headers -->
-              <text x="170" y="26" font-family="Anton, sans-serif" font-size="12" fill="#b53d1f" text-anchor="middle" letter-spacing="0.06em">WARM COLUMN · EXPANDED</text>
-              <text x="510" y="26" font-family="Anton, sans-serif" font-size="12" fill="#0c2541" text-anchor="middle" letter-spacing="0.06em">COLD COLUMN · COMPRESSED</text>
+                  <rect x="0" y="0" width="720" height="560" fill="#fffaf0"/>
 
-              <!-- Column tints -->
-              <rect x="60" y="40" width="240" height="280" fill="rgba(181,61,31,0.05)" rx="2"/>
-              <rect x="380" y="40" width="240" height="280" fill="rgba(74,123,166,0.07)" rx="2"/>
+                  <!-- column tints -->
+                  <rect x="40" y="70" width="300" height="368" fill="#b53d1f" opacity="0.06"/>
+                  <rect x="380" y="70" width="300" height="368" fill="#4a7ba6" opacity="0.09"/>
 
-              <!-- Ground -->
-              <rect x="14" y="320" width="652" height="16" fill="#5d6f3c" opacity="0.35"/>
-              <line x1="14" y1="320" x2="666" y2="320" stroke="#0c2541" stroke-width="1.5"/>
+                  <!-- headers + thermometers -->
+                  <g>
+                    <rect x="150" y="40" width="6" height="20" rx="3" fill="#d8cdb2" stroke="#b06a28" stroke-width="0.8"/>
+                    <rect x="150" y="49" width="6" height="11" rx="3" fill="#b53d1f"/>
+                    <circle cx="153" cy="62" r="5" fill="#b53d1f"/>
+                    <text x="172" y="50" font-family="Anton, sans-serif" font-size="14" letter-spacing="0.04em" fill="#b53d1f">WARM COLUMN</text>
+                    <text x="172" y="63" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360">air expands · surfaces spread apart</text>
+                  </g>
+                  <g>
+                    <rect x="490" y="40" width="6" height="20" rx="3" fill="#d8cdb2" stroke="#2a5ba0" stroke-width="0.8"/>
+                    <rect x="490" y="54" width="6" height="6" rx="3" fill="#2a5ba0"/>
+                    <circle cx="493" cy="62" r="5" fill="#2a5ba0"/>
+                    <text x="512" y="50" font-family="Anton, sans-serif" font-size="14" letter-spacing="0.04em" fill="#2a5ba0">COLD COLUMN</text>
+                    <text x="512" y="63" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360">air contracts · surfaces compress</text>
+                  </g>
 
-              <!-- Pressure surfaces: spread apart in warm air, compressed in cold air -->
-              <path d="M 60,70 L 300,70 C 332,70 348,150 380,150 L 620,150" fill="none" stroke="#0c2541" stroke-width="2.2"/>
-              <path d="M 60,132 L 300,132 C 332,132 348,196 380,196 L 620,196" fill="none" stroke="#0c2541" stroke-width="1.2" opacity="0.6"/>
-              <path d="M 60,194 L 300,194 C 332,194 348,242 380,242 L 620,242" fill="none" stroke="#0c2541" stroke-width="1.2" opacity="0.6"/>
-              <path d="M 60,256 L 300,256 C 332,256 348,288 380,288 L 620,288" fill="none" stroke="#0c2541" stroke-width="1.2" opacity="0.6"/>
+                  <!-- ground -->
+                  <rect x="40" y="438" width="640" height="12" fill="#d8cdb2"/>
+                  <line x1="40" y1="438" x2="680" y2="438" stroke="#0c2541" stroke-width="1.2"/>
+                  <text x="360" y="460" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle">sea level</text>
 
-              <!-- Pressure-surface labels -->
-              <g font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="end">
-                <text x="54" y="73">26.00"</text>
-                <text x="54" y="135">27.00"</text>
-                <text x="54" y="197">28.00"</text>
-                <text x="54" y="259">29.00"</text>
-              </g>
-              <text x="54" y="316" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="end">30.00"</text>
+                  <!-- pressure surfaces: warmY (spread) → coldY (compressed), sloping down across the middle -->
+                  <!-- 30.00 (near ground) -->
+                  <path d="M40,366 L300,366 C345,366 355,400 400,400 L680,400" fill="none" stroke="#b9a87a" stroke-width="1.4"/>
+                  <!-- 29.00 -->
+                  <path d="M40,316 L300,316 C345,316 355,362 400,362 L680,362" fill="none" stroke="#b9a87a" stroke-width="1.4"/>
+                  <!-- 28.00 -->
+                  <path d="M40,250 L300,250 C345,250 355,324 400,324 L680,324" fill="none" stroke="#b9a87a" stroke-width="1.4"/>
+                  <!-- 27.00 -->
+                  <path d="M40,182 L300,182 C345,182 355,286 400,286 L680,286" fill="none" stroke="#b9a87a" stroke-width="1.4"/>
+                  <!-- 26.00 (highlighted: the surface the aircraft follows AND its flight path) -->
+                  <path d="M40,116 L300,116 C345,116 355,248 400,248 L660,248" fill="none" stroke="#b53d1f" stroke-width="2.4" stroke-dasharray="7,4" marker-end="url(#ac-red)"/>
 
-              <!-- Constant indicated altitude reference (what the pilot believes) -->
-              <line x1="60" y1="70" x2="620" y2="70" stroke="#b9a87a" stroke-width="1.2" stroke-dasharray="6,4"/>
-              <text x="616" y="62" font-family="JetBrains Mono, monospace" font-size="10" fill="#8a7a52" text-anchor="end">INDICATED ≈4,000 FT</text>
+                  <!-- pressure labels -->
+                  <g font-family="JetBrains Mono, monospace" font-size="9" fill="#2d4360">
+                    <text x="34" y="119" text-anchor="end" fill="#b53d1f" font-weight="700">26.00"</text>
+                    <text x="34" y="185" text-anchor="end">27.00"</text>
+                    <text x="34" y="253" text-anchor="end">28.00"</text>
+                    <text x="34" y="319" text-anchor="end">29.00"</text>
+                    <text x="34" y="369" text-anchor="end">30.00"</text>
+                    <text x="686" y="251" text-anchor="start" fill="#b53d1f" font-weight="700">26.00"</text>
+                    <text x="686" y="289" text-anchor="start">27.00"</text>
+                    <text x="686" y="327" text-anchor="start">28.00"</text>
+                    <text x="686" y="365" text-anchor="start">29.00"</text>
+                    <text x="686" y="403" text-anchor="start">30.00"</text>
+                  </g>
 
-              <!-- True-altitude callouts -->
-              <text x="180" y="90" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">true: ≈4,000 ft</text>
-              <text x="500" y="170" font-family="JetBrains Mono, monospace" font-size="10" fill="#2d4360" text-anchor="middle">true: ≈2,800 ft</text>
+                  <!-- aircraft: follows the 26.00" surface. warm (high) ghost drawn AFTER the red line so it sits on top -->
+                  <ellipse cx="150" cy="116" rx="33" ry="13" fill="#fceee4"/>
+                  <use href="#acft2" transform="translate(150,116) scale(0.85)" opacity="0.42"/>
+                  <use href="#acft2" transform="translate(560,248) scale(0.92)"/>
+                  <!-- flight path along the surface -->
+        
 
-              <!-- Aircraft riding the 700 mb surface (constant indicated altitude) -->
-              <g transform="translate(340,110)">
-                <polygon points="-20,0 20,0 8,7 -8,7" fill="#0c2541"/>
-                <polygon points="-3,-9 3,-9 3,9 -3,9" fill="#0c2541"/>
-                <rect x="-2" y="5" width="4" height="4" fill="#0c2541"/>
-              </g>
+                  <!-- constant indicated callout (warm plane) -->
+                  <text x="150" y="100" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">altimeter reads 4,000 ft</text>
+                  <text x="150" y="138" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle">true ≈ 4,000 ft</text>
 
-              <!-- True altitude loss in the cold column -->
-              <line x1="585" y1="74" x2="585" y2="140" stroke="#b53d1f" stroke-width="2"/>
-              <polygon points="585,148 580,135 590,135" fill="#b53d1f"/>
-              <text x="577" y="103" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="end">≈1,200 FT</text>
-              <text x="577" y="117" font-family="JetBrains Mono, monospace" font-size="10" fill="#b53d1f" text-anchor="end">TRUE ALT LOSS</text>
+                  <!-- cold plane callouts -->
+                  <text x="548" y="232" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#2d4360" text-anchor="middle">altimeter STILL reads 4,000 ft</text>
+                  <text x="560" y="270" font-family="JetBrains Mono, monospace" font-size="8" fill="#0c2541" text-anchor="middle">true ≈ 2,800 ft</text>
 
-              <!-- Outer border -->
-              <rect x="1" y="1" width="678" height="368" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
-            </svg>
-            <figcaption>The mechanism behind the mnemonic. A pressure altimeter doesn't measure height — it measures pressure and reports the altitude where that pressure would sit in a standard atmosphere. Warm air expands the column, spreading the pressure surfaces apart; cold air compresses them toward the ground. An airplane holding a constant indicated altitude is really flying a constant <em>pressure surface</em> — here the 26.00"Hg surface, which the 1"Hg-per-1,000-ft rule puts about 4,000 ft above a 30.00" surface. Moving from warm air into cold air, the altimeter keeps reading ≈4,000 ft while the airplane truly descends with the sinking pressure surface — "high to low (temperature), look out below." Values are illustrative. (AIM §7-3-1; FAA-H-8083-25 Ch. 8)</figcaption>
-          </figure>
+                  <!-- true-altitude loss arrow -->
+                  <line x1="624" y1="120" x2="624" y2="244" stroke="#b53d1f" stroke-width="1.6" marker-end="url(#ac-red)"/>
+                  <line x1="618" y1="120" x2="630" y2="120" stroke="#b53d1f" stroke-width="1.2"/>
+                  <text x="636" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#b53d1f" font-weight="700">≈1,200 ft</text>
+                  <text x="636" y="188" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#b53d1f">true lost</text>
+
+                  <!-- the surface the plane holds, label -->
+                  <text x="220" y="110" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-style="italic">constant pressure surface (26.00") = the path the aircraft flies</text>
+
+                  <rect x="1" y="1" width="718" height="558" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
+                </svg>
+                <figcaption>
+                  <strong>The mechanism behind "hot to cold, look out below."</strong> An altimeter doesn't sense height — it senses <strong>pressure</strong> and reports the altitude where that pressure sits in a standard atmosphere. Warm air <strong>expands</strong> the column, spreading the pressure surfaces apart; cold air <strong>contracts</strong> it, squeezing them toward the ground. An aircraft holding a constant indicated altitude is really flying a constant <strong>pressure surface</strong> (here 26.00") — so as it flies from warm air into cold, the altimeter keeps reading 4,000 ft while the aircraft truly descends about <strong>1,200 ft</strong>. Your altimeter reads <em>high</em> in cold air: true altitude is lower than indicated.
+                  <span class="src">Ref: FAA-H-8083-25 Pilot's Handbook of Aeronautical Knowledge, Ch. 8 · AC 91-79</span>
+                </figcaption>
+              </figure>
         </section>
 
         <!-- Section: Products that show it -->
