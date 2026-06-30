@@ -370,98 +370,97 @@
 
           <!-- Wake turbulence vortex diagram -->
           <figure class="diagram">
-            <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wake-title">
-              <title id="wake-title">Wake turbulence vortex diagram. A heavy transport aircraft is shown from the rear, generating two counter-rotating wingtip vortices that trail behind and below it. In a crosswind from the left, the left (upwind) vortex drifts toward the runway centerline while the right (downwind) vortex is carried away. Both vortices sink approximately 800–900 feet below the generating aircraft's flight path.</title>
-              <rect width="720" height="320" fill="#fffaf0"/>
+                <svg viewBox="0 0 720 510" role="img" aria-label="Rear view of a heavy jet generating two counter-rotating wingtip vortices that sink and, in a left crosswind, drift right; the upwind vortex settles on the runway where departing traffic flies into it, while the downwind vortex blows onto the grass">
+                  <defs>
+                    <marker id="wk-grn" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5d6f3c"/></marker>
+                    <marker id="wk-ink" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#0c2541"/></marker>
+                    <marker id="wk-red" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#b53d1f"/></marker>
+                    <marker id="wk-blu" markerWidth="7.5" markerHeight="7.5" refX="6" refY="3.75" orient="auto"><path d="M0,0 L7.5,3.75 L0,7.5 Z" fill="#4a7ba6"/></marker>
+                    <g id="heavy">
+                      <path d="M-4,-30 L-8,-72 L8,-72 L4,-30 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.5"/>
+                      <path d="M-5,-34 L-46,-45 L-46,-39 L-5,-28 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.2"/>
+                      <path d="M5,-34 L46,-45 L46,-39 L5,-28 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.2"/>
+                      <path d="M-14,3 L-150,28 L-150,37 L-14,16 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.6"/>
+                      <path d="M14,3 L150,28 L150,37 L14,16 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.6"/>
+                      <path d="M-150,28 L-158,14 L-153,13 L-146,28 Z" fill="#dfe4e8" stroke="#0c2541" stroke-width="1"/>
+                      <path d="M150,28 L158,14 L153,13 L146,28 Z" fill="#dfe4e8" stroke="#0c2541" stroke-width="1"/>
+                      <g>
+                        <ellipse cx="-80" cy="29" rx="13" ry="9.5" fill="#c4ccd2" stroke="#0c2541" stroke-width="1.4"/>
+                        <ellipse cx="-80" cy="29" rx="8.2" ry="6.2" fill="#222b33"/>
+                        <circle cx="-80" cy="29" r="2.4" fill="#7c8a95"/>
+                      </g>
+                      <g>
+                        <ellipse cx="80" cy="29" rx="13" ry="9.5" fill="#c4ccd2" stroke="#0c2541" stroke-width="1.4"/>
+                        <ellipse cx="80" cy="29" rx="8.2" ry="6.2" fill="#222b33"/>
+                        <circle cx="80" cy="29" r="2.4" fill="#7c8a95"/>
+                      </g>
+                      <ellipse cx="0" cy="-2" rx="17" ry="34" fill="#eef1f4" stroke="#0c2541" stroke-width="2"/>
+                      <ellipse cx="5" cy="-2" rx="8" ry="26" fill="#dfe4e8" opacity="0.7"/>
+                    </g>
+                    <g id="ga">
+                      <path d="M-22,2 L22,2 L22,5 L-22,5 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1.2"/>
+                      <ellipse cx="0" cy="0" rx="6" ry="11" fill="#eef1f4" stroke="#0c2541" stroke-width="1.4"/>
+                      <path d="M-2,-11 L-4,-20 L4,-20 L2,-11 Z" fill="#eef1f4" stroke="#0c2541" stroke-width="1"/>
+                    </g>
+                  </defs>
 
-              <!-- Sky gradient suggestion -->
-              <rect x="0" y="0" width="720" height="200" fill="rgba(74,123,166,0.04)"/>
+                  <rect x="0" y="0" width="720" height="510" fill="#fffaf0"/>
+                  <rect x="0" y="0" width="720" height="300" fill="#4a7ba6" opacity="0.04"/>
 
-              <!-- Ground line -->
-              <line x1="0" y1="220" x2="720" y2="220" stroke="#b9a87a" stroke-width="1.5" stroke-dasharray="8,4"/>
-              <text x="10" y="234" font-family="JetBrains Mono, monospace" font-size="8" fill="#b9a87a" letter-spacing="0.08em">GROUND / RUNWAY</text>
+                  <text x="360" y="18" font-family="Manrope, sans-serif" font-size="9.5" fill="#0c2541" text-anchor="middle" font-style="italic">heavy jet — generating aircraft (rear view)</text>
 
-              <!-- Aircraft (rear view, center-top) -->
-              <g transform="translate(360,60)">
-                <!-- Fuselage -->
-                <ellipse cx="0" cy="0" rx="12" ry="28" fill="#e8dfc8" stroke="#0c2541" stroke-width="2"/>
-                <!-- Wings -->
-                <path d="M -12,4 L -100,18 L -100,26 L -12,16 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.5"/>
-                <path d="M 12,4 L 100,18 L 100,26 L 12,16 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.5"/>
-                <!-- Engine nacelles -->
-                <ellipse cx="-55" cy="20" rx="8" ry="4" fill="#ccc" stroke="#0c2541" stroke-width="1"/>
-                <ellipse cx="55" cy="20" rx="8" ry="4" fill="#ccc" stroke="#0c2541" stroke-width="1"/>
-                <!-- Vertical stab -->
-                <path d="M -4,-28 L -10,-50 L 10,-50 L 4,-28 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1.2"/>
-                <!-- Horiz stab -->
-                <path d="M -4,-22 L -30,-15 L -30,-10 L -4,-18 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1"/>
-                <path d="M 4,-22 L 30,-15 L 30,-10 L 4,-18 Z" fill="#e0d8c0" stroke="#0c2541" stroke-width="1"/>
-              </g>
+                  <rect x="0" y="406" width="720" height="104" fill="#5d6f3c" opacity="0.20"/>
+                  <line x1="0" y1="406" x2="720" y2="406" stroke="#0c2541" stroke-width="1.2"/>
+                  <rect x="256" y="406" width="208" height="104" fill="#33383d"/>
+                  <rect x="256" y="406" width="208" height="104" fill="none" stroke="#0c2541" stroke-width="1"/>
+                  <rect x="262" y="406" width="3" height="104" fill="#e8e2d0" opacity="0.85"/>
+                  <rect x="455" y="406" width="3" height="104" fill="#e8e2d0" opacity="0.85"/>
+                  <g fill="#e8e2d0">
+                    <rect x="358.5" y="416" width="3" height="16"/>
+                    <rect x="358.5" y="442" width="3" height="16"/>
+                    <rect x="358.5" y="468" width="3" height="16"/>
+                    <rect x="358.5" y="494" width="3" height="14"/>
+                  </g>
+                  <text x="360" y="500" font-family="Anton, sans-serif" font-size="12" fill="#f4ecd6" text-anchor="middle" letter-spacing="0.1em">RUNWAY</text>
+                  <text x="120" y="430" font-family="JetBrains Mono, monospace" font-size="8" fill="#46552d" text-anchor="middle">grass</text>
 
-              <!-- Runway centerline / flight-path reference (the aircraft tracks down it) -->
-              <line x1="360" y1="126" x2="360" y2="220" stroke="#b9a87a" stroke-width="1" stroke-dasharray="3,4" opacity="0.85"/>
-              <text x="366" y="215" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#8a7a52" text-anchor="start">RWY CL</text>
+                  <line x1="28" y1="66" x2="120" y2="66" stroke="#5d6f3c" stroke-width="2.4" marker-end="url(#wk-grn)"/>
+                  <text x="28" y="54" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="0.1em" fill="#5d6f3c" font-weight="700">CROSSWIND</text>
+                  <text x="28" y="82" font-family="JetBrains Mono, monospace" font-size="8" fill="#5d6f3c">from the left</text>
 
-              <!-- LEFT = UPWIND vortex (red, the hazard): the crosswind carries it RIGHT, onto the centerline, as it sinks -->
-              <path d="M 262,80 C 276,112 300,148 326,178 C 342,196 350,208 352,219"
-                    stroke="#b53d1f" stroke-width="2.5" fill="none"/>
-              <g transform="translate(300,150)" fill="none" stroke="#b53d1f" stroke-width="1.8">
-                <path d="M 0,-16 C 12,-16 18,-7 18,0 C 18,7 12,16 0,16 C -12,16 -18,7 -18,0"/>
-                <polygon points="0,-16 -6,-9 6,-9" fill="#b53d1f"/>
-              </g>
-              <line x1="220" y1="150" x2="281" y2="150" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="2,2"/>
-              <text x="216" y="147" font-family="Manrope, sans-serif" font-size="9" fill="#b53d1f" text-anchor="end" font-weight="600">Upwind vortex</text>
-              <text x="216" y="158" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b53d1f" text-anchor="end">drifts onto the CL</text>
+                  <use href="#heavy" transform="translate(360,120)"/>
 
-              <!-- RIGHT = DOWNWIND vortex (blue, safer): the crosswind carries it further RIGHT, clear of the runway -->
-              <path d="M 458,80 C 472,112 502,148 534,178 C 552,196 564,208 570,219"
-                    stroke="#4a7ba6" stroke-width="2.5" fill="none"/>
-              <g transform="translate(505,150)" fill="none" stroke="#4a7ba6" stroke-width="1.8">
-                <path d="M 0,-16 C -12,-16 -18,-7 -18,0 C -18,7 -12,16 0,16 C 12,16 18,7 18,0"/>
-                <polygon points="0,-16 6,-9 -6,-9" fill="#4a7ba6"/>
-              </g>
-              <line x1="524" y1="150" x2="585" y2="150" stroke="#4a7ba6" stroke-width="0.8" stroke-dasharray="2,2"/>
-              <text x="589" y="147" font-family="Manrope, sans-serif" font-size="9" fill="#4a7ba6" text-anchor="start" font-weight="600">Downwind vortex</text>
-              <text x="589" y="158" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#4a7ba6" text-anchor="start">drifts off the runway</text>
+                  <line x1="318" y1="178" x2="318" y2="206" stroke="#0c2541" stroke-width="1.2" opacity="0.5" marker-end="url(#wk-ink)"/>
+                  <line x1="402" y1="178" x2="402" y2="206" stroke="#0c2541" stroke-width="1.2" opacity="0.5" marker-end="url(#wk-ink)"/>
+                  <text x="360" y="174" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541" text-anchor="middle" opacity="0.72">both vortices sink 500–900 ft below the flight path</text>
 
-              <!-- Both vortices sink as they drift downwind -->
-              <g stroke="#0c2541" fill="#0c2541" stroke-width="1.2" opacity="0.5">
-                <line x1="282" y1="94" x2="282" y2="108"/>
-                <polygon points="282,112 279,104 285,104"/>
-                <line x1="468" y1="94" x2="468" y2="108"/>
-                <polygon points="468,112 465,104 471,104"/>
-              </g>
-              <text x="360" y="120" font-family="Manrope, sans-serif" font-size="8" fill="#0c2541" text-anchor="middle" opacity="0.72">Both sink ~300–500 fpm, drifting downwind →</text>
+                  <path d="M212,150 C252,248 300,330 360,404" fill="none" stroke="#b53d1f" stroke-width="2.2" stroke-dasharray="6,4"/>
+                  <path d="M 266.93,260.61 L 267.82,260.44 L 268.76,260.44 L 269.73,260.62 L 270.69,260.98 L 271.60,261.53 L 272.43,262.26 L 273.14,263.16 L 273.70,264.20 L 274.08,265.36 L 274.25,266.61 L 274.20,267.91 L 273.92,269.23 L 273.39,270.51 L 272.63,271.71 L 271.64,272.79 L 270.45,273.70 L 269.08,274.41 L 267.56,274.89 L 265.95,275.10 L 264.29,275.03 L 262.63,274.66 L 261.01,273.99 L 259.51,273.03 L 258.16,271.80 L 257.02,270.32 L 256.13,268.63 L 255.53,266.78 L 255.26,264.81 L 255.33,262.78 L 255.76,260.76 L 256.55,258.80 L 257.68,256.97 L 259.14,255.33 L 260.89,253.95 L 262.89,252.86 L 265.08,252.12 L 267.40,251.77 L 269.80,251.81 L 272.19,252.28 L 274.50,253.16 L 276.66,254.45 L 278.60,256.11 L 280.25,258.12 L 281.56,260.41 L 282.46,262.93 L 282.93,265.61" fill="none" stroke="#b53d1f" stroke-width="2" marker-end="url(#wk-red)"/>
+                  <line x1="150" y1="252" x2="246.93" y2="259" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="2,2"/>
+                  <text x="146" y="250" font-family="Manrope, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="end" font-weight="600">Upwind vortex</text>
+                  <text x="146" y="262" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b53d1f" text-anchor="end">drifts onto the runway</text>
 
-              <!-- Crosswind arrow (from left) -->
-              <g fill="#5d6f3c" stroke="#5d6f3c">
-                <line x1="30" y1="90" x2="100" y2="90" stroke-width="2"/>
-                <polygon points="100,90 91,86 91,94"/>
-              </g>
-              <text x="10" y="82" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c" font-weight="600">XWIND</text>
-              <text x="10" y="94" font-family="JetBrains Mono, monospace" font-size="9" fill="#5d6f3c">→</text>
+                  <path d="M508,150 C548,248 582,330 612,404" fill="none" stroke="#4a7ba6" stroke-width="2.2" stroke-dasharray="6,4"/>
+                  <path d="M 555.37,260.61 L 554.48,260.44 L 553.54,260.44 L 552.57,260.62 L 551.61,260.98 L 550.70,261.53 L 549.87,262.26 L 549.16,263.16 L 548.60,264.20 L 548.22,265.36 L 548.05,266.61 L 548.10,267.91 L 548.39,269.23 L 548.91,270.51 L 549.68,271.71 L 550.66,272.79 L 551.86,273.70 L 553.23,274.41 L 554.74,274.89 L 556.35,275.10 L 558.01,275.03 L 559.68,274.66 L 561.29,273.99 L 562.80,273.03 L 564.15,271.80 L 565.29,270.32 L 566.17,268.63 L 566.77,266.78 L 567.04,264.81 L 566.97,262.78 L 566.54,260.76 L 565.75,258.80 L 564.62,256.97 L 563.16,255.33 L 561.41,253.95 L 559.42,252.86 L 557.23,252.12 L 554.90,251.77 L 552.51,251.81 L 550.12,252.28 L 547.81,253.16 L 545.64,254.45 L 543.70,256.11 L 542.05,258.12 L 540.75,260.41 L 539.84,262.93 L 539.37,265.61" fill="none" stroke="#4a7ba6" stroke-width="2" marker-end="url(#wk-blu)"/>
+                  <line x1="572" y1="252" x2="575.37" y2="259" stroke="#4a7ba6" stroke-width="0.8" stroke-dasharray="2,2"/>
+                  <text x="576" y="250" font-family="Manrope, sans-serif" font-size="9.5" fill="#4a7ba6" text-anchor="start" font-weight="600">Downwind vortex</text>
+                  <text x="576" y="262" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#4a7ba6" text-anchor="start">blows onto the grass</text>
 
-              <!-- Upwind vortex ground position: ON the centerline = the hazard -->
-              <rect x="300" y="226" width="110" height="26" fill="rgba(181,61,31,0.13)" stroke="#b53d1f" stroke-width="1.4" rx="2"/>
-              <text x="355" y="236" font-family="Anton, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">UPWIND — ON RUNWAY</text>
-              <text x="355" y="246" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">lingers over the CL 2–3 min</text>
+                  <use href="#ga" transform="translate(360,430) scale(0.92)"/>
+                  <line x1="360" y1="405" x2="360" y2="416" stroke="#b53d1f" stroke-width="2" marker-end="url(#wk-red)"/>
+                  <text x="474" y="452" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" font-weight="600" stroke="#f4ecd6" stroke-width="2.6" paint-order="stroke">departing traffic</text>
+                  <text x="474" y="463" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#b53d1f" stroke="#f4ecd6" stroke-width="2.6" paint-order="stroke">flies into the upwind vortex</text>
 
-              <!-- Downwind vortex ground position: drifts clear -->
-              <rect x="520" y="226" width="94" height="26" fill="rgba(74,123,166,0.14)" stroke="#4a7ba6" stroke-width="1.2" rx="2"/>
-              <text x="567" y="236" font-family="Anton, sans-serif" font-size="8.5" fill="#4a7ba6" text-anchor="middle" letter-spacing="0.05em">DOWNWIND</text>
-              <text x="567" y="246" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle">drifts clear of runway</text>
+                  <use href="#ga" transform="translate(612,430) scale(0.78)" opacity="0.5"/>
+                  <text x="612" y="452" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#46552d" text-anchor="middle" stroke="#f4ecd6" stroke-width="2.4" paint-order="stroke">off to the side — clear</text>
 
-              <!-- Danger-zone takeaway -->
-              <rect x="258" y="266" width="204" height="40" fill="rgba(181,61,31,0.08)" stroke="#b53d1f" stroke-width="1" rx="2"/>
-              <text x="360" y="280" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.06em">DANGER ZONE</text>
-              <text x="360" y="292" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Stay above the lead's glidepath and</text>
-              <text x="360" y="302" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">land beyond its touchdown point</text>
-
-              <!-- Outer border -->
-              <rect x="1" y="1" width="718" height="318" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
-            </svg>
-            <figcaption>Wake turbulence vortex diagram (aircraft seen from the rear). Counter-rotating wingtip vortices trail behind and sink below the generating aircraft. In a crosswind from the left, the upwind (left) vortex stays near the runway centerline while the downwind (right) vortex drifts away. A following aircraft must remain above the glide path of the lead aircraft and land beyond its touchdown point to avoid the upwind vortex. (AIM 7-4-4)</figcaption>
-          </figure>
+                  <rect x="1" y="1" width="718" height="508" fill="none" stroke="#b9a87a" stroke-width="0.6"/>
+                </svg>
+                <figcaption>
+                  Every wing makes lift by pulling air over the top and pushing it under — at the tips that pressure difference rolls into two <strong>counter-rotating vortices</strong> that trail behind and <strong>sink 500–900 ft</strong> below the flight path. They're strongest behind a <strong>heavy, clean, slow</strong> jet. In a left crosswind the <strong>upwind vortex</strong> (red) drifts back over the <strong>runway centerline</strong> and lingers there 2–3 minutes — right where <strong>departing or landing traffic</strong> flies into it — while the <strong>downwind vortex</strong> (blue) blows onto the grass and clears. Stay <strong>above</strong> the lead aircraft's path and land <strong>beyond</strong> its touchdown point; a light, calm wind is the most dangerous because the vortices don't blow away.
+                  <span class="src">Ref: AIM 7-4 · FAA-H-8083-25 Pilot's Handbook of Aeronautical Knowledge</span>
+                </figcaption>
+              </figure>
 
           <h3>Wake turbulence avoidance — the rules</h3>
           <p>
