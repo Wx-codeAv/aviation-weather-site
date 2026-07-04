@@ -106,9 +106,10 @@
           <li><a href="#additional">Frontal fog &amp; freezing fog</a></li>
           <li><a href="#predict">Predicting fog from observations</a></li>
           <li><a href="#burnoff">Why fog burns off (or doesn't)</a></li>
+          <li><a href="#products">Products that show it</a></li>
           <li><a href="#redflags">Red flags</a></li>
           <li><a href="#checkride">Checkride questions</a></li>
-          <li><a href="#scenario">Decision scenario</a></li>
+          <li><a href="#scenario">Would-You-Fly scenario</a></li>
           <li><a href="#takeaway">Pilot takeaway</a></li>
         </ol>
       </aside>
@@ -733,6 +734,49 @@
           </p>
         </section>
 
+        <!-- Section: Products that show it -->
+        <section id="products">
+          <h2>Products that show it</h2>
+          <div class="card-grid" style="grid-template-columns: 1fr 1fr; margin: 1.5rem 0 2rem;">
+            <article class="hazard-card">
+              <h3>METAR &amp; TAF</h3>
+              <p class="hazard-mnemonic">The primary fog products — current conditions and the forecast window.</p>
+              <ul class="hazard-list">
+                <li><strong>FG</strong> means visibility below 5/8 SM; <strong>BR</strong> (mist) means 5/8 to 6 SM. Qualifiers refine it: MIFG shallow, BCFG patches, PRFG partial, FZFG freezing fog</li>
+                <li><strong>VV (vertical visibility)</strong>, e.g. VV002, is an indefinite ceiling — the fog is thick enough that no cloud base can be measured. Treat it as a hard ceiling for approach planning</li>
+                <li>The METAR temperature/dew point spread is your raw predictor — see <a href="#predict">Predicting fog from observations</a> above</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>AIRMET Sierra</h3>
+              <p class="hazard-mnemonic">The official advisory for widespread IFR conditions.</p>
+              <ul class="hazard-list">
+                <li>Issued for ceilings below 1,000 ft and/or visibility below 3 SM affecting over 50% of the advisory area, and for mountain obscuration</li>
+                <li>Distributed as G-AIRMETs — snapshots at 3-hour intervals, so you can watch the IFR area develop and move</li>
+                <li>No Sierra does not mean no fog — localized valley or river fog can put your destination at LIFR with no advisory at all</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>GFA — Ceiling &amp; Visibility</h3>
+              <p class="hazard-mnemonic">Graphical categorical view at aviationweather.gov.</p>
+              <ul class="hazard-list">
+                <li>The Ceiling/Visibility layer shades LIFR/IFR/MVFR areas and overlays TAF sites — step through forecast hours to see when the fog window opens and closes</li>
+                <li>Check the Clouds layer for tops: radiation fog is often only a few hundred feet thick, which is exactly the "VFR over the top" trap</li>
+                <li>Categorical shading is a model product — anchor it to actual METARs before trusting a clearing trend</li>
+              </ul>
+            </article>
+            <article class="hazard-card">
+              <h3>Surface Analysis &amp; Prog Charts</h3>
+              <p class="hazard-mnemonic">The synoptic setup that makes fog possible.</p>
+              <ul class="hazard-list">
+                <li>Radiation fog setup: a high-pressure center over your route, clear skies, and a weak pressure gradient (widely spaced isobars) overnight</li>
+                <li>Advection fog setup: onshore flow or warm, moist air moving over a colder surface — check isobar orientation along coastlines</li>
+                <li>The chart doesn't show fog — it shows the air mass that produces it. Use it to decide whether tonight is a fog night, then confirm with TAFs</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
         <!-- Section: Red flags -->
         <section id="redflags">
           <h2>Red flags</h2>
@@ -839,9 +883,9 @@
           </details>
         </section>
 
-        <!-- Section: Decision scenario -->
+        <!-- Section: Would-You-Fly scenario -->
         <section id="scenario">
-          <h2>Decision scenario</h2>
+          <h2>Would-You-Fly scenario</h2>
           <p class="scenario-disclaimer">
             <strong>Educational example only.</strong> Not for real flight planning. Real go/no-go decisions require official sources, current data, and your own pilot-in-command judgment.
           </p>

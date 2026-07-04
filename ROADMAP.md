@@ -45,6 +45,15 @@ Goal: get comfortable with HTML/CSS/JS and have a working landing page deployed 
 - [x] Crosswind Calculator
 - [x] Nav Log Helper (with weather integration — live FB winds aloft fetch, FD text parser, vector interpolation, per-leg apply)
 
+## Content gaps — from the 2026-07 site audit
+
+Honest coverage gaps in the ACS matrix (acs.html) that need real content before the
+matrix rows can link anywhere meaningful:
+
+- [ ] Frost — formation, why it must be removed, clean-aircraft concept (currently only a callout in icing.html; ACS K3k)
+- [ ] Obstructions to visibility beyond fog — haze, smoke, blowing dust/snow (ACS K3l)
+- [ ] K4 — interpreting digital/automated weather displays and their limitations
+
 ## Stretch goals — long-term, not committed
 
 - Interactive skew-T tool with live sounding data (foundation in tools/ — Python 3.11 + SHARPpy venv)
