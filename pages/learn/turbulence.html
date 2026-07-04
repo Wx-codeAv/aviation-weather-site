@@ -503,111 +503,12 @@
             <li><strong>Rotor clouds:</strong> Irregular, turbulent-looking clouds that form below the primary wave crest, in the zone of horizontal counter-rotation (the rotor). The rotor zone is the most turbulent area in the wave system. Rotor clouds resemble cumulus but are stationary and often ragged. The turbulence in a rotor can be severe to extreme, with abrupt and violent reversals of vertical velocity.</li>
           </ul>
 
-          <!-- Mountain wave diagram -->
-          <figure class="diagram">
-            <svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wave-title">
-              <title id="wave-title">Mountain wave diagram. A ridge is shown on the left. Stable air flows over the ridge and creates a series of standing wave crests downwind. The cap cloud sits over the ridge. Lenticular clouds form at each wave crest. A rotor with rotor cloud forms below the first wave crest, to the lee of the ridge. The wave pattern extends to high altitude. The rotor zone is labeled as the most turbulent area.</title>
-              <rect width="740" height="300" fill="#fffaf0"/>
-
-              <!-- Background sky gradient layers -->
-              <rect x="0" y="0"   width="740" height="120" fill="rgba(74,123,166,0.06)"/>
-              <rect x="0" y="120" width="740" height="100" fill="rgba(74,123,166,0.03)"/>
-
-              <!-- Wind arrows (freestream, from left) -->
-              <g stroke="#4a7ba6" stroke-width="1.2" opacity="0.5">
-                <path d="M 8,50 L 50,50"/><polygon points="50,50 43,47 43,53" fill="#4a7ba6"/>
-                <path d="M 8,70 L 50,70"/><polygon points="50,70 43,67 43,73" fill="#4a7ba6"/>
-                <path d="M 8,90 L 50,90"/><polygon points="50,90 43,87 43,93" fill="#4a7ba6"/>
-              </g>
-              <text x="8" y="26" font-family="JetBrains Mono, monospace" font-size="11" fill="#3d6588" font-weight="600">WIND 30–60 KT</text>
-              <text x="8" y="40" font-family="JetBrains Mono, monospace" font-size="11" fill="#3d6588" font-weight="600">⊥ to ridge</text>
-
-              <!-- Mountain ridge -->
-              <path d="M 90,250 L 130,250 L 165,230 L 195,200 L 215,165 L 230,140 L 240,125 L 255,140 L 260,160 L 270,200 L 285,235 L 320,250 Z"
-                    fill="#c8c0a0" stroke="#0c2541" stroke-width="1.5"/>
-              <!-- Ridge shading -->
-              <path d="M 240,125 L 255,140 L 260,160 L 270,200 L 285,235 L 320,250 L 310,250 L 280,235 L 265,195 L 255,158 L 248,142 Z"
-                    fill="#b8b090" opacity="0.5"/>
-              <text x="210" y="270" font-family="Anton, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.06em">RIDGE</text>
-
-              <!-- Wave streamline (the main wave in the atmosphere) -->
-              <path d="M 255,125 C 280,110 310,100 350,95 C 390,90 410,70 430,55 C 450,40 470,35 510,35 C 550,35 570,50 590,65 C 610,80 630,88 660,90 C 680,91 700,90 730,89"
-                    fill="none" stroke="#4a7ba6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
-
-              <!-- Second wave streamline (lower level) -->
-              <path d="M 255,155 C 275,145 305,138 345,133 C 385,128 405,110 425,95 C 445,82 470,75 510,75 C 550,75 572,88 592,102 C 612,115 632,122 660,124 C 685,125 705,124 730,123"
-                    fill="none" stroke="#4a7ba6" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
-
-              <!-- Third wave streamline (even lower) -->
-              <path d="M 255,200 C 280,195 315,190 350,188 C 385,186 405,175 425,162 C 445,150 470,145 510,145 C 550,145 572,158 592,170 C 612,182 632,188 660,190 C 685,190 705,189 730,188"
-                    fill="none" stroke="#4a7ba6" stroke-width="0.8" stroke-dasharray="2,4" opacity="0.3"/>
-
-              <!-- Cap cloud (over ridge crest) -->
-              <path d="M 220,138 C 225,128 235,122 245,122 C 255,122 262,128 265,134 C 268,128 276,124 284,125 C 292,126 296,132 295,138 C 300,138 304,134 308,134 C 314,134 318,138 317,142 C 316,146 311,148 306,147 C 304,152 298,155 292,153 C 289,157 284,158 280,156 C 276,160 270,162 265,160 C 260,163 254,163 249,160 C 244,163 237,162 233,158 C 228,158 222,154 221,149 C 219,146 218,142 220,138 Z"
-                    fill="rgba(230,240,250,0.9)" stroke="#4a7ba6" stroke-width="1"/>
-              <text x="265" y="172" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle" font-style="italic">Cap cloud</text>
-
-              <!-- First lenticular cloud (~430, 52) -->
-              <path d="M 395,53 C 400,45 410,41 422,41 C 436,41 446,47 449,55 C 454,48 464,44 474,45 C 486,46 492,54 490,62 C 494,62 498,58 503,58 C 510,58 515,63 513,68 C 511,73 505,74 500,73 C 498,78 492,80 486,78 C 483,82 477,83 472,81 C 467,84 460,84 455,81 C 449,84 442,83 437,79 C 432,80 426,77 423,73 C 418,72 412,69 411,63 C 408,60 404,57 395,53 Z"
-                    fill="rgba(230,240,250,0.92)" stroke="#4a7ba6" stroke-width="1.2"/>
-              <text x="454" y="92" font-family="Manrope, sans-serif" font-size="8" fill="#4a7ba6" text-anchor="middle" font-style="italic">Lenticular cloud</text>
-              <text x="454" y="102" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#4a7ba6" text-anchor="middle">(ACSL)</text>
-              <line x1="454" y1="78" x2="454" y2="87" stroke="#4a7ba6" stroke-width="0.8"/>
-
-              <!-- Second lenticular cloud (~590, 65) -->
-              <path d="M 562,68 C 566,60 574,56 583,56 C 594,56 602,62 604,70 C 608,64 616,61 624,62 C 633,63 638,70 636,77 C 639,77 642,73 647,73 C 652,73 656,78 654,83 C 652,88 647,89 643,88 C 641,93 636,95 631,93 C 628,96 623,97 619,95 C 614,98 608,97 604,95 C 599,97 593,96 589,92 C 585,93 580,90 579,85 C 575,83 571,80 562,68 Z"
-                    fill="rgba(230,240,250,0.88)" stroke="#4a7ba6" stroke-width="1"/>
-
-              <!-- Rotor region below first wave crest -->
-              <!-- Rotor rotation ellipse -->
-              <ellipse cx="380" cy="178" rx="52" ry="30" fill="rgba(181,61,31,0.08)" stroke="#b53d1f" stroke-width="1.5" stroke-dasharray="4,3"/>
-              <!-- Rotor rotation arrows -->
-              <g fill="none" stroke="#b53d1f" stroke-width="1.5">
-                <path d="M 352,168 C 356,155 370,150 380,152 C 390,154 400,162 403,173"/>
-                <polygon points="403,173 397,165 408,166" fill="#b53d1f"/>
-              </g>
-              <g fill="none" stroke="#b53d1f" stroke-width="1.5">
-                <path d="M 408,188 C 404,200 390,205 380,203 C 370,201 360,193 357,182"/>
-                <polygon points="357,182 363,190 352,189" fill="#b53d1f"/>
-              </g>
-
-              <!-- Rotor cloud -->
-              <path d="M 348,168 C 350,161 358,157 366,158 C 370,155 376,153 382,154 C 388,151 396,152 400,157 C 406,156 412,159 413,165 C 415,170 411,174 406,174 C 406,179 401,182 396,180 C 393,183 388,184 384,182 C 379,184 373,184 369,181 C 365,182 359,180 358,175 C 353,174 348,172 348,168 Z"
-                    fill="rgba(200,200,200,0.7)" stroke="#888" stroke-width="1"/>
-              <text x="380" y="214" font-family="Anton, sans-serif" font-size="9.5" fill="#b53d1f" text-anchor="middle" letter-spacing="0.06em">ROTOR ZONE</text>
-              <text x="380" y="226" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle">Most turbulent — severe to extreme</text>
-              <line x1="380" y1="210" x2="380" y2="206" stroke="#b53d1f" stroke-width="1"/>
-
-              <!-- Severe turbulence annotation for lenticular zone -->
-              <text x="454" y="115" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle" font-style="italic">Moderate–severe turbulence</text>
-              <text x="454" y="125" font-family="Manrope, sans-serif" font-size="8" fill="#b53d1f" text-anchor="middle" font-style="italic">under and between wave crests</text>
-
-              <!-- Ground line -->
-              <line x1="0" y1="250" x2="90" y2="250" stroke="#b9a87a" stroke-width="1"/>
-              <line x1="320" y1="250" x2="740" y2="250" stroke="#b9a87a" stroke-width="1"/>
-
-              <!-- Wave wavelength callout -->
-              <line x1="255" y1="258" x2="510" y2="258" stroke="#5d6f3c" stroke-width="0.8"/>
-              <line x1="255" y1="254" x2="255" y2="262" stroke="#5d6f3c" stroke-width="0.8"/>
-              <line x1="510" y1="254" x2="510" y2="262" stroke="#5d6f3c" stroke-width="0.8"/>
-              <text x="382" y="272" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle">Wavelength: typically 5–40 nm</text>
-
-              <!-- Outer border -->
-              <rect x="1" y="1" width="738" height="298" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
-            </svg>
-            <figcaption>Mountain wave structure. Stable air flowing over a ridge generates standing gravity waves downwind. Three cloud markers: cap cloud over the ridge crest (forms and evaporates continuously), lenticular clouds (ACSL) at wave crests (lens-shaped, stationary), and rotor cloud below the first wave crest (irregular, turbulent). The rotor zone contains the most violent turbulence — severe to extreme. Wave patterns can extend to 50,000 ft+ in severe events. (AC 00-6B Ch. 11; FAA-H-8083-25 §12-16)</figcaption>
-          </figure>
-
-          <h3>Flight planning near mountain waves</h3>
-          <ul>
-            <li><strong>If you see lenticular clouds,</strong> do not fly between them or below them at the wave crest. Fly at a level well above the highest lenticular or route around the wave system if you lack the performance to clear it by at least 1,000–2,000 ft.</li>
-            <li><strong>Avoid the rotor zone.</strong> The rotor is below the first lenticular and just to the lee of the ridge — between roughly ridge height and a few thousand feet below the lenticular cloud base. This zone has the most abrupt turbulence and the greatest structural risk to light aircraft.</li>
-            <li><strong>Airspeed management:</strong> Reduce to maneuvering speed (Va) or the turbulence penetration speed from the POH before entering suspected wave turbulence. Va prevents exceeding structural load limits in response to a single gust.</li>
-            <li><strong>SIGMETs for mountain waves:</strong> A Mountain Wave SIGMET is issued when severe turbulence is expected associated with a mountain wave. PIREPs are the most current source of wave intensity data.</li>
-          </ul>
-
           <p class="callout">
             <strong>No clouds ≠ no wave:</strong> In dry air, mountain waves produce all the same turbulence without any of the cloud markers. An absence of lenticular clouds does not mean an absence of wave activity — it means the air is too dry to condense at the wave crests. In dry, arid environments (Great Basin, high desert), severe mountain wave turbulence occurs routinely without any visible indication whatsoever. Check PIREPs for the day before and terrain winds aloft before making any assumption about conditions.
+          </p>
+
+          <p>
+            For the rotor-zone diagram, flight-planning rules, airspeed management, and SIGMET thresholds, see <a href="wind-shear-mountain-wave.html">Wind Shear &amp; Mountain Wave</a>.
           </p>
         </section>
 
