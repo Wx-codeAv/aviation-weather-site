@@ -296,23 +296,12 @@
             Wind shear is a change in wind speed and/or direction over a short distance — horizontal, vertical, or both. Wind shear exists in many parts of the atmosphere at many intensities. The operationally critical subset is <strong>low-level wind shear (LLWS)</strong>: any significant shear occurring below 2,000 ft AGL, where there is insufficient altitude to recover from an upset. LLWS is responsible for more fatal approach and departure accidents than any other atmospheric hazard.
           </p>
 
-          <h3>Sources of LLWS</h3>
-          <ul>
-            <li><strong>Frontal boundaries:</strong> Cold fronts produce the most intense LLWS because the wind shift from ahead of the front to behind it can be 40–80° with a speed change of 20–40 kt over a short vertical distance. The shear zone is found in the 500–2,000 ft AGL layer immediately preceding frontal passage.</li>
-            <li><strong>Temperature inversions:</strong> A strong low-level inversion (surface-based or radiation inversion overnight) separates a shallow, slow-moving surface layer from faster winds aloft. An aircraft descending through this layer can experience a sudden loss of headwind — and therefore airspeed — within 1,000 ft of the ground. The nocturnal low-level jet (common in the central U.S.) makes inversion-based shear worst after midnight.</li>
-            <li><strong>Microbursts:</strong> A column of rain-cooled air that descends rapidly and spreads outward on contact with the surface. An aircraft flying through a microburst encounters: (1) a sudden headwind (increasing airspeed) on approach, (2) a violent downdraft at the core, and (3) a sudden tailwind (decreasing airspeed) exiting the far side. The first headwind increase causes the pilot to reduce power; then the downdraft and tailwind strip away airspeed exactly when you need it most. Microbursts are typically 1–4 nm in diameter and produce shear of 30–80 kt over that distance. They dissipate in 10–15 minutes.</li>
-            <li><strong>Thunderstorm outflows:</strong> The gust front ahead of a thunderstorm is a broad-scale equivalent of a microburst outflow. Wind shifts of 30–50 kt at the surface can extend 10–15 nm ahead of the visible storm.</li>
-          </ul>
+          <p>
+            The main LLWS sources are frontal boundaries (cold fronts produce the sharpest shear), low-level temperature inversions (worst overnight, when a nocturnal low-level jet rides above a calm surface layer), microbursts, and thunderstorm gust fronts. The microburst is the most dangerous case: a descending column of rain-cooled air that spreads outward at the surface, giving an aircraft a headwind gain, then a violent downdraft, then a tailwind — exactly backwards from the instinctive pilot response.
+          </p>
 
-          <h3>LLWS detection and reports</h3>
-          <ul>
-            <li><strong>LLWAS (Low-Level Wind Shear Alert System):</strong> Deployed at major airports; compares anemometer readings at the runway thresholds with sensors on the airport perimeter. Triggers an alert when shear exceeds defined thresholds. ATC will issue a LLWS alert to pilots on approach.</li>
-            <li><strong>WSR-88D (NEXRAD) Doppler radar:</strong> Detects microburst signature (diverging velocities in a small area) in the lower tilt scans. This data feeds the Terminal Doppler Weather Radar (TDWR) system at major airports.</li>
-            <li><strong>PIREPs:</strong> A PIREP reporting a sudden airspeed change (e.g., "30 kt airspeed change on final") is the most direct LLWS report available for airports without LLWAS. Reporting PIREPs on wind shear encounters is both an AIM recommendation and a contribution to other pilots' safety.</li>
-          </ul>
-
-          <p class="callout">
-            <strong>The microburst escape maneuver (AIM 7-1-26):</strong> If you suspect a microburst encounter on approach, ATC will issue a wind shear alert or a wind shear PIREP. The go-around decision point is before you reach the downdraft core — after the initial headwind gain, not after you've entered the downdraft. If airspeed exceeds Vref by more than 15 kt unexpectedly on approach in convective weather, consider going around before you sink into the downdraft. Once below the glide path in a downdraft, recovery options become extremely limited.
+          <p>
+            For the full treatment — the microburst encounter sequence and diagram, LLWAS and detection systems, response procedures, and the products checklist — see <a href="wind-shear-mountain-wave.html">Wind Shear &amp; Mountain Wave</a>.
           </p>
         </section>
 
@@ -335,7 +324,7 @@
 
           <h3>Forecasting and avoidance</h3>
           <ul>
-            <li><strong>SIGMET for severe or extreme turbulence:</strong> Covers severe (intensity 5) or extreme (intensity 6) turbulence affecting any aircraft. Issued as needed; valid up to 4 hours.</li>
+            <li><strong>SIGMET for severe or extreme turbulence:</strong> Covers severe or extreme turbulence affecting any aircraft. Issued as needed; valid up to 4 hours.</li>
             <li><strong>Graphical Turbulence Guidance (GTG):</strong> Available on aviationweather.gov; produces gridded CAT probability forecasts by flight level. Not perfect, but the best CAT forecast tool widely available to GA pilots.</li>
             <li><strong>Constant pressure charts (winds aloft):</strong> Large isotach gradients (closely spaced wind speed contours) at the 300 mb or 250 mb chart are a direct indicator of wind shear and CAT potential.</li>
             <li><strong>PIREPs:</strong> CAT PIREP reports are time-and-location critical. A severe CAT PIREP at FL 380 over CYS is valid for roughly 1–2 hours; the feature producing it may move 100+ nm in that time.</li>
@@ -516,7 +505,7 @@
         <section id="intensity">
           <h2>Turbulence intensity &amp; reporting</h2>
           <p>
-            The FAA uses a six-level turbulence intensity scale for PIREPs, official forecasts, and weather products. Every pilot should be able to decode the intensity code in a PIREP, understand what the intensity means for the occupants, and know the SIGMET threshold.
+            The FAA uses a <strong>four-level turbulence intensity scale</strong> — light, moderate, severe, extreme — for PIREPs, official forecasts, and weather products. Every pilot should be able to decode the intensity code in a PIREP, understand what the intensity means for the occupants, and know the SIGMET threshold.
           </p>
 
           <div style="overflow-x: auto; margin: 1.5rem 0 2rem;">
@@ -532,13 +521,6 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Light Chop</strong></td>
-                  <td>LGTCHOP</td>
-                  <td>Slight, rapid rhythmic bumpiness; no significant altitude change</td>
-                  <td>Slight strain against seat belts; unsecured objects may shift slightly</td>
-                  <td>AIRMET Tango if sustained</td>
-                </tr>
-                <tr>
                   <td><strong>Light</strong></td>
                   <td>LGT</td>
                   <td>Slight, erratic changes in altitude and/or attitude; occasional minor bumpiness</td>
@@ -546,24 +528,17 @@
                   <td>AIRMET Tango</td>
                 </tr>
                 <tr>
-                  <td><strong>Moderate Chop</strong></td>
-                  <td>MODCHOP</td>
-                  <td>Rapid rhythmic bumpiness; significant speed changes but no altitude deviation</td>
-                  <td>Definite strain against seat belts; unsecured objects are dislodged</td>
-                  <td>AIRMET Tango</td>
-                </tr>
-                <tr>
                   <td><strong>Moderate</strong></td>
                   <td>MOD</td>
-                  <td>Similar to light but more intense; changes in altitude and/or attitude occur; more rapid control inputs required</td>
-                  <td>Definite strain against seat belts; walking is difficult; unsecured objects become missiles</td>
+                  <td>Similar to light but greater intensity; changes in altitude and/or attitude occur, but the aircraft remains in positive control at all times</td>
+                  <td>Definite strain against seat belts; walking is difficult; unsecured objects are dislodged</td>
                   <td>AIRMET Tango</td>
                 </tr>
                 <tr>
                   <td><strong>Severe</strong></td>
                   <td>SEV</td>
-                  <td>Large, abrupt changes in altitude and/or attitude; aircraft momentarily out of control</td>
-                  <td>Occupants thrown violently against seat belts; walking impossible; unsecured objects are projectiles</td>
+                  <td>Large, abrupt changes in altitude and/or attitude; aircraft may be momentarily out of control</td>
+                  <td>Occupants thrown violently against seat belts; walking impossible; unsecured objects are tossed about</td>
                   <td><strong>SIGMET</strong></td>
                 </tr>
                 <tr>
@@ -576,6 +551,10 @@
               </tbody>
             </table>
           </div>
+
+          <p>
+            <strong>Chop is a type, not a level.</strong> A PIREP of <code>LGT CHOP</code> or <code>MOD CHOP</code> describes rapid, rhythmic bumpiness <em>without</em> appreciable changes in altitude or attitude — the same intensity as light or moderate turbulence, but a different character. Chop is not a rung below "light" on the scale; there are only four intensities, and chop qualifies the lower two.
+          </p>
 
           <h3>Reading a turbulence PIREP</h3>
           <p>
@@ -751,7 +730,7 @@
 
           <details class="qa">
             <summary>Q: What is low-level wind shear (LLWS) and what causes it?</summary>
-            <p>LLWS is any significant wind shear (change in wind speed and/or direction over a short distance) occurring below 2,000 ft AGL — where there is insufficient altitude to recover from an upset. Primary causes: frontal boundaries (the most intense LLWS), nocturnal temperature inversions with the low-level jet, microburst outflows from thunderstorms or convective cells, and thunderstorm gust fronts. A microburst can generate 30–80 kt of wind shear over 1–4 nm, creating a head-to-tailwind transition that can cause loss of control on approach or departure. AIRMET Tango covers non-convective LLWS; microburst warnings come from LLWAS and TDWR. (AC 00-6B §11; AIM 7-1-26)</p>
+            <p>LLWS is any significant wind shear (change in wind speed and/or direction over a short distance) occurring below 2,000 ft AGL — where there is insufficient altitude to recover from an upset. Primary causes: frontal boundaries (the most intense LLWS), nocturnal temperature inversions with the low-level jet, microburst outflows from thunderstorms or convective cells, and thunderstorm gust fronts. A microburst is less than 1 mile across as it descends, spreading to about 2.5 miles at the surface, with outflow winds up to 45 kt — up to a 90-knot headwind-to-tailwind change that can cause loss of control on approach or departure. AIRMET Tango covers non-convective LLWS; microburst warnings come from LLWAS and TDWR. (AC 00-6B §11; AIM 7-1-26)</p>
           </details>
         </section>
 
