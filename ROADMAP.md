@@ -54,6 +54,29 @@ matrix rows can link anywhere meaningful:
 - [ ] Obstructions to visibility beyond fog — haze, smoke, blowing dust/snow (ACS K3l)
 - [ ] K4 — interpreting digital/automated weather displays and their limitations
 
+## Future project — citation migration off AC 00-6B / AC 00-45H
+
+From the 2026-07 audit fix pass (Batch 2, item 2): FAA's own advisory circular
+index now marks both **AC 00-6B** and **AC 00-45H** "(Cancelled)" — both
+consolidated into **FAA-H-8083-28 (Aviation Weather Handbook)**. AC 00-45H is
+one of the five canonical primary sources in project-principles.md and is
+cited extensively across the site (fronts-pressure-systems.html,
+wind-shear-mountain-wave.html, winds-aloft-jet-stream.html use AC 00-6B;
+weather-charts.html, weather-product-ladder.html, fog-formation.html,
+airmets-sigmets.html, icing.html, and more use AC 00-45H).
+
+Decision (2026-07-17): standardize on FAA-H-8083-28 sitewide. Scope for when
+this is picked up:
+
+- [ ] Map each old AC section reference to its FAA-H-8083-28 chapter/section
+      by hand — no find-replace, since the handbook's numbering doesn't map
+      1:1 to the old ACs and a wrong section number is worse than an
+      old-but-correct AC citation
+- [ ] Update project-principles.md's primary-source list to name
+      FAA-H-8083-28 in place of AC 00-6B and AC 00-45H
+- [ ] Sweep every page citing AC 00-6B or AC 00-45H (see list above) and
+      re-cite against the mapped sections
+
 ## Stretch goals — long-term, not committed
 
 - Interactive skew-T tool with live sounding data (foundation in tools/ — Python 3.11 + SHARPpy venv)
