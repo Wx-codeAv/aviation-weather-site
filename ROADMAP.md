@@ -54,6 +54,14 @@ matrix rows can link anywhere meaningful:
 - [ ] Obstructions to visibility beyond fog — haze, smoke, blowing dust/snow (ACS K3l)
 - [ ] K4 — interpreting digital/automated weather displays and their limitations
 
+Format gaps — pages missing pieces of the standard six-section Learn page
+structure (see project-principles.md), to be written by the author in his
+own voice, not drafted speculatively during a correction pass:
+
+- [ ] pireps.html — missing a standalone "Why pilots care" section and a
+      closing "Pilot takeaway" section (found during the 2026-07 audit fix
+      pass, Batch 3 Group 4; every other page in its review batch had both)
+
 ## Future project — citation migration off AC 00-6B / AC 00-45H
 
 From the 2026-07 audit fix pass (Batch 2, item 2): FAA's own advisory circular

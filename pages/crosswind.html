@@ -620,8 +620,15 @@ function compute() {
     show('cw-svg-wrap2');
   }
 
-  // Result cards: both ends of every entered runway
-  const allRunways = r2 ? [r1, r1r, r2, r2r] : [r1, r1r];
+  // Result cards: both ends of every entered runway (deduped — RWY 2 entered as
+  // RWY 1's reciprocal would otherwise show the same two physical ends twice)
+  const allRunwaysRaw = r2 ? [r1, r1r, r2, r2r] : [r1, r1r];
+  const seenRwy = new Set();
+  const allRunways = allRunwaysRaw.filter(r => {
+    if (seenRwy.has(r.rwyNum)) return false;
+    seenRwy.add(r.rwyNum);
+    return true;
+  });
   renderResultPair(allRunways);
   show('cw-result');
 
