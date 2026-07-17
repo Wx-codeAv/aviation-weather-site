@@ -475,11 +475,15 @@ function initTafDecoder() {
   if (btnDecodeTaf && tafInput) {
     btnDecodeTaf.addEventListener('click', () => {
       clearTafError();
+      hideTafOutput();
       const raw = tafInput.value.trim();
       if (!raw) { showTafError('Paste a TAF to decode.'); return; }
       try {
         const parsed = parseTaf(raw);
-        if (!parsed.station) { showTafError('Could not parse — check that this is a valid TAF.'); return; }
+        if (!parsed.station || !parsed.issueTime || !parsed.validFrom || !parsed.validTo) {
+          showTafError('Could not parse — check that this is a valid TAF.');
+          return;
+        }
         renderTaf(parsed);
       } catch (e) {
         showTafError('Parse error: ' + e.message);

@@ -527,7 +527,7 @@
               <input type="text" id="dep-id" placeholder="KDAB" maxlength="8" data-meta="depId">
             </div>
             <div class="nl-pf">
-              <label for="dep-elev" title="Field elevation in feet MSL. Feeds the climb calculation.">Field Elev (ft)</label>
+              <label for="pf-depelev" title="Field elevation in feet MSL. Feeds the climb calculation.">Field Elev (ft)</label>
               <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
             </div>
             <div class="nl-pf">
@@ -595,7 +595,7 @@
               <input type="text" id="arr-id" placeholder="KSGJ" maxlength="8" data-meta="arrId">
             </div>
             <div class="nl-pf">
-              <label for="arr-elev" title="Field elevation in feet MSL. Feeds the descent estimate.">Field Elev (ft)</label>
+              <label for="pf-destelev" title="Field elevation in feet MSL. Feeds the descent estimate.">Field Elev (ft)</label>
               <input type="number" id="pf-destelev" min="0" max="14000" step="10" placeholder="10" data-meta="destElev">
             </div>
             <div class="nl-pf">
@@ -820,9 +820,10 @@
               <ul>
                 <li>4000 ft table — ISA std = 7°C → dev = +9°C: KTAS = lerp(9, 0, 20, 109, 107) = <strong>108.1</strong></li>
                 <li>6000 ft table — ISA std = 3°C → dev = +13°C: KTAS = lerp(13, 0, 20, 108, 106) = <strong>106.7</strong></li>
-                <li>Lerp to 4500 ft (t = 0.25): 108.1 + (106.7−108.1) × 0.25 = 107.75 → <strong>108 kt</strong></li>
+                <li>Lerp to 4500 ft (t = 0.25): 108.1 + (106.7−108.1) × 0.25 = 107.75 → 108 (rounded)</li>
+                <li>Subtract 2 kt speed-fairings deduction: 108 − 2 = <strong>106 kt</strong></li>
               </ul>
-              <p style="font-size:0.78rem;">Note: above 75% BHP use full rich mixture (POH §5-14). The 2 kt speed-fairings deduction is already applied to the result shown above.</p>
+              <p style="font-size:0.78rem;">Note: above 75% BHP use full rich mixture (POH §5-14). POH cruise speeds assume speed fairings installed; this aircraft doesn't have them, so 2 kt is subtracted from the interpolated result (as shown above).</p>
             </div>
           </details>
         </div>

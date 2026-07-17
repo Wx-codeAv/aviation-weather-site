@@ -152,7 +152,7 @@ window.pohInterp = (function () {
        5. Lerp the two altitude results to pa_target_ft.
 
      Worked example — verified against POH Fig. 5-8:
-       cruisePerf(C172S_POH, 4500, 16, 2400) → expect 108 kt, 8.2 GPH
+       cruisePerf(C172S_POH, 4500, 16, 2400) → expect 106 kt, 8.2 GPH
 
        4000 ft table: ISA std = 7°C → temp_dev = 16−7 = +9°C
          2400 RPM std={61,109,8.5} p20={57,107,8.1}
