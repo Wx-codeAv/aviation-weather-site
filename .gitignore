@@ -25,3 +25,6 @@ Thumbs.db
 
 # Claude Code workspace — kept local, not part of this repo
 .claude/
+
+# Playwright MCP tool artifacts — not part of this repo
+.playwright-mcp/
