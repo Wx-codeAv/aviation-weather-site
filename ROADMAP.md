@@ -77,6 +77,25 @@ this is picked up:
 - [ ] Sweep every page citing AC 00-6B or AC 00-45H (see list above) and
       re-cite against the mapped sections
 
+Also fold in (found during Batch 3 of the same audit fix pass): project-principles.md
+states the Private/Instrument/Commercial ACS documents are all "April 2024
+versions, effective May 31, 2024." Pulled the actual FAA-S-ACS-6C (Private)
+PDF directly — its own cover page and revision history say **November 2023**,
+with no April 2024 edition anywhere in that history (the only 2024 dates
+belong to the companion *guide*, FAA-G-ACS-2, not the ACS itself). Fixed the
+one confirmed instance (navlog.html's footer citation) directly since it was
+a single low-risk date swap, but the Instrument and Commercial ACS dates
+haven't been checked, and other pages (acs.html especially) may repeat the
+same "April 2024" claim project-principles.md asserts.
+
+- [ ] Verify actual publication dates for FAA-S-ACS-7 (Instrument) and
+      FAA-S-ACS-8 (Commercial) the same way — pull the real PDFs, don't
+      trust project-principles.md's date
+- [ ] Update project-principles.md's "April 2024, effective May 31, 2024"
+      claim to whatever the verified dates actually are
+- [ ] Sweep acs.html and any other page asserting ACS dates for the same
+      stale "April 2024" claim
+
 ## Stretch goals — long-term, not committed
 
 - Interactive skew-T tool with live sounding data (foundation in tools/ — Python 3.11 + SHARPpy venv)
