@@ -95,9 +95,9 @@ window.pohInterp = (function () {
   }
 
   /* Internal: interpolate across temperature columns for one (altitude, RPM) cell.
-     temp_dev is OAT − ISA_std at that table altitude.
-     Clamped to [−20, +20] — the spec requires null for out-of-bounds at the outer
-     level; clamping here prevents NaN arithmetic inside the bracket. */
+     temp_dev is OAT − ISA_std at that table altitude, already bounds-checked by
+     _interpAtAlt before this is called. Clamped here too as a safety net against
+     NaN arithmetic inside the bracket, not as the out-of-bounds handling itself. */
   function _tempInterpCell(cell, temp_dev) {
     const dev = Math.max(-20, Math.min(20, temp_dev));
     const pick = (f) => {
@@ -110,7 +110,10 @@ window.pohInterp = (function () {
   }
 
   /* Internal: interpolate within one altitude table at rpm_target.
-     Returns null if rpm_target is outside the table's RPM range. */
+     Returns null if rpm_target is outside the table's RPM range, or if temp_dev
+     (OAT − ISA_std at this table's altitude) is outside the table's ±20°C columns —
+     the table has no data past that, so returning a clamped-edge value here would
+     be silent extrapolation dressed up as a real lookup. */
   function _interpAtAlt(altTable, oat_C, rpm_target) {
     const rpms = altTable.rpm_rows;
     if (!rpms.length) return null;
@@ -128,6 +131,7 @@ window.pohInterp = (function () {
     }
 
     const temp_dev = oat_C - stdTempC(altTable.pa_ft);
+    if (temp_dev < -20 || temp_dev > 20) return null;
     const cLo = _tempInterpCell(loR, temp_dev);
     const cHi = _tempInterpCell(hiR, temp_dev);
 

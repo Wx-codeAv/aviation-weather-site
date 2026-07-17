@@ -154,6 +154,7 @@ function parseMetar(rawInput) {
         desc = 'Calm — winds less than 3 knots';
       } else if (dir === 'VRB') {
         desc = `Variable direction at ${speed} ${unit}`;
+        if (gust) desc += `, gusting ${gust} ${unit}`;
       } else {
         desc = `From ${String(dir).padStart(3, '0')}° at ${speed} ${unit}`;
         if (gust) desc += `, gusting ${gust} ${unit}`;

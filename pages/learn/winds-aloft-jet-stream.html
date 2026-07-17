@@ -120,7 +120,7 @@
         <section id="overview">
           <h2>What the FB is</h2>
           <p>
-            The <strong>Winds and Temperatures Aloft Forecast (FB)</strong> is the text product that gives forecast wind direction, wind speed, and air temperature at specific altitudes above selected stations across the U.S. It is issued twice daily (based on 00Z and 12Z model runs) and comes in three valid-time versions: 6-hour, 12-hour, and 24-hour forecasts. The National Weather Service produces it; it's accessed through aviationweather.gov and most EFB apps.
+            The <strong>Winds and Temperatures Aloft Forecast (FB)</strong> is the text product that gives forecast wind direction, wind speed, and air temperature at specific altitudes above selected stations across the U.S. It is issued 4x daily (00Z, 06Z, 12Z, and 18Z model runs) and comes in three valid-time versions: 6-hour, 12-hour, and 24-hour forecasts. The National Weather Service produces it; it's accessed through aviationweather.gov and most EFB apps.
           </p>
           <p>
             The product has two primary uses: planning which altitude to fly (to find the best headwind–tailwind–altitude tradeoff), and finding the freezing level (the altitude at which temperature crosses 0°C). Both uses require being able to decode the alphanumeric encoding correctly — including the traps.
@@ -308,7 +308,7 @@
           </div>
 
           <p>
-            The practical trigger: <strong>any time the first two digits of the encoded wind group are 45 or higher, you are looking at a high-wind encoding.</strong> (Direction codes run 01–36 for 010°–360°; 37–49 are not valid directions and don't appear; 50–86 are the high-wind codes for 010°–360°; the range 87–99 is not used for direction, with 99 reserved for calm.) In practice, encountering a first-two-digit value above 36 is the reliable flag.
+            The practical trigger: <strong>any time the first two digits of the encoded wind group are 50 or higher, you are looking at a high-wind encoding.</strong> (Direction codes run 01–36 for 010°–360°; 37–49 are not valid directions and don't appear; 50–86 are the high-wind codes for 010°–360°; the range 87–99 is not used for direction, with 99 reserved for calm.) Since codes 37–49 never appear in real data, any first-two-digit value above 36 you actually encounter is the reliable flag — 50 is the exact threshold.
           </p>
 
           <h3>Rule 3 — Maximum reportable speed</h3>
