@@ -549,9 +549,10 @@ function initTafDecoder() {
   // TAF sub-tabs (look up / paste)
   document.querySelectorAll('.taf-subtab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.taf-subtab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.taf-subtab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
       document.querySelectorAll('.taf-subpanel').forEach(p => p.hidden = true);
       tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
       const target = document.getElementById(tab.dataset.panel);
       if (target) target.hidden = false;
       clearTafError();

@@ -89,11 +89,11 @@
       <!-- ── METAR INPUT ── -->
       <div id="metar-section" class="product-section">
         <div class="decoder-tabs" role="tablist">
-          <button class="decoder-tab active" data-panel="panel-icao" role="tab">Look up by airport code</button>
-          <button class="decoder-tab" data-panel="panel-paste" role="tab">Paste a METAR</button>
+          <button id="tab-panel-icao" class="decoder-tab active" data-panel="panel-icao" role="tab" aria-selected="true" aria-controls="panel-icao">Look up by airport code</button>
+          <button id="tab-panel-paste" class="decoder-tab" data-panel="panel-paste" role="tab" aria-selected="false" aria-controls="panel-paste">Paste a METAR</button>
         </div>
 
-        <div id="panel-icao" class="decoder-panel">
+        <div id="panel-icao" class="decoder-panel" role="tabpanel" aria-labelledby="tab-panel-icao">
           <p class="decoder-hint">Enter any ICAO identifier to fetch the current METAR from aviationweather.gov.</p>
           <p id="icao-file-notice" class="decoder-file-notice" hidden>
             Live lookup requires the site to be served over HTTP. Right now you're opening the file directly, so fetching is disabled.
@@ -109,7 +109,7 @@
           <p class="decoder-examples-hint">Examples: <code>KDFW</code> · <code>KORD</code> · <code>KDEN</code> · <code>EGLL</code> · <code>YSSY</code></p>
         </div>
 
-        <div id="panel-paste" class="decoder-panel" hidden>
+        <div id="panel-paste" class="decoder-panel" role="tabpanel" aria-labelledby="tab-panel-paste" hidden>
           <p class="decoder-hint">Paste a raw METAR exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
           <div class="decoder-input-row decoder-input-row--paste">
             <textarea id="metar-input" rows="3" spellcheck="false" autocomplete="off"
@@ -128,11 +128,11 @@
       <!-- ── TAF INPUT ── -->
       <div id="taf-section" class="product-section" hidden>
         <div class="decoder-tabs" role="tablist">
-          <button class="taf-subtab active" data-panel="taf-panel-icao" role="tab">Look up by airport code</button>
-          <button class="taf-subtab" data-panel="taf-panel-paste" role="tab">Paste a TAF</button>
+          <button id="tab-taf-panel-icao" class="taf-subtab active" data-panel="taf-panel-icao" role="tab" aria-selected="true" aria-controls="taf-panel-icao">Look up by airport code</button>
+          <button id="tab-taf-panel-paste" class="taf-subtab" data-panel="taf-panel-paste" role="tab" aria-selected="false" aria-controls="taf-panel-paste">Paste a TAF</button>
         </div>
 
-        <div id="taf-panel-icao" class="taf-subpanel">
+        <div id="taf-panel-icao" class="taf-subpanel" role="tabpanel" aria-labelledby="tab-taf-panel-icao">
           <p class="decoder-hint">Enter any ICAO identifier to fetch the current TAF from aviationweather.gov.</p>
           <p id="taf-icao-file-notice" class="decoder-file-notice" hidden>
             Live lookup requires the site to be served over HTTP. Right now you're opening the file directly, so fetching is disabled.
@@ -148,7 +148,7 @@
           <p class="decoder-examples-hint">Examples: <code>KDFW</code> · <code>KORD</code> · <code>KSFO</code> · <code>EGLL</code></p>
         </div>
 
-        <div id="taf-panel-paste" class="taf-subpanel" hidden>
+        <div id="taf-panel-paste" class="taf-subpanel" role="tabpanel" aria-labelledby="tab-taf-panel-paste" hidden>
           <p class="decoder-hint">Paste a raw TAF exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
           <div class="decoder-input-row decoder-input-row--paste">
             <textarea id="taf-input" rows="4" spellcheck="false" autocomplete="off"

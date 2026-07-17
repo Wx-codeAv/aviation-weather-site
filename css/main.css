@@ -199,6 +199,18 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   margin: 4rem 0;
 }
 
+/* Visually hidden but readable by screen readers — for heading-hierarchy
+   fixes where a visible H2 isn't wanted but the outline still needs one. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- Workflow steps ----------
    For tool pages that ARE a sequence (plan a route, then performance,
    then build the log). Numbers earn their place here: they carry the

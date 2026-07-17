@@ -1137,9 +1137,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Tab switching
   document.querySelectorAll('.decoder-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.decoder-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.decoder-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
       document.querySelectorAll('.decoder-panel').forEach(p => p.hidden = true);
       tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
       const target = document.getElementById(tab.dataset.panel);
       if (target) target.hidden = false;
       clearError();

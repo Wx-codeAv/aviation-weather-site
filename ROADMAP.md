@@ -91,18 +91,27 @@ versions, effective May 31, 2024." Pulled the actual FAA-S-ACS-6C (Private)
 PDF directly — its own cover page and revision history say **November 2023**,
 with no April 2024 edition anywhere in that history (the only 2024 dates
 belong to the companion *guide*, FAA-G-ACS-2, not the ACS itself). Fixed the
-one confirmed instance (navlog.html's footer citation) directly since it was
-a single low-risk date swap, but the Instrument and Commercial ACS dates
-haven't been checked, and other pages (acs.html especially) may repeat the
-same "April 2024" claim project-principles.md asserts.
+two confirmed instances (navlog.html and crosswind.html footer citations)
+directly since each was a single low-risk date swap. As of 2026-07-17 the
+"April 2024" claim is now confirmed wrong in **three places**:
+navlog.html, crosswind.html, and project-principles.md itself (the
+original source of the claim). The Instrument and Commercial ACS dates
+haven't been checked, and other pages (acs.html especially) may repeat
+the same claim.
 
 - [ ] Verify actual publication dates for FAA-S-ACS-7 (Instrument) and
       FAA-S-ACS-8 (Commercial) the same way — pull the real PDFs, don't
       trust project-principles.md's date
 - [ ] Update project-principles.md's "April 2024, effective May 31, 2024"
       claim to whatever the verified dates actually are
-- [ ] Sweep acs.html and any other page asserting ACS dates for the same
-      stale "April 2024" claim
+- [ ] Sweep every page asserting ACS dates (not just navlog/crosswind) for
+      the same stale "April 2024" claim
+- [ ] Verify the IR.I.B and CA.I.C task-letter prefixes on acs.html against
+      the actual Instrument and Commercial ACS documents — the Private
+      Pilot codes (PA.I.C) were fully verified word-for-word correct in
+      Batch 3 Group 5 of the 2026-07 audit fix pass, but the Instrument/
+      Commercial prefixes were never checked against source, only assumed
+      to follow the same pattern
 
 ## Stretch goals — long-term, not committed
 
