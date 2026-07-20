@@ -53,6 +53,7 @@ matrix rows can link anywhere meaningful:
 - [ ] Frost — formation, why it must be removed, clean-aircraft concept (currently only a callout in icing.html; ACS K3k)
 - [ ] Obstructions to visibility beyond fog — haze, smoke, blowing dust/snow (ACS K3l)
 - [ ] K4 — interpreting digital/automated weather displays and their limitations
+- [ ] stability-lapse-rates.html has zero inline citations — the audit's FAA-H-8083-28 Ch. 13 fix never landed or was lost. Needs a from-scratch sourcing pass: verify every stability/lapse-rate/CAPE claim in the body against Handbook Ch. 13, add inline cites, then add the page's Sources line (every other Learn page has one; this is the last one missing it)
 
 ## Stretch goals — long-term, not committed
 
