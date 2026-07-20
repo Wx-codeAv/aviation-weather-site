@@ -132,8 +132,8 @@ When citing facts, validity periods, criteria, or definitions on Learn pages, us
 
 | Topic | Source | Notes |
 |-------|--------|-------|
-| Aviation weather products (METAR, TAF, AIRMET, SIGMET, etc.) — definitions, criteria, validity | **AC 00-45H** *Aviation Weather Services* | The authoritative reference. Used for the Convective SIGMET routine vs. special issuance criteria on the AIRMETs/SIGMETs page. |
+| Aviation weather products (METAR, TAF, AIRMET, SIGMET, etc.) — definitions, criteria, validity | **FAA-H-8083-28** *Aviation Weather Handbook* | The authoritative reference. AC 00-45H, the former authority, is cancelled and superseded by this Handbook — do not cite it. Used for the Convective SIGMET routine vs. special issuance criteria on the AIRMETs/SIGMETs page. |
 | Pilot interpretation and use of weather products | **AIM Chapter 7** *Safety of Flight* | Operational, in the AIM. Useful for "how a pilot uses this product." |
-| Aviation weather meteorology | **FAA-H-8083-28** *Aviation Weather Handbook* | Replaced the weather chapters of FAA-H-8083-25. Used for atmospheric concepts. |
-| Live current weather products | **aviationweather.gov** | The Aviation Weather Center's site. Useful for examples but not for criteria or validity (those are in AC 00-45H). |
+| Aviation weather meteorology | **FAA-H-8083-28** *Aviation Weather Handbook* | Replaced the weather chapters of FAA-H-8083-25 and superseded AC 00-6B. Used for atmospheric concepts. |
+| Live current weather products | **aviationweather.gov** | The Aviation Weather Center's site. Useful for examples but not for criteria or validity (those are in FAA-H-8083-28). |
 | Regulations | **14 CFR Part 91** | FAR 91.103 covers preflight action including weather. |

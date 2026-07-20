@@ -84,7 +84,7 @@
       </p>
       <div class="concept-meta">
         <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K2f · IR.I.B.K2e,f · CA.I.C.K2e,f</span>
-        <span class="concept-meta-item"><strong>Sources:</strong> AC 00-45H §4 · AC 00-6B Ch. 14 · FAA-H-8083-25 §12-20</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> FAA-H-8083-28 §27.2 &amp; §19.2.3.2 &amp; §9.4 · FAA-H-8083-25 §12-20</span>
         <span class="concept-meta-item"><strong>Read time:</strong> ~14 min</span>
       </div>
     </div>
@@ -476,7 +476,7 @@
               <!-- Outer border -->
               <rect x="1" y="1" width="738" height="328" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Jet stream vertical cross-section (equatorward left, poleward right). The tropopause dips from ~FL350–380 in the subtropics to ~FL250–280 at polar latitudes. The jet stream core (green oval) sits at the tropopause break, with strongest winds concentrated in the core. A clear-air turbulence (CAT) halo surrounds the jet core, strongest on the poleward (right) side. CAT risk extends 100–200 nm from the jet axis. A surface cold front is anchored in the troposphere beneath the jet stream. The isotach (dashed green) shows wind speed falling outward from the core. (AC 00-6B Ch. 14; FAA-H-8083-25 §12-20)</figcaption>
+            <figcaption>Jet stream vertical cross-section (equatorward left, poleward right). The tropopause dips from ~FL350–380 in the subtropics to ~FL250–280 at polar latitudes. The jet stream core (green oval) sits at the tropopause break, with strongest winds concentrated in the core. A clear-air turbulence (CAT) halo surrounds the jet core, strongest on the poleward (right) side. Typical CAT areas run 100–300 mi long and 50–100 mi wide along the jet. A surface cold front is anchored in the troposphere beneath the jet stream. The isotach (dashed green) shows wind speed falling outward from the core. (FAA-H-8083-28 §19.2.3.2.1; FAA-H-8083-25 §12-20)</figcaption>
           </figure>
 
           <h3>Seasonal position and speed</h3>
@@ -634,7 +634,7 @@
               <ul class="hazard-list">
                 <li>Any direction group of 50 or above in the FB means winds ≥100 kt — subtract 50 from direction, add 100 to speed</li>
                 <li>Misreading "7535" as 750°/35 kt instead of 250°/135 kt is a fundamental error that corrupts every calculation that follows</li>
-                <li>Always check: is the direction field ≥50? If so, the high-wind encoding is active (AC 00-45H §4.2.3)</li>
+                <li>Always check: is the direction field ≥50? If so, the high-wind encoding is active (FAA-H-8083-28 §27.2.1.1.1)</li>
               </ul>
             </article>
             <article class="hazard-card hazard-sierra">
@@ -650,7 +650,7 @@
               <ul class="hazard-list">
                 <li>"9900" means calm or light and variable winds (less than 5 kt) — the "99" is a flag, not a wind direction</li>
                 <li>No temperature is appended to a 9900 group</li>
-                <li>Common exam trap: students try to decode 9900 as a wind from 990° — an impossible direction that should immediately signal the flag (AC 00-45H §4.2.2)</li>
+                <li>Common exam trap: students try to decode 9900 as a wind from 990° — an impossible direction that should immediately signal the flag (FAA-H-8083-28 §27.2.1.1.1)</li>
               </ul>
             </article>
           </div>
@@ -665,42 +665,42 @@
 
           <details class="qa">
             <summary>Q: How do you decode a winds aloft forecast entry? What does "2318+03" mean?</summary>
-            <p>"2318+03" decodes as: wind from <strong>230°</strong> at <strong>18 knots</strong>, temperature <strong>+3°C</strong>. The first two digits (23) are the direction in tens of degrees (23 × 10 = 230°). The next two digits (18) are the speed in knots. The last portion (+03) is the temperature in degrees Celsius. (AC 00-45H §4.2)</p>
+            <p>"2318+03" decodes as: wind from <strong>230°</strong> at <strong>18 knots</strong>, temperature <strong>+3°C</strong>. The first two digits (23) are the direction in tens of degrees (23 × 10 = 230°). The next two digits (18) are the speed in knots. The last portion (+03) is the temperature in degrees Celsius. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
             <summary>Q: What does "9900" in a winds aloft forecast mean?</summary>
-            <p>"9900" means the winds are calm or light and variable — less than 5 knots. The "99" in the direction field is a flag; it is not a direction. No temperature is appended to a 9900 group. (AC 00-45H §4.2.2)</p>
+            <p>"9900" means the winds are calm or light and variable — less than 5 knots. The "99" in the direction field is a flag; it is not a direction. No temperature is appended to a 9900 group. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
             <summary>Q: What is the high-wind encoding rule in the FB forecast? How do you decode "7535-52"?</summary>
-            <p>When forecast winds are 100 knots or greater, <strong>50 is added to the direction group</strong> and <strong>100 is subtracted from the speed</strong> to keep both values in two-digit format. Any direction group of 50 or above is the flag. To decode "7535-52": the first two digits (75) are ≥ 50, so subtract 50 → 25 → wind from <strong>250°</strong>; add 100 to the speed (35) → <strong>135 kt</strong>; temperature: −52°C. The common exam trap is decoding "7535" as 750° direction and 35 kt — the impossible direction is the giveaway that you've missed the high-wind flag. (AC 00-45H §4.2.3)</p>
+            <p>When forecast winds are 100 knots or greater, <strong>50 is added to the direction group</strong> and <strong>100 is subtracted from the speed</strong> to keep both values in two-digit format. Any direction group of 50 or above is the flag. To decode "7535-52": the first two digits (75) are ≥ 50, so subtract 50 → 25 → wind from <strong>250°</strong>; add 100 to the speed (35) → <strong>135 kt</strong>; temperature: −52°C. The common exam trap is decoding "7535" as 750° direction and 35 kt — the impossible direction is the giveaway that you've missed the high-wind flag. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
             <summary>Q: Why are temperatures not included in a 3,000 ft winds aloft entry?</summary>
-            <p>By convention, temperature is not reported at the 3,000 ft level in the FB winds aloft forecast. Temperature reporting begins at 6,000 ft. The 3,000 ft entry is a 4-digit wind-only group. Additionally, no wind is reported within 1,500 ft of station elevation — so high-elevation stations will show blank entries at the lowest altitude levels, not because winds are calm, but because the level is too close to the terrain to be meaningful. (AC 00-45H §4.2.1)</p>
+            <p>By convention, temperature is not reported at the 3,000 ft level in the FB winds aloft forecast. Temperature reporting begins at 6,000 ft. The 3,000 ft entry is a 4-digit wind-only group. Additionally, no wind is reported within 1,500 ft of station elevation — so high-elevation stations will show blank entries at the lowest altitude levels, not because winds are calm, but because the level is too close to the terrain to be meaningful. (FAA-H-8083-28 §27.2.1.1, §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
             <summary>Q: The winds aloft forecast header says "TEMPS NEG ABV 24000." What does that mean for decoding the temperature?</summary>
-            <p>At FL240 and above, all temperatures are below freezing, so the negative sign is dropped to save space in the encoded format. A temperature value of "52" at 30,000 ft means −52°C, not +52°C. The header tells you to apply this convention to all temperature values at 24,000 ft and higher in that forecast. If you ignore this rule and read temperatures as positive at high altitude, you'll conclude the atmosphere is far warmer aloft than it actually is — a significant error for icing analysis and aircraft performance planning. (AC 00-45H §4.2)</p>
+            <p>At FL240 and above, all temperatures are below freezing, so the negative sign is dropped to save space in the encoded format. A temperature value of "52" at 30,000 ft means −52°C, not +52°C. The header tells you to apply this convention to all temperature values at 24,000 ft and higher in that forecast. If you ignore this rule and read temperatures as positive at high altitude, you'll conclude the atmosphere is far warmer aloft than it actually is — a significant error for icing analysis and aircraft performance planning. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
             <summary>Q: Where is clear-air turbulence (CAT) most likely relative to the jet stream?</summary>
-            <p>CAT is most likely on the <strong>lateral flanks of the jet stream</strong> — especially the poleward (north) flank — and in the <strong>jet exit region</strong> where the jet is decelerating. It also occurs above and below the jet core where vertical wind shear is greatest. CAT risk extends 100–200 nm from the jet axis. The jet core itself is often smoother than its flanks despite the high wind speed, because the wind within the core is relatively uniform. The exit region and poleward flank are the highest-probability zones for severe CAT. (AC 00-6B Ch. 14; FAA-H-8083-25 §12-17)</p>
+            <p>CAT is most likely on the <strong>poleward side of the jet stream</strong> (over the U.S., the left side when facing downwind), near the tropopause, and in the vicinity of a jet-stream wind maximum, deep upper troughs, and confluence zones where two jet streams merge. Moderate CAT is considered likely when vertical wind shear reaches 5 kt per 1,000 ft or horizontal wind shear reaches 40 kt per 150 mi — it's the shear, not the wind speed itself, that generates the turbulence. Typical CAT areas run 100–300 mi long, 50–100 mi wide, and 5,000 ft deep along the jet. (FAA-H-8083-28 §19.2.3.2.1; FAA-H-8083-25 §12-17)</p>
           </details>
 
           <details class="qa">
             <summary>Q: How do you find the freezing level from a winds aloft forecast?</summary>
-            <p>Look for the altitude at which the temperature column changes sign from positive to negative. In a standard winds aloft forecast, find the entries where temperature goes from, for example, +3°C at 6,000 ft to −1°C at 9,000 ft — the freezing level is between those two altitudes (approximately 8,500 ft by interpolation). This is the altitude above which structural icing becomes possible in any cloud or visible moisture. Also check for a temperature inversion signature (positive-negative-positive with altitude), which indicates warm layer aloft with freezing rain potential below it. (AC 00-45H §4; AC 91-74B §3)</p>
+            <p>Look for the altitude at which the temperature column changes sign from positive to negative. In a standard winds aloft forecast, find the entries where temperature goes from, for example, +3°C at 6,000 ft to −1°C at 9,000 ft — the freezing level is between those two altitudes (approximately 8,500 ft by interpolation). This is the altitude above which structural icing becomes possible in any cloud or visible moisture. Also check for a temperature inversion signature (positive-negative-positive with altitude), which indicates warm layer aloft with freezing rain potential below it. (FAA-H-8083-28 §27.2.1.1.1; AC 91-74B §3)</p>
           </details>
 
           <details class="qa">
             <summary>Q: What is the maximum wind speed the FB format can encode?</summary>
-            <p>199 knots. When forecast winds reach 200 knots or greater, the format encodes them as 199 kt (the maximum two-digit speed after subtracting 100 in the high-wind convention). An entry showing 199 kt means "200 knots or higher." This occurs in extreme jet stream events — primarily over the Pacific and central U.S. in mid-winter — and is rare at domestic altitudes but can be seen at FL390 and above on trans-Pacific routes. (AC 00-45H §4.2.3)</p>
+            <p>199 knots. When forecast winds reach 200 knots or greater, the format encodes them as 199 kt (the maximum two-digit speed after subtracting 100 in the high-wind convention). An entry showing 199 kt means "200 knots or higher." This occurs in extreme jet stream events — primarily over the Pacific and central U.S. in mid-winter — and is rare at domestic altitudes but can be seen at FL390 and above on trans-Pacific routes. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
         </section>
 
@@ -723,11 +723,11 @@
 
           <details class="qa">
             <summary>Option A: File for 9,000 ft — lowest usable IFR altitude, smallest headwind.</summary>
-            <p><strong>Reasonable, but check the math.</strong> At 9,000 ft, 18 kt headwind on a 280° track heading roughly 090° gives a headwind component of approximately 18 kt. 155 − 18 = 137 kt groundspeed. 540 nm / 137 kt = 3.9 hours. Fuel: check. Clouds at 11,000 ft put 9,000 ft below the cloud layer — potentially VMC on top or under it depending on bases. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (AC 00-45H §4.2)</p>
+            <p><strong>Reasonable, but check the math.</strong> At 9,000 ft, 18 kt headwind on a 280° track heading roughly 090° gives a headwind component of approximately 18 kt. 155 − 18 = 137 kt groundspeed. 540 nm / 137 kt = 3.9 hours. Fuel: check. Clouds at 11,000 ft put 9,000 ft below the cloud layer — potentially VMC on top or under it depending on bases. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
           <details class="qa">
             <summary>Option B: File for 12,000 ft — in the cloud layer with a 32-kt headwind.</summary>
-            <p><strong>Check the icing risk.</strong> 12,000 ft is inside the GFA cloud layer (11,000–16,000 ft) at −12°C. The temperature is in the rime ice range (−15°C to −20°C is typical rime; −12°C is mixed to clear territory). No AIRMET Zulu is active, but the conditions (cloud, below 0°C) make icing possible without an advisory. For a turbocharged 182 with no FIKI, flying in cloud at −12°C for potentially hours is a risk that should be explicitly weighed. PIREPs from aircraft in that layer are your best current data. (AC 00-45H §4; AC 91-74B)</p>
+            <p><strong>Check the icing risk.</strong> 12,000 ft is inside the GFA cloud layer (11,000–16,000 ft) at −12°C. The temperature is in the rime ice range (−15°C to −20°C is typical rime; −12°C is mixed to clear territory). No AIRMET Zulu is active, but the conditions (cloud, below 0°C) make icing possible without an advisory. For a turbocharged 182 with no FIKI, flying in cloud at −12°C for potentially hours is a risk that should be explicitly weighed. PIREPs from aircraft in that layer are your best current data. (FAA-H-8083-28 §20.3; AC 91-74B)</p>
           </details>
           <details class="qa">
             <summary>Option C: File for 18,000 ft — above the clouds, smooth air, but 48 kt headwind.</summary>
@@ -735,7 +735,7 @@
           </details>
           <details class="qa">
             <summary>Option D: File for 9,000 ft, check PIREPs for cloud bases, and plan an altitude amendment if tops are above 9,000 ft.</summary>
-            <p><strong>Best approach.</strong> Start with the lowest usable altitude and least headwind (9,000 ft). Before departure, get PIREPs to confirm cloud bases — if bases are at or above 9,000 ft, you'll be in the clouds, and you need to decide whether to stay below or climb to 12,000 ft through the layer. Filing 9,000 ft with a plan to request an amendment keeps options open. The key principle: work the actual numbers from the FB for groundspeed and fuel, don't assume an altitude is better without running the math. (AC 00-45H §5)</p>
+            <p><strong>Best approach.</strong> Start with the lowest usable altitude and least headwind (9,000 ft). Before departure, get PIREPs to confirm cloud bases — if bases are at or above 9,000 ft, you'll be in the clouds, and you need to decide whether to stay below or climb to 12,000 ft through the layer. Filing 9,000 ft with a plan to request an amendment keeps options open. The key principle: work the actual numbers from the FB for groundspeed and fuel, don't assume an altitude is better without running the math. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
         </section>
 

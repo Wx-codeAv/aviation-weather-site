@@ -32,11 +32,11 @@ Existing pages may not yet match this format perfectly. When working on an exist
 For any factual claim — validity periods, criteria, definitions, ACS codes, regulations — cite a primary source. Never cite from memory.
 
 Primary sources:
-- AC 00-45H — weather products
-- FAA-H-8083-28 — Aviation Weather Handbook
+- FAA-H-8083-28 — Aviation Weather Handbook (weather products, criteria, and meteorology; AC 00-6B and AC 00-45H are cancelled and superseded by this Handbook — do not cite them)
+- AC 91-74B — icing (still current; not superseded by the Handbook)
 - AIM Chapter 7 — operational
 - 14 CFR Part 91 — regulations
-- Current ACS documents (Private PA, Instrument IR, Commercial CA — all April 2024 versions, effective May 31, 2024)
+- Current ACS documents — Private PA: FAA-S-ACS-6C, Instrument IR: FAA-S-ACS-8C, Commercial CA: FAA-S-ACS-7B (all November 2023, effective May 31, 2024)
 
 If unsure, leave a `[VERIFY]` marker in the file for the project author to check, rather than guessing.
 
