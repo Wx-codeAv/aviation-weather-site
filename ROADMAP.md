@@ -53,7 +53,9 @@ matrix rows can link anywhere meaningful:
 - [ ] Frost — formation, why it must be removed, clean-aircraft concept (currently only a callout in icing.html; ACS K3k)
 - [ ] Obstructions to visibility beyond fog — haze, smoke, blowing dust/snow (ACS K3l)
 - [ ] K4 — interpreting digital/automated weather displays and their limitations
-- [ ] stability-lapse-rates.html has zero inline citations — the audit's FAA-H-8083-28 Ch. 13 fix never landed or was lost. Needs a from-scratch sourcing pass: verify every stability/lapse-rate/CAPE claim in the body against Handbook Ch. 13, add inline cites, then add the page's Sources line (every other Learn page has one; this is the last one missing it)
+- [ ] stability-lapse-rates.html has zero inline citations — the audit's FAA-H-8083-28 Ch. 13 fix never landed or was lost. Needs a from-scratch sourcing pass, then the page's Sources line (every other Learn page has one; this is the last one missing it). Scoped from a 2026-07-20 review of Ch. 13 against the page:
+  - Most of the page IS coverable: stability types (neutral / absolutely stable / absolutely unstable / conditionally unstable — Handbook uses slightly different naming, e.g. "Conditional Instability") plus CAPE and lifted index are all in Ch. 13. Verify each claim against the chapter and cite it — this is a real mapping job, not an unsourceable page.
+  - The Skew-T/Log-P section is NOT in the Handbook and should NOT be force-cited to it. Skew-T analysis is beyond standard FAA pilot-training scope — it's meteorology-track material (e.g. ERAU WX 301). Present that section as established atmospheric science without an FAA cite, same treatment as the mountain-wave and dry-microburst items elsewhere on the site. Optionally note it goes beyond typical pilot training. Keep the section as-is otherwise — it's strong, well-done content and shouldn't be cut just because the Handbook doesn't cover it.
 
 ## Stretch goals — long-term, not committed
 
