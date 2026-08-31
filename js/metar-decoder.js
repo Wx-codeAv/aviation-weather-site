@@ -1007,26 +1007,10 @@ function escHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// ── ICAO fetch ───────────────────────────────────────────────
-// Uses the aviationweather.gov public API (no API key required).
-// Live fetch requires the site to be served over HTTP — it will not work
-// when the file is opened directly from the filesystem (file:// protocol)
-// due to browser CORS restrictions. Deploy to GitHub Pages to enable it.
-// [VERIFY] URL format against current aviationweather.gov API docs if fetch fails.
-
-async function fetchMetar(icao) {
-  if (window.location.protocol === 'file:') {
-    throw new Error('file-protocol');
-  }
-  const url = `https://aviationweather.gov/api/data/metar?ids=${encodeURIComponent(icao)}&format=raw&taf=false`;
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`Server returned HTTP ${resp.status} — check the identifier and try again`);
-  const text = (await resp.text()).trim();
-  if (!text) throw new Error(`No current METAR found for ${icao} — verify the ICAO identifier`);
-  return text.split('\n')[0].trim();
-}
-
 // ── Init ─────────────────────────────────────────────────────
+// Note: airport-code live fetch was removed (see decoder.html comment) —
+// aviationweather.gov sends no CORS headers, so it can't succeed from a
+// static site at all, hosted or not. Revisit if a host-locked proxy is built.
 
 function showError(msg) {
   const el = document.getElementById('decoder-error');
@@ -1062,43 +1046,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Fetch button (ICAO lookup mode)
-  const fetchBtn = document.getElementById('btn-fetch');
-  const icaoInput = document.getElementById('icao-input');
-  if (fetchBtn && icaoInput) {
-    fetchBtn.addEventListener('click', async () => {
-      clearError();
-      hideOutput();
-      const icao = icaoInput.value.trim().toUpperCase();
-      if (!icao || !/^[A-Z]{3,4}$/.test(icao)) {
-        showError('Enter a 3- or 4-letter ICAO airport identifier (e.g. KDFW or EGLL).');
-        return;
-      }
-      fetchBtn.textContent = 'Fetching…';
-      fetchBtn.disabled = true;
-      try {
-        const raw = await fetchMetar(icao);
-        if (metarInput) metarInput.value = raw;
-        const parsed = parseMetar(raw);
-        renderDecoder(parsed);
-      } catch (e) {
-        if (e.message === 'file-protocol') {
-          showError('Live lookup is not available when the file is opened directly. Use the "Paste a METAR" tab — copy any raw METAR from aviationweather.gov and paste it there.');
-        } else {
-          showError(`Could not fetch METAR for ${icao}: ${e.message}.`);
-        }
-      } finally {
-        fetchBtn.textContent = 'Fetch METAR';
-        fetchBtn.disabled = false;
-      }
-    });
-
-    // Allow Enter key on ICAO input
-    icaoInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') fetchBtn.click();
-    });
-  }
-
   // ── Example METAR button
   const exampleBtn = document.getElementById('btn-example');
   if (exampleBtn && metarInput) {
@@ -1123,26 +1070,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Show file-protocol notice in ICAO panel if needed
-  if (window.location.protocol === 'file:') {
-    const notice = document.getElementById('icao-file-notice');
-    const fetchBtn2 = document.getElementById('btn-fetch');
-    const icaoInput2 = document.getElementById('icao-input');
-    if (notice) notice.hidden = false;
-    if (fetchBtn2) { fetchBtn2.disabled = true; fetchBtn2.title = 'Requires HTTP server'; }
-    if (icaoInput2) icaoInput2.disabled = true;
-  }
-
-  // ── Tab switching
-  document.querySelectorAll('.decoder-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.decoder-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.decoder-panel').forEach(p => p.hidden = true);
-      tab.classList.add('active');
-      const target = document.getElementById(tab.dataset.panel);
-      if (target) target.hidden = false;
-      clearError();
-      hideOutput();
-    });
-  });
 });

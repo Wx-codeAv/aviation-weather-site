@@ -434,21 +434,24 @@
               <ellipse cx="448" cy="60" rx="116" ry="42"
                        fill="rgba(181,61,31,0.14)" stroke="#b53d1f" stroke-width="1" stroke-dasharray="3,3"/>
 
-              <!-- CAT labels -->
-              <text x="545" y="45" font-family="Anton, sans-serif" font-size="9" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CAT</text>
-              <text x="545" y="55" font-family="Manrope, sans-serif" font-size="7" fill="#b53d1f" text-anchor="middle">worst poleward</text>
+              <!-- CAT callout: tinted box + leader, matching the EXAMPLE/FZRA callout convention used
+                   elsewhere on the site instead of cramming text against the halo. -->
+              <rect x="584" y="8" width="140" height="46" fill="rgba(181,61,31,0.1)" stroke="#b53d1f" stroke-width="1" rx="2"/>
+              <text x="654" y="24" font-family="Anton, sans-serif" font-size="10" fill="#b53d1f" text-anchor="middle" letter-spacing="0.05em">CAT ZONE</text>
+              <text x="654" y="38" font-family="Manrope, sans-serif" font-size="8.5" fill="#b53d1f" text-anchor="middle">worst on poleward flank</text>
+              <line x1="620" y1="54" x2="562" y2="60" stroke="#b53d1f" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.7"/>
 
               <!-- Jet stream core oval -->
               <ellipse cx="420" cy="62" rx="52" ry="22"
                        fill="rgba(93,111,60,0.25)" stroke="#5d6f3c" stroke-width="2.5"/>
               <text x="420" y="58" font-family="Anton, sans-serif" font-size="10" fill="#5d6f3c" text-anchor="middle" letter-spacing="0.06em">JET CORE</text>
-              <text x="420" y="72" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle">50–200+ kt · W→E into page</text>
+              <text x="420" y="72" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#5d6f3c" text-anchor="middle">50–200+ kt</text>
 
               <!-- Isotach lines (wind speed contours) surrounding the jet -->
               <path d="M 300,62 C 310,35 370,24 420,24 C 470,24 530,35 540,62 C 530,89 470,100 420,100 C 370,100 310,89 300,62 Z"
                     fill="none" stroke="#5d6f3c" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.35"/>
-              <text x="296" y="66" font-family="Manrope, sans-serif" font-size="9" fill="#5d6f3c" opacity="0.85" font-style="italic" text-anchor="end">isotach</text>
-              <line x1="298" y1="63" x2="306" y2="62" stroke="#5d6f3c" stroke-width="0.6" opacity="0.5"/>
+              <text x="250" y="48" font-family="Manrope, sans-serif" font-size="8.5" fill="#5d6f3c" opacity="0.85" font-style="italic" text-anchor="end">isotachs</text>
+              <line x1="253" y1="50" x2="295" y2="60" stroke="#5d6f3c" stroke-width="0.6" stroke-dasharray="2,2" opacity="0.5"/>
 
               <!-- Surface cold front: anchored below the jet, displaced to the WARM (equatorward/left) side of the core -->
               <line x1="320" y1="290" x2="470" y2="290" stroke="#4a7ba6" stroke-width="2.5"/>
@@ -476,7 +479,7 @@
               <!-- Outer border -->
               <rect x="1" y="1" width="738" height="328" fill="none" stroke="#b9a87a" stroke-width="0.5"/>
             </svg>
-            <figcaption>Jet stream vertical cross-section (equatorward left, poleward right). The tropopause dips from ~FL350–380 in the subtropics to ~FL250–280 at polar latitudes. The jet stream core (green oval) sits at the tropopause break, with strongest winds concentrated in the core. A clear-air turbulence (CAT) halo surrounds the jet core, strongest on the poleward (right) side. Typical CAT areas run 100–300 mi long and 50–100 mi wide along the jet. A surface cold front is anchored in the troposphere beneath the jet stream. The isotach (dashed green) shows wind speed falling outward from the core. (FAA-H-8083-28 §19.2.3.2.1; FAA-H-8083-25 §12-20)</figcaption>
+            <figcaption>Jet stream vertical cross-section (equatorward left, poleward right). The tropopause dips from ~FL350–380 in the subtropics to ~FL250–280 at polar latitudes. The jet stream core (green oval) sits at the tropopause break, with strongest winds (50–200+ kt) concentrated in the core, flowing west to east (into the page). A clear-air turbulence (CAT) halo surrounds the jet core, strongest on the poleward (right) side. Typical CAT areas run 100–300 mi long and 50–100 mi wide along the jet. A surface cold front is anchored in the troposphere beneath the jet stream. The isotach (dashed green) shows wind speed falling outward from the core. (FAA-H-8083-28 §19.2.3.2.1; FAA-H-8083-25 §12-20)</figcaption>
           </figure>
 
           <h3>Seasonal position and speed</h3>
@@ -554,7 +557,7 @@
           </p>
 
           <p class="callout">
-            <strong>The "best winds" altitude is not always the right altitude:</strong> At very high altitudes (above FL200 for a piston aircraft), the increased true airspeed from lower air density may or may not overcome the added fuel burn rate. For a turbocharged piston, there is a "sweet spot" where the combination of tailwind component and TAS advantage is maximized — usually 10,000–14,000 ft on most cross-country missions. For a normally aspirated aircraft, the power loss above 8,000–10,000 ft starts to erode the gains from any tailwind. Work the numbers rather than assuming "fly higher, fly faster."
+            <strong>The "best winds" altitude is not always the right altitude:</strong> At very high altitudes (above FL200 for a piston aircraft), the increased true airspeed from lower air density may or may not overcome the added fuel burn rate. For a turbocharged piston, there is a "sweet spot" where the combination of tailwind component and TAS advantage is maximized — usually 10,000–14,000 ft on most cross-country missions. For a naturally aspirated aircraft, the power loss above 8,000–10,000 ft starts to erode the gains from any tailwind. Work the numbers rather than assuming "fly higher, fly faster."
           </p>
         </section>
 
@@ -750,7 +753,7 @@
               <li><strong>"TEMPS NEG ABV 24000" means the minus sign is dropped at FL240+.</strong> A temperature of "52" at 30,000 ft is −52°C. Missing this makes every high-altitude temperature analysis wrong.</li>
               <li><strong>CAT is most intense on the poleward flank and in the exit region of the jet stream.</strong> The core is often smoother than the flanks. CAT risk extends 100–200 nm from the jet axis. In winter, the polar jet can sit over the contiguous U.S. at FL300–FL380 with 150–200 kt winds and severe CAT zones on both flanks.</li>
               <li><strong>The freezing level is in the temperature column.</strong> Find where sign changes from positive to negative. A positive-negative-positive temperature profile with altitude means a warm layer aloft — freezing rain risk below the upper cold layer. This is the most dangerous icing setup and it appears directly in the FB numbers.</li>
-              <li><strong>Use winds aloft to select altitude, not just check winds.</strong> Compare headwind/tailwind component and ETE at each candidate altitude. The "best winds" altitude is not always right — for a normally aspirated piston, power loss above 8,000–10,000 ft may erase any tailwind gain. Work the numbers.</li>
+              <li><strong>Use winds aloft to select altitude, not just check winds.</strong> Compare headwind/tailwind component and ETE at each candidate altitude. The "best winds" altitude is not always right — for a naturally aspirated piston, power loss above 8,000–10,000 ft may erase any tailwind gain. Work the numbers.</li>
             </ul>
           </div>
         </section>

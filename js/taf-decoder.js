@@ -439,17 +439,9 @@ function buildConditionsStr(group) {
   return parts.filter(Boolean).join('  ·  ');
 }
 
-// ── ICAO TAF fetch ────────────────────────────────────────────
-
-async function fetchTaf(icao) {
-  if (window.location.protocol === 'file:') throw new Error('file-protocol');
-  const url = `https://aviationweather.gov/api/data/taf?ids=${encodeURIComponent(icao)}&format=raw`;
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`Server returned HTTP ${resp.status}`);
-  const text = (await resp.text()).trim();
-  if (!text) throw new Error(`No TAF found for ${icao} — verify the ICAO identifier`);
-  return text;
-}
+// Note: airport-code live fetch was removed (see decoder.html comment) —
+// aviationweather.gov sends no CORS headers, so it can't succeed from a
+// static site at all, hosted or not. Revisit if a host-locked proxy is built.
 
 // ── TAF init ─────────────────────────────────────────────────
 
@@ -457,8 +449,6 @@ function initTafDecoder() {
   const tafInput   = document.getElementById('taf-input');
   const btnDecodeTaf = document.getElementById('btn-decode-taf');
   const btnExampleTaf = document.getElementById('btn-example-taf');
-  const btnFetchTaf   = document.getElementById('btn-fetch-taf');
-  const icaoTafInput  = document.getElementById('icao-taf-input');
   const tafError      = document.getElementById('taf-error');
 
   function showTafError(msg) {
@@ -487,37 +477,6 @@ function initTafDecoder() {
     });
   }
 
-  if (btnFetchTaf && icaoTafInput) {
-    btnFetchTaf.addEventListener('click', async () => {
-      clearTafError();
-      hideTafOutput();
-      const icao = icaoTafInput.value.trim().toUpperCase();
-      if (!icao || !/^[A-Z]{3,4}$/.test(icao)) {
-        showTafError('Enter a 3- or 4-letter ICAO airport identifier.');
-        return;
-      }
-      btnFetchTaf.textContent = 'Fetching…';
-      btnFetchTaf.disabled = true;
-      try {
-        const raw = await fetchTaf(icao);
-        if (tafInput) tafInput.value = raw;
-        const parsed = parseTaf(raw);
-        renderTaf(parsed);
-      } catch (e) {
-        if (e.message === 'file-protocol') {
-          showTafError('Live lookup is not available when the file is opened directly. Use the "Paste a TAF" tab.');
-        } else {
-          showTafError(`Could not fetch TAF for ${icao}: ${e.message}.`);
-        }
-      } finally {
-        btnFetchTaf.textContent = 'Fetch TAF';
-        btnFetchTaf.disabled = false;
-      }
-    });
-
-    icaoTafInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnFetchTaf.click(); });
-  }
-
   const TAF_EXAMPLES = [
     'TAF KORD 031730Z 0318/0424 32012KT P6SM BKN040 FM040000 36015G25KT P6SM SCT025 TEMPO 0400/0406 2SM +TSRA BKN008CB FM040600 35008KT 3SM BR OVC006 BECMG 0410/0412 VRB05KT P6SM SKC',
     'TAF KDFW 031730Z 0318/0424 23015KT P6SM SCT025 BKN060 FM040000 27015KT P6SM BKN030 TEMPO 0402/0406 5SM -RA BKN015 BECMG 0408/0410 VRB05KT P6SM SKC',
@@ -534,26 +493,6 @@ function initTafDecoder() {
     });
   }
 
-  // File-protocol notice for TAF ICAO panel
-  if (window.location.protocol === 'file:') {
-    const notice = document.getElementById('taf-icao-file-notice');
-    if (notice) notice.hidden = false;
-    if (btnFetchTaf) { btnFetchTaf.disabled = true; }
-    if (icaoTafInput) icaoTafInput.disabled = true;
-  }
-
-  // TAF sub-tabs (look up / paste)
-  document.querySelectorAll('.taf-subtab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.taf-subtab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.taf-subpanel').forEach(p => p.hidden = true);
-      tab.classList.add('active');
-      const target = document.getElementById(tab.dataset.panel);
-      if (target) target.hidden = false;
-      clearTafError();
-      hideTafOutput();
-    });
-  });
 }
 
 document.addEventListener('DOMContentLoaded', initTafDecoder);

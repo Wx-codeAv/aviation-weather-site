@@ -895,9 +895,9 @@
           <div id="nl-wa-preview" style="margin-top:0.7rem;display:none;"></div>
 
           <details class="nl-poh-details" style="margin-top:0.8rem;">
-            <summary>Try live fetch (unreliable — CORS blocks most browsers)</summary>
+            <summary>Try live fetch (currently blocked — AWC sends no CORS headers)</summary>
             <div class="nl-poh-details-body">
-              <p>Attempts to fetch directly from <code>aviationweather.gov</code>. Most browsers block this due to CORS policy on AWC's server — if you get a network error, use the paste method above instead.</p>
+              <p>Attempts to fetch directly from <code>aviationweather.gov</code>. This endpoint doesn't send an <code>Access-Control-Allow-Origin</code> header, so every browser blocks the response — this won't succeed from this or any other static site, hosted or local. Kept here as a one-click check in case AWC adds CORS support later; use the paste method above for now.</p>
               <div style="margin-bottom:0.6rem;">
                 <div class="nl-pf" style="max-width:200px;">
                   <label for="wa-fcst">Forecast window</label>
@@ -2884,7 +2884,10 @@ async function waFetch() {
   callout.textContent = 'Contacting aviationweather.gov…';
   preview.style.display = 'none';
 
-  // AWC public API — no key required, CORS enabled
+  // AWC public API — no key required, but sends no Access-Control-Allow-Origin
+  // header (verified via curl against both /metar and /windtemp), so this fetch
+  // is blocked by every browser regardless of how the page is hosted. Kept as
+  // an opt-in "try it" button in case AWC adds CORS support later.
   // level=low returns 3000/6000/9000/12000 ft levels for continental US
   const url = `https://aviationweather.gov/api/data/windtemp?region=all&level=low&fcst=${fcst}`;
 
@@ -2922,16 +2925,12 @@ async function waFetch() {
 
   } catch (err) {
     _windAloftData = null;
-    const isFile = location.protocol === 'file:';
     status.textContent = 'Fetch failed';
     callout.className  = 'nl-poh-callout warn';
     callout.style.display = 'block';
     callout.innerHTML  =
       `⚠ Could not fetch winds aloft: <strong>${err.message}</strong><br>` +
-      `<span style="font-size:0.75rem;">${isFile
-        ? 'Opening this page as a local file (file://) blocks cross-origin requests. Use Live Server in VS Code, or open from GitHub Pages.'
-        : 'Check your internet connection, or use the manual paste option below. The AWC API may be temporarily unavailable.'
-      }</span>`;
+      `<span style="font-size:0.75rem;">aviationweather.gov doesn't send CORS headers, so browsers block this request regardless of how the page is hosted — this isn't a connectivity issue or something deploying the site differently would fix. Use the manual paste option below.</span>`;
     preview.style.display = 'none';
   } finally {
     fetchBtn.disabled = false;

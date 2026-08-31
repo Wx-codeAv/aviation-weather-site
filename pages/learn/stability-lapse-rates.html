@@ -348,7 +348,7 @@
 
               <!-- ============ ELR LINES (continuous, full chart height) ============ -->
 
-              <!-- ELR 1: inversion +2.9°C/km. Anchor (10°C, 1.3 km).
+              <!-- ELR 1: inversion -2.9°C/km. Anchor (10°C, 1.3 km).
                    Extended: (6.23°C, 0 km) to (14.93°C, 3 km).
                    x: 299.3 → 372, y: 350 → 50 -->
               <line x1="299.3" y1="350" x2="372" y2="50" stroke="#7a1f3d" stroke-width="2.5"/>
@@ -376,7 +376,7 @@
               <!-- ELR 1 -->
               <line x1="568" y1="98" x2="595" y2="98" stroke="#7a1f3d" stroke-width="2.5"/>
               <text x="600" y="101" font-family="JetBrains Mono, monospace" font-size="10" fill="#0c2541" font-weight="700">ELR 1</text>
-              <text x="568" y="116" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360">+2.9°C/km</text>
+              <text x="568" y="116" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360">-2.9°C/km</text>
               <text x="568" y="128" font-family="Manrope, sans-serif" font-size="9" fill="#2d4360" font-style="italic">Inversion · Stable</text>
 
               <!-- ELR 2 -->
@@ -425,7 +425,10 @@
             Given a layer of the atmosphere with known temperatures at top and bottom, you can compute the ELR and classify stability. The formula:
           </p>
           <p style="text-align: center; font-family: var(--font-mono); font-size: 1.05rem; padding: 0.6rem; background: var(--surface); border: 1px solid var(--rule);">
-            Lapse Rate = ΔT / Δz
+            Lapse Rate = (T<sub>bottom</sub> − T<sub>top</sub>) / Δz
+          </p>
+          <p>
+            Lapse rate is defined as the rate of temperature <em>decrease</em> with height, so a <strong>positive</strong> lapse rate means temperature drops with increasing altitude (the normal case) and a <strong>negative</strong> lapse rate means temperature <em>rises</em> with altitude — a temperature inversion.
           </p>
           <p>
             Five examples — these mirror the kind of question you'll see in WX 301 and on quizzes. Assume MALR = 6°C/km, DALR = 10°C/km.
@@ -433,36 +436,36 @@
 
           <details class="qa">
             <summary>ELR 1: Temp at 1.3 km = 10°C, temp at 3.0 km = 15°C</summary>
-            <p><strong>Calculation:</strong> ΔT = 15 − 10 = +5°C, Δz = 1.7 km. Lapse rate = +5/1.7 ≈ <strong>+2.9°C/km</strong>.</p>
-            <p>The temperature <em>increases</em> with altitude — that's a <strong>temperature inversion</strong> (negative lapse). Inversions are <strong>absolutely stable</strong>: any rising parcel encounters warmer air above and gets pushed back down. Inversions cap convection, trap haze and pollutants, and often produce poor visibility below them.</p>
+            <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 10 − 15 = −5°C, Δz = 1.7 km. Lapse rate = −5/1.7 ≈ <strong>−2.9°C/km</strong>.</p>
+            <p>A negative lapse rate means the temperature <em>increases</em> with altitude — that's a <strong>temperature inversion</strong>. Inversions are <strong>absolutely stable</strong>: any rising parcel encounters warmer air above and gets pushed back down. Inversions cap convection, trap haze and pollutants, and often produce poor visibility below them.</p>
           </details>
 
           <details class="qa">
             <summary>ELR 2: Temp at surface = 10°C, temp at 1 km = 10°C</summary>
-            <p><strong>Calculation:</strong> ΔT = 0, Δz = 1 km. Lapse rate = <strong>0°C/km</strong>.</p>
+            <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 0, Δz = 1 km. Lapse rate = <strong>0°C/km</strong>.</p>
             <p>Constant temperature with altitude — <strong>isothermal</strong>. Like an inversion, this is <strong>absolutely stable</strong>. The environment isn't cooling at all, so any rising parcel cools below the environment temperature immediately and sinks back.</p>
           </details>
 
           <details class="qa">
             <summary>ELR 3: Temp at surface = 20°C, temp at 2.5 km = -10°C</summary>
-            <p><strong>Calculation:</strong> ΔT = 20 − (−10) = 30°C, Δz = 2.5 km. Lapse rate = 30/2.5 = <strong>12°C/km</strong>.</p>
+            <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 20 − (−10) = 30°C, Δz = 2.5 km. Lapse rate = 30/2.5 = <strong>12°C/km</strong>.</p>
             <p>12°C/km is greater than the DALR (10°C/km), so this layer is <strong>absolutely unstable</strong>. Both dry and saturated parcels cool slower than the environment and keep rising. This kind of profile is rare but signals strong convective potential.</p>
           </details>
 
           <details class="qa">
             <summary>ELR 4: Temp at surface = 20°C, temp at 2.5 km = 0°C</summary>
-            <p><strong>Calculation:</strong> ΔT = 20 − 0 = 20°C, Δz = 2.5 km. Lapse rate = 20/2.5 = <strong>8°C/km</strong>.</p>
+            <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 20 − 0 = 20°C, Δz = 2.5 km. Lapse rate = 20/2.5 = <strong>8°C/km</strong>.</p>
             <p>8°C/km is between MALR (6) and DALR (10), so this layer is <strong>conditionally unstable</strong>. Stable for unsaturated parcels, unstable for saturated ones. This is the most common real-atmosphere case.</p>
           </details>
 
           <details class="qa">
             <summary>ELR 5: Temp at surface = 30°C, temp at 1 km = 20°C</summary>
-            <p><strong>Calculation:</strong> ΔT = 30 − 20 = 10°C, Δz = 1 km. Lapse rate = <strong>10°C/km</strong>.</p>
+            <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 30 − 20 = 10°C, Δz = 1 km. Lapse rate = <strong>10°C/km</strong>.</p>
             <p>10°C/km is exactly the DALR. The atmosphere is cooling at the same rate a dry parcel would as it rises — neutral for unsaturated parcels (they neither rise nor sink), but unstable for saturated parcels (they cool slower than the environment and keep rising).</p>
           </details>
 
           <p>
-            The pattern: compute lapse rate from ΔT/Δz, then compare the result to 10 (DALR) and 6 (MALR). Above 10 = absolutely unstable. Below 6 = absolutely stable. Between = conditionally unstable. Negative or zero = absolutely stable.
+            The pattern: compute lapse rate from (T<sub>bottom</sub> − T<sub>top</sub>)/Δz, then compare the result to 10 (DALR) and 6 (MALR). Above 10 = absolutely unstable. Below 6 = absolutely stable. Between = conditionally unstable. Negative or zero = absolutely stable.
           </p>
         </section>
 
@@ -784,7 +787,7 @@
             Two related stability indices forecasters compute from a skew-T are the <strong>Lifted Index (LI)</strong> and the <strong>K-Index (KI)</strong>. Both use temperatures at specific pressure levels to give a single number that estimates thunderstorm potential. We'll cover those in detail on a separate page.
           </p>
           <p class="callout">
-            <strong>Coming soon:</strong> a dedicated skew-T page with live sounding data (Tropical Tidbits-style), a parcel-path generator that draws your LCL / LFC / EL / CAPE from user-entered surface temperature and dewpoint, plus built-in calculators for the Lifted Index and K-Index. For now, this page covers the line definitions and what the four key levels mean.
+            <strong>Coming soon:</strong> a dedicated skew-T page with live sounding data (Tropical Tidbits-style) and a parcel-path generator that draws your LCL / LFC / EL / CAPE from user-entered surface temperature and dewpoint. For now, this page covers the line definitions and what the four key levels mean.
           </p>
         </section>
 
