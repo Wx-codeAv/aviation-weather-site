@@ -31,7 +31,6 @@ function parseTaf(rawInput) {
   for (let j = 0; j < tokens.length - 1; j++) {
     if (/^\d+$/.test(tokens[j]) && /^\d+\/\d+SM$/.test(tokens[j + 1])) {
       tokens.splice(j, 2, tokens[j] + ' ' + tokens[j + 1]);
-      break;
     }
   }
 
@@ -109,7 +108,162 @@ function parseTaf(rawInput) {
     }
   }
 
+  // 7 ── Work out each group's category, including what it inherits
+  resolveTafGroups(result);
+
   return result;
+}
+
+// ── Time base ────────────────────────────────────────────────
+// A TAF has no month, but it can't exceed 30 hours. When the valid period crosses a
+// month end, the month length is the longest one that keeps it within that limit.
+// Returns null when the period can't be real, so callers must not guess.
+
+function tafTimeBase(parsed) {
+  const from = parsed.validFrom, to = parsed.validTo;
+  if (!from || !to) return null;
+  const rawHours = t => t.day * 24 + t.hour + (t.min || 0) / 60;
+  const start = rawHours(from);
+  let monthLen = 0;
+  if (to.day < from.day) {
+    for (let m = 31; m >= 28 && !monthLen; m--) {
+      const hours = rawHours(to) + m * 24 - start;
+      if (hours > 0 && hours <= 30) monthLen = m;
+    }
+    if (!monthLen) return null;
+  }
+  const toHours = t => rawHours(t) + (monthLen && t.day < from.day ? monthLen * 24 : 0) - start;
+  const dur = toHours(to);
+  if (dur <= 0 || dur > 30) return null;
+  const timeAt = h => {
+    const total = Math.round((start + h) * 60);
+    let day = Math.floor(total / 1440);
+    if (monthLen && day > monthLen) day -= monthLen;
+    return { day, hour: Math.floor(total / 60) % 24, min: total % 60 };
+  };
+  return { dur, monthLen, toHours, timeAt };
+}
+
+// ── Forecast state ───────────────────────────────────────────
+// FM replaces the whole forecast, so it inherits nothing (NWSI 10-813 B2.9.2).
+// BECMG, TEMPO, INTER and PROB groups list only what changes, and any element they
+// don't restate carries over (AIM 7-1-28 key, NWSI 10-813 B2.9.3).
+
+function tafStateFromGroup(group) {
+  const cavok = !!(group.visibility && group.visibility.cavok);
+  return {
+    wind: group.wind,
+    visibility: group.visibility,
+    weather: group.nsw ? [] : group.weather,
+    sky: group.sky,
+    skyKnown: group.sky.length > 0 || cavok
+  };
+}
+
+function mergeTafGroup(state, group) {
+  const cavok = !!(group.visibility && group.visibility.cavok);
+  return {
+    wind: group.wind || state.wind,
+    visibility: group.visibility || state.visibility,
+    weather: (group.nsw || cavok) ? [] : (group.weather.length ? group.weather : state.weather),
+    sky: cavok ? [] : (group.sky.length ? group.sky : state.sky),
+    skyKnown: group.sky.length > 0 || cavok || state.skyKnown
+  };
+}
+
+// Null means the forecast doesn't say enough. Never report that as VFR.
+function tafCategory(state) {
+  if (!state.visibility || !state.skyKnown) return null;
+  return deriveFlightCategory({ sky: state.sky, visibility: state.visibility });
+}
+
+function withCategory(state) {
+  return Object.assign({}, state, { category: tafCategory(state) });
+}
+
+function tafStateAtHours(parsed, base, T) {
+  if (T < 0 || T >= base.dur) return null;
+  let current = null, transitions = [], overlays = [];
+  for (const g of parsed.groups) {
+    if (g.type === 'BASE') {
+      current = tafStateFromGroup(g);
+    } else if (g.type === 'FM') {
+      if (g.validFrom && base.toHours(g.validFrom) <= T) {
+        current = tafStateFromGroup(g);
+        transitions = [];
+        overlays = [];
+      }
+    } else if (g.validFrom && g.validTo) {
+      const s = base.toHours(g.validFrom), e = base.toHours(g.validTo);
+      if (g.type === 'BECMG') {
+        if (e <= T) current = mergeTafGroup(current, g);
+        else if (s <= T) transitions.push(g);
+      } else if (s <= T && T < e) {
+        overlays.push(g);
+      }
+    }
+  }
+  if (!current) return null;
+  const change = g => ({ type: g.type, group: g, state: withCategory(mergeTafGroup(current, g)) });
+  return {
+    prevailing: withCategory(current),
+    transitions: transitions.map(change),
+    overlays: overlays.map(change)
+  };
+}
+
+// What the TAF says at a moment: the prevailing forecast, any BECMG still in its window
+// (both states apply, since the change happens at an unspecified time inside it), and
+// any TEMPO, INTER or PROB overlays, each built from prevailing rather than from each other.
+function tafStateAt(parsed, time) {
+  const base = tafTimeBase(parsed);
+  return base ? tafStateAtHours(parsed, base, base.toHours(time)) : null;
+}
+
+function resolveTafGroups(parsed) {
+  parsed.warnings = [];
+  const base = tafTimeBase(parsed);
+  if (!base) {
+    parsed.warnings.push('The valid period is missing or longer than 30 hours, so the timeline and change-group categories can\'t be worked out.');
+  }
+  const name = g => (GROUP_META[g.type] && GROUP_META[g.type].label) || g.type;
+
+  for (const g of parsed.groups) {
+    if (g.type === 'BASE' || g.type === 'FM') {
+      g.flightCategory = tafCategory(tafStateFromGroup(g));
+      if (!g.flightCategory) {
+        parsed.warnings.push(`The ${name(g)} group doesn't state both visibility and sky, so no flight category is shown for it.`);
+      }
+      if (base && g.type === 'FM') {
+        const s = base.toHours(g.validFrom);
+        if (s < 0 || s >= base.dur) parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} is outside the valid period.`);
+      }
+      continue;
+    }
+    if (!base) continue;
+    if (!g.validFrom || !g.validTo) {
+      parsed.warnings.push(`A ${name(g)} group has no readable valid time, so no flight category is shown for it.`);
+      continue;
+    }
+    const before = tafStateAtHours(parsed, base, base.toHours(g.validFrom));
+    if (!before || base.toHours(g.validTo) > base.dur || base.toHours(g.validTo) <= base.toHours(g.validFrom)) {
+      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} doesn't fit inside the valid period, so no flight category is shown for it.`);
+      continue;
+    }
+    const merged = mergeTafGroup(before.prevailing, g);
+    g.flightCategory = tafCategory(merged);
+    if (!g.flightCategory) {
+      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't state both visibility and sky, so no flight category is shown for it.`);
+    }
+    const prior = before.prevailing;
+    const cavok = !!(g.visibility && g.visibility.cavok);
+    g.carriedOver = [
+      !g.wind && prior.wind && prior.wind.raw,
+      !g.visibility && prior.visibility && prior.visibility.raw,
+      ...(!g.nsw && !cavok && !g.weather.length ? prior.weather.map(w => w.raw) : []),
+      ...(!cavok && !g.sky.length ? prior.sky.map(l => l.raw) : []),
+    ].filter(Boolean).join(' ');
+  }
 }
 
 // ── Parse a single group's conditions ────────────────────────
@@ -125,7 +279,8 @@ function parseGroup(tokens, isBase) {
     sky: [],
     windShear: null,
     nsw: false,
-    flightCategory: null
+    flightCategory: null,   // set by resolveTafGroups, which knows what the group inherits
+    carriedOver: ''
   };
 
   let i = 0;
@@ -231,6 +386,9 @@ function parseGroup(tokens, isBase) {
     if (/^(SKC|CLR|NSC|NCD)$/.test(tok)) {
       group.sky.push({ raw: tok, cover: tok, height: null, cb: null });
       i++;
+    } else if (tok === 'VV///') {
+      group.sky.push({ raw: tok, cover: 'VV', height: null, cb: null });
+      i++;
     } else {
       const sm = tok.match(/^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/);
       if (!sm) break;
@@ -253,7 +411,6 @@ function parseGroup(tokens, isBase) {
     }
   }
 
-  group.flightCategory = deriveFlightCategory(group);
   return group;
 }
 
@@ -284,7 +441,10 @@ function renderTaf(parsed) {
 
   // Visual overview band
   const overviewEl = document.getElementById('taf-overview');
-  if (overviewEl) overviewEl.innerHTML = buildTafOverview(parsed);
+  if (overviewEl) {
+    const warnings = parsed.warnings.map(w => `<p class="decoder-error">${escHtml(w)}</p>`).join('');
+    overviewEl.innerHTML = warnings + buildTafOverview(parsed);
+  }
 
   // Timeline (detailed cards)
   const timelineEl = document.getElementById('taf-timeline');
@@ -299,27 +459,40 @@ function renderTaf(parsed) {
 // ── Visual overview: prevailing band + change-group overlays ──
 
 function buildTafOverview(parsed) {
-  if (!parsed.validFrom || !parsed.validTo) return '';
-  const absH = t => t.day * 24 + t.hour + (t.min ? t.min / 60 : 0);
-  let startAbs = absH(parsed.validFrom), endAbs = absH(parsed.validTo);
-  if (endAbs <= startAbs) endAbs += 31 * 24;           // month-rollover guard
-  const dur = endAbs - startAbs;
-  if (dur <= 0) return '';
-  const off = t => { let a = absH(t); if (a < startAbs) a += 31 * 24; return Math.max(0, Math.min(dur, a - startAbs)); };
+  const base = tafTimeBase(parsed);
+  if (!base) return '';
+  const dur = base.dur;
+  const off = t => Math.max(0, Math.min(dur, base.toHours(t)));
   const pct = h => (h / dur * 100);
 
   const CAT = { VFR: '#3a7d44', MVFR: '#1a5ba6', IFR: '#b53d1f', LIFR: '#7b2d8b' };
 
-  // Prevailing band — BASE + FM groups tile the whole period
-  const band = parsed.groups
-    .filter(g => g.type === 'BASE' || g.type === 'FM')
-    .map(g => {
-      const s = off(g.validFrom || parsed.validFrom), e = off(g.validTo || parsed.validTo);
-      const w = pct(e - s);
-      if (w <= 0.2) return '';
-      const cat = g.flightCategory || 'VFR';
-      return `<div class="tl-seg" style="left:${pct(s).toFixed(2)}%;width:${w.toFixed(2)}%;background:${CAT[cat]}" title="${cat} ${buildTimeStr(g)}"><span>${w > 6 ? cat : ''}</span></div>`;
-    }).join('');
+  // Prevailing band. It can change at each FM, and when each BECMG window ends.
+  const changes = [0];
+  for (const g of parsed.groups) {
+    const at = g.type === 'FM' ? g.validFrom : (g.type === 'BECMG' ? g.validTo : null);
+    if (at && base.toHours(at) > 0 && base.toHours(at) < dur) changes.push(base.toHours(at));
+  }
+  const times = [...new Set(changes)].sort((a, b) => a - b);
+  const segments = [];
+  for (const t of times) {
+    const state = tafStateAtHours(parsed, base, t);
+    const cat = state ? state.prevailing.category : null;
+    const last = segments[segments.length - 1];
+    if (last && last.cat === cat) continue;   // same category, so keep extending that segment
+    if (last) last.end = t;
+    segments.push({ start: t, end: dur, cat });
+  }
+  const band = segments.map(seg => {
+    const w = pct(seg.end - seg.start);
+    if (w <= 0.2) return '';
+    const span = `${formatTafTime(base.timeAt(seg.start))} → ${formatTafTime(base.timeAt(seg.end))}`;
+    const position = `left:${pct(seg.start).toFixed(2)}%;width:${w.toFixed(2)}%`;
+    if (!seg.cat) {
+      return `<div class="tl-seg tl-seg--unknown" style="${position}" title="No category ${span}"><span>${w > 12 ? 'No category' : ''}</span></div>`;
+    }
+    return `<div class="tl-seg" style="${position};background:${CAT[seg.cat]}" title="${seg.cat} ${span}"><span>${w > 6 ? seg.cat : ''}</span></div>`;
+  }).join('');
 
   // Change groups — each on its own row so overlapping spans never collide
   const overlays = parsed.groups
@@ -329,7 +502,7 @@ function buildTafOverview(parsed) {
       const s = off(g.validFrom), e = off(g.validTo);
       const w = pct(e - s);
       if (w <= 0.2) return '';
-      const cat = (g.flightCategory || 'VFR').toLowerCase();
+      const cat = (g.flightCategory || 'unknown').toLowerCase();
       const label = (GROUP_META[g.type] && GROUP_META[g.type].label) || g.type;
       return `<div class="tl-ovrow"><div class="tl-ov tl-ov-${cat}" style="left:${pct(s).toFixed(2)}%;width:${w.toFixed(2)}%" title="${label} · ${buildTimeStr(g)}"><span>${w > 10 ? escHtml(label) : '•'}</span></div></div>`;
     }).join('');
@@ -346,7 +519,7 @@ function buildTafOverview(parsed) {
 
 function buildGroupCard(group) {
   const meta = GROUP_META[group.type] || { label: group.type, indent: false };
-  const cat  = (group.flightCategory || 'VFR').toLowerCase();
+  const cat  = (group.flightCategory || 'unknown').toLowerCase();
   const indentClass = meta.indent ? ' taf-group--indent' : '';
   const typeKey = group.type.split(' ')[0].toLowerCase();
 
@@ -375,6 +548,7 @@ function buildGroupCard(group) {
     <span class="cat-badge cat-${cat}">${group.flightCategory || '—'}</span>
   </div>
   <div class="taf-group-chips">${chips || '<span class="taf-chip-empty">No condition changes</span>'}</div>
+  ${group.carriedOver ? `<p class="taf-group-carried">Carried over: ${escHtml(group.carriedOver)}</p>` : ''}
 </div>`;
 }
 
@@ -424,7 +598,7 @@ function buildVisStr(vis) {
 function buildSkyStr(sky) {
   if (!sky || sky.length === 0) return '';
   return sky.map(l => {
-    if (l.height === null) return l.cover;
+    if (l.height === null) return l.raw || l.cover;
     const ht = (l.height / 100).toString().padStart(3,'0');
     return l.cover + ht + (l.cb ? l.cb : '');
   }).join(' ');
@@ -478,9 +652,11 @@ function initTafDecoder() {
   }
 
   const TAF_EXAMPLES = [
-    'TAF KORD 031730Z 0318/0424 32012KT P6SM BKN040 FM040000 36015G25KT P6SM SCT025 TEMPO 0400/0406 2SM +TSRA BKN008CB FM040600 35008KT 3SM BR OVC006 BECMG 0410/0412 VRB05KT P6SM SKC',
-    'TAF KDFW 031730Z 0318/0424 23015KT P6SM SCT025 BKN060 FM040000 27015KT P6SM BKN030 TEMPO 0402/0406 5SM -RA BKN015 BECMG 0408/0410 VRB05KT P6SM SKC',
-    'TAF KSFO 031730Z 0318/0424 28010KT P6SM FEW015 PROB30 0322/0402 1SM FG OVC002 FM040200 28008KT P6SM FEW020',
+    // Real TAFs from aviationweather.gov, 2026-11-03. BECMG and PROB40 appear only in the
+    // foreign one, because NWS TAFs don't use them (AIM 7-1-28).
+    'TAF KDFW 030259Z 0303/0406 17016KT P6SM SCT040 BKN060 FM030400 18015G25KT P6SM VCTS SCT035CB BKN050 TEMPO 0305/0307 26025G40KT 2SM +TSRA BKN025CB FM030800 21012KT P6SM FEW025 SCT120 FM031100 30015G25KT P6SM SCT050',
+    'TAF KBNA 022320Z 0300/0406 17010KT P6SM FEW050 BKN250 FM031500 17014G24KT P6SM BKN035 OVC050 FM040100 16004G23KT P6SM BKN025 OVC080 PROB30 0401/0406 -SHRA BKN009',
+    'TAF EGKK 022308Z 0300/0406 01008KT 9999 SCT016 TEMPO 0300/0307 BKN014 PROB40 TEMPO 0310/0318 03015G25KT 5000 SHRA BKN012 BECMG 0321/0324 08010KT',
   ];
   let tafExIdx = 0;
 

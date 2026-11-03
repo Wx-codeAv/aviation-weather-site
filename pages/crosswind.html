@@ -485,7 +485,19 @@
           <p class="cw-edu-eyebrow">The number students get wrong</p>
           <h3>True vs. magnetic</h3>
           <p>METARs report wind direction in <strong>degrees true</strong>. Runway numbers are <strong>magnetic</strong> — RWY 27 is approximately 270° magnetic, not true. At most U.S. airports the difference (magnetic variation) is 5–20°.</p>
-          <p>This calculator uses METAR wind (true) directly against the runway heading (magnetic). For student training decisions the resulting error is small and acceptable. For formal flight planning, look up local magnetic variation on your sectional chart and apply it before computing.</p>
+          <p>This calculator compares the two numbers you enter and converts nothing. Enter a METAR wind (true) against a painted runway number (magnetic) and the answer can be well off:</p>
+          <table class="demo-table">
+            <thead>
+              <tr><th>Runway and true wind</th><th>Unconverted</th><th>Actual</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>KSEA 16L, 200° at 20 kt</td><td class="demo-kt">12.9 kt</td><td class="demo-kt">6.8 kt</td></tr>
+              <tr><td>PANC 15, 165° at 25 kt</td><td class="demo-kt">6.5 kt</td><td class="demo-kt">0 kt</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0.8rem;">The PANC wind is blowing straight down the runway, yet the unconverted answer shows 6.5 kt of crosswind. The error doesn't always run high, either. With west variation it can hide crosswind: KDAB 07L with a true wind of 100° at 15 kt reads 7.5 kt, and the actual value is 8.6 kt.</p>
+          <p>So convert a METAR wind before you enter it: subtract east variation, add west ("east is least, west is best"). ATIS and ASOS or AWOS voice broadcasts already give wind in magnetic, so don't convert those. A painted runway number is also rounded, so use the runway's actual magnetic heading if you have it.</p>
+          <p style="font-size:0.85rem;color:var(--ink-soft);font-style:italic;">Actual values compare the true wind with each runway's true alignment in FAA airport data effective October 29, 2026.</p>
           <p>On the checkride, examiners want to know you understand this distinction exists — not that you can calculate variation from memory.</p>
         </div>
 
@@ -519,7 +531,7 @@
       </div>
 
       <div class="acs-note">
-        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-28 and FAA-H-8083-28 §3.4.2.2.
+        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-29 (METAR wind, true), AIM 7-1-10 (voice broadcasts, magnetic), and FAA-H-8083-28 §3.4.2.2.
       </div>
     </div>
   </section>

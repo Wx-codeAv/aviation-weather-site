@@ -643,12 +643,20 @@ function parseRemarks(tokens, push) {
 
 // ── Flight category ──────────────────────────────────────────
 
+// Reportable metric values use 1 SM = 1600 m, so 1600 m is 1 SM and 4800 m is 3 SM
+// (AFMAN 15-111 Table 8.1). An exact conversion would put both just under a threshold.
+function metersToSM(meters) {
+  return meters / 1600;
+}
+
 function deriveFlightCategory(parsed) {
   let ceiling = Infinity;
   for (const layer of parsed.sky) {
     if ((layer.cover === 'BKN' || layer.cover === 'OVC' || layer.cover === 'VV') && layer.height !== null) {
       if (layer.height < ceiling) ceiling = layer.height;
     }
+    // VV/// is an indefinite ceiling with no stated height. Assume the worst rather than clear sky.
+    if (layer.cover === 'VV' && layer.height === null) ceiling = 0;
   }
 
   let visSM = Infinity;
@@ -656,7 +664,7 @@ function deriveFlightCategory(parsed) {
     if (parsed.visibility.unit === 'SM') {
       visSM = parsed.visibility.lessThan ? parsed.visibility.value - 0.01 : parsed.visibility.value;
     } else if (parsed.visibility.unit === 'm') {
-      visSM = parsed.visibility.value / 1609.34;
+      visSM = metersToSM(parsed.visibility.value);
     } else if (parsed.visibility.cavok) {
       visSM = 999;
     }
@@ -859,17 +867,18 @@ function buildCategoryScale(parsed) {
       visSM = parsed.visibility.lessThan ? parsed.visibility.value - 0.01 : parsed.visibility.value;
       visTxt = parsed.visibility.raw;
     } else if (parsed.visibility.unit === 'm') {
-      visSM = parsed.visibility.value / 1609.34;
+      visSM = metersToSM(parsed.visibility.value);
       visTxt = parsed.visibility.raw + ' m';
     } else if (parsed.visibility.cavok) {
       visSM = 999; visTxt = 'CAVOK';
     }
   }
 
-  const ceilIdx = ceiling == null ? 3 : ceiling < 500 ? 0 : ceiling < 1000 ? 1 : ceiling <= 3000 ? 2 : 3;
+  const vvUnknown = parsed.sky.some(l => l.cover === 'VV' && l.height === null);
+  const ceilIdx = vvUnknown ? 0 : ceiling == null ? 3 : ceiling < 500 ? 0 : ceiling < 1000 ? 1 : ceiling <= 3000 ? 2 : 3;
   const visIdx  = visSM   == null ? 3 : visSM   < 1   ? 0 : visSM   < 3    ? 1 : visSM   <= 5   ? 2 : 3;
 
-  const ceilTxt = ceiling == null ? 'No ceiling' : ceiling.toLocaleString() + ' ft';
+  const ceilTxt = vvUnknown ? 'Indefinite, height not reported' : ceiling == null ? 'No ceiling' : ceiling.toLocaleString() + ' ft';
   const ceilRanges = ['< 500', '500–999', '1,000–3,000', '> 3,000'];
   const visRanges  = ['< 1', '1–2', '3–5', '> 5'];
 

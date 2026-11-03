@@ -1679,6 +1679,7 @@ footer .container {
 .cat-mvfr { background: #1a5ba6; }
 .cat-ifr  { background: #b53d1f; }
 .cat-lifr { background: #7b2d8b; }
+.cat-unknown { background: var(--ink-soft); }
 .cat-desc {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -2037,6 +2038,8 @@ footer .container {
 .taf-group--mvfr { border-top-color: #1a5ba6; }
 .taf-group--ifr  { border-top-color: #b53d1f; }
 .taf-group--lifr { border-top-color: #7b2d8b; }
+.taf-group--unknown { border-top-color: var(--ink-soft); }
+.taf-group-carried { margin: 0.45rem 0 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
 
 /* ── TAF overview timeline (visual band across the valid period) ── */
 .taf-overview { margin: 0 0 1.5rem; }
@@ -2072,6 +2075,8 @@ footer .container {
 .tl-ov-mvfr { background: #1a5ba6; }
 .tl-ov-ifr  { background: #b53d1f; }
 .tl-ov-lifr { background: #7b2d8b; }
+.tl-ov-unknown { background: var(--ink-soft); }
+.tl-seg--unknown { background: var(--ink-soft); }
 .tl-axis { position: relative; height: 15px; margin-top: 5px; }
 .tl-tick { position: absolute; top: 0; border-left: 1px solid var(--rule); height: 5px; }
 .tl-tick span {
@@ -2150,6 +2155,7 @@ footer .container {
   border-bottom: 1px dotted var(--rule);
 }
 .taf-legend-desc { flex: 1; }
+.taf-legend-note { margin: 0.9rem 0 0; font-size: 0.85rem; color: var(--ink-soft); }
 
 /* ============================================
    Weather Product Ladder
