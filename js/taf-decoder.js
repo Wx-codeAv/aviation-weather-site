@@ -147,7 +147,7 @@ function tafTimeBase(parsed) {
 // ── Forecast state ───────────────────────────────────────────
 // FM replaces the whole forecast, so it inherits nothing (NWSI 10-813 B2.9.2).
 // BECMG, TEMPO, INTER and PROB groups list only what changes, and any element they
-// don't restate carries over (AIM 7-1-28 key, NWSI 10-813 B2.9.3).
+// don't restate carries over (AIM 7-1-29, NWSI 10-813 B2.9.3).
 
 function tafStateFromGroup(group) {
   const cavok = !!(group.visibility && group.visibility.cavok);
@@ -653,7 +653,7 @@ function initTafDecoder() {
 
   const TAF_EXAMPLES = [
     // Real TAFs from aviationweather.gov, 2026-11-03. BECMG and PROB40 appear only in the
-    // foreign one, because NWS TAFs don't use them (AIM 7-1-28).
+    // foreign one, because NWS TAFs don't use them (AIM 7-1-29).
     'TAF KDFW 030259Z 0303/0406 17016KT P6SM SCT040 BKN060 FM030400 18015G25KT P6SM VCTS SCT035CB BKN050 TEMPO 0305/0307 26025G40KT 2SM +TSRA BKN025CB FM030800 21012KT P6SM FEW025 SCT120 FM031100 30015G25KT P6SM SCT050',
     'TAF KBNA 022320Z 0300/0406 17010KT P6SM FEW050 BKN250 FM031500 17014G24KT P6SM BKN035 OVC050 FM040100 16004G23KT P6SM BKN025 OVC080 PROB30 0401/0406 -SHRA BKN009',
     'TAF EGKK 022308Z 0300/0406 01008KT 9999 SCT016 TEMPO 0300/0307 BKN014 PROB40 TEMPO 0310/0318 03015G25KT 5000 SHRA BKN012 BECMG 0321/0324 08010KT',

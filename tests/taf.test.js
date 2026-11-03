@@ -2,7 +2,7 @@
 //
 // Expected values were worked out by hand from these rules, not copied from the code:
 //   FM:    "all forecast conditions given before the FMYYGGgg group are superseded" (NWSI 10-813 B2.9.2)
-//   BECMG: "omitted conditions are carried over from the previous time group" (AIM 7-1-28 key)
+//   BECMG: "omitted conditions are carried over from the previous time group" (AIM 7-1-29)
 //   TEMPO: an element with no stated change "is understood to remain the same" (NWSI 10-813 B2.9.3)
 //   PROB:  associated conditions overlay the prevailing forecast (NWSI 10-813 B2.9.4)
 // Group end times are exclusive: a group ending at 07Z is not active at 07Z.
