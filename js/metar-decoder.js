@@ -1070,7 +1070,7 @@ function renderDecoder(parsed) {
     if (xlink) {
       const wd = parsed.wind;
       if (wd && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
-        const q = `dir=${wd.dir}&speed=${wd.speed}${wd.gust ? '&gust=' + wd.gust : ''}`;
+        const q = `dir=${wd.dir}&speed=${wd.speed}${wd.gust ? '&gust=' + wd.gust : ''}${parsed.station ? '&station=' + parsed.station : ''}`;
         xlink.innerHTML = `<a href="crosswind.html?${q}">Send this wind to the Crosswind tool →</a>`;
         xlink.hidden = false;
       } else {

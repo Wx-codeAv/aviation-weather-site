@@ -6,3 +6,4 @@ exclude:
   - CLAUDE.md
   - README.md
   - tests/
+  - scripts/

@@ -78,7 +78,8 @@
     }
     .cw-unit { color: var(--rule); font-size: 0.68rem; }
 
-    .cw-inputs-panel input[type="number"] {
+    .cw-inputs-panel input[type="number"],
+    .cw-inputs-panel input[type="text"] {
       font-family: var(--font-mono);
       font-size: 1.05rem;
       background: var(--buff);
@@ -92,7 +93,8 @@
     }
     .cw-inputs-panel input[type="number"]::-webkit-inner-spin-button,
     .cw-inputs-panel input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .cw-inputs-panel input[type="number"]:focus { border-color: var(--sky); }
+    .cw-inputs-panel input[type="number"]:focus,
+    .cw-inputs-panel input[type="text"]:focus { border-color: var(--sky); }
 
     .cw-dir-row { display: flex; gap: 0.7rem; align-items: center; }
     .cw-dir-row input[type="number"] { flex: 1; width: auto; }
@@ -114,6 +116,29 @@
       letter-spacing: 0.06em;
     }
     .cw-rwy-row input[type="number"] { width: 90px; flex: none; }
+
+    .cw-inputs-panel input.cw-apt-input { width: 130px; text-transform: uppercase; }
+    .cw-apt-status { margin: 0.6rem 0 0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; color: var(--ink-soft); }
+    .cw-apt-status--error { color: var(--rust); }
+    .cw-select { width: 100%; padding: 0.55rem 0.6rem; font-family: var(--font-mono); font-size: 0.95rem; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); }
+    .cw-source-choice { border: 0; padding: 0; margin: 0 0 1rem; }
+    .cw-source-choice legend { padding: 0; margin-bottom: 0.35rem; }
+    .cw-source-option { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 0.35rem; font-size: 0.9rem; color: var(--ink); cursor: pointer; }
+    .cw-source-option input { margin-top: 0.25rem; }
+    .cw-steps { margin-top: 0.8rem; padding: 0.9rem 1.1rem; background: var(--surface); border: 1px solid var(--rule); }
+    .cw-steps-title { margin: 0 0 0.6rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); }
+    .cw-step { display: grid; grid-template-columns: 5.6rem 1fr; gap: 0.5rem; padding: 0.3rem 0; font-family: var(--font-mono); font-size: 0.88rem; color: var(--ink); }
+    .cw-step-label { color: var(--ink-soft); }
+    .cw-step-warn { margin: 0.5rem 0 0; font-family: var(--font-mono); font-size: 0.78rem; color: var(--rust); }
+    .cw-steps-note { margin: 0.6rem 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--ink-soft); }
+    .cw-layout > * { min-width: 0; }
+    #cw-compare-inner { overflow-x: auto; }
+    .cw-step > span { min-width: 0; overflow-wrap: anywhere; }
+    .cw-source-option { overflow-wrap: anywhere; }
+    @media (max-width: 480px) {
+      .cw-step { grid-template-columns: 1fr; gap: 0.05rem; padding: 0.4rem 0; }
+      #cw-result .cw-pair-grid { grid-template-columns: 1fr; }
+    }
 
     .cw-error {
       background: rgba(181,61,31,0.08);
@@ -373,7 +398,7 @@
     <div class="container">
       <p class="hero-eyebrow">Section 05 / Crosswind</p>
       <h1>Crosswind <span class="accent">Calculator</span></h1>
-      <p class="lede">Enter METAR wind and a runway number. See headwind and crosswind components, watch the wind triangle update live, and compare two runways before you decide.</p>
+      <p class="lede">Enter a wind and a runway number, or add a US airport ID to convert true wind to magnetic and use the real runway heading. See headwind and crosswind components, watch the wind triangle update live, and compare two runways before you decide.</p>
     </div>
   </section>
 
@@ -386,10 +411,25 @@
         <div class="cw-inputs-panel">
 
           <div class="cw-card">
-            <h3 class="cw-card-title">Wind <span class="cw-source">from METAR · degrees TRUE</span></h3>
+            <h3 class="cw-card-title">Airport <span class="cw-source">optional · US only</span></h3>
+            <div class="cw-field">
+              <label class="cw-label" for="cw-apt">Airport ID <span class="cw-unit">converts wind and runway</span></label>
+              <input type="text" id="cw-apt" class="cw-apt-input" maxlength="4" autocomplete="off" spellcheck="false" placeholder="KSEA" oninput="airportChanged()">
+              <p id="cw-apt-status" class="cw-apt-status" aria-live="polite">Leave blank to enter everything yourself. Nothing is converted without an airport.</p>
+            </div>
+          </div>
+
+          <div class="cw-card">
+            <h3 class="cw-card-title">Wind <span class="cw-source" id="cw-wind-source-tag">from METAR · degrees TRUE</span></h3>
+
+            <fieldset id="cw-source-choice" class="cw-source-choice" style="display:none">
+              <legend class="cw-label">Where is this wind from?</legend>
+              <label class="cw-source-option"><input type="radio" name="cw-source" value="true" onchange="compute()"> METAR or TAF (true north)</label>
+              <label class="cw-source-option"><input type="radio" name="cw-source" value="magnetic" onchange="compute()"> ATIS, ASOS, or AWOS voice broadcast (magnetic north)</label>
+            </fieldset>
 
             <div class="cw-field">
-              <label class="cw-label" for="cw-dir">Direction <span class="cw-unit">° TRUE</span></label>
+              <label class="cw-label" for="cw-dir">Direction <span class="cw-unit" id="cw-dir-unit">° TRUE</span></label>
               <div class="cw-dir-row">
                 <input type="number" id="cw-dir" min="0" max="360" placeholder="e.g. 270" oninput="compute()">
                 <label class="cw-vrb-label">
@@ -412,6 +452,18 @@
           <div class="cw-card">
             <h3 class="cw-card-title">Runway <span class="cw-source">magnetic</span></h3>
 
+            <div id="cw-apt-runways" style="display:none">
+              <div class="cw-field">
+                <label class="cw-label" for="cw-apt-rwy1">Runway 1</label>
+                <select id="cw-apt-rwy1" class="cw-select" onchange="compute()"></select>
+              </div>
+              <div class="cw-field">
+                <label class="cw-label" for="cw-apt-rwy2">Runway 2 <span class="cw-unit">optional · comparison</span></label>
+                <select id="cw-apt-rwy2" class="cw-select" onchange="compute()"></select>
+              </div>
+            </div>
+
+            <div id="cw-manual-runways">
             <div class="cw-field">
               <label class="cw-label" for="cw-rwy1">Runway 1</label>
               <div class="cw-rwy-row">
@@ -426,6 +478,7 @@
                 <span class="cw-rwy-prefix">RWY</span>
                 <input type="number" id="cw-rwy2" min="1" max="36" placeholder="18" oninput="compute()">
               </div>
+            </div>
             </div>
           </div>
 
@@ -443,12 +496,13 @@
             <svg id="cw-svg2" viewBox="0 0 360 340" role="img" aria-label="Wind component diagram for runway 2"></svg>
             <p class="cw-svg-caption" id="cw-caption2"></p>
           </div>
+          <div id="cw-steps" class="cw-steps" style="display:none" aria-live="polite"></div>
           <div id="cw-result" style="display:none"></div>
 
           <div id="cw-compare" class="cw-compare-section" style="display:none">
             <h3 class="cw-compare-heading">Runway comparison</h3>
             <div id="cw-compare-inner"></div>
-            <p class="cw-compare-note">Both ends of each runway use the same METAR wind — only the angle between wind and heading changes.</p>
+            <p class="cw-compare-note">Both ends of each runway use the same wind. Only the angle between wind and heading changes.</p>
           </div>
         </div>
 
@@ -485,7 +539,7 @@
           <p class="cw-edu-eyebrow">The number students get wrong</p>
           <h3>True vs. magnetic</h3>
           <p>METARs report wind direction in <strong>degrees true</strong>. Runway numbers are <strong>magnetic</strong> — RWY 27 is approximately 270° magnetic, not true. At most U.S. airports the difference (magnetic variation) is 5–20°.</p>
-          <p>This calculator compares the two numbers you enter and converts nothing. Enter a METAR wind (true) against a painted runway number (magnetic) and the answer can be well off:</p>
+          <p>Without an airport ID, this calculator compares the two numbers you enter and converts nothing. Enter a METAR wind (true) against a painted runway number (magnetic) and the answer can be well off:</p>
           <table class="demo-table">
             <thead>
               <tr><th>Runway and true wind</th><th>Unconverted</th><th>Actual</th></tr>
@@ -496,7 +550,7 @@
             </tbody>
           </table>
           <p style="margin-top:0.8rem;">The PANC wind is blowing straight down the runway, yet the unconverted answer shows 6.5 kt of crosswind. The error doesn't always run high, either. With west variation it can hide crosswind: KDAB 07L with a true wind of 100° at 15 kt reads 7.5 kt, and the actual value is 8.6 kt.</p>
-          <p>So convert a METAR wind before you enter it: subtract east variation, add west ("east is least, west is best"). ATIS and ASOS or AWOS voice broadcasts already give wind in magnetic, so don't convert those. A painted runway number is also rounded, so use the runway's actual magnetic heading if you have it.</p>
+          <p>Enter a US airport ID and the calculator does this for you and shows each step. Otherwise, convert a METAR wind before you enter it: subtract east variation, add west ("east is least, west is best"). ATIS and ASOS or AWOS voice broadcasts already give wind in magnetic, so don't convert those. A painted runway number is also rounded, so use the runway's actual magnetic heading if you have it.</p>
           <p style="font-size:0.85rem;color:var(--ink-soft);font-style:italic;">Actual values compare the true wind with each runway's true alignment in FAA airport data effective October 29, 2026.</p>
           <p>On the checkride, examiners want to know you understand this distinction exists — not that you can calculate variation from memory.</p>
         </div>
@@ -531,7 +585,7 @@
       </div>
 
       <div class="acs-note">
-        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-29 (METAR wind, true), AIM 7-1-10 (voice broadcasts, magnetic), and FAA-H-8083-28 §3.4.2.2.
+        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-29 (METAR wind, true), AIM 7-1-10 (voice broadcasts, magnetic), and FAA-H-8083-28 §3.4.2.2. Variation from the NOAA World Magnetic Model (WMM2025). Runway alignments from FAA NASR airport data.
       </div>
     </div>
   </section>
@@ -544,6 +598,7 @@
     </div>
   </footer>
 
+<script src="../js/wind-math.js"></script>
 <script>
 // ── SVG constants ──
 const C = [180, 170];        // diagram center (compass + runway pivot)
@@ -565,29 +620,34 @@ function compute() {
   hide('cw-compare'); hide('cw-error'); hide('cw-result');
   hide('cw-svg-wrap2');
 
+  hide('cw-steps');
+  const airport = currentAirport();
+  const drawIdle = () => airport ? drawAirportRunway(airport) : drawRunway(parseRwy(r1Raw));
+  updateWindLabels(airport);
+
   // VRB
   if (vrb) {
-    drawRunway(parseRwy(r1Raw));
+    drawIdle();
     setCaption('Variable wind — crosswind component cannot be computed.');
     show('cw-vrb-note');
     return;
   }
 
   // Speed required
-  if (spdRaw === '') { drawRunway(parseRwy(r1Raw)); return; }
+  if (spdRaw === '') { drawIdle(); return; }
   const speed = parseFloat(spdRaw);
   if (isNaN(speed) || speed < 0) { return showErr('Wind speed must be 0 or greater.'); }
 
   // Calm
   if (speed === 0) {
-    drawRunway(parseRwy(r1Raw));
+    drawIdle();
     setCaption('Calm wind — no crosswind component.');
     show('cw-calm');
     return;
   }
 
   // Direction required
-  if (dirRaw === '') { drawRunway(parseRwy(r1Raw)); return; }
+  if (dirRaw === '') { drawIdle(); return; }
   const dir = parseFloat(dirRaw);
   if (isNaN(dir) || dir < 0 || dir > 360) { return showErr('Wind direction must be 0–360°.'); }
 
@@ -596,6 +656,17 @@ function compute() {
   if (gstRaw !== '') {
     gusts = parseFloat(gstRaw);
     if (isNaN(gusts) || gusts < 0) { return showErr('Gust speed must be 0 or greater.'); }
+  }
+
+  // Airport mode converts, shows its steps, and shares the rendering below.
+  if (airport) {
+    drawIdle();
+    const source = selectedSource();
+    if (!source) {
+      setCaption('Choose where this wind is from.');
+      return showErr('Choose where this wind is from. METAR and TAF wind is true, and voice broadcast wind is magnetic, so the conversion depends on it.');
+    }
+    return computeAirport(airport, dir, source, speed, gusts);
   }
 
   // Runway 1 required
@@ -646,34 +717,173 @@ function compute() {
   show('cw-compare');
 }
 
-// ── Component math ──
-function calc(windDir, speed, gusts, rwyNum) {
-  const rwyHdg = rwyNum === 36 ? 360 : rwyNum * 10;
-  let ad = rwyHdg - windDir;
-  while (ad >  180) ad -= 360;
-  while (ad < -180) ad += 360;
-  const rad = ad * Math.PI / 180;
-  const hw  = speed * Math.cos(rad);   // + = headwind, − = tailwind
-  // cw sign here is sin(rwyHdg − windDir): negative when the wind is FROM the
-  // right of the runway heading, positive when from the left. The side label
-  // below maps it to the physical from-direction.
-  const cw  = speed * Math.sin(rad);
+// ── Airport mode ──
+let airportData = null, airportLoad = null;
 
-  let gHw = null, gCw = null;
-  if (gusts > 0) {
-    gHw = gusts * Math.cos(rad);
-    gCw = gusts * Math.sin(rad);
+function loadAirportData() {
+  if (!airportLoad) {
+    airportLoad = fetch('../assets/data/airports-us.json')
+      .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(data => { airportData = data; return data; });
   }
-  return {
-    rwyNum, rwyHdg, ad, rad, hw, cw,
-    hwAbs: Math.abs(hw), cwAbs: Math.abs(cw),
-    side: cw < -0.05 ? 'RIGHT' : cw > 0.05 ? 'LEFT' : 'DIRECT',
-    tail: hw < -0.05,
-    gHw, gCw,
-    gHwAbs: gHw !== null ? Math.abs(gHw) : null,
-    gCwAbs: gCw !== null ? Math.abs(gCw) : null,
-    gTail: gHw !== null ? gHw < -0.05 : false,
-  };
+  return airportLoad;
+}
+
+function setAirportStatus(text, isError) {
+  const el = document.getElementById('cw-apt-status');
+  el.textContent = text;
+  el.className = 'cw-apt-status' + (isError ? ' cw-apt-status--error' : '');
+}
+
+function currentAirport() {
+  if (!airportData) return null;
+  return findAirport(airportData, document.getElementById('cw-apt').value);
+}
+
+function selectedSource() {
+  const picked = document.querySelector('input[name="cw-source"]:checked');
+  return picked ? picked.value : null;
+}
+
+function updateWindLabels(airport) {
+  const source = airport ? selectedSource() : 'true';
+  document.getElementById('cw-dir-unit').textContent =
+    source === 'magnetic' ? '° MAGNETIC' : source === 'true' ? '° TRUE' : '°';
+  document.getElementById('cw-wind-source-tag').textContent =
+    !airport ? 'from METAR · degrees TRUE' : source === 'magnetic' ? 'degrees MAGNETIC' : source === 'true' ? 'degrees TRUE' : 'choose a source';
+}
+
+function airportChanged() {
+  const typed = document.getElementById('cw-apt').value.trim().toUpperCase();
+  const blank = typed === '';
+  if (blank) {
+    showAirportFields(null);
+    setAirportStatus('Leave blank to enter everything yourself. Nothing is converted without an airport.');
+    compute();
+    return Promise.resolve();
+  }
+  if (typed.length < 3) {
+    showAirportFields(null);
+    setAirportStatus('Keep typing the airport ID. Until it matches, nothing is converted.');
+    compute();
+    return Promise.resolve();
+  }
+  return loadAirportData().then(data => {
+    // The field may have changed while the file loaded.
+    if (document.getElementById('cw-apt').value.trim().toUpperCase() !== typed) return;
+    const airport = findAirport(data, typed);
+    showAirportFields(airport);
+    if (airport) {
+      setAirportStatus(`${airport.id} · ${airport.n} · variation ${formatVariation(airport.v)}`);
+    } else if (typed.length === 4) {
+      setAirportStatus(`No data for ${typed}. Only US airports with an ICAO ID are included, so nothing is converted. Below, the calculator compares your two numbers as entered.`, true);
+    } else {
+      setAirportStatus(`No match for ${typed} yet. Until it matches, nothing is converted.`);
+    }
+    compute();
+  }).catch(() => {
+    showAirportFields(null);
+    setAirportStatus('Airport data could not load, so nothing is converted. Below, the calculator compares your two numbers as entered.', true);
+    compute();
+  });
+}
+
+function showAirportFields(airport) {
+  document.getElementById('cw-apt-runways').style.display = airport ? '' : 'none';
+  document.getElementById('cw-manual-runways').style.display = airport ? 'none' : '';
+  document.getElementById('cw-source-choice').style.display = airport ? '' : 'none';
+  if (!airport) return;
+  const label = pair => `${pair[0][0]} / ${pair[1][0]}`;
+  const options = airport.r.map((pair, i) => `<option value="${i}">${label(pair)}</option>`).join('');
+  // One runway needs no choice. With more, the pilot picks, so results never show for a runway nobody chose.
+  document.getElementById('cw-apt-rwy1').innerHTML = (airport.r.length > 1 ? '<option value="">Choose a runway</option>' : '') + options;
+  document.getElementById('cw-apt-rwy2').innerHTML = '<option value="">None</option>' + options;
+}
+
+function airportEnd(airport, end, windM, speed, gusts) {
+  const [id, t] = end;
+  const hdg = runwayMagnetic({ id, t }, airport.v);
+  const r = calc(windM, speed, gusts, paintedNumber(id), hdg.heading);
+  r.label = id;
+  r.t = t;
+  r.approximate = hdg.approximate;
+  return r;
+}
+
+function selectedPair(airport, selectId) {
+  const value = document.getElementById(selectId).value;
+  return value === '' ? null : airport.r[+value];
+}
+
+function drawAirportRunway(airport) {
+  const pair = selectedPair(airport, 'cw-apt-rwy1');
+  if (!pair) { drawRunway(null); return; }
+  const [id, t] = pair[0];
+  document.getElementById('cw-svg').innerHTML = compass()
+    + runwayShape(paintedNumber(id), runwayMagnetic({ id, t }, airport.v).heading, id, pair[1][0]);
+}
+
+function computeAirport(airport, dir, source, speed, gusts) {
+  const windM = windToMagnetic(dir, source, airport.v);
+  const pair1 = selectedPair(airport, 'cw-apt-rwy1');
+  const pair2 = selectedPair(airport, 'cw-apt-rwy2');
+  if (!pair1) {
+    setCaption('Choose a runway to see the components.');
+    renderSteps(airport, dir, source, windM, []);
+    show('cw-steps');
+    return;
+  }
+  const build = end => airportEnd(airport, end, windM, speed, gusts);
+  const caption = (a, b) => `RWY ${a.label} / ${b.label} · θ = ${Math.round(Math.abs(a.ad))}° from RWY ${a.label}`;
+
+  const r1 = build(pair1[0]), r1r = build(pair1[1]);
+  r1.recipLabel = r1r.label;
+  drawSVG(r1, speed, gusts, 'cw-svg');
+  setCaption(caption(r1, r1r));
+
+  const all = [r1, r1r];
+  if (pair2) {
+    const r2 = build(pair2[0]), r2r = build(pair2[1]);
+    r2.recipLabel = r2r.label;
+    drawSVG(r2, speed, gusts, 'cw-svg2');
+    document.getElementById('cw-caption2').textContent = caption(r2, r2r);
+    show('cw-svg-wrap2');
+    all.push(r2, r2r);
+  }
+
+  renderSteps(airport, dir, source, windM, all);
+  show('cw-steps');
+  renderResultPair(all);
+  show('cw-result');
+  const tailHits = all.filter(r => r.tail);
+  if (tailHits.length) { renderTailWarnAll(tailHits); show('cw-tail'); }
+  renderCompareAll(all, gusts > 0);
+  show('cw-compare');
+}
+
+function renderSteps(airport, dir, source, windM, runways) {
+  const step = (label, text) => `<div class="cw-step"><span class="cw-step-label">${label}</span><span>${text}</span></div>`;
+  const windLine = source === 'true'
+    ? conversionStep(dir, airport.v)
+    : `${formatHeading(windM, 0)}°M, already magnetic`;
+  const runwayLines = runways.map(r => step(`RWY ${r.label}`, r.approximate
+    ? `${formatHeading(r.rwyHdg, 0)}°M from the painted number`
+    : `${conversionStep(r.t, airport.v)} (painted ${pad(paintedNumber(r.label))})`)).join('');
+  const first = runways[0];
+  const angle = !first ? '' : step('Angle', `${formatHeading(windM, 1)}°M to ${formatHeading(first.rwyHdg, 1)}°M = ${Math.abs(first.ad).toFixed(1)}° off RWY ${first.label}`);
+  const approx = runways.filter(r => r.approximate).map(r => r.label);
+  const warn = approx.length
+    ? `<p class="cw-step-warn">FAA lists no alignment for RWY ${approx.join(', RWY ')}. The painted number is rounded, so this result is approximate.</p>`
+    : '';
+  const meta = airportData.meta;
+  const faa = airport.f ? ` FAA airport data lists ${formatFaaVariation(airport.f)}, an older and rounded value, so a chart or Chart Supplement may differ.` : '';
+  document.getElementById('cw-steps').innerHTML = `
+    <p class="cw-steps-title">Conversion for ${airport.id}</p>
+    ${step('Wind', windLine)}
+    ${runwayLines}
+    ${angle}
+    ${warn}
+    <p class="cw-steps-note">East is least, west is best. Variation is from ${meta.model} for ${formatDataDate(meta.variationDate)}.${faa} Runway alignments are from FAA data effective ${formatDataDate(meta.nasrEffective)}.</p>`;
 }
 
 // ── SVG helpers ──
@@ -701,12 +911,12 @@ function compass() {
 // Draws the runway oriented to its true heading: the number you enter sits at the
 // approach (start) end and the aircraft departs toward the reciprocal end, which is
 // where the centerline arrow points. RWY 36 is vertical, RWY 09 is horizontal, etc.
-function runwayShape(rwyNum) {
+function runwayShape(rwyNum, hdgOverride, label, recipLabel) {
   if (!rwyNum) {
     return `<text x="${C[0]}" y="${C[1]}" text-anchor="middle" dominant-baseline="middle"
       font-family="JetBrains Mono,monospace" font-size="11" fill="${INK}" opacity="0.4">enter a runway number</text>`;
   }
-  const H = rwyNum === 36 ? 360 : rwyNum * 10;
+  const H = hdgOverride !== undefined ? hdgOverride : (rwyNum === 36 ? 360 : rwyNum * 10);
   const a = bvec(H), p = bvec(H + 90);
   const RL = 122, HW = 8;
   const ax = C[0] + RL*a[0], ay = C[1] + RL*a[1];   // ahead end (marked with reciprocal)
@@ -728,9 +938,9 @@ function runwayShape(rwyNum) {
       stroke="#fff" stroke-width="1.4" stroke-dasharray="10,9" stroke-linecap="round" opacity="0.8"/>
     <polygon points="${tip[0].toFixed(1)},${tip[1].toFixed(1)} ${bl[0].toFixed(1)},${bl[1].toFixed(1)} ${br[0].toFixed(1)},${br[1].toFixed(1)}" fill="${INK}" opacity="0.4"/>
     <text x="${nb[0].toFixed(1)}" y="${nb[1].toFixed(1)}" text-anchor="middle" dominant-baseline="middle"
-      font-family="Anton,Impact,sans-serif" font-size="18" fill="${INK}">${pad(rwyNum)}</text>
+      font-family="Anton,Impact,sans-serif" font-size="18" fill="${INK}">${label || pad(rwyNum)}</text>
     <text x="${ne[0].toFixed(1)}" y="${ne[1].toFixed(1)}" text-anchor="middle" dominant-baseline="middle"
-      font-family="Anton,Impact,sans-serif" font-size="13" fill="${INK}" opacity="0.45">${pad(recip(rwyNum))}</text>`;
+      font-family="Anton,Impact,sans-serif" font-size="13" fill="${INK}" opacity="0.45">${recipLabel || pad(recip(rwyNum))}</text>`;
 }
 
 function drawRunway(rwyNum, svgId) {
@@ -847,7 +1057,7 @@ function drawSVG(r, speed, gusts, svgId) {
   }
 
   document.getElementById(svgId || 'cw-svg').innerHTML =
-    defs + compass() + runwayShape(rwyNum) + gustSVG + windSVG + hwSVG + cwSVG + raMark;
+    defs + compass() + (r.label ? runwayShape(rwyNum, rwyHdg, r.label, r.recipLabel) : runwayShape(rwyNum)) + gustSVG + windSVG + hwSVG + cwSVG + raMark;
 }
 
 // ── Result card helpers ──
@@ -875,7 +1085,7 @@ function rwyCard(r, isRecip) {
   }
 
   return `<div class="cw-result-card">
-    <div class="cw-result-rwy">RWY ${pad(r.rwyNum)}${recipBadge} · ${r.rwyHdg}°</div>
+    <div class="cw-result-rwy">RWY ${r.label || pad(r.rwyNum)}${recipBadge} · ${r.label ? (r.approximate ? '≈' : '') + formatHeading(r.rwyHdg, r.approximate ? 0 : 1) + '°M' : r.rwyHdg + '°'}</div>
     <div class="cw-stats">
       <div>
         <div class="cw-stat-label">${hwType}</div>
@@ -902,7 +1112,7 @@ function renderResultPair(runways) {
 
 // ── Tailwind warning ──
 function renderTailWarnAll(tailRunways) {
-  const names = tailRunways.map(r => `RWY ${pad(r.rwyNum)}`).join(', ');
+  const names = tailRunways.map(r => `RWY ${r.label || pad(r.rwyNum)}`).join(', ');
   document.getElementById('cw-tail').innerHTML = `
     <p class="callout-danger-head">⚠ Tailwind — ${names}</p>
     <p>A tailwind puts the wind behind the aircraft. Takeoff and landing distances increase significantly — ground speed is higher at rotation and touchdown, stopping distance grows, and obstacle clearance margins shrink. Most POH performance tables assume a headwind or calm; many list tailwind limits of 10 kt or less. Check your POH tailwind limitations and consider the other runway end or waiting for conditions to shift.</p>`;
@@ -910,7 +1120,7 @@ function renderTailWarnAll(tailRunways) {
 
 // ── Comparison table ──
 function renderCompareAll(runways, hasGusts) {
-  const headers = runways.map(r => `<th>RWY ${pad(r.rwyNum)}</th>`).join('');
+  const headers = runways.map(r => `<th>RWY ${r.label || pad(r.rwyNum)}</th>`).join('');
   const cwRow   = runways.map(r => `<td>${cell(r.cwAbs, r.side)}</td>`).join('');
   const hwRow   = runways.map(r => `<td>${cell(r.hwAbs, r.tail ? 'TAIL' : '', r.tail)}</td>`).join('');
   const tailRow = runways.map(r => {
@@ -960,11 +1170,18 @@ drawRunway(null);
 // for the pilot to enter.
 (function () {
   const p = new URLSearchParams(location.search);
-  const dir = p.get('dir'), speed = p.get('speed'), gust = p.get('gust');
+  const dir = p.get('dir'), speed = p.get('speed'), gust = p.get('gust'), station = p.get('station');
   if (dir === null && speed === null) return;
   if (dir   !== null) document.getElementById('cw-dir').value   = dir;
   if (speed !== null) document.getElementById('cw-speed').value = speed;
   if (gust  !== null) document.getElementById('cw-gusts').value = gust;
+  if (station && /^[A-Za-z0-9]{3,4}$/.test(station)) {
+    // This link only ever comes from a METAR, so the wind is true.
+    document.querySelector('input[name="cw-source"][value="true"]').checked = true;
+    document.getElementById('cw-apt').value = station.toUpperCase();
+    airportChanged();
+    return;
+  }
   compute();
 })();
 </script>
