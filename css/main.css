@@ -1626,6 +1626,9 @@ footer .container {
   margin: 0.8rem 0 0;
   letter-spacing: 0.04em;
 }
+/* --sun is for the dark input panel. Results sit on a light surface in light mode. */
+.cat-scale .decoder-error,
+.taf-overview .decoder-error { color: var(--rust); margin: 0 0 0.6rem; }
 .decoder-file-notice {
   background: rgba(217,165,33,0.12);
   border: 1px solid rgba(217,165,33,0.4);

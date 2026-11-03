@@ -173,8 +173,10 @@ function mergeTafGroup(state, group) {
 
 // Null means the forecast doesn't say enough. Never report that as VFR.
 function tafCategory(state) {
-  if (!state.visibility || !state.skyKnown) return null;
-  return deriveFlightCategory({ sky: state.sky, visibility: state.visibility });
+  const visSM = visibilityInSM(state.visibility);
+  if (visSM === null || !state.skyKnown || state.sky.some(skyLayerUnknown)) return null;
+  const ceiling = getCeiling(state.sky);
+  return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM);
 }
 
 function withCategory(state) {
@@ -220,6 +222,14 @@ function tafStateAt(parsed, time) {
   return base ? tafStateAtHours(parsed, base, base.toHours(time)) : null;
 }
 
+// What the readable parts alone say. Unknowns can only make this worse.
+function floorNote(state) {
+  const ceiling = getCeiling(state.sky);
+  const visSM = visibilityInSM(state.visibility);
+  const floor = categoryFromValues(ceiling === null ? Infinity : ceiling, visSM === null ? Infinity : visSM);
+  return floor === 'VFR' ? '' : ` What it does state is already ${floor}.`;
+}
+
 function resolveTafGroups(parsed) {
   parsed.warnings = [];
   const base = tafTimeBase(parsed);
@@ -230,9 +240,11 @@ function resolveTafGroups(parsed) {
 
   for (const g of parsed.groups) {
     if (g.type === 'BASE' || g.type === 'FM') {
-      g.flightCategory = tafCategory(tafStateFromGroup(g));
-      if (!g.flightCategory) {
-        parsed.warnings.push(`The ${name(g)} group doesn't state both visibility and sky, so no flight category is shown for it.`);
+      g.flightCategory = g.unreadable ? null : tafCategory(tafStateFromGroup(g));
+      if (g.unreadable) {
+        parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group, so no flight category is shown for it.`);
+      } else if (!g.flightCategory) {
+        parsed.warnings.push(`The ${name(g)} group doesn't give a readable visibility and sky, so no flight category is shown for it.`);
       }
       if (base && g.type === 'FM') {
         const s = base.toHours(g.validFrom);
@@ -251,9 +263,11 @@ function resolveTafGroups(parsed) {
       continue;
     }
     const merged = mergeTafGroup(before.prevailing, g);
-    g.flightCategory = tafCategory(merged);
-    if (!g.flightCategory) {
-      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't state both visibility and sky, so no flight category is shown for it.`);
+    g.flightCategory = g.unreadable ? null : tafCategory(merged);
+    if (g.unreadable) {
+      parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group at ${formatTafTime(g.validFrom)}, so no flight category is shown for it.`);
+    } else if (!g.flightCategory) {
+      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't give a readable visibility and sky, so no flight category is shown for it.${floorNote(merged)}`);
     }
     const prior = before.prevailing;
     const cavok = !!(g.visibility && g.visibility.cavok);
@@ -280,7 +294,8 @@ function parseGroup(tokens, isBase) {
     windShear: null,
     nsw: false,
     flightCategory: null,   // set by resolveTafGroups, which knows what the group inherits
-    carriedOver: ''
+    carriedOver: '',
+    unreadable: null
   };
 
   let i = 0;
@@ -396,6 +411,10 @@ function parseGroup(tokens, isBase) {
       i++;
     }
   }
+
+  // A token shaped like sky or visibility that we couldn't read must not be skipped,
+  // or the group would silently inherit the value it was trying to change.
+  if (i < tokens.length && /^(FEW|SCT|BKN|OVC|VV)|SM$/.test(tokens[i])) group.unreadable = tokens[i];
 
   // ── Wind shear: WS###/dddssKT (anywhere in remaining tokens)
   for (let j = i; j < tokens.length; j++) {

@@ -217,12 +217,6 @@ test('every split fractional visibility survives, not only the first', () => {
   assert.deepEqual([...parsed.groups].map((g) => g.sky[0].raw), ['OVC006', 'OVC008', 'OVC007']);
 });
 
-test('VV/// is kept as a sky layer and treated as the worst case, not as clear sky', () => {
-  const parsed = site.parseTaf('TAF KXXX 011130Z 0112/0212 18010KT 6000 VV///');
-  assert.equal(parsed.groups[0].sky[0].raw, 'VV///');
-  assert.equal(parsed.groups[0].flightCategory, 'LIFR');
-});
-
 // ── Metric visibility: AFMAN 15-111 Table 8.1 (statute miles to reportable meters)
 const CLEAR = [{ cover: 'SKC', height: null, cb: null }];
 const metric = (value) => site.deriveFlightCategory({ sky: CLEAR, visibility: { unit: 'm', value } });
@@ -276,9 +270,15 @@ test('all 92 real TAFs parse, and every group gets a placed time and a category'
     const parsed = site.parseTaf(raw);
     assert.ok(parsed.station, raw);
     assert.ok(site.tafTimeBase(parsed), `no time base: ${raw}`);
-    assert.deepEqual([...parsed.warnings], [], raw);
-    for (const group of parsed.groups) {
-      assert.ok(group.flightCategory, `${group.type} has no category in ${raw}`);
+    // The only real exception: EGPF's two PROB30 groups forecast VV///, which has no height.
+    const noCategory = [...parsed.groups].filter((g) => !g.flightCategory);
+    if (parsed.station === 'EGPF') {
+      assert.deepEqual(noCategory.map((g) => g.type), ['PROB30', 'PROB30']);
+      assert.equal(parsed.warnings.length, 2);
+      assert.ok(parsed.warnings.every((w) => /already LIFR/.test(w)), 'visibility alone makes them LIFR');
+    } else {
+      assert.deepEqual([...parsed.warnings], [], raw);
+      assert.equal(noCategory.length, 0, raw);
     }
   }
 });

@@ -78,6 +78,8 @@ function parseMetar(rawInput) {
     remarks: null,
     flightCategory: null,
     unrecognized: [],
+    unreadable: [],     // groups we couldn't read where visibility, weather, or sky belong
+    warnings: [],
     fields: []
   };
 
@@ -92,6 +94,97 @@ function parseMetar(rawInput) {
     push(token, 'unknown', 'Unrecognized group',
       'Not recognized — skipped so the rest of the report could still decode. ' +
       'May be a coded element this decoder does not support yet, or a garbled group.');
+  }
+
+  // Reads one visibility group. Returns false if the token isn't one.
+  function tryVisibility(tok) {
+    if (tok === 'CAVOK') {
+      result.visibility = { raw: tok, value: 10, unit: 'km', cavok: true };
+      push(tok, 'visibility', 'CAVOK',
+        'Ceiling and Visibility OK: vis ≥ 10 km, no cloud below 5,000 ft, no CB/TCU, no sig wx');
+      return true;
+    }
+    if (/^P\d+SM$/.test(tok)) {
+      const vis = parseFloat(tok.slice(1));
+      result.visibility = { raw: tok, value: vis, unit: 'SM', plus: true };
+      push(tok, 'visibility', 'Visibility', `Greater than ${vis} statute miles`);
+      return true;
+    }
+    if (/^(M?\d[\d/ ]*SM|M?1\/\dSM)$/.test(tok) || /^M?\d+SM$/.test(tok) || /^\d+\/\d+SM$/.test(tok) || /^M\d+\/\d+SM$/.test(tok)) {
+      const lessThan = tok.startsWith('M');
+      const numPart = tok.replace(/^M/, '').replace('SM', '').trim();
+      const vis = parseFraction(numPart);
+      result.visibility = { raw: tok, value: vis, unit: 'SM', lessThan };
+      push(tok, 'visibility', 'Visibility',
+        lessThan ? `Less than ${numPart} statute mile(s)` : `${numPart} statute mile${vis !== 1 ? 's' : ''}`);
+      return true;
+    }
+    // Metric, with an optional direction or NDV (automated sensor, no directional data)
+    const mm = tok.match(/^(\d{4})(NDV|N|NE|E|SE|S|SW|W|NW)?$/);
+    if (mm) {
+      const vis = +mm[1];
+      result.visibility = { raw: tok, value: vis, unit: 'm' };
+      let desc = vis >= 9999 ? '10 km or more — visibility unrestricted' : `${vis} metres`;
+      if (mm[2] === 'NDV') desc += ' · sensor gives no directional data';
+      else if (mm[2]) desc += ` · toward ${mm[2]}`;
+      push(tok, 'visibility', 'Visibility', desc);
+      return true;
+    }
+    if (/^\/{2,4}SM$/.test(tok) || tok === '////') {
+      // Visibility sensor unavailable: ////SM (US) or //// (metric)
+      push(tok, 'visibility', 'Visibility',
+        'Not available — visibility not reported by the automated sensor');
+      return true;
+    }
+    return false;
+  }
+
+  // Reads one sky group. Returns false if the token isn't one.
+  function trySky(tok) {
+    if (/^(SKC|CLR|NSC|NCD)$/.test(tok)) {
+      result.sky.push({ raw: tok, cover: tok, height: null, cb: null });
+      push(tok, 'sky', 'Sky condition', COVER_LABEL[tok] || tok);
+      return true;
+    }
+
+    // Automated slash group: cover and/or height not measured by the sensor.
+    // Forms: //////TCU, //////CB, ////// (bare), ///### (amount n/a),
+    // BKN/// (height n/a). At least one component must be slashes. A station
+    // can name a significant cloud (CB/TCU) without an amount or height.
+    const slash = tok.match(/^(\/{3}|FEW|SCT|BKN|OVC|VV)(\/{3}|\d{3})(CB|TCU|\/{2,3})?$/);
+    if (slash && (slash[1] === '///' || slash[2] === '///' || (slash[3] && slash[3].includes('/')))) {
+      const cover  = slash[1] === '///' ? null : slash[1];
+      const height = slash[2] === '///' ? null : +slash[2] * 100;
+      const cb     = slash[3] && !slash[3].includes('/') ? slash[3] : null;
+      result.sky.push({ raw: tok, cover, height, cb });
+
+      let desc;
+      if (cb === 'TCU')     desc = 'Towering cumulus present';
+      else if (cb === 'CB') desc = 'Cumulonimbus (thunderstorm cloud) present';
+      else if (cover)       desc = COVER_LABEL[cover] || cover;
+      else                  desc = null;
+
+      const missing = [];
+      if (!cover) missing.push('amount');
+      if (height === null) missing.push('height');
+      const naPhrase = missing.join(' and ') + ' not reported by the automated sensor';
+      if (desc === null) desc = 'Cloud ' + naPhrase;        // bare //////
+      else if (missing.length) desc += (cb ? '; ' : ' — ') + naPhrase;
+      if (height !== null) desc += ` (height ${height.toLocaleString()} ft AGL)`;
+
+      push(tok, 'sky', 'Sky condition', desc);
+      return true;
+    }
+
+    const sm = tok.match(/^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/);
+    if (!sm) return false;
+    const cover = sm[1], height = +sm[2] * 100, cb = sm[3] || null;
+    result.sky.push({ raw: tok, cover, height, cb });
+    let desc = `${COVER_LABEL[cover] || cover} at ${height.toLocaleString()} ft AGL`;
+    if (cb === 'CB') desc += ' · cumulonimbus — thunderstorm';
+    else if (cb === 'TCU') desc += ' · towering cumulus — developing storm';
+    push(tok, 'sky', 'Sky condition', desc);
+    return true;
   }
 
   let i = 0;
@@ -179,31 +272,12 @@ function parseMetar(rawInput) {
   }
 
   // 6 ── Visibility (US SM or metric metres or CAVOK)
-  if (i < tokens.length) {
-    const tok = tokens[i];
-    if (tok === 'CAVOK') {
-      result.visibility = { raw: tok, value: 10, unit: 'km', cavok: true };
-      push(tok, 'visibility', 'CAVOK',
-        'Ceiling and Visibility OK: vis ≥ 10 km, no cloud below 5,000 ft, no CB/TCU, no sig wx');
-      i++;
-    } else if (/^(M?\d[\d/ ]*SM|M?1\/\dSM)$/.test(tok) || /^M?\d+SM$/.test(tok) || /^\d+\/\d+SM$/.test(tok) || /^M\d+\/\d+SM$/.test(tok)) {
-      const lessThan = tok.startsWith('M');
-      const numPart = tok.replace(/^M/, '').replace('SM', '').trim();
-      const vis = parseFraction(numPart);
-      result.visibility = { raw: tok, value: vis, unit: 'SM', lessThan };
-      push(tok, 'visibility', 'Visibility',
-        lessThan ? `Less than ${numPart} statute mile(s)` : `${numPart} statute mile${vis !== 1 ? 's' : ''}`);
-      i++;
-    } else if (/^\d{4}$/.test(tok)) {
-      const vis = +tok;
-      result.visibility = { raw: tok, value: vis, unit: 'm' };
-      push(tok, 'visibility', 'Visibility',
-        vis >= 9999 ? '10 km or more — visibility unrestricted' : `${vis} metres`);
-      i++;
-    } else if (/^\/{2,4}SM$/.test(tok) || tok === '////') {
-      // Visibility sensor unavailable: ////SM (US) or //// (metric)
-      push(tok, 'visibility', 'Visibility',
-        'Not available — visibility not reported by the automated sensor');
+  if (i < tokens.length && tryVisibility(tokens[i])) {
+    i++;
+    // ICAO directional minimum after the prevailing value: 4000 1500NE
+    if (i < tokens.length && result.visibility && /^\d{4}(N|NE|E|SE|S|SW|W|NW)$/.test(tokens[i])) {
+      push(tokens[i], 'visibility', 'Minimum visibility',
+        `${tokens[i].slice(0, 4)} metres toward ${tokens[i].slice(4)}`);
       i++;
     }
   }
@@ -224,61 +298,19 @@ function parseMetar(rawInput) {
   }
 
   // 9 ── Sky condition
-  while (i < tokens.length) {
-    const tok = tokens[i];
-    if (/^(SKC|CLR|NSC|NCD)$/.test(tok)) {
-      result.sky.push({ raw: tok, cover: tok, height: null, cb: null });
-      push(tok, 'sky', 'Sky condition', COVER_LABEL[tok] || tok);
-      i++;
-      continue;
-    }
-
-    // Automated slash group: cover and/or height not measured by the sensor.
-    // Forms: //////TCU, //////CB, ////// (bare), ///### (amount n/a),
-    // BKN/// (height n/a). At least one component must be slashes. A station
-    // can name a significant cloud (CB/TCU) without an amount or height.
-    const slash = tok.match(/^(\/{3}|FEW|SCT|BKN|OVC|VV)(\/{3}|\d{3})(CB|TCU|\/{2,3})?$/);
-    if (slash && (slash[1] === '///' || slash[2] === '///' || (slash[3] && slash[3].includes('/')))) {
-      const cover  = slash[1] === '///' ? null : slash[1];
-      const height = slash[2] === '///' ? null : +slash[2] * 100;
-      const cb     = slash[3] && !slash[3].includes('/') ? slash[3] : null;
-      result.sky.push({ raw: tok, cover, height, cb });
-
-      let desc;
-      if (cb === 'TCU')     desc = 'Towering cumulus present';
-      else if (cb === 'CB') desc = 'Cumulonimbus (thunderstorm cloud) present';
-      else if (cover)       desc = COVER_LABEL[cover] || cover;
-      else                  desc = null;
-
-      const missing = [];
-      if (!cover) missing.push('amount');
-      if (height === null) missing.push('height');
-      const naPhrase = missing.join(' and ') + ' not reported by the automated sensor';
-      if (desc === null) desc = 'Cloud ' + naPhrase;        // bare //////
-      else if (missing.length) desc += (cb ? '; ' : ' — ') + naPhrase;
-      if (height !== null) desc += ` (height ${height.toLocaleString()} ft AGL)`;
-
-      push(tok, 'sky', 'Sky condition', desc);
-      i++;
-      continue;
-    }
-
-    const sm = tok.match(/^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/);
-    if (!sm) break;
-    const cover = sm[1], height = +sm[2] * 100, cb = sm[3] || null;
-    result.sky.push({ raw: tok, cover, height, cb });
-    let desc = `${COVER_LABEL[cover] || cover} at ${height.toLocaleString()} ft AGL`;
-    if (cb === 'CB') desc += ' · cumulonimbus — thunderstorm';
-    else if (cb === 'TCU') desc += ' · towering cumulus — developing storm';
-    push(tok, 'sky', 'Sky condition', desc);
-    i++;
-  }
+  while (i < tokens.length && trySky(tokens[i])) i++;
 
   // 10–12 ── Temperature/dewpoint, altimeter, remarks — and graceful recovery.
   // From here on, a token we can't place must NOT abort the parse: we flag it
   // as unrecognized and keep walking, so a stray or garbled group can never
   // hide the temp, altimeter, or remarks that follow it. Temp/altimeter stay
   // guarded by their result fields so each is only filled once.
+  //
+  // Until temperature or altimeter appears, we're still where visibility, weather,
+  // and sky belong. A group found there still counts, so a stray token can't hide a
+  // ceiling behind it. A trend forecast (BECMG, TEMPO, NOSIG) describes the future,
+  // so nothing after one counts toward the current category.
+  let bodyOpen = true, inTrend = false;
   while (i < tokens.length) {
     const tok = tokens[i];
 
@@ -291,8 +323,19 @@ function parseMetar(rawInput) {
       break;
     }
 
+    // Trend forecast, ICAO reports only
+    if (inTrend || /^(NOSIG|BECMG|TEMPO|FM\d{4}|TL\d{4}|AT\d{4})$/.test(tok)) {
+      inTrend = true;
+      bodyOpen = false;
+      push(tok, 'remarks', 'Trend forecast',
+        tok === 'NOSIG' ? 'No significant change expected in the next 2 hours'
+                        : 'Part of the 2-hour trend forecast, not the current observation');
+      i++; continue;
+    }
+
     // Temperature / Dewpoint: TT/DD
     if (result.temp === null && /^M?\d+\/M?\d+$/.test(tok)) {
+      bodyOpen = false;
       const parts = tok.split('/');
       result.temp = parseTemp(parts[0]);
       result.dewpoint = parseTemp(parts[1]);
@@ -305,6 +348,7 @@ function parseMetar(rawInput) {
     }
     // Temperature / dewpoint sensor unavailable: //// or M//// or //M// etc.
     if (result.temp === null && result.altimeter === null && /^\/{4,5}$/.test(tok)) {
+      bodyOpen = false;
       push(tok, 'temp', 'Temperature / Dewpoint',
         'Not available — temperature/dewpoint not reported by the automated sensor');
       i++; continue;
@@ -312,6 +356,7 @@ function parseMetar(rawInput) {
 
     // Altimeter: Adddd (inHg) or Qdddd (hPa)
     if (result.altimeter === null && /^[AQ]\d{4}$/.test(tok)) {
+      bodyOpen = false;
       if (tok[0] === 'A') {
         const val = +tok.slice(1) / 100;
         result.altimeter = { raw: tok, value: val, unit: 'inHg' };
@@ -330,6 +375,7 @@ function parseMetar(rawInput) {
     }
     // Altimeter sensor unavailable: A//// or Q////
     if (result.altimeter === null && /^[AQ]\/{4}$/.test(tok)) {
+      bodyOpen = false;
       push(tok, 'altimeter', 'Altimeter setting',
         'Not available — pressure not reported by the automated sensor');
       i++; continue;
@@ -342,12 +388,31 @@ function parseMetar(rawInput) {
       i++; continue;
     }
 
+    // Still in the body: read what belongs here, in any order.
+    if (bodyOpen) {
+      if (trySky(tok) || (!result.visibility && tryVisibility(tok))) { i++; continue; }
+      if (/^R\d{2}[LRC]?\//.test(tok)) {
+        push(tok, 'rvr', 'Runway visual range', 'Runway-specific visibility — relevant for precision approaches');
+        i++; continue;
+      }
+      const decoded = decodeWeather(tok);
+      if (decoded !== null) {
+        result.weather.push({ raw: tok, decoded });
+        push(tok, 'weather', 'Present weather', decoded);
+        i++; continue;
+      }
+      // A garbled wind can't change the category. Anything else here might be
+      // a garbled layer or visibility, so it can't be ruled out.
+      if (!/(KT|MPS|KMH)$/.test(tok)) result.unreadable.push(tok);
+    }
+
     // Anything else: flag it and move on so the rest of the report still decodes.
     pushUnrecognized(tok);
     i++;
   }
 
   result.flightCategory = deriveFlightCategory(result);
+  result.warnings = metarWarnings(result);
   return result;
 }
 
@@ -643,37 +708,67 @@ function parseRemarks(tokens, push) {
 
 // ── Flight category ──────────────────────────────────────────
 
+// Null means no usable value. Callers must not treat that as good visibility.
+function visibilityInSM(vis) {
+  if (!vis) return null;
+  if (vis.cavok) return 999;
+  if (vis.unit === 'SM') return vis.lessThan ? vis.value - 0.01 : vis.value;
+  if (vis.unit === 'm') return metersToSM(vis.value);
+  return null;
+}
+
+// FEW and SCT are never ceilings, so a missing height doesn't matter for them.
+// BKN, OVC, and VV need a height, and a layer with no amount could be any of them.
+function skyLayerUnknown(layer) {
+  if (/^(SKC|CLR|NSC|NCD|FEW|SCT)$/.test(layer.cover || '')) return false;
+  return !layer.cover || layer.height === null;
+}
+
+function categoryFromValues(ceiling, visSM) {
+  if (ceiling < 500 || visSM < 1) return 'LIFR';
+  if (ceiling < 1000 || visSM < 3) return 'IFR';
+  if (ceiling <= 3000 || visSM <= 5) return 'MVFR';
+  return 'VFR';
+}
+
+// What the readable parts alone say, for warnings. Unknowns can only make this worse.
+function knownCategoryFloor(parsed) {
+  const ceiling = getCeiling(parsed.sky);
+  const visSM = visibilityInSM(parsed.visibility);
+  return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM === null ? Infinity : visSM);
+}
+
+function metarWarnings(parsed) {
+  if (parsed.flightCategory) return [];
+  const warnings = [];
+  const cavok = !!(parsed.visibility && parsed.visibility.cavok);
+  if (visibilityInSM(parsed.visibility) === null) warnings.push('Visibility is missing or not reported.');
+  if (!parsed.sky.length && !cavok) warnings.push('Sky condition is missing or not reported.');
+  const layers = parsed.sky.filter(skyLayerUnknown).map(l => l.raw);
+  if (layers.length) warnings.push(`Cloud amount or height isn't reported in ${layers.join(' ')}, so the ceiling is unknown.`);
+  if (parsed.unreadable.length) warnings.push(`Couldn't read ${parsed.unreadable.join(' ')}, where visibility, weather, or sky belong.`);
+  warnings.push('No flight category is shown because it can\'t be confirmed from this report.');
+  const floor = knownCategoryFloor(parsed);
+  if (floor !== 'VFR') warnings.push(`What was reported is already ${floor}. The missing data could only make that worse.`);
+  return warnings;
+}
+
 // Reportable metric values use 1 SM = 1600 m, so 1600 m is 1 SM and 4800 m is 3 SM
 // (AFMAN 15-111 Table 8.1). An exact conversion would put both just under a threshold.
 function metersToSM(meters) {
   return meters / 1600;
 }
 
+// Null means the report doesn't say enough. Never display that as VFR.
 function deriveFlightCategory(parsed) {
-  let ceiling = Infinity;
-  for (const layer of parsed.sky) {
-    if ((layer.cover === 'BKN' || layer.cover === 'OVC' || layer.cover === 'VV') && layer.height !== null) {
-      if (layer.height < ceiling) ceiling = layer.height;
-    }
-    // VV/// is an indefinite ceiling with no stated height. Assume the worst rather than clear sky.
-    if (layer.cover === 'VV' && layer.height === null) ceiling = 0;
-  }
-
-  let visSM = Infinity;
-  if (parsed.visibility) {
-    if (parsed.visibility.unit === 'SM') {
-      visSM = parsed.visibility.lessThan ? parsed.visibility.value - 0.01 : parsed.visibility.value;
-    } else if (parsed.visibility.unit === 'm') {
-      visSM = metersToSM(parsed.visibility.value);
-    } else if (parsed.visibility.cavok) {
-      visSM = 999;
-    }
-  }
-
-  if (ceiling < 500 || visSM < 1) return 'LIFR';
-  if (ceiling < 1000 || visSM < 3) return 'IFR';
-  if (ceiling <= 3000 || visSM <= 5) return 'MVFR';
-  return 'VFR';
+  const cavok = !!(parsed.visibility && parsed.visibility.cavok);
+  const visSM = visibilityInSM(parsed.visibility);
+  if (visSM === null) return null;
+  if (!parsed.sky.length && !cavok) return null;
+  if (parsed.sky.some(skyLayerUnknown)) return null;
+  if (parsed.unreadable && parsed.unreadable.length) return null;
+  const ceiling = getCeiling(parsed.sky);
+  return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM);
 }
 
 // ── Wind SVG ─────────────────────────────────────────────────
@@ -861,24 +956,23 @@ function buildCategoryScale(parsed) {
   const cats = ['LIFR', 'IFR', 'MVFR', 'VFR'];
   const ceiling = getCeiling(parsed.sky);
 
-  let visSM = null, visTxt = '—';
-  if (parsed.visibility) {
-    if (parsed.visibility.unit === 'SM') {
-      visSM = parsed.visibility.lessThan ? parsed.visibility.value - 0.01 : parsed.visibility.value;
-      visTxt = parsed.visibility.raw;
-    } else if (parsed.visibility.unit === 'm') {
-      visSM = metersToSM(parsed.visibility.value);
-      visTxt = parsed.visibility.raw + ' m';
-    } else if (parsed.visibility.cavok) {
-      visSM = 999; visTxt = 'CAVOK';
-    }
-  }
+  const visSM = visibilityInSM(parsed.visibility);
+  const vis = parsed.visibility;
+  const visTxt = visSM === null ? 'Not reported'
+    : vis.cavok ? 'CAVOK'
+    : vis.unit === 'm' ? vis.raw + ' m' : vis.raw;
 
-  const vvUnknown = parsed.sky.some(l => l.cover === 'VV' && l.height === null);
-  const ceilIdx = vvUnknown ? 0 : ceiling == null ? 3 : ceiling < 500 ? 0 : ceiling < 1000 ? 1 : ceiling <= 3000 ? 2 : 3;
-  const visIdx  = visSM   == null ? 3 : visSM   < 1   ? 0 : visSM   < 3    ? 1 : visSM   <= 5   ? 2 : 3;
+  const cavok = !!(vis && vis.cavok);
+  const unknownLayers = parsed.sky.filter(skyLayerUnknown).map(l => l.raw);
+  const skyKnown = !unknownLayers.length && (parsed.sky.length > 0 || cavok);
 
-  const ceilTxt = vvUnknown ? 'Indefinite, height not reported' : ceiling == null ? 'No ceiling' : ceiling.toLocaleString() + ' ft';
+  // -1 marks no segment: an unknown value must not point at VFR.
+  const ceilIdx = !skyKnown ? -1 : ceiling == null ? 3 : ceiling < 500 ? 0 : ceiling < 1000 ? 1 : ceiling <= 3000 ? 2 : 3;
+  const visIdx  = visSM === null ? -1 : visSM < 1 ? 0 : visSM < 3 ? 1 : visSM <= 5 ? 2 : 3;
+
+  const ceilTxt = unknownLayers.length ? unknownLayers.join(' ')
+    : !skyKnown ? 'Not reported'
+    : ceiling == null ? 'No ceiling' : ceiling.toLocaleString() + ' ft';
   const ceilRanges = ['< 500', '500–999', '1,000–3,000', '> 3,000'];
   const visRanges  = ['< 1', '1–2', '3–5', '> 5'];
 
@@ -891,6 +985,11 @@ function buildCategoryScale(parsed) {
       <div class="cat-scale-bar">${segs}</div>
       <span class="cat-scale-val">${escHtml(valTxt)}</span>
     </div>`;
+  }
+
+  const warnings = (parsed.warnings || []).map(w => `<p class="decoder-error">${escHtml(w)}</p>`).join('');
+  if (!parsed.flightCategory) {
+    return warnings + row('Ceiling', ceilIdx, ceilRanges, ceilTxt) + row('Visibility', visIdx, visRanges, visTxt);
   }
 
   const tie = ceilIdx === visIdx;
@@ -914,8 +1013,8 @@ function renderDecoder(parsed) {
   const catEl = document.getElementById('cat-badge');
   const catDesc = document.getElementById('cat-desc');
   if (catEl && catDesc) {
-    catEl.textContent = parsed.flightCategory || '—';
-    catEl.className = 'cat-badge cat-' + (parsed.flightCategory || 'vfr').toLowerCase();
+    catEl.textContent = parsed.flightCategory || 'No category';
+    catEl.className = 'cat-badge cat-' + (parsed.flightCategory || 'unknown').toLowerCase();
     const catDescriptions = {
       VFR:  'Ceiling > 3,000 ft AGL and visibility > 5 sm',
       MVFR: 'Ceiling 1,000–3,000 ft AGL or visibility 3–5 sm',
@@ -955,6 +1054,7 @@ function renderDecoder(parsed) {
   if (windEl) {
     windEl.innerHTML = buildWindSVG(parsed.wind, parsed.windVariable);
     const windDesc = document.getElementById('wind-desc');
+    if (windDesc) windDesc.textContent = '';   // don't leave the previous report's wind on screen
     if (windDesc && parsed.wind) {
       const wd = parsed.wind;
       // Space the direction away from the speed, e.g. "33011KT" → "330 11KT"
