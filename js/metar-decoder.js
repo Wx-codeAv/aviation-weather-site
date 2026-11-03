@@ -1,5 +1,5 @@
 /* ============================================================
-   CrosswindWX — metar-decoder.js
+   CrosswindWx — metar-decoder.js
    METAR parser, renderer, and wind/cloud SVG visualizer.
    Plain HTML/CSS/JS — no frameworks, no build step.
    ============================================================ */

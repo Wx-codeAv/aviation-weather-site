@@ -1,4 +1,4 @@
-# CrosswindWX
+# CrosswindWx
 
 An aviation weather site that translates the dense, cryptic weather products pilots are required to interpret into clear, visual explanations. Built by a CFI-track student and meteorology tutor for the people who sit across the table during ACS oral exams and freeze when asked what a TAF actually says.
 
@@ -15,7 +15,7 @@ This site has two goals:
 
 Most pilots — including ones already certificated — struggle with the weather portions of the ACS. The official products (METARs, TAFs, prog charts, AIRMETs, SIGMETs, area forecasts, icing/turbulence/PIREP data) are not the problem. They're free, accessible, and authoritative. The problem is that they were designed in the 1970s for teletype machines and have never been re-translated for visual learners.
 
-CrosswindWX does that translation, and tries to make the underlying meteorology genuinely interesting along the way.
+CrosswindWx does that translation, and tries to make the underlying meteorology genuinely interesting along the way.
 
 ## Who's building this
 

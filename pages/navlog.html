@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nav Log Calculator — CrosswindWX</title>
+  <title>Nav Log Calculator · CrosswindWx</title>
   <meta name="description" content="Interactive VFR nav log calculator. Enter waypoints, winds aloft, and TAS — the tool computes WCA, true/magnetic/compass headings, ground speed, ETE, and fuel burn per leg. Shows the math so student pilots learn, not just get answers.">
   <script>
     // Apply saved/system theme before paint so there is no light-mode flash.
@@ -444,7 +444,7 @@
   <!-- ══ Header ══ -->
   <header class="site-header">
     <div class="container">
-      <a href="../index.html" class="brand">Crosswind<span class="brand-mark">WX</span></a>
+      <a href="../index.html" class="brand">Crosswind<span class="brand-mark">Wx</span></a>
       <div class="header-actions">
         <nav class="site-nav" id="primary-nav">
           <ul class="nav-links">
@@ -1291,7 +1291,7 @@
   <!-- ══ Footer ══ -->
   <footer>
     <div class="container">
-      <span>© 2026 Samuel McDowell · CrosswindWX</span>
+      <span>© 2026 Samuel McDowell · <span class="brand-name">CrosswindWx</span></span>
       <span>Educational use only · Not for navigation or flight planning · Always consult official FAA/NWS sources</span>
     </div>
   </footer>
@@ -1331,7 +1331,7 @@
 <script src="../js/poh-interp.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════
-   NAV LOG CALCULATOR — CrosswindWX
+   NAV LOG CALCULATOR — CrosswindWx
    Math references: FAA-H-8083-25C Chapter 16
    ══════════════════════════════════════════════════════ */
 
@@ -2738,7 +2738,7 @@ function waParsePaste() {
 
   try { _waParsePasteInner(ta, pStatus, applyBtn, callout, preview); }
   catch (err) {
-    console.error('[CrosswindWX] waParsePaste threw:', err);
+    console.error('[CrosswindWx] waParsePaste threw:', err);
     if (pStatus) { pStatus.textContent = '⚠ Parse error — see console'; pStatus.style.color = 'var(--rust)'; }
     if (callout) {
       callout.className = 'nl-poh-callout warn';
@@ -2766,7 +2766,7 @@ function _waParsePasteInner(ta, pStatus, applyBtn, callout, preview) {
 
   if (hasFDHeader) {
     const diag = waDiagnoseParse(raw);
-    console.log('[CrosswindWX] AWC FD parse diagnostic:', diag);
+    console.log('[CrosswindWx] AWC FD parse diagnostic:', diag);
     if (diag.stationCount === 0) {
       pStatus.textContent = '⚠ FT header found but no station rows';
       pStatus.style.color = 'var(--rust)';
@@ -2899,15 +2899,15 @@ async function waFetch() {
     // Detect unexpected JSON/HTML response (means API format changed)
     const trimmed = text.trimStart();
     if (trimmed.startsWith('{') || trimmed.startsWith('[') || trimmed.startsWith('<')) {
-      console.error('[CrosswindWX] AWC API returned unexpected format. First 300 chars:', text.slice(0, 300));
+      console.error('[CrosswindWx] AWC API returned unexpected format. First 300 chars:', text.slice(0, 300));
       throw new Error(`AWC API returned unexpected format — first chars: "${text.slice(0, 60)}". Try the manual paste option below.`);
     }
 
-    console.log('[CrosswindWX] Winds aloft raw response:\n', text.slice(0, 800));
+    console.log('[CrosswindWx] Winds aloft raw response:\n', text.slice(0, 800));
     _windAloftData = waParseFBText(text);
 
     if (!_windAloftData || Object.keys(_windAloftData.stations).length === 0) {
-      console.error('[CrosswindWX] Parse failed. Response preview:\n', text.slice(0, 500));
+      console.error('[CrosswindWx] Parse failed. Response preview:\n', text.slice(0, 500));
       throw new Error('No station data parsed — the API format may have changed. Check the browser console for the raw text, or use the manual paste option below.');
     }
 

@@ -1,6 +1,6 @@
 # ACS Weather Tasks — Private, Instrument, Commercial
 
-This is the official ACS text for the Weather Information task across all three ratings. CrosswindWX Learn pages should cite the relevant code(s) on every page, and ideally all three when content applies broadly (which is most of the time).
+This is the official ACS text for the Weather Information task across all three ratings. CrosswindWx Learn pages should cite the relevant code(s) on every page, and ideally all three when content applies broadly (which is most of the time).
 
 ## At a glance
 

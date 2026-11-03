@@ -1,5 +1,5 @@
 /* ============================================
-   CrosswindWX — main stylesheet
+   CrosswindWx — main stylesheet
    Aesthetic: sectional aeronautical chart
    Cream background, navy ink, sage green, aviation red.
    ============================================ */
@@ -286,6 +286,8 @@ p { text-wrap: pretty; }   /* fewer orphans in prose */
   font-size: 0.8em;
   letter-spacing: 0;
 }
+/* Keeps the "Wx" casing inside labels styled with text-transform: uppercase */
+.brand-name { text-transform: none; }
 
 /* Right-side header cluster: nav, theme toggle, mobile menu button */
 .header-actions {

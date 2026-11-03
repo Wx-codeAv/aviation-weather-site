@@ -1,5 +1,5 @@
 /* ============================================================
-   CrosswindWX — taf-decoder.js
+   CrosswindWx — taf-decoder.js
    TAF parser and timeline renderer.
    Relies on metar-decoder.js being loaded first for:
    decodeWeather(), parseFraction(), deriveFlightCategory(),

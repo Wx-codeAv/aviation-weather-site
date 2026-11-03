@@ -1,4 +1,4 @@
-/* POH Interpolation Engine — CrosswindWX
+/* POH Interpolation Engine — CrosswindWx
    Pure functions, no DOM access. Each function takes a poh data object as its
    first argument so the same engine works with any aircraft profile.
    Loaded as a plain global script; all functions exposed via window.pohInterp. */

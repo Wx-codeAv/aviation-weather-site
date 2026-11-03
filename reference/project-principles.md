@@ -1,4 +1,4 @@
-# CrosswindWX Project Principles
+# CrosswindWx Project Principles
 
 This document captures the design philosophy and prioritization rules for the project. Future sessions should read this before proposing new features or pages.
 
@@ -48,6 +48,17 @@ If unsure, leave a `[VERIFY]` marker in the file for the project author to check
 - All defined as CSS variables in css/main.css
 - Inline SVG diagrams for visual content
 - No frameworks, no build step, plain HTML/CSS/JS
+
+## Branding standard
+
+The site name is **CrosswindWx**: capital W, lowercase x, the aviation abbreviation for weather. It shares this standard with RapidTrackWx and AirspaceWx.
+
+- Homepage tab title: `CrosswindWx · Aviation weather, decoded`
+- Every other page: `[Page name] · CrosswindWx`
+- Use a middle dot with one space on each side, never a dash.
+- The name is written into each page's `<title>` because the site has no build step or templates. A title set by JavaScript would be invisible to link previews and crawlers that don't run scripts.
+- Inside any label styled `text-transform: uppercase`, wrap the name in `<span class="brand-name">` so it doesn't display as "CROSSWINDWX".
+- Lowercase `crosswindwx` in the domain, the contact email, and localStorage keys stays as it is. Renaming a storage key would wipe saved user data.
 
 ## Diagram standards
 

@@ -1,4 +1,4 @@
-// CrosswindWX — main.js
+// CrosswindWx — main.js
 // Right now this is mostly a placeholder. As we build out the Decoder
 // and Nav Log tools, the heavy lifting will live here (or in modules
 // imported from here).
