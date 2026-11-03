@@ -10,6 +10,7 @@ Static HTML, CSS, and JS on GitHub Pages. No build step. Site standards live in 
 4. **Verify before merging.** Run the tests and check the change in a browser. If a check could not be run, say so.
 5. **No em dashes in new user-facing text.**
 6. **Fail loudly, not silently.** When data is missing or can't be parsed, show that plainly. Never fall back to a value that looks valid. For example, an unknown flight category must not display as VFR.
+7. **Only stop processes you started, by their PID.** Never kill processes by name (no `pkill python`, `taskkill /IM python.exe`, or similar).
 
 ## Tests
 
