@@ -57,6 +57,11 @@ for (const [t, v, text] of [
 }
 
 // ── Wind source
+test('the page offers tower wind as magnetic and cites the current ATC order', () => {
+  const page = fs.readFileSync(path.join(ROOT, 'pages/crosswind.html'), 'utf8');
+  assert.match(page, /voice broadcast, or tower \(magnetic north\)/);
+  assert.match(page, /JO 7110\.65BB para 1-2-1/);
+});
 test('true wind is converted', () => {
   assert.equal(site.windToMagnetic(200, 'true', 15), 185);
 });

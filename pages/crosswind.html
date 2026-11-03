@@ -425,7 +425,7 @@
             <fieldset id="cw-source-choice" class="cw-source-choice" style="display:none">
               <legend class="cw-label">Where is this wind from?</legend>
               <label class="cw-source-option"><input type="radio" name="cw-source" value="true" onchange="compute()"> METAR or TAF (true north)</label>
-              <label class="cw-source-option"><input type="radio" name="cw-source" value="magnetic" onchange="compute()"> ATIS, ASOS, or AWOS voice broadcast (magnetic north)</label>
+              <label class="cw-source-option"><input type="radio" name="cw-source" value="magnetic" onchange="compute()"> ATIS, ASOS, or AWOS voice broadcast, or tower (magnetic north)</label>
             </fieldset>
 
             <div class="cw-field">
@@ -550,7 +550,7 @@
             </tbody>
           </table>
           <p style="margin-top:0.8rem;">The PANC wind is blowing straight down the runway, yet the unconverted answer shows 6.5 kt of crosswind. The error doesn't always run high, either. With west variation it can hide crosswind: KDAB 07L with a true wind of 100° at 15 kt reads 7.5 kt, and the actual value is 8.6 kt.</p>
-          <p>Enter a US airport ID and the calculator does this for you and shows each step. Otherwise, convert a METAR wind before you enter it: subtract east variation, add west ("east is least, west is best"). ATIS and ASOS or AWOS voice broadcasts already give wind in magnetic, so don't convert those. A painted runway number is also rounded, so use the runway's actual magnetic heading if you have it.</p>
+          <p>Enter a US airport ID and the calculator does this for you and shows each step. Otherwise, convert a METAR wind before you enter it: subtract east variation, add west ("east is least, west is best"). ATIS, ASOS or AWOS voice broadcasts, and tower controllers already give wind in magnetic, so don't convert those. A painted runway number is also rounded, so use the runway's actual magnetic heading if you have it.</p>
           <p style="font-size:0.85rem;color:var(--ink-soft);font-style:italic;">Actual values compare the true wind with each runway's true alignment in FAA airport data effective October 29, 2026.</p>
           <p>On the checkride, examiners want to know you understand this distinction exists — not that you can calculate variation from memory.</p>
         </div>
@@ -585,7 +585,7 @@
       </div>
 
       <div class="acs-note">
-        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-29 (METAR wind, true), AIM 7-1-10 (voice broadcasts, magnetic), and FAA-H-8083-28 §3.4.2.2. Variation from the NOAA World Magnetic Model (WMM2025). Runway alignments from FAA NASR airport data.
+        <strong>Source note:</strong> Demonstrated crosswind values from respective Pilot's Operating Handbooks. ACS reference: FAA-S-ACS-6C (Private Pilot ACS, November 2023, effective May 31, 2024), Task PA.I.F. True/magnetic wind distinction per AIM 7-1-29 (METAR wind, true), AIM 7-1-10 (voice broadcasts, magnetic), FAA Order JO 7110.65BB para 1-2-1 (controller-issued wind, magnetic), and FAA-H-8083-28 §3.4.2.2. Variation from the NOAA World Magnetic Model (WMM2025). Runway alignments from FAA NASR airport data.
       </div>
     </div>
   </section>
@@ -664,7 +664,7 @@ function compute() {
     const source = selectedSource();
     if (!source) {
       setCaption('Choose where this wind is from.');
-      return showErr('Choose where this wind is from. METAR and TAF wind is true, and voice broadcast wind is magnetic, so the conversion depends on it.');
+      return showErr('Choose where this wind is from. METAR and TAF wind is true, and voice broadcast or tower wind is magnetic, so the conversion depends on it.');
     }
     return computeAirport(airport, dir, source, speed, gusts);
   }

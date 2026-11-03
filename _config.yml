@@ -7,3 +7,4 @@ exclude:
   - README.md
   - tests/
   - scripts/
+  - reference/

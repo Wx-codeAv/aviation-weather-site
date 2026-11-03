@@ -23,4 +23,4 @@ Run `node --test` from the repo root. It needs Node and no install. Tests are in
 ## Keep in mind
 
 - This repo is public, and the files in it are served on the live site. Don't commit or push anything that shouldn't be public.
-- Excluded from the live site by `_config.yml`, but still public on GitHub: this file, `README.md`, `ROADMAP.md`, and `tests/`.
+- Excluded from the live site by `_config.yml`, but still public on GitHub: this file, `README.md`, `ROADMAP.md`, `reference/`, `scripts/`, and `tests/`.

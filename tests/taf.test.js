@@ -270,15 +270,14 @@ test('all 92 real TAFs parse, and every group gets a placed time and a category'
     const parsed = site.parseTaf(raw);
     assert.ok(parsed.station, raw);
     assert.ok(site.tafTimeBase(parsed), `no time base: ${raw}`);
-    // The only real exception: EGPF's two PROB30 groups forecast VV///, which has no height.
-    const noCategory = [...parsed.groups].filter((g) => !g.flightCategory);
+    assert.equal([...parsed.groups].filter((g) => !g.flightCategory).length, 0, raw);
+    // The only real warnings: EGPF's two PROB30 groups forecast VV///, which has no height.
+    // Their 0300 m visibility still makes them LIFR.
     if (parsed.station === 'EGPF') {
-      assert.deepEqual(noCategory.map((g) => g.type), ['PROB30', 'PROB30']);
       assert.equal(parsed.warnings.length, 2);
-      assert.ok(parsed.warnings.every((w) => /already LIFR/.test(w)), 'visibility alone makes them LIFR');
+      assert.ok(parsed.warnings.every((w) => /LIFR is shown because the visibility/.test(w)));
     } else {
       assert.deepEqual([...parsed.warnings], [], raw);
-      assert.equal(noCategory.length, 0, raw);
     }
   }
 });

@@ -731,15 +731,20 @@ function categoryFromValues(ceiling, visSM) {
   return 'VFR';
 }
 
-// What the readable parts alone say, for warnings. Unknowns can only make this worse.
-function knownCategoryFloor(parsed) {
-  const ceiling = getCeiling(parsed.sky);
-  const visSM = visibilityInSM(parsed.visibility);
+// What the readable parts alone say. Unknowns can only make this worse, never better.
+function knownCategoryFloor(sky, visibility) {
+  const ceiling = getCeiling(sky);
+  const visSM = visibilityInSM(visibility);
   return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM === null ? Infinity : visSM);
 }
 
+// Which readable element alone puts this at LIFR.
+function lifrElement(sky, visibility) {
+  const ceiling = getCeiling(sky);
+  return ceiling !== null && ceiling < 500 ? 'ceiling' : 'visibility';
+}
+
 function metarWarnings(parsed) {
-  if (parsed.flightCategory) return [];
   const warnings = [];
   const cavok = !!(parsed.visibility && parsed.visibility.cavok);
   if (visibilityInSM(parsed.visibility) === null) warnings.push('Visibility is missing or not reported.');
@@ -747,8 +752,13 @@ function metarWarnings(parsed) {
   const layers = parsed.sky.filter(skyLayerUnknown).map(l => l.raw);
   if (layers.length) warnings.push(`Cloud amount or height isn't reported in ${layers.join(' ')}, so the ceiling is unknown.`);
   if (parsed.unreadable.length) warnings.push(`Couldn't read ${parsed.unreadable.join(' ')}, where visibility, weather, or sky belong.`);
+  if (!warnings.length) return warnings;
+  if (parsed.flightCategory === 'LIFR') {
+    warnings.push(`LIFR is shown because the reported ${lifrElement(parsed.sky, parsed.visibility)} alone sets it. Nothing missing here could make it better.`);
+    return warnings;
+  }
   warnings.push('No flight category is shown because it can\'t be confirmed from this report.');
-  const floor = knownCategoryFloor(parsed);
+  const floor = knownCategoryFloor(parsed.sky, parsed.visibility);
   if (floor !== 'VFR') warnings.push(`What was reported is already ${floor}. The missing data could only make that worse.`);
   return warnings;
 }
@@ -760,15 +770,16 @@ function metersToSM(meters) {
 }
 
 // Null means the report doesn't say enough. Never display that as VFR.
+// LIFR is the worst category, so a known ceiling below 500 ft or visibility below 1 SM
+// settles it even if the other element is missing. No other category can be certain.
 function deriveFlightCategory(parsed) {
   const cavok = !!(parsed.visibility && parsed.visibility.cavok);
-  const visSM = visibilityInSM(parsed.visibility);
-  if (visSM === null) return null;
-  if (!parsed.sky.length && !cavok) return null;
-  if (parsed.sky.some(skyLayerUnknown)) return null;
-  if (parsed.unreadable && parsed.unreadable.length) return null;
-  const ceiling = getCeiling(parsed.sky);
-  return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM);
+  const complete = visibilityInSM(parsed.visibility) !== null
+    && (parsed.sky.length > 0 || cavok)
+    && !parsed.sky.some(skyLayerUnknown)
+    && !(parsed.unreadable && parsed.unreadable.length);
+  const floor = knownCategoryFloor(parsed.sky, parsed.visibility);
+  return complete || floor === 'LIFR' ? floor : null;
 }
 
 // ── Wind SVG ─────────────────────────────────────────────────
@@ -988,7 +999,7 @@ function buildCategoryScale(parsed) {
   }
 
   const warnings = (parsed.warnings || []).map(w => `<p class="decoder-error">${escHtml(w)}</p>`).join('');
-  if (!parsed.flightCategory) {
+  if (warnings) {
     return warnings + row('Ceiling', ceilIdx, ceilRanges, ceilTxt) + row('Visibility', visIdx, visRanges, visTxt);
   }
 

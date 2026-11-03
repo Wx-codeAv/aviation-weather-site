@@ -28,7 +28,7 @@ const NO_BADGE = [
   ['BKN040 with //////CB beside it (showed VFR)', '23015KT 10SM BKN040 //////CB 24/19 A2987', /\/\/\/\/\/\/CB/],
   ['VV/// with no height', '23015KT 10SM VV/// 24/19 A2987', /VV\/\/\//],
   ['garbled visibility (showed VFR)', '23015KT 1XSM CLR 24/19 A2987', /1XSM/],
-  ['garbled weather (showed VFR)', '23015KT 10SM ZZZZ OVC004 24/19 A2987', /ZZZZ/],
+  ['garbled weather, nothing certain (showed VFR)', '23015KT 10SM ZZZZ OVC010 24/19 A2987', /ZZZZ/],
   ['garbled sky layer as the only layer (showed VFR)', '23015KT 10SM BKN04 24/19 A2987', /BKN04/],
   ['garbled sky layer under a good one (showed VFR)', '23015KT 10SM SCT040 BKN04 24/19 A2987', /BKN04/],
   ['NIL report (showed VFR)', '', /visibility/i],
@@ -72,15 +72,65 @@ for (const [name, body, category] of CATEGORY) {
 test('a ceiling after a garbled group still counts, and still warns (showed VFR)', () => {
   const parsed = site.parseMetar(`${H} 23015KT 10SM BKN040 XXX OVC004 24/19 A2987`);
   assert.deepEqual([...parsed.sky].map((l) => l.raw), ['BKN040', 'OVC004']);
-  assert.equal(parsed.flightCategory, null, 'XXX could be a garbled layer');
+  assert.equal(parsed.flightCategory, 'LIFR', 'nothing XXX could be makes this better');
   assert.ok(parsed.warnings.some((w) => /XXX/.test(w)));
-  assert.ok(parsed.warnings.some((w) => /LIFR/.test(w)), 'must still say the reported values are LIFR');
 });
 
-test('a warning says when reported values alone are already below VFR', () => {
-  const parsed = site.parseMetar(`${H} 23015KT ////SM OVC004 24/19 A2987`);
+// ── LIFR is the worst category, so one known element can settle it. Nothing else can.
+const LIFR_CERTAIN = [
+  ['ceiling below 500, visibility slashed', '23015KT ////SM OVC004 24/19 A2987', /visibility/i, /ceiling alone/],
+  ['ceiling below 500, visibility absent', '23015KT BKN003 24/19 A2987', /visibility/i, /ceiling alone/],
+  ['VV below 500, visibility absent', '23015KT VV002 24/19 A2987', /visibility/i, /ceiling alone/],
+  ['visibility below 1 SM, sky absent', '23015KT 1/2SM FG 24/19 A2987', /sky/i, /visibility alone/],
+  ['visibility below 1 SM, sky slashed', '23015KT 1/2SM FG BKN/// 24/19 A2987', /BKN\/\/\//, /visibility alone/],
+  ['visibility below 1 SM, VV/// has no height', '23015KT 1/4SM FG VV/// 24/19 A2987', /VV\/\/\//, /visibility alone/],
+  ['metric visibility below 1 SM, sky absent', '23015KT 0800 FG 10/08 Q1015', /sky/i, /visibility alone/],
+  ['ceiling below 500 with an unknown layer beside it', '23015KT 10SM OVC004 //////CB 24/19 A2987', /\/\/\/\/\/\/CB/, /ceiling alone/],
+];
+
+for (const [name, body, missing, because] of LIFR_CERTAIN) {
+  test(`LIFR is certain: ${name}`, () => {
+    const parsed = site.parseMetar(`${H} ${body}`);
+    assert.equal(parsed.flightCategory, 'LIFR');
+    assert.ok(parsed.warnings.some((w) => missing.test(w)), `must keep the warning: ${[...parsed.warnings].join(' | ')}`);
+    assert.ok(parsed.warnings.some((w) => because.test(w)), `must say why: ${[...parsed.warnings].join(' | ')}`);
+    assert.ok(!parsed.warnings.some((w) => /No flight category/.test(w)), 'must not contradict the badge');
+  });
+}
+
+const NOT_CERTAIN = [
+  ['ceiling exactly 500, visibility missing', '23015KT ////SM BKN005 24/19 A2987', 'IFR'],
+  ['ceiling 900, visibility missing', '23015KT ////SM OVC009 24/19 A2987', 'IFR'],
+  ['ceiling 2,000, visibility missing', '23015KT ////SM OVC020 24/19 A2987', 'MVFR'],
+  ['visibility exactly 1 SM, sky missing', '23015KT 1SM BR 24/19 A2987', 'IFR'],
+  ['1600 m is 1 SM, sky missing', '23015KT 1600 BR 10/08 Q1015', 'IFR'],
+  ['visibility 2 SM, sky missing', '23015KT 2SM BR 24/19 A2987', 'IFR'],
+  ['visibility 4 SM, sky missing', '23015KT 4SM BR 24/19 A2987', 'MVFR'],
+];
+
+for (const [name, body, floor] of NOT_CERTAIN) {
+  test(`no badge because only LIFR can be certain: ${name}`, () => {
+    const parsed = site.parseMetar(`${H} ${body}`);
+    assert.equal(parsed.flightCategory, null);
+    assert.ok(parsed.warnings.some((w) => /No flight category/.test(w)));
+    assert.ok(parsed.warnings.some((w) => w.includes(`already ${floor}`)), [...parsed.warnings].join(' | '));
+  });
+}
+
+test('an amount-unknown layer below 500 ft is not a certain ceiling', () => {
+  const parsed = site.parseMetar(`${H} 23015KT ////SM ///004 24/19 A2987`);
   assert.equal(parsed.flightCategory, null);
-  assert.ok(parsed.warnings.some((w) => /already LIFR/.test(w)));
+});
+
+test('a complete LIFR report has no warning', () => {
+  assert.equal(site.parseMetar(`${H} 23015KT 1/4SM FG OVC002 24/19 A2987`).warnings.length, 0);
+});
+
+test('the scale shows the warning, not a "more restrictive" note, when LIFR comes from one element', () => {
+  const html = site.buildCategoryScale(site.parseMetar(`${H} 23015KT ////SM OVC004 24/19 A2987`));
+  assert.match(html, /ceiling alone/);
+  assert.doesNotMatch(html, /more restrictive/);
+  assert.match(html, /Not reported/);
 });
 
 test('a warning does not imply VFR when reported values look fine', () => {
@@ -157,6 +207,34 @@ for (const [name, group, token] of [
     assert.ok(parsed.warnings.some((w) => w.includes(token)), [...parsed.warnings].join(' | '));
   });
 }
+
+// Same certainty rule in a TAF, in both directions
+for (const [name, taf] of [
+  ['visibility below 1 SM, VV/// has no height', 'TAF KXXX 011130Z 0112/0212 18010KT 1/2SM FG VV///'],
+  ['visibility below 1 SM, FM states no sky', 'TAF KXXX 011130Z 0112/0212 18010KT 1/2SM FG'],
+  ['ceiling below 500, base states no visibility', 'TAF KXXX 011130Z 0112/0212 18010KT OVC003'],
+]) {
+  test(`TAF LIFR is certain: ${name}`, () => {
+    const parsed = site.parseTaf(taf);
+    assert.equal(parsed.groups[0].flightCategory, 'LIFR');
+    assert.ok(parsed.warnings.some((w) => /LIFR is shown/.test(w)), [...parsed.warnings].join(' | '));
+    assert.ok(!parsed.warnings.some((w) => /No flight category/.test(w)));
+  });
+}
+
+test('TAF garbled group under a low ceiling keeps LIFR and the warning', () => {
+  const parsed = site.parseTaf('TAF KXXX 011130Z 0112/0212 18010KT P6SM OVC003 TEMPO 0114/0116 1XSM');
+  assert.equal(parsed.groups[1].flightCategory, 'LIFR');
+  assert.ok(parsed.warnings.some((w) => w.includes('1XSM') && /LIFR is shown/.test(w)));
+});
+
+test('TAF with only a non-LIFR element shows no badge', () => {
+  for (const taf of ['TAF KXXX 011130Z 0112/0212 18010KT OVC005', 'TAF KXXX 011130Z 0112/0212 18010KT 1SM BR']) {
+    const parsed = site.parseTaf(taf);
+    assert.equal(parsed.groups[0].flightCategory, null, taf);
+    assert.ok(parsed.warnings.some((w) => /No flight category/.test(w)), taf);
+  }
+});
 
 test('TAF VV/// follows the same no-badge rule', () => {
   const parsed = site.parseTaf('TAF KXXX 011130Z 0112/0212 18010KT 6000 VV///');

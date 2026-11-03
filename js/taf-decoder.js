@@ -171,12 +171,15 @@ function mergeTafGroup(state, group) {
   };
 }
 
-// Null means the forecast doesn't say enough. Never report that as VFR.
+function tafStateIncomplete(state) {
+  return visibilityInSM(state.visibility) === null || !state.skyKnown || state.sky.some(skyLayerUnknown);
+}
+
+// Null means the forecast doesn't say enough. Never report that as VFR. As with a METAR,
+// a known ceiling below 500 ft or visibility below 1 SM settles LIFR on its own.
 function tafCategory(state) {
-  const visSM = visibilityInSM(state.visibility);
-  if (visSM === null || !state.skyKnown || state.sky.some(skyLayerUnknown)) return null;
-  const ceiling = getCeiling(state.sky);
-  return categoryFromValues(ceiling === null ? Infinity : ceiling, visSM);
+  const floor = knownCategoryFloor(state.sky, state.visibility);
+  return !tafStateIncomplete(state) || floor === 'LIFR' ? floor : null;
 }
 
 function withCategory(state) {
@@ -224,10 +227,21 @@ function tafStateAt(parsed, time) {
 
 // What the readable parts alone say. Unknowns can only make this worse.
 function floorNote(state) {
-  const ceiling = getCeiling(state.sky);
-  const visSM = visibilityInSM(state.visibility);
-  const floor = categoryFromValues(ceiling === null ? Infinity : ceiling, visSM === null ? Infinity : visSM);
+  const floor = knownCategoryFloor(state.sky, state.visibility);
+  if (floor === 'LIFR') return ` LIFR is shown because the ${lifrElement(state.sky, state.visibility)} it does state alone sets it.`;
   return floor === 'VFR' ? '' : ` What it does state is already ${floor}.`;
+}
+
+// An unreadable token could be anything, so only a certain LIFR survives it.
+function categoryWithUnreadable(group, state) {
+  if (!group.unreadable) return tafCategory(state);
+  return knownCategoryFloor(state.sky, state.visibility) === 'LIFR' ? 'LIFR' : null;
+}
+
+function unknownEnding(group, state) {
+  return categoryWithUnreadable(group, state) === 'LIFR'
+    ? floorNote(state)
+    : ` No flight category is shown for it.${floorNote(state)}`;
 }
 
 function resolveTafGroups(parsed) {
@@ -240,11 +254,12 @@ function resolveTafGroups(parsed) {
 
   for (const g of parsed.groups) {
     if (g.type === 'BASE' || g.type === 'FM') {
-      g.flightCategory = g.unreadable ? null : tafCategory(tafStateFromGroup(g));
+      const own = tafStateFromGroup(g);
+      g.flightCategory = categoryWithUnreadable(g, own);
       if (g.unreadable) {
-        parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group, so no flight category is shown for it.`);
-      } else if (!g.flightCategory) {
-        parsed.warnings.push(`The ${name(g)} group doesn't give a readable visibility and sky, so no flight category is shown for it.`);
+        parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group.${unknownEnding(g, own)}`);
+      } else if (tafStateIncomplete(own)) {
+        parsed.warnings.push(`The ${name(g)} group doesn't give a readable visibility and sky.${unknownEnding(g, own)}`);
       }
       if (base && g.type === 'FM') {
         const s = base.toHours(g.validFrom);
@@ -263,11 +278,11 @@ function resolveTafGroups(parsed) {
       continue;
     }
     const merged = mergeTafGroup(before.prevailing, g);
-    g.flightCategory = g.unreadable ? null : tafCategory(merged);
+    g.flightCategory = categoryWithUnreadable(g, merged);
     if (g.unreadable) {
-      parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group at ${formatTafTime(g.validFrom)}, so no flight category is shown for it.`);
-    } else if (!g.flightCategory) {
-      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't give a readable visibility and sky, so no flight category is shown for it.${floorNote(merged)}`);
+      parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group at ${formatTafTime(g.validFrom)}.${unknownEnding(g, merged)}`);
+    } else if (tafStateIncomplete(merged)) {
+      parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't give a readable visibility and sky.${unknownEnding(g, merged)}`);
     }
     const prior = before.prevailing;
     const cavok = !!(g.visibility && g.visibility.cavok);
