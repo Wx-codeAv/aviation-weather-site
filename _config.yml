@@ -1,0 +1,8 @@
+# GitHub Pages builds this site with Jekyll. These files stay in the repo but aren't published.
+# The repo is public, so anything listed here can still be read on GitHub.
+exclude:
+  - PROJECT_PLAN.md
+  - ROADMAP.md
+  - CLAUDE.md
+  - README.md
+  - tests/
