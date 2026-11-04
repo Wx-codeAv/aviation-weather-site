@@ -109,6 +109,20 @@ function checkCeiling(parsed, limit, out) {
   }
 }
 
+// Limits are compared with the exact distance, so 6000 m is 3.7 SM here. Flight category
+// keeps the reportable table (metersToSM), where 6000 m is 4 SM.
+const METERS_PER_STATUTE_MILE = 1609.344;
+
+// One decimal, or more only if rounding would make the value look equal to the limit.
+// Otherwise "4800 m (3.0 SM) is below your 3 SM minimum" would read as a mistake.
+function formatExactSM(sm, limit) {
+  for (let decimals = 1; decimals < 5; decimals++) {
+    const text = sm.toFixed(decimals);
+    if (Number(text) !== limit) return text;
+  }
+  return sm.toFixed(5);
+}
+
 function checkVisibility(parsed, limit, out) {
   const vis = parsed.visibility;
   const sm = visibilityInSM(vis);
@@ -133,9 +147,10 @@ function checkVisibility(parsed, limit, out) {
     }
     return;
   }
-  const said = vis.unit === 'm' ? `${vis.raw} m (${formatNumber(roundTenth(sm))} SM)` : vis.raw.replace(/SM$/, ' SM');
-  if (sm < limit) out.push({ status: 'exceeds', text: `Visibility ${said} is below ${min}.` });
-  else if (sm === limit) out.push({ status: 'at', text: `Visibility ${said} is at ${min}.` });
+  const compared = vis.unit === 'm' ? vis.value / METERS_PER_STATUTE_MILE : sm;
+  const said = vis.unit === 'm' ? `${vis.raw} m (${formatExactSM(compared, limit)} SM)` : vis.raw.replace(/SM$/, ' SM');
+  if (compared < limit) out.push({ status: 'exceeds', text: `Visibility ${said} is below ${min}.` });
+  else if (compared === limit) out.push({ status: 'at', text: `Visibility ${said} is at ${min}.` });
   else out.push({ status: 'within', text: `Visibility ${said} is above ${min}.` });
 }
 
@@ -161,9 +176,9 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
   }
 
   if (w.dir === 'VRB') {
-    out.push({ status: 'info', text: 'Variable wind has no fixed direction, so crosswind for a runway can\'t be calculated. Any of it could be crosswind, so total wind is compared with your crosswind limit.' });
-    out.push(compareToLimit('Total wind', w.speed, limits.crosswind));
-    if (w.gust) out.push(compareToLimit('Total gust wind', w.gust, limits.crosswind));
+    out.push({ status: 'info', explains: 'crosswind', text: 'Variable wind has no fixed direction, so crosswind for a runway can\'t be calculated. Any of it could be crosswind, so total wind is compared with your crosswind limit.' });
+    out.push({ ...compareToLimit('Total wind', w.speed, limits.crosswind), group: 'crosswind' });
+    if (w.gust) out.push({ ...compareToLimit('Total gust wind', w.gust, limits.crosswind), group: 'crosswind' });
     return;
   }
 
@@ -185,9 +200,9 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
       windToMagnetic(v.from, 'true', runway.variation),
       windToMagnetic(v.to, 'true', runway.variation),
       windM, hdg.heading);
-    out.push({ status: 'info', text: `Wind varies from ${formatHeading(v.from, 0)}° to ${formatHeading(v.to, 0)}° true. These crosswind numbers are the worst case across that range for RWY ${runway.id}.` });
-    out.push(compareToLimit('Worst-case crosswind', w.speed * factor, limits.crosswind));
-    if (w.gust) out.push(compareToLimit('Worst-case gust crosswind', w.gust * factor, limits.crosswind));
+    out.push({ status: 'info', explains: 'crosswind', text: `Wind varies from ${formatHeading(v.from, 0)}° to ${formatHeading(v.to, 0)}° true. These crosswind numbers are the worst case across that range for RWY ${runway.id}.` });
+    out.push({ ...compareToLimit('Worst-case crosswind', w.speed * factor, limits.crosswind), group: 'crosswind' });
+    if (w.gust) out.push({ ...compareToLimit('Worst-case gust crosswind', w.gust * factor, limits.crosswind), group: 'crosswind' });
     return;
   }
 
@@ -213,10 +228,19 @@ function checkMetarAgainstMinimums(parsed, limits, runway, noRunwayReason) {
 
 const MINIMUMS_STATUS_LABEL = { exceeds: 'Outside limit', at: 'At limit', within: 'Within', notChecked: 'Not checked', info: 'Note' };
 
-function buildMinimumsLines(lines) {
+// Most urgent first. A note that explains other lines goes directly above the first of them.
+function orderMinimumsLines(lines) {
   const order = { exceeds: 0, at: 1, notChecked: 2, within: 3, info: 4 };
-  return [...lines]
-    .sort((a, b) => order[a.status] - order[b.status])
+  const sorted = lines.filter(l => !l.explains).sort((a, b) => order[a.status] - order[b.status]);
+  for (const note of lines.filter(l => l.explains)) {
+    const first = sorted.findIndex(l => l.group === note.explains);
+    sorted.splice(first === -1 ? sorted.length : first, 0, note);
+  }
+  return sorted;
+}
+
+function buildMinimumsLines(lines) {
+  return orderMinimumsLines(lines)
     .map(l => `<li class="mins-line mins-line--${l.status}"><span class="mins-tag">${MINIMUMS_STATUS_LABEL[l.status]}</span><span>${escHtml(l.text)}</span></li>`)
     .join('');
 }

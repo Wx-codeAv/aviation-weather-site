@@ -150,6 +150,57 @@ test('a variable sector with no runway stays unchecked for crosswind', () => {
   noLine(lines, /Worst-case/);
 });
 
+// ── Notes that explain lines sit directly above them
+const ordered = (body, over, runway) =>
+  [...site.orderMinimumsLines(site.checkMetarAgainstMinimums(metar(body), limits(over), runway === undefined ? null : runway))]
+    .map((l) => l.text);
+const indexOf = (lines, pattern) => {
+  const i = lines.findIndex((t) => pattern.test(t));
+  assert.notEqual(i, -1, `no line matching ${pattern}: ${lines.join(' | ')}`);
+  return i;
+};
+
+test('the sector note is directly above the worst-case lines when all are within', () => {
+  const lines = ordered(`18015KT 150V210 ${GOOD}`, { wind: 35 }, sea16L);
+  assert.equal(indexOf(lines, /worst case across/) + 1, indexOf(lines, /^Worst-case crosswind /));
+});
+
+test('the sector note stays above the first worst-case line when that line is split by status', () => {
+  // Gust crosswind exceeds and sorts high. Steady crosswind is within and sorts low.
+  const lines = ordered(`18014G26KT 150V210 ${GOOD}`, { wind: 35, gusts: 35 }, sea16L);
+  const note = indexOf(lines, /worst case across/);
+  assert.equal(note + 1, indexOf(lines, /^Worst-case gust crosswind /));
+  assert.ok(note < indexOf(lines, /^Worst-case crosswind /));
+});
+
+test('the sector note rises with its lines when they exceed, above an unrelated within line', () => {
+  const lines = ordered(`27015KT 240V300 ${GOOD}`, { wind: 35 }, sea16L);
+  assert.ok(indexOf(lines, /worst case across/) < indexOf(lines, /^Sustained wind /));
+  assert.equal(indexOf(lines, /worst case across/), 0);
+});
+
+test('the VRB explanation is directly above the total wind line', () => {
+  const lines = ordered(`VRB06KT ${GOOD}`);
+  assert.equal(indexOf(lines, /no fixed direction/) + 1, indexOf(lines, /^Total wind /));
+});
+
+test('the VRB explanation stays above both lines when the gust alone exceeds', () => {
+  const lines = ordered(`VRB06G14KT ${GOOD}`, { gusts: 35 });
+  const note = indexOf(lines, /no fixed direction/);
+  assert.equal(note + 1, indexOf(lines, /^Total gust wind /));
+  assert.ok(note < indexOf(lines, /^Total wind /));
+});
+
+test('other lines still sort most urgent first', () => {
+  const lines = ordered('18015KT 150V210 3SM BKN030', { wind: 35 }, sea16L);
+  assert.ok(indexOf(lines, /^Visibility 3 SM is below/) < indexOf(lines, /^Ceiling 3,000 ft is above/));
+});
+
+test('the rendered list uses this order', () => {
+  const html = site.buildMinimumsLines(site.checkMetarAgainstMinimums(metar(`VRB06KT ${GOOD}`), limits(), null));
+  assert.ok(html.indexOf('no fixed direction') < html.indexOf('Total wind 6 kt'));
+});
+
 // ── VRB: no runway-relative crosswind
 test('VRB explains why and compares total wind with the crosswind limit', () => {
   const lines = check(`VRB06KT ${GOOD}`);
@@ -244,11 +295,45 @@ test('9999 and CAVOK meet about 6 SM and no more', () => {
   assert.equal(textOf(check('18005KT 9999 CLR', { visibility: 7 }), /^Visibility 9999/).status, 'notChecked');
   assert.equal(textOf(check('18005KT CAVOK', { visibility: 7 }), /^Visibility CAVOK/).status, 'notChecked');
 });
-for (const [meters, limit, status] of [[4800, 3, 'at'], [8000, 5, 'at'], [6000, 4, 'at'], [9000, 6, 'at'], [4800, 5, 'exceeds']]) {
-  test(`${meters} m against ${limit} SM is ${status}, using the reportable table`, () => {
-    assert.equal(textOf(check(`18005KT ${meters} CLR`, { visibility: limit }), /^Visibility /).status, status);
+// Metric visibility uses the exact distance here (meters / 1609.344). 1 SM is 1609.344 m, so
+// 3 SM is 4828.032 m, 4 SM is 6437.376 m, 5 SM is 8046.72 m, and 6 SM is 9656.064 m.
+for (const [meters, limit, status, text] of [
+  [6000, 4, 'exceeds', 'Visibility 6000 m (3.7 SM) is below your 4 SM minimum.'],
+  [6000, 3, 'within', 'Visibility 6000 m (3.7 SM) is above your 3 SM minimum.'],
+  [4800, 3, 'exceeds', 'Visibility 4800 m (2.98 SM) is below your 3 SM minimum.'],
+  [4828, 3, 'exceeds', 'Visibility 4828 m (2.99998 SM) is below your 3 SM minimum.'],
+  [4829, 3, 'within', 'Visibility 4829 m (3.001 SM) is above your 3 SM minimum.'],
+  [6437, 4, 'exceeds', 'Visibility 6437 m (3.9998 SM) is below your 4 SM minimum.'],
+  [6438, 4, 'within', 'Visibility 6438 m (4.0004 SM) is above your 4 SM minimum.'],
+  [8000, 5, 'exceeds', 'Visibility 8000 m (4.97 SM) is below your 5 SM minimum.'],
+  [8046, 5, 'exceeds', 'Visibility 8046 m (4.9996 SM) is below your 5 SM minimum.'],
+  [8047, 5, 'within', 'Visibility 8047 m (5.0002 SM) is above your 5 SM minimum.'],
+  [9000, 6, 'exceeds', 'Visibility 9000 m (5.6 SM) is below your 6 SM minimum.'],
+  [9656, 6, 'exceeds', 'Visibility 9656 m (5.99996 SM) is below your 6 SM minimum.'],
+  [9657, 6, 'within', 'Visibility 9657 m (6.001 SM) is above your 6 SM minimum.'],
+]) {
+  test(`${meters} m against ${limit} SM is ${status}, using the exact distance`, () => {
+    assert.deepEqual(textOf(check(`18005KT ${meters} CLR`, { visibility: limit }), /^Visibility /), { status, text });
   });
 }
+
+test('flight category keeps the reportable table while the limit check uses the exact distance', () => {
+  // 6000 m is 4 SM in the table, MVFR either way. 8000 m is 5 SM in the table, so MVFR, and
+  // 9000 m is 6 SM, so VFR. The limit check on the same report still reads 3.7 SM.
+  const six = metar('18005KT 6000 CLR');
+  assert.equal(six.flightCategory, 'MVFR');
+  assert.equal(site.metersToSM(6000), 4);
+  assert.equal(site.metersToSM(9000), 6);
+  assert.equal(site.metersToSM(4800), 3);
+  assert.equal(metar('18005KT 4800 CLR').flightCategory, 'MVFR', 'the table keeps 4800 m out of IFR');
+  assert.equal(metar('18005KT 1600 CLR').flightCategory, 'IFR', 'the table keeps 1600 m out of LIFR');
+  assert.equal(metar('18005KT 9000 CLR').flightCategory, 'VFR');
+  assert.equal(textOf(check('18005KT 6000 CLR', { visibility: 4 }), /^Visibility /).status, 'exceeds');
+});
+
+test('statute mile reports are unaffected by the metric conversion', () => {
+  assert.equal(textOf(check('18005KT 4SM CLR', { visibility: 4 }), /^Visibility /).text, 'Visibility 4 SM is at your 4 SM minimum.');
+});
 
 // ── Gust spread: optional and off by default
 test('gust spread is ignored when off, even with a saved value', () => {
