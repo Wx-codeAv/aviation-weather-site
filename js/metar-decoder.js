@@ -766,7 +766,9 @@ function metarWarnings(parsed) {
 // Reportable metric values use 1 SM = 1600 m, so 1600 m is 1 SM and 4800 m is 3 SM
 // (AFMAN 15-111 Table 8.1). An exact conversion would put both just under a threshold.
 function metersToSM(meters) {
-  return meters / 1600;
+  // The table's upper entries aren't a straight 1600: 6000 m is 4 SM and 9000 m is 6 SM.
+  const fromTable = { 6000: 4, 9000: 6 }[meters];
+  return fromTable !== undefined ? fromTable : meters / 1600;
 }
 
 // Null means the report doesn't say enough. Never display that as VFR.
@@ -1038,6 +1040,9 @@ function renderDecoder(parsed) {
   // "Why this category" scale
   const scaleEl = document.getElementById('cat-scale');
   if (scaleEl) scaleEl.innerHTML = buildCategoryScale(parsed);
+
+  // Comparison with the pilot's saved limits
+  if (typeof renderMinimumsCheck === 'function') renderMinimumsCheck(parsed);
 
   // Annotated raw METAR
   const rawEl = document.getElementById('decoded-raw');

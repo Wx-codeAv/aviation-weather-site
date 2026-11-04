@@ -1707,6 +1707,25 @@ footer .container {
   border: 1px solid var(--rule);
 }
 .cat-scale:empty { display: none; }
+
+/* Comparison with saved personal minimums. Status is in the tag text, not only its color. */
+.minimums-check { margin: 0 0 2rem; padding: 1.1rem 1.5rem 1rem; background: var(--surface); border: 1px solid var(--rule); }
+.minimums-check .decoder-section-label { margin-top: 0; }
+.mins-runway { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0 0 0.8rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink); }
+.mins-runway[hidden] { display: none; }
+.mins-select { padding: 0.4rem 0.55rem; font-family: var(--font-mono); font-size: 0.9rem; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); }
+.mins-lines { list-style: none; margin: 0; padding: 0; }
+.mins-line { display: grid; grid-template-columns: 7.2rem 1fr; gap: 0.7rem; padding: 0.45rem 0; border-top: 1px solid var(--rule); font-size: 0.92rem; color: var(--ink); }
+.mins-line > span { min-width: 0; }
+.mins-tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); padding-top: 0.15rem; }
+.mins-line--exceeds, .mins-line--exceeds .mins-tag { color: var(--rust); font-weight: 600; }
+.mins-line--at .mins-tag { color: var(--ink); font-weight: 600; }
+.mins-note, .mins-empty { margin: 0.7rem 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--ink-soft); }
+.mins-empty { font-size: 0.92rem; color: var(--ink); }
+@media (max-width: 480px) {
+  .minimums-check { padding: 0.9rem 1rem; }
+  .mins-line { grid-template-columns: 1fr; gap: 0.1rem; }
+}
 .cat-scale-row {
   display: grid;
   grid-template-columns: 84px 1fr 116px;

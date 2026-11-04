@@ -145,6 +145,9 @@
       <!-- Why this category: ceiling & visibility against the thresholds -->
       <div id="cat-scale" class="cat-scale"></div>
 
+      <!-- Comparison with the pilot's saved personal minimums -->
+      <div id="minimums-check" class="minimums-check" hidden></div>
+
       <div class="decoder-raw-wrap">
         <p class="decoder-raw-label">Raw METAR — hover any token for a tooltip</p>
         <div id="decoded-raw" class="decoder-raw-metar"></div>
@@ -234,6 +237,8 @@
 
   <script src="../js/metar-decoder.js"></script>
   <script src="../js/taf-decoder.js"></script>
+  <script src="../js/wind-math.js"></script>
+  <script src="../js/minimums-check.js"></script>
   <script>
     // Product tab switching (METAR ↔ TAF)
     document.querySelectorAll('.product-tab').forEach(tab => {

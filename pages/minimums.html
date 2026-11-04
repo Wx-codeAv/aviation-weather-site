@@ -80,6 +80,7 @@
     }
 
     /* ── Slider rows ── */
+    #gust-spread-row[hidden], #card-gust-spread-row[hidden] { display: none; }
     .min-row {
       display: grid;
       grid-template-columns: 195px 1fr 100px;
@@ -660,6 +661,26 @@
             <div class="min-value-display" id="gusts-display">20 kt</div>
           </div>
 
+          <div class="min-toggle-row">
+            <div>
+              <div class="min-label">Limit gust spread</div>
+              <div class="min-sublabel">Optional. Off unless you turn it on.<br>Gust speed minus steady wind speed</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="gust-spread-on">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="min-row" id="gust-spread-row" hidden>
+            <div>
+              <div class="min-label">Max gust spread</div>
+              <div class="min-sublabel">The decoder compares reported spread with this</div>
+            </div>
+            <input type="range" id="gust-spread" min="1" max="25" step="1" value="10">
+            <div class="min-value-display" id="gust-spread-display">10 kt</div>
+          </div>
+
           <!-- Gust spread advisory — populated by JS -->
           <div class="gust-advisory" id="gust-advisory"></div>
         </div>
@@ -761,6 +782,7 @@
               <div class="card-row"><span class="card-key">Crosswind</span><span class="card-val yellow" id="card-crosswind">10 kt</span></div>
               <div class="card-row"><span class="card-key">Sustained</span><span class="card-val yellow" id="card-wind">15 kt</span></div>
               <div class="card-row"><span class="card-key">Gusts</span><span class="card-val yellow" id="card-gusts">20 kt</span></div>
+              <div class="card-row" id="card-gust-spread-row" hidden><span class="card-key">Gust spread</span><span class="card-val yellow" id="card-gust-spread">10 kt</span></div>
             </div>
 
             <div class="card-sec">
@@ -884,6 +906,12 @@
         color:  () => 'yellow',
       },
       {
+        id: 'gust-spread',
+        cardId: 'card-gust-spread',
+        format: v => v + ' kt',
+        color:  () => 'yellow',
+      },
+      {
         id: 'convective',
         cardId: 'card-convective',
         format: v => v + ' NM',
@@ -939,6 +967,13 @@
       const cardEl = document.getElementById(cfg.cardId);
       cardEl.textContent = on ? 'Yes' : 'No';
       cardEl.className = 'card-val ' + (on ? 'green' : 'red');
+    }
+
+    /* The optional gust spread limit only appears, and only counts, when turned on */
+    function updateGustSpreadLimit() {
+      const on = document.getElementById('gust-spread-on').checked;
+      document.getElementById('gust-spread-row').hidden = !on;
+      document.getElementById('card-gust-spread-row').hidden = !on;
     }
 
     /* Recompute and display the gust spread advisory */
@@ -1010,6 +1045,7 @@
       const state = {};
       sliders.forEach(cfg => { state[cfg.id] = document.getElementById(cfg.id).value; });
       toggles.forEach(cfg => { state[cfg.id] = document.getElementById(cfg.id).checked; });
+      state['gust-spread-on'] = document.getElementById('gust-spread-on').checked;
       state['day-date']   = document.getElementById('day-date').value;
       state['night-date'] = document.getElementById('night-date').value;
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
@@ -1027,6 +1063,7 @@
         toggles.forEach(cfg => {
           if (state[cfg.id] !== undefined) document.getElementById(cfg.id).checked = state[cfg.id];
         });
+        document.getElementById('gust-spread-on').checked = state['gust-spread-on'] === true;
         if (state['day-date'])   document.getElementById('day-date').value   = state['day-date'];
         if (state['night-date']) document.getElementById('night-date').value = state['night-date'];
       } catch(e) {}
@@ -1050,6 +1087,12 @@
     });
 
     updateGustAdvisory();
+
+    updateGustSpreadLimit();
+    document.getElementById('gust-spread-on').addEventListener('change', () => {
+      updateGustSpreadLimit();
+      save();
+    });
 
     document.getElementById('day-date').addEventListener('change', () => {
       checkCurrency('day-date', 'day-result');
