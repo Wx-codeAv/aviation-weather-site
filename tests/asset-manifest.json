@@ -1,0 +1,14 @@
+{
+  "version": "2026-11-04b",
+  "files": {
+    "css/main.css": "b404bcb34902902e4394283e223ccffefc343d75232f9deac7e2c1521a8ba65f",
+    "js/main.js": "4d5fc2595fbf3671ebd0bdf897cf0714f6062df65c67f368d361f9e5f790e53b",
+    "js/metar-decoder.js": "11ea901c1d2e94edc103465098474220b39cd38bb3d05bde0f3cbbf7c679c431",
+    "js/minimums-check.js": "6c86d7e398d1a4028cfc70b31e8738057d532d84d225018e6db828d9b305b71b",
+    "js/poh-c172s.js": "615f64ca9dec58341cdd52148afafff911fa2e38b34bc1038cfde1c145725fb6",
+    "js/poh-interp.js": "8a0fa2da0f0a8cc9ab4d65171873beb156c342dbd9c35b9b5ebde5d29fb99843",
+    "js/taf-decoder.js": "97a26b717301fce7701d78255739b24b5ea1f477271d41fc098c1371f6f7db09",
+    "js/wind-math.js": "2258d3cade998685ad344c8ba4eadf10096ad08bc23b440ab2591657c62b25ba",
+    "assets/data/airports-us.json": "e07afa35f839a02146ad8d842ec288c4bd462b1db03d8f4b6dac7465945092b1"
+  }
+}

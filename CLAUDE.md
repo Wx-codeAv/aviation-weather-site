@@ -11,7 +11,7 @@ Static HTML, CSS, and JS on GitHub Pages. No build step. Site standards live in 
 5. **No em dashes in new user-facing text.**
 6. **Fail loudly, not silently.** When data is missing or can't be parsed, show that plainly. Never fall back to a value that looks valid. For example, an unknown flight category must not display as VFR.
 7. **Only stop processes you started, by their PID.** Never kill processes by name (no `pkill python`, `taskkill /IM python.exe`, or similar).
-8. **Bump the asset version on any change to a CSS or JS file.** Every CSS and JS link on every page carries the same `?v=` value, for example `css/main.css?v=2026-11-04`. Set it to the date of the change. If it already has that date, add a letter (`2026-11-04b`), or browsers keep the old file. `node --test` fails if the pages disagree.
+8. **Bump the asset version on any change to a CSS, JS, or data file.** Run `git fetch origin`, then `node scripts/bump-assets.js`. It sets one `?v=` value on every CSS, JS, and data link (the date of the change, plus a letter if that date is already deployed, like `2026-11-04b`) and updates each file's hash in `tests/asset-manifest.json`. Commit the manifest with the change. `node --test` fails if any hash changed but the version didn't.
 
 ## Project plan
 
