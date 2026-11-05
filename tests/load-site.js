@@ -20,7 +20,7 @@ function loadDecoders() {
     },
   };
   vm.createContext(context);
-  for (const file of ['js/metar-decoder.js', 'js/taf-decoder.js']) {
+  for (const file of ['js/metar-decoder.js', 'js/taf-decoder.js', 'js/taf-slider.js']) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, file), 'utf8'), context, { filename: file });
   }
   return context;

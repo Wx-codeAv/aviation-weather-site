@@ -156,7 +156,9 @@ function tafStateFromGroup(group) {
     visibility: group.visibility,
     weather: group.nsw ? [] : group.weather,
     sky: group.sky,
-    skyKnown: group.sky.length > 0 || cavok
+    skyKnown: group.sky.length > 0 || cavok,
+    windShear: group.windShear,
+    unreadable: group.unreadable
   };
 }
 
@@ -167,7 +169,10 @@ function mergeTafGroup(state, group) {
     visibility: group.visibility || state.visibility,
     weather: (group.nsw || cavok) ? [] : (group.weather.length ? group.weather : state.weather),
     sky: cavok ? [] : (group.sky.length ? group.sky : state.sky),
-    skyKnown: group.sky.length > 0 || cavok || state.skyKnown
+    skyKnown: group.sky.length > 0 || cavok || state.skyKnown,
+    windShear: group.windShear || state.windShear,
+    // An unreadable token could be anything, so it counts until visibility and sky are both restated.
+    unreadable: group.unreadable || (group.visibility && (group.sky.length || cavok) ? null : state.unreadable)
   };
 }
 
@@ -179,7 +184,7 @@ function tafStateIncomplete(state) {
 // a known ceiling below 500 ft or visibility below 1 SM settles LIFR on its own.
 function tafCategory(state) {
   const floor = knownCategoryFloor(state.sky, state.visibility);
-  return !tafStateIncomplete(state) || floor === 'LIFR' ? floor : null;
+  return (!state.unreadable && !tafStateIncomplete(state)) || floor === 'LIFR' ? floor : null;
 }
 
 function withCategory(state) {
@@ -480,6 +485,9 @@ function renderTaf(parsed) {
     overviewEl.innerHTML = warnings + buildTafOverview(parsed);
   }
 
+  // Hour-by-hour slider
+  if (typeof renderTafSlider === 'function') renderTafSlider(parsed);
+
   // Timeline (detailed cards)
   const timelineEl = document.getElementById('taf-timeline');
   if (timelineEl) {
@@ -563,9 +571,7 @@ function buildGroupCard(group) {
   const visStr  = buildVisStr(group.visibility);
   const wxStr   = group.nsw ? 'No sig wx' : group.weather.map(w => w.raw).join(' ');
   const skyStr  = buildSkyStr(group.sky);
-  const wsStr   = group.windShear
-    ? `WS ${group.windShear.altitude.toLocaleString()} ft: ${group.windShear.dir}° / ${group.windShear.speed} ${group.windShear.unit}`
-    : '';
+  const wsStr   = group.windShear ? buildWsStr(group.windShear) : '';
 
   const chips = [
     windStr  && `<span class="taf-chip taf-chip-wind">${escHtml(windStr)}</span>`,
@@ -619,6 +625,10 @@ function buildWindStr(wind) {
   let s = `${dir} / ${wind.speed} ${wind.unit}`;
   if (wind.gust) s += ` G${wind.gust}`;
   return s;
+}
+
+function buildWsStr(ws) {
+  return `WS ${ws.altitude.toLocaleString('en-US')} ft: ${ws.dir}° / ${ws.speed} ${ws.unit}`;
 }
 
 function buildVisStr(vis) {

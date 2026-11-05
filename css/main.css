@@ -2066,6 +2066,55 @@ footer .container {
 /* ── TAF overview timeline (visual band across the valid period) ── */
 .taf-overview { margin: 0 0 1.5rem; }
 .taf-overview:empty { display: none; }
+
+/* Hour-by-hour TAF slider. Category is always in the badge text, not only its color. */
+.taf-slider { --taf-thumb: 28px; margin: 0 0 1.75rem; }
+.taf-slider:empty { display: none; }
+.taf-sl-control { padding: 0.9rem 1.1rem 0.5rem; background: var(--surface); border: 1px solid var(--rule); }
+.taf-sl-time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.8rem; margin-bottom: 0.3rem; }
+.taf-sl-z { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 500; color: var(--ink); }
+.taf-sl-local { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); }
+.taf-sl-input {
+  display: block; width: 100%; height: 44px; margin: 0; padding: 0;
+  background: transparent; cursor: pointer; touch-action: pan-y;
+  -webkit-appearance: none; appearance: none;
+}
+.taf-sl-input:focus { outline: none; }
+.taf-sl-input:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+.taf-sl-input::-webkit-slider-runnable-track { height: 6px; background: var(--buff-dark); border: 1px solid var(--rule); border-radius: 3px; }
+.taf-sl-input::-moz-range-track { height: 6px; background: var(--buff-dark); border: 1px solid var(--rule); border-radius: 3px; }
+.taf-sl-input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: var(--taf-thumb); height: var(--taf-thumb); margin-top: calc((6px - var(--taf-thumb)) / 2 - 1px);
+  background: var(--ink); border: 3px solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 1px var(--ink);
+}
+.taf-sl-input::-moz-range-thumb {
+  box-sizing: border-box; width: var(--taf-thumb); height: var(--taf-thumb);
+  background: var(--ink); border: 3px solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 1px var(--ink);
+}
+.taf-sl-axis { position: relative; height: 1.5rem; }
+.taf-sl-tick { position: absolute; top: 0.3rem; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-soft); }
+.taf-sl-mark { position: absolute; top: 0; width: 2px; height: 0.3rem; margin-left: -1px; background: var(--rust); }
+.taf-sl-midhour { margin: 0.8rem 0 0; padding: 0.5rem 0.75rem; border-left: 3px solid var(--rust); background: var(--surface); font-size: 0.88rem; color: var(--ink); }
+.taf-sl-layers { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-top: 0.9rem; align-items: start; }
+.taf-sl-layer { min-width: 0; padding: 0.9rem 1.1rem; background: var(--surface); border: 1px solid var(--rule); }
+.taf-sl-layer--possible { background: transparent; border: 2px dashed var(--rule); }
+.taf-sl-layer-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem; margin: 0 0 0.6rem; font-family: var(--font-body); font-size: 0.95rem; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.taf-sl-lowest { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 500; color: var(--ink-soft); }
+.taf-sl-state + .taf-sl-state, .taf-sl-note + .taf-sl-state { margin-top: 0.7rem; }
+.taf-sl-layer--possible .taf-sl-state + .taf-sl-state { padding-top: 0.7rem; border-top: 1px dashed var(--rule); }
+.taf-sl-state-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem; margin-bottom: 0.4rem; }
+.taf-sl-state-title { font-size: 0.85rem; color: var(--ink-soft); }
+.taf-sl-state-head .cat-badge, .taf-sl-lowest .cat-badge { font-size: 0.82rem; padding: 1px 7px; }
+.taf-sl-range-text { margin: 0 0 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); }
+.taf-sl-note, .taf-sl-why { margin: 0.5rem 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--ink-soft); }
+.taf-sl-why { color: var(--rust); font-weight: 600; }
+.taf-slider > .taf-sl-note:first-of-type { margin: 0 0 0.6rem; }
+@media (pointer: coarse) { .taf-slider { --taf-thumb: 36px; } }
+@media (max-width: 700px) {
+  .taf-sl-layers { grid-template-columns: 1fr; }
+  .taf-sl-control, .taf-sl-layer { padding-left: 0.9rem; padding-right: 0.9rem; }
+}
 .tl-band {
   position: relative;
   height: 30px;
