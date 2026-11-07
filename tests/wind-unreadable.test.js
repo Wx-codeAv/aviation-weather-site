@@ -472,3 +472,152 @@ test('four digits plus letters (0800FG) in a METAR wind position is not a wind e
   assert.equal(p.windUnreadable, null);
   assert.deepEqual([...p.unreadable], ['0800FG']);
 });
+
+// ── An unrecognized token in the wind position might be the wind (and only a wind-shaped token is
+// called a garbled wind)
+test('a TEMPO whose wind position holds a token we cannot place does not inherit the base wind', () => {
+  const raw = 'TAF KXXX 011130Z 0112/0212 18010KT 5SM BKN020 TEMPO 0118/0120 0800FG BKN010';
+  const tempo = group(raw, 'TEMPO');
+  assert.equal(tempo.windUnreadable, null, 'not wind-shaped, so not called a garbled wind');
+  assert.ok(tempo.unreadableCovers.includes('wind'));
+  assert.equal(tempo.flightCategory, null);
+  const overlay = slider(raw, 7).possible[0].state;
+  assert.equal(overlay.wind, null);
+  assert.ok(sliderChips(overlay).includes('Wind couldn\'t be read'), sliderChips(overlay).join(' | '));
+  const card = site.buildGroupCard(tempo);
+  assert.match(card, /taf-chip-wind">Wind couldn't be read</);
+  assert.doesNotMatch(card, /Carried over: 18010KT/);
+  assert.match(parseTaf(raw).warnings.join(' '), /Its wind is shown as unreadable too/);
+  // the base wind is back outside the window
+  assert.equal(slider(raw, 9).base.wind.raw, '18010KT');
+  assert.equal(slider(raw, 9).possible.length, 0);
+});
+
+test('a PROB group whose wind position holds a token we cannot place does not inherit the base wind', () => {
+  const raw = `${HEAD} PROB30 0118/0120 VIS4000 TSRA SCT010`;
+  const overlay = slider(raw, 7).possible[0].state;
+  assert.equal(overlay.wind, null);
+  assert.ok(sliderChips(overlay).includes('Wind couldn\'t be read'));
+  assert.equal(overlay.category, null);
+});
+
+test('a later group inherits the doubt about the wind from a base group that had a token we cannot place', () => {
+  const raw = 'TAF KXXX 011130Z 0112/0212 0800FG BKN010 TEMPO 0118/0120 3SM';
+  const overlay = slider(raw, 7).possible[0].state;
+  assert.equal(overlay.wind, null);
+  assert.ok(sliderChips(overlay).includes('Wind couldn\'t be read'));
+});
+
+test('junk before a readable wind does not make the wind unreadable', () => {
+  const g = group(`${HEAD} TEMPO 0118/0120 XYZ 27015KT 3SM BKN010`, 'TEMPO');
+  assert.equal(g.wind.raw, '27015KT');
+  assert.ok(!g.unreadableCovers.includes('wind'));
+  assert.equal(g.flightCategory, null, 'but the junk still blocks the category');
+});
+
+test('METAR: a token we cannot place where the wind belongs puts the wind in doubt', () => {
+  const p = site.parseMetar('METAR KDAB 061153Z 0800FG 10SM BKN050 15/10 A3000');
+  assert.equal(p.windUnreadable, null, 'not wind-shaped, so not called a garbled wind');
+  assert.equal(p.windDoubt, '0800FG');
+  assert.equal(p.wind, null);
+  assert.equal(p.flightCategory, null);
+  assert.match(p.windWarning, /It might be the wind/);
+  const out = lines(p, RWY_16);
+  assert.equal(out.find((l) => /^Wind/.test(l.text)).text, 'Wind couldn\'t be read, so wind and crosswind limits weren\'t checked.');
+  assert.match(site.incompleteSummary(out), /wind couldn't be read/);
+});
+
+test('METAR: junk before a readable wind leaves the wind readable', () => {
+  const p = site.parseMetar('METAR KDAB 061153Z AUO 18010KT 10SM BKN050 15/10 A3000');
+  assert.equal(p.wind.raw, '18010KT');
+  assert.equal(p.windDoubt, null);
+  assert.equal(p.flightCategory, null);
+});
+
+test('METAR: a valid wind that turns up out of place is a wind we did not read', () => {
+  const p = site.parseMetar('METAR KDAB 061153Z 10SM 18010KT BKN050 15/10 A3000');
+  assert.equal(p.wind, null);
+  assert.equal(p.windDoubt, '18010KT');
+  assert.equal(p.flightCategory, null);
+});
+
+// ── The rule: any token we can't place means no category, unless a readable element settles LIFR
+for (const [name, rest] of [
+  ['a weather group we cannot read, with sky after it', 'PROB30 0118/0120 TS/RA BR SCT030CB OVC080'],
+  ['a weather group with a leading sign and VC', 'TEMPO 0118/0120 9000 -VCDZ SCT010'],
+  ['a wind that turns up after the weather', 'PROB30 TEMPO 0118/0120 TSRA 23007KT FEW035CB'],
+  ['an FM written with a space', 'BECMG 0118/0120 FM 072000 VRB02KT 2500 BR'],
+  ['a typo of FEW', 'BECMG 0118/0120 FWE022CB'],
+]) {
+  test(`TAF: ${name} gives the group no category`, () => {
+    const g = parseTaf(`${HEAD} ${rest}`).groups[1];
+    assert.equal(g.flightCategory, null);
+    assert.ok(g.unreadable, 'named as unreadable');
+  });
+}
+
+test('TAF: an unread sky after a weather group we cannot read is named, so it is never shown as VFR', () => {
+  const g = group(`${HEAD} PROB30 0118/0120 TS/RA BR SCT030CB OVC080`, 'PROB30');
+  assert.ok(g.unreadableCovers.includes('sky'));
+  assert.ok(g.unreadableCovers.includes('weather'));
+});
+
+test('TAF: a leftover wind after the weather marks the wind in doubt', () => {
+  const g = group(`${HEAD} PROB30 TEMPO 0118/0120 TSRA 23007KT FEW035CB`, 'PROB30 TEMPO');
+  assert.ok(g.unreadableCovers.includes('wind'));
+});
+
+test('TAF: a LIFR that a readable element settles survives a token we cannot place', () => {
+  const g = group(`${HEAD} TEMPO 0118/0120 1/4SM FG TS/RA VV001`, 'TEMPO');
+  assert.equal(g.flightCategory, 'LIFR');
+  assert.ok(g.unreadable);
+});
+
+for (const [name, tail] of [
+  ['a military QNH group', 'QNH3023INS'],
+  ['a 6-digit turbulence group', '510006'],
+  ['a 6-digit icing group', '620809'],
+  ['max and min temperatures', 'TX21/0319Z TN13/0311Z'],
+  ['a nonstandard temperature group', 'TX32/0718 TN21/0809'],
+  ['end-of-TAF remarks (LAST NO AMDS)', 'LAST NO AMDS AFT 0704 NEXT 0713'],
+  ['end-of-TAF remarks (AMD LTD TO)', 'AMD LTD TO CLD VIS AND WIND'],
+  ['a wind remark (WND)', 'WND 300V030'],
+  ['wind shear', 'WS020/25040KT'],
+]) {
+  test(`TAF: ${name} is known to carry no conditions and does not block the category`, () => {
+    const g = group(`${HEAD} FM011600 18010KT 5SM BKN020 ${tail}`, 'FM');
+    assert.equal(g.flightCategory, 'MVFR', tail);
+    assert.equal(g.unreadable, null, tail);
+    assert.deepEqual([...g.unparsed], [], tail);
+  });
+}
+
+test('METAR: a misplaced valid wind and an unknown trailing token both block the category', () => {
+  assert.equal(site.parseMetar('METAR KXXX 070435Z AUTO 03007KT 10SM CLR 03/M01 M RMK AO2').flightCategory, null);
+  assert.equal(site.parseMetar('METAR WALL 070430Z 10006KT 9999 FEW018CB 32/26 Q1010 CB TO NW AND N').flightCategory, null);
+});
+
+test('a token that looks like nothing could be any element, so all of them are in doubt', () => {
+  const g = group(`${HEAD} BECMG 0118/0120 FWE022CB`, 'BECMG');
+  for (const el of ['visibility', 'weather', 'sky', 'wind']) assert.ok(g.unreadableCovers.includes(el), el);
+});
+
+test('a group whose own unreadable token might be the visibility does not show the earlier visibility as its own', () => {
+  const raw = 'TAF KXXX 011130Z 0112/0212 18010KT 5SM BKN020 TEMPO 0118/0120 0800FG BKN010';
+  const tempo = group(raw, 'TEMPO');
+  const overlay = slider(raw, 7).possible[0].state;
+  assert.equal(overlay.visibility, null);
+  assert.ok(sliderChips(overlay).includes('Visibility couldn\'t be read'), sliderChips(overlay).join(' | '));
+  assert.ok(!sliderChips(overlay).includes('5SM'));
+  assert.doesNotMatch(tempo.carriedOver, /5SM/);
+  assert.match(site.buildGroupCard(tempo), /Visibility couldn't be read/);
+  assert.doesNotMatch(site.buildGroupCard(tempo), /Carried over: [^<]*5SM/);
+  assert.equal(overlay.category, null);
+});
+
+test('a group that omits an element and has no unreadable token of its own still inherits it', () => {
+  const raw = 'TAF KXXX 011130Z 0112/0212 18010KT 5SM BKN020 TEMPO 0118/0120 -RA';
+  const overlay = slider(raw, 7).possible[0].state;
+  assert.equal(overlay.visibility.raw, '5SM');
+  assert.equal(overlay.sky[0].raw, 'BKN020');
+});

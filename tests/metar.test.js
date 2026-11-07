@@ -147,11 +147,28 @@ test('trend forecasts are labeled, are not unrecognized, and do not count as sky
   assert.equal(site.parseMetar('METAR EBBR 031550Z 07009KT 9999 BKN038 08/02 Q1029 NOSIG').unrecognized.length, 0);
 });
 
-test('a group after the altimeter cannot change the category', () => {
+// Any token we can't place might be a garbled visibility, weather, sky, or wind, wherever it sits.
+// So there is no category unless a LIFR is already certain from what was read.
+test('a token after the altimeter that we cannot place means no category', () => {
   const parsed = site.parseMetar(`${H} 23015KT 10SM CLR 24/19 A2987 QQQQ`);
-  assert.equal(parsed.flightCategory, 'VFR');
-  assert.equal(parsed.warnings.length, 0);
+  assert.equal(parsed.flightCategory, null);
+  assert.deepEqual([...parsed.unreadable], ['QQQQ']);
+  assert.ok(parsed.warnings.length > 0);
 });
+
+test('a token we cannot place does not hide a LIFR that a readable element settles', () => {
+  const parsed = site.parseMetar(`${H} 23015KT 1/2SM FG OVC002 24/19 A2987 QQQQ`);
+  assert.equal(parsed.flightCategory, 'LIFR');
+});
+
+for (const group of ['RERA', 'RESHRA', 'RETS', 'RE//', 'WHT', 'YLO', 'GRN', 'BLU+', 'W///S3', 'W09/S3', 'W///H13', 'W14/H5', 'R12/090060', 'R29/CLRD65', 'R20///////', 'WS R34L', 'A2991']) {
+  test(`a known harmless group (${group}) after the altimeter is recognized and does not block the category`, () => {
+    const parsed = site.parseMetar(`${H} 23015KT 10SM CLR 24/19 A2987 ${group}`);
+    assert.equal(parsed.flightCategory, 'VFR', group);
+    assert.deepEqual([...parsed.unrecognized], [], group);
+    assert.deepEqual([...parsed.unreadable], [], group);
+  });
+}
 
 // ── The "why this category" scale must not point at VFR for unknown data
 const activeSegments = (html) => (html.match(/cat-seg seg-\w+ active/g) || []);

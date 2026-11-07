@@ -98,6 +98,30 @@ function looksLikeNonWind(tok) {
     || decodeWeather(tok) !== null;
 }
 
+// Groups that appear in real reports and carry nothing the flight category or the wind check
+// uses. Returns a label and a plain explanation, or null if the token isn't one of them.
+function quietMetarGroup(tok, altimeterSeen, bodyOpen) {
+  if (/^RE(?:[+-])?(?:VC)?(?:[A-Z]{2}){1,3}$/.test(tok) || tok === 'RE//') {
+    return { label: 'Recent weather', text: 'Weather that ended within the last hour. It does not set the flight category.' };
+  }
+  if (/^(?:BLACK)?(?:BLU|WHT|GRN|YLO[12]?|AMB|RED)\+?$/.test(tok) || tok === 'BLACK') {
+    return { label: 'Color state', text: 'Military airfield color state. It does not set the flight category.' };
+  }
+  if (/^W(?:\d{2}|\/\/)\/(?:[SH](?:\d+|\/+)|\/\/)$/.test(tok)) {
+    return { label: 'Sea state', text: 'Sea surface temperature and wave group. It does not set the flight category.' };
+  }
+  if (tok === 'WS' || /^R\d{2}[LRC]?$/.test(tok)) {
+    return { label: 'Wind shear runway', text: 'Wind shear on a runway. It does not set the flight category.' };
+  }
+  if (!bodyOpen && /^R\d{2}[LRC]?\/[\dA-Z/]+$/.test(tok)) {
+    return { label: 'Runway state', text: 'Runway visual range or runway condition group. It does not set the flight category.' };
+  }
+  if (altimeterSeen && /^[AQ]\d{4}$/.test(tok)) {
+    return { label: 'Second altimeter', text: 'A second altimeter setting. The first one is used.' };
+  }
+  return null;
+}
+
 function parseMetar(rawInput) {
   // Normalize whitespace, then fold look-alike Greek/Cyrillic letters to Latin
   let raw = rawInput.trim().toUpperCase().replace(/\s+/g, ' ')
@@ -119,6 +143,7 @@ function parseMetar(rawInput) {
     auto: false, cor: false,
     wind: null, windVariable: null,
     windUnreadable: null,   // wind-like tokens we couldn't read, joined. Wind stays null.
+    windDoubt: null,        // a token we couldn't place sat where the wind belongs. It might be the wind.
     windWarning: null,
     visibility: null,
     weather: [], sky: [],
@@ -288,6 +313,7 @@ function parseMetar(rawInput) {
   }
 
   // 5 ── Wind: dddssKT, dddssGggKT, VRBssKT, 00000KT
+  let junkAtWind = null;
   // A token here that is neither a wind, nor shaped like one, nor any other element is not the
   // wind. It might be a garbled visibility or sky, so it stays unreadable (no category), as it
   // always was. If a real wind follows it, the wind is still read.
@@ -295,6 +321,7 @@ function parseMetar(rawInput) {
       && !looksLikeWindToken(tokens[i]) && !looksLikeNonWind(tokens[i])) {
     result.unreadable.push(tokens[i]);
     pushUnrecognized(tokens[i]);
+    junkAtWind = tokens[i];
     i++;
   }
   if (i < tokens.length) {
@@ -340,6 +367,9 @@ function parseMetar(rawInput) {
       i++;
     }
   }
+
+  // The junk might have been the wind. If no wind was read after it, the wind is in doubt.
+  if (junkAtWind && !result.wind && !result.windUnreadable) result.windDoubt = junkAtWind;
 
   // 6 ── Visibility (US SM or metric metres or CAVOK)
   if (i < tokens.length && tryVisibility(tokens[i])) {
@@ -464,6 +494,14 @@ function parseMetar(rawInput) {
       i++; continue;
     }
 
+    // Groups that carry no visibility, weather, sky, or wind: recent weather, color codes, sea
+    // state, runway state, a repeated altimeter. They are recognized, so they don't count as unread.
+    const quiet = quietMetarGroup(tok, result.altimeter !== null, bodyOpen);
+    if (quiet) {
+      push(tok, 'extra', quiet.label, quiet.text);
+      i++; continue;
+    }
+
     // Still in the body: read what belongs here, in any order.
     if (bodyOpen) {
       if (trySky(tok) || (!result.visibility && tryVisibility(tok))) { i++; continue; }
@@ -477,13 +515,14 @@ function parseMetar(rawInput) {
         push(tok, 'weather', 'Present weather', decoded);
         i++; continue;
       }
-      // A garbled wind was already taken above. A second, valid wind or an outage shape that
-      // lands here can't change the category either. Anything else might be a garbled layer
-      // or visibility, so it can't be ruled out.
-      if (!/(KT|MPS|KMH)$/.test(tok)) result.unreadable.push(tok);
     }
 
-    // Anything else: flag it and move on so the rest of the report still decodes.
+    // Anything else we can't place. It might be a garbled visibility, weather, sky, or wind, so
+    // no flight category is shown unless a readable element already settles LIFR. Flag it and
+    // move on so the rest of the report still decodes.
+    result.unreadable.push(tok);
+    // A valid wind that turned up out of place is a wind we didn't read.
+    if (!result.wind && !result.windUnreadable && !result.windDoubt && WIND_PATTERN.test(tok)) result.windDoubt = tok;
     pushUnrecognized(tok);
     i++;
   }
@@ -494,7 +533,9 @@ function parseMetar(rawInput) {
   // we couldn't read doesn't change the category.
   result.windWarning = result.windUnreadable
     ? `Couldn't read ${result.windUnreadable} where wind belongs. Wind isn't shown, and wind and crosswind limits aren't checked. The rest of the report was read.`
-    : null;
+    : result.windDoubt
+      ? `Couldn't read ${result.windDoubt} where wind belongs. It might be the wind, so wind isn't shown, and wind and crosswind limits aren't checked.`
+      : null;
   return result;
 }
 
@@ -833,7 +874,7 @@ function metarWarnings(parsed) {
   if (!parsed.sky.length && !cavok) warnings.push('Sky condition is missing or not reported.');
   const layers = parsed.sky.filter(skyLayerUnknown).map(l => l.raw);
   if (layers.length) warnings.push(`Cloud amount or height isn't reported in ${layers.join(' ')}, so the ceiling is unknown.`);
-  if (parsed.unreadable.length) warnings.push(`Couldn't read ${parsed.unreadable.join(' ')}, where visibility, weather, or sky belong.`);
+  if (parsed.unreadable.length) warnings.push(`Couldn't read ${parsed.unreadable.join(' ')}. It might be a visibility, weather, or sky group.`);
   if (!warnings.length) return warnings;
   if (parsed.flightCategory === 'LIFR') {
     warnings.push(`LIFR is shown because the reported ${lifrElement(parsed.sky, parsed.visibility)} alone sets it. Nothing missing here could make it better.`);
@@ -1151,7 +1192,7 @@ function renderDecoder(parsed) {
   const windEl = document.getElementById('wind-visual');
   if (windEl) {
     // A wind we couldn't read gets its own message, so it can't look like a missing wind.
-    windEl.innerHTML = parsed.windUnreadable
+    windEl.innerHTML = (parsed.windUnreadable || parsed.windDoubt)
       ? '<div class="vis-placeholder">Wind couldn\'t be read</div>'
       : buildWindSVG(parsed.wind, parsed.windVariable);
     const windWarn = document.getElementById('wind-warning');
@@ -1161,7 +1202,7 @@ function renderDecoder(parsed) {
     }
     const windDesc = document.getElementById('wind-desc');
     if (windDesc) windDesc.textContent = '';   // don't leave the previous report's wind on screen
-    if (windDesc && parsed.wind && !parsed.windUnreadable) {
+    if (windDesc && parsed.wind && !parsed.windUnreadable && !parsed.windDoubt) {
       const wd = parsed.wind;
       // Space the direction away from the speed, e.g. "33011KT" → "330 11KT"
       if (wd.dir === 0 && wd.speed === 0) {
@@ -1175,7 +1216,7 @@ function renderDecoder(parsed) {
     const xlink = document.getElementById('wind-xlink');
     if (xlink) {
       const wd = parsed.wind;
-      if (wd && !parsed.windUnreadable && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
+      if (wd && !parsed.windUnreadable && !parsed.windDoubt && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
         const q = `dir=${wd.dir}&speed=${wd.speed}${wd.gust ? '&gust=' + wd.gust : ''}${parsed.station ? '&station=' + parsed.station : ''}`;
         xlink.innerHTML = `<a href="crosswind.html?${q}">Send this wind to the Crosswind tool →</a>`;
         xlink.hidden = false;

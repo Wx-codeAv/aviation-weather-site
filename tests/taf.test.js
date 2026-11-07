@@ -216,7 +216,16 @@ test('all 92 real TAFs parse, and every group gets a placed time and a category'
     const parsed = site.parseTaf(raw);
     assert.ok(parsed.station, raw);
     assert.ok(site.tafTimeBase(parsed), `no time base: ${raw}`);
-    assert.equal([...parsed.groups].filter((g) => !g.flightCategory).length, 0, raw);
+    // The only groups without a category are the final FM groups of two Navy TAFs (KNGU, KNTU),
+    // which end in an FN##### group we can't place. It is not known to be harmless, so no category.
+    const without = [...parsed.groups].filter((g) => !g.flightCategory);
+    assert.ok(without.every((g) => /^FN\d{5}$/.test(g.unreadable)), raw);
+    assert.equal(without.length, ['KNGU', 'KNTU'].includes(parsed.station) ? 1 : 0, raw);
+    if (without.length) {
+      assert.equal(parsed.warnings.length, 1, raw);
+      assert.match(parsed.warnings[0], /Couldn't read FN\d{5} in the From group/);
+      continue;
+    }
     // The only real warnings: EGPF's two PROB30 groups forecast VV///, which has no height.
     // Their 0300 m visibility still makes them LIFR.
     if (parsed.station === 'EGPF') {

@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-06b">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-07">
   <style>
     .cw-hero {
       padding: 4rem 0 3rem;
@@ -598,7 +598,7 @@
     </div>
   </footer>
 
-<script src="../js/wind-math.js?v=2026-11-06b"></script>
+<script src="../js/wind-math.js?v=2026-11-07"></script>
 <script>
 // ── SVG constants ──
 const C = [180, 170];        // diagram center (compass + runway pivot)
@@ -722,7 +722,7 @@ let airportData = null, airportLoad = null;
 
 function loadAirportData() {
   if (!airportLoad) {
-    airportLoad = fetch('../assets/data/airports-us.json?v=2026-11-06b')
+    airportLoad = fetch('../assets/data/airports-us.json?v=2026-11-07')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
       .then(data => { airportData = data; return data; });
   }
@@ -1185,6 +1185,6 @@ drawRunway(null);
   compute();
 })();
 </script>
-  <script src="../js/main.js?v=2026-11-06b"></script>
+  <script src="../js/main.js?v=2026-11-07"></script>
 </body>
 </html>

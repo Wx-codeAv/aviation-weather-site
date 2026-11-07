@@ -175,7 +175,7 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
   const w = parsed.wind;
   // A wind token was present but we couldn't read it. Never compare, even if another wind
   // token was readable, because we can't tell which one the report meant.
-  if (parsed.windUnreadable) {
+  if (parsed.windUnreadable || parsed.windDoubt) {
     out.push({ status: 'notChecked', text: 'Wind couldn\'t be read, so wind and crosswind limits weren\'t checked.',
       incomplete: 'wind couldn\'t be read, so wind and crosswind weren\'t checked' });
     return;
@@ -284,7 +284,7 @@ const MINIMUMS_NOTE = 'This compares the report with the limits you saved. It su
 let minimumsAirportLoad = null;
 function loadMinimumsAirports() {
   if (!minimumsAirportLoad) {
-    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-06b')
+    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-07')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
   }
   return minimumsAirportLoad;

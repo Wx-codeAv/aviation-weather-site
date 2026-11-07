@@ -125,7 +125,7 @@ function stateChips(state) {
   const unread = element => (state.unreadableCovers || []).includes(element);
   return [
     state.wind ? chip('wind', buildWindStr(state.wind))
-      : chip('wind', state.windUnreadable ? 'Wind couldn\'t be read' : 'Wind not stated'),
+      : chip('wind', windInDoubt(state) ? 'Wind couldn\'t be read' : 'Wind not stated'),
     state.visibility ? chip('vis', buildVisStr(state.visibility))
       : chip('vis', unread('visibility') ? 'Visibility couldn\'t be read' : 'Visibility not stated'),
     state.weather.length ? chip('wx', state.weather.map(w => w.raw).join(' '))

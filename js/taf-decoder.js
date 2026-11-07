@@ -164,19 +164,27 @@ function tafStateFromGroup(group) {
   };
 }
 
+// The wind is unreadable, or might be: a token we couldn't read sat where the wind belongs.
+function windInDoubt(x) {
+  return !!(x.windUnreadable || (x.unreadableCovers || []).includes('wind'));
+}
+
 function mergeTafGroup(state, group) {
   const cavok = !!(group.visibility && group.visibility.cavok);
   // An unreadable token could be anything, so it counts until visibility and sky are both restated.
   const clears = !!(group.visibility && (group.sky.length || cavok));
+  const hides = el => (group.unreadableCovers || []).includes(el);
   return {
     // An unreadable wind never falls back to the wind before it. A later group that gives a
     // readable wind clears it.
-    wind: group.windUnreadable ? null : (group.wind || state.wind),
+    wind: (group.windUnreadable || (!group.wind && windInDoubt(group))) ? null : (group.wind || state.wind),
     windUnreadable: group.windUnreadable || (group.wind ? null : state.windUnreadable),
-    visibility: group.visibility || state.visibility,
-    weather: (group.nsw || cavok) ? [] : (group.weather.length ? group.weather : state.weather),
-    sky: cavok ? [] : (group.sky.length ? group.sky : state.sky),
-    skyKnown: group.sky.length > 0 || cavok || state.skyKnown,
+    // An element the group's own unreadable token might be isn't inherited either, because the
+    // earlier value may not apply. It shows as unreadable instead.
+    visibility: group.visibility || (hides('visibility') ? null : state.visibility),
+    weather: (group.nsw || cavok) ? [] : (group.weather.length ? group.weather : (hides('weather') ? [] : state.weather)),
+    sky: cavok ? [] : (group.sky.length ? group.sky : (hides('sky') ? [] : state.sky)),
+    skyKnown: group.sky.length > 0 || cavok || (hides('sky') ? false : state.skyKnown),
     windShear: group.windShear || state.windShear,
     unreadable: group.unreadable || (clears ? null : state.unreadable),
     // An element the group restates is no longer in doubt. Weather doesn't decide the flight
@@ -184,6 +192,7 @@ function mergeTafGroup(state, group) {
     unreadableCovers: [...new Set([...(group.unreadableCovers || []), ...(state.unreadableCovers || []).filter(el =>
       el === 'visibility' ? !group.visibility
         : el === 'sky' ? !(group.sky.length || cavok)
+        : el === 'wind' ? !group.wind
         : !(group.weather.length || group.nsw || cavok))])]
   };
 }
@@ -255,6 +264,12 @@ function categoryWithUnreadable(group, state) {
   return knownCategoryFloor(state.sky, state.visibility) === 'LIFR' ? 'LIFR' : null;
 }
 
+// When the unreadable token sat where the wind belongs, the wind is shown as unreadable too.
+function windDoubtNote(group) {
+  return !group.windUnreadable && windInDoubt(group)
+    ? ' Its wind is shown as unreadable too, because that token might be the wind.' : '';
+}
+
 function unknownEnding(group, state) {
   return categoryWithUnreadable(group, state) === 'LIFR'
     ? floorNote(state)
@@ -279,7 +294,7 @@ function resolveTafGroups(parsed) {
       const own = tafStateFromGroup(g);
       g.flightCategory = categoryWithUnreadable(g, own);
       if (g.unreadable) {
-        parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group.${unknownEnding(g, own)}`);
+        parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group.${unknownEnding(g, own)}${windDoubtNote(g)}`);
       } else if (tafStateIncomplete(own)) {
         parsed.warnings.push(`The ${name(g)} group doesn't give a readable visibility and sky.${unknownEnding(g, own)}`);
       }
@@ -303,17 +318,18 @@ function resolveTafGroups(parsed) {
     g.flightCategory = categoryWithUnreadable(g, merged);
     g.unreadableInherited = (merged.unreadableCovers || []).filter(el => !(g.unreadableCovers || []).includes(el));
     if (g.unreadable) {
-      parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group at ${formatTafTime(g.validFrom)}.${unknownEnding(g, merged)}`);
+      parsed.warnings.push(`Couldn't read ${g.unreadable} in the ${name(g)} group at ${formatTafTime(g.validFrom)}.${unknownEnding(g, merged)}${windDoubtNote(g)}`);
     } else if (tafStateIncomplete(merged)) {
       parsed.warnings.push(`The ${name(g)} group at ${formatTafTime(g.validFrom)} and the forecast before it don't give a readable visibility and sky.${unknownEnding(g, merged)}`);
     }
     const prior = before.prevailing;
     const cavok = !!(g.visibility && g.visibility.cavok);
+    const hides = el => (g.unreadableCovers || []).includes(el);
     g.carriedOver = [
-      !g.wind && !g.windUnreadable && prior.wind && prior.wind.raw,
-      !g.visibility && prior.visibility && prior.visibility.raw,
-      ...(!g.nsw && !cavok && !g.weather.length ? prior.weather.map(w => w.raw) : []),
-      ...(!cavok && !g.sky.length ? prior.sky.map(l => l.raw) : []),
+      !g.wind && !windInDoubt(g) && prior.wind && prior.wind.raw,
+      !g.visibility && !hides('visibility') && prior.visibility && prior.visibility.raw,
+      ...(!g.nsw && !cavok && !g.weather.length && !hides('weather') ? prior.weather.map(w => w.raw) : []),
+      ...(!cavok && !g.sky.length && !hides('sky') ? prior.sky.map(l => l.raw) : []),
     ].filter(Boolean).join(' ');
   }
 }
@@ -325,11 +341,23 @@ function resolveTafGroups(parsed) {
 // group really leaves an element out. The token itself is the element it looks like. Each
 // token after it is a weather group, a sky layer, or (if it is neither) could be either.
 // Wind shear, the TX/TN temperature groups, and remarks are not conditions.
-function unreadableCovers(tokens, at) {
-  const isSky = /^(FEW|SCT|BKN|OVC|VV)/.test(tokens[at]);
-  const covers = [isSky ? 'sky' : 'visibility'];
-  const remarks = tokens.indexOf('RMK');
-  const tail = tokens.slice(at + 1, remarks === -1 ? undefined : remarks).filter(t => !/^(WS|TX|TN)/.test(t));
+// Where free-text remarks begin at the end of a TAF (LAST NO AMDS AFT 0704 NEXT 0713, AMD LTD TO
+// CLD VIS AND WIND, WND 300V030, AUTOMATED SENSOR METWATCH ...). Nothing after one is a condition.
+const TAF_REMARK_START = /^(RMK|LAST|NEXT|NXT|AMD|AMDS|AUTOMATED|WSCONDS|WND|COR|NIL|CNL)$/;
+// Groups that carry no visibility, weather, sky, or wind: wind shear, max and min temperature,
+// military altimeter (QNH3023INS), and the 5xxxxx turbulence and 6xxxxx icing groups.
+const TAF_QUIET_GROUP = /^(WS\d|TX|TN|QNH\d{3,4}(INS|NS)?$|[56]\d{5}$)/;
+
+function unreadableCovers(tokens, at, atWindPosition = false) {
+  // The token is the element it looks like. One that looks like nothing could be any of them.
+  const first = tokens[at];
+  const covers = /^(FEW|SCT|BKN|OVC|VV)/.test(first) ? ['sky']
+    : /SM$/.test(first) ? ['visibility']
+    : ['visibility', 'weather', 'sky'];
+  // A token where the wind belongs, which isn't a wind and isn't another element, might be the wind.
+  if (atWindPosition) covers.push('wind');
+  const remarksAt = tokens.findIndex((t, k) => k > at && TAF_REMARK_START.test(t));
+  const tail = tokens.slice(at + 1, remarksAt === -1 ? undefined : remarksAt).filter(t => !TAF_QUIET_GROUP.test(t));
   for (const t of tail) {
     const weather = t === 'NSW' || decodeWeather(t) !== null;
     const sky = /^(SKC|CLR|NSC|NCD|VV|FEW|SCT|BKN|OVC)/.test(t);
@@ -354,7 +382,8 @@ function parseGroup(tokens, isBase) {
     carriedOver: '',
     unreadable: null,
     unreadableCovers: [],   // which "not stated" claims the unreadable token makes untrustworthy
-    windUnreadable: null    // wind-like tokens we couldn't read, joined. Wind stays null.
+    windUnreadable: null,   // wind-like tokens we couldn't read, joined. Wind stays null.
+    unparsed: []            // tokens left over after reading, which were never read
   };
 
   let i = 0;
@@ -423,7 +452,7 @@ function parseGroup(tokens, isBase) {
         // Not a wind, not shaped like one, and not another element. It might be a garbled
         // visibility, weather, or sky, so the group has no category, and the rest is still read.
         group.unreadable = t;
-        group.unreadableCovers = unreadableCovers(tokens, k);
+        group.unreadableCovers = unreadableCovers(tokens, k, true);
       } else {
         keep.push(t);
       }
@@ -497,11 +526,28 @@ function parseGroup(tokens, isBase) {
 
   // A token shaped like sky or visibility that we couldn't read must not be skipped,
   // or the group would silently inherit the value it was trying to change.
-  if (i < tokens.length && /^(FEW|SCT|BKN|OVC|VV)|SM$/.test(tokens[i])) {
-    // An earlier unreadable token in this group stays named, and its doubts stay too.
-    group.unreadable = group.unreadable ? `${group.unreadable} ${tokens[i]}` : tokens[i];
-    group.unreadableCovers = [...new Set([...group.unreadableCovers, ...unreadableCovers(tokens, i)])];
+  // Whatever is still left in the group was never read, and it might be a visibility, weather,
+  // sky layer, or wind. So the group gets no category (unless a LIFR is already certain from
+  // what was read). Only groups known to carry no conditions are skipped. An earlier unreadable
+  // token in this group stays named, and its doubts stay too.
+  {
+    const left = [];
+    for (let k = i; k < tokens.length; k++) {
+      if (TAF_REMARK_START.test(tokens[k])) break;
+      if (!TAF_QUIET_GROUP.test(tokens[k])) left.push(k);
+    }
+    group.unparsed = left.map(k => tokens[k]);
+    if (left.length) {
+      const covers = unreadableCovers(tokens, left[0]);
+      // A readable wind that turned up late is still a wind we didn't read.
+      if (!group.wind && left.some(k => WIND_PATTERN.test(tokens[k]))) covers.push('wind');
+      group.unreadable = group.unreadable ? `${group.unreadable} ${tokens[left[0]]}` : tokens[left[0]];
+      group.unreadableCovers = [...new Set([...group.unreadableCovers, ...covers])];
+    }
   }
+
+  // If a readable wind was found after it, the junk didn't hide the wind.
+  if (group.wind) group.unreadableCovers = group.unreadableCovers.filter(el => el !== 'wind');
 
   // ── Wind shear: WS###/dddssKT (anywhere in remaining tokens)
   for (let j = i; j < tokens.length; j++) {
@@ -645,7 +691,7 @@ function buildGroupCard(group) {
   const unread = el => (group.unreadableCovers || []).includes(el);
   const chips = [
     windStr ? `<span class="taf-chip taf-chip-wind">${escHtml(windStr)}</span>`
-      : group.windUnreadable && '<span class="taf-chip taf-chip-wind">Wind couldn\'t be read</span>',
+      : windInDoubt(group) && '<span class="taf-chip taf-chip-wind">Wind couldn\'t be read</span>',
     visStr ? `<span class="taf-chip taf-chip-vis">${escHtml(visStr)}</span>`
       : unread('visibility') && '<span class="taf-chip taf-chip-vis">Visibility couldn\'t be read</span>',
     wxStr ? `<span class="taf-chip taf-chip-wx">${escHtml(wxStr)}</span>`
