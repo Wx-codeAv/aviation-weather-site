@@ -187,7 +187,7 @@ for (const [tempo, expected] of [
 }
 
 // ── Chip wording: "couldn't be read" for an unreadable token, "not stated" only when the group leaves it out
-const chipTexts = (raw, step) => [...site.buildSliderReadout(view(raw, step)).matchAll(/taf-chip-(wind|vis|sky)">([^<]*)</g)].map((m) => m[2]);
+const chipTexts = (raw, step) => [...site.buildSliderReadout(view(raw, step)).matchAll(/taf-chip-(wind|vis|wx|sky)">([^<]*)</g)].map((m) => m[2]);
 
 test('an unreadable sky token makes the sky chip say it could not be read', () => {
   const chips = chipTexts(`${HEAD} FM011600 18010KT 5SM OVC0X0`, 5);
@@ -385,4 +385,100 @@ test('the slider sits inside a region that does not announce every step', () => 
 
 test('no em dashes in the slider text', () => {
   assert.doesNotMatch(readRepoFile('js/taf-slider.js'), /—/);
+});
+
+// ── Weather and sky after an unreadable visibility token were never read
+test('weather after an unreadable visibility token says it could not be read (a dropped thunderstorm)', () => {
+  const raw = `${HEAD} FM011600 18010KT 5XSM -TSRA BKN020`;
+  const chips = chipTexts(raw, 5);
+  assert.ok(chips.includes('Visibility couldn\'t be read'), chips.join(' | '));
+  assert.ok(chips.includes('Weather couldn\'t be read'), chips.join(' | '));
+  assert.ok(chips.includes('Sky couldn\'t be read'), chips.join(' | '));
+  assert.equal(view(raw, 5).base.category, null);
+});
+
+test('only the elements that might be hiding after the bad token are called unreadable', () => {
+  const covers = (tail) => site.parseTaf(`${HEAD} FM011600 18010KT ${tail}`).groups[1].unreadableCovers;
+  assert.deepEqual([...covers('5XSM')], ['visibility']);
+  assert.deepEqual([...covers('5XSM BKN020')], ['visibility', 'sky']);
+  assert.deepEqual([...covers('5XSM -TSRA BKN020')], ['visibility', 'weather', 'sky']);
+  assert.deepEqual([...covers('5XSM -TSRA')], ['visibility', 'weather']);
+  assert.deepEqual([...covers('5XSM NSW')], ['visibility', 'weather']);
+  assert.deepEqual([...covers('5XSM FOO')].sort(), ['sky', 'visibility', 'weather'], 'a token we do not recognize could be either');
+  assert.deepEqual([...covers('5XSM WS020/25040KT')], ['visibility'], 'wind shear is not weather or sky');
+  assert.deepEqual([...covers('5XSM BKN020 TX12/0118Z TN05/0210Z')], ['visibility', 'sky'], 'temperature groups are not conditions');
+  assert.deepEqual([...covers('5XSM RMK NXT FCST BY 020000Z')], ['visibility'], 'remarks are not conditions');
+  assert.deepEqual([...covers('5SM OVC0X0')], ['sky']);
+});
+
+test('a later group that restates weather no longer calls it unreadable, but one that does not still does', () => {
+  const base = `${HEAD} FM011600 18010KT 5XSM -TSRA BKN020`;
+  // The slider shows the base panel too, and the FM base is still unreadable, so look at the TEMPO's own chips.
+  const overlayChips = (raw) => [...site.stateChips(view(raw, 7).possible[0].state).matchAll(/taf-chip-\w+">([^<]*)</g)].map((m) => m[1]);
+  const restated = overlayChips(`${base} TEMPO 0118/0120 3SM TSRA BKN010`);
+  assert.deepEqual(restated, ['180° / 10 KT', '3SM', 'TSRA', 'BKN010']);
+  const kept = overlayChips(`${base} TEMPO 0118/0120 3SM BKN010`);
+  assert.ok(kept.includes('Weather couldn\'t be read'), kept.join(' | '));
+  assert.ok(!kept.includes('Visibility couldn\'t be read') && !kept.includes('Sky couldn\'t be read'), kept.join(' | '));
+});
+
+// ── Group cards: same wording and the same neutral badge as the slider
+const cardHtml = (raw, type) => {
+  const parsed = site.parseTaf(raw);
+  return site.buildGroupCard(parsed.groups.find((g) => g.type === type));
+};
+
+test('a group card for an unreadable sky shows the chip and the No category badge, not a dash', () => {
+  const html = cardHtml(`${HEAD} FM011600 18010KT 5SM OVC0X0`, 'FM');
+  assert.match(html, /taf-chip-sky">Sky couldn't be read</);
+  assert.match(html, /cat-badge cat-unknown">No category</);
+  assert.doesNotMatch(html, /—/);
+});
+
+test('a group card for an unreadable visibility with weather and sky after it shows all three chips', () => {
+  const html = cardHtml(`${HEAD} FM011600 18010KT 5XSM -TSRA BKN020`, 'FM');
+  assert.match(html, /taf-chip-vis">Visibility couldn't be read</);
+  assert.match(html, /taf-chip-wx">Weather couldn't be read</);
+  assert.match(html, /taf-chip-sky">Sky couldn't be read</);
+  assert.match(html, /cat-badge cat-unknown">No category</);
+});
+
+test('a group card that truly omits an element shows no chip for it', () => {
+  const html = cardHtml(`${HEAD} FM011600 18010KT 5SM BKN020`, 'FM');
+  assert.doesNotMatch(html, /couldn't be read/);
+  assert.match(html, /cat-badge cat-mvfr">MVFR</);
+});
+
+test('a TEMPO card that inherits an unreadable sky says so, and shows No category', () => {
+  const html = cardHtml(`${HEAD} FM011600 18010KT 5SM OVC0X0 TEMPO 0118/0120 3SM`, 'TEMPO');
+  assert.match(html, /couldn't be read: sky/);
+  assert.match(html, /cat-badge cat-unknown">No category</);
+});
+
+test('a LIFR group card keeps its badge and still names what it could not read', () => {
+  const html = cardHtml(`${HEAD} FM011600 18010KT 1/2SM FG OVC0X0`, 'FM');
+  assert.match(html, /cat-badge cat-lifr">LIFR</);
+  assert.match(html, /taf-chip-sky">Sky couldn't be read</);
+});
+
+// ── Dark-mode contrast: every category badge and the No category badge must reach 4.5:1
+test('every flight category badge and the No category badge reaches 4.5:1 in both themes', () => {
+  const css = readRepoFile('css/main.css');
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const color = (re) => css.match(re)[1];
+  const pairs = [
+    ['VFR', '#fff', color(/\.cat-vfr\s*\{ background: (#[0-9a-f]{6})/i)],
+    ['MVFR', '#fff', color(/\.cat-mvfr\s*\{ background: (#[0-9a-f]{6})/i)],
+    ['IFR', '#fff', color(/\.cat-ifr\s*\{ background: (#[0-9a-f]{6})/i)],
+    ['LIFR', '#fff', color(/\.cat-lifr\s*\{ background: (#[0-9a-f]{6})/i)],
+    ['No category, light', '#ffffff', color(/:root \{[^}]*--ink-soft: (#[0-9a-f]{6})/i)],
+    ['No category, dark', color(/html\[data-theme="dark"\] \{[^}]*--buff: (#[0-9a-f]{6})/i), color(/html\[data-theme="dark"\] \{[^}]*--ink-soft: (#[0-9a-f]{6})/i)],
+  ];
+  assert.match(css, /html\[data-theme="dark"\] \.cat-unknown[^{]*\{ color: var\(--buff\); \}/, 'dark No category text uses the page field color');
+  for (const [name, fg, bg] of pairs) {
+    const fgHex = fg.length === 4 ? `#${fg[1]}${fg[1]}${fg[2]}${fg[2]}${fg[3]}${fg[3]}` : fg;
+    assert.ok(ratio(fgHex, bg) >= 4.5, `${name}: ${ratio(fgHex, bg).toFixed(2)}:1`);
+  }
 });

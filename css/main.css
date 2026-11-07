@@ -1683,6 +1683,11 @@ footer .container {
 .cat-ifr  { background: #b53d1f; }
 .cat-lifr { background: #7b2d8b; }
 .cat-unknown { background: var(--ink-soft); }
+/* In dark mode --ink-soft is a pale slate, so white text on it fails contrast. Use the page
+   field color instead (in print, the dark theme's tokens revert to light, which still works). */
+html[data-theme="dark"] .cat-unknown,
+html[data-theme="dark"] .tl-seg--unknown span,
+html[data-theme="dark"] .tl-ov-unknown { color: var(--buff); }
 .cat-desc {
   font-family: var(--font-mono);
   font-size: 0.85rem;

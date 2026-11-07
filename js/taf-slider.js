@@ -127,7 +127,8 @@ function stateChips(state) {
     state.wind ? chip('wind', buildWindStr(state.wind)) : chip('wind', 'Wind not stated'),
     state.visibility ? chip('vis', buildVisStr(state.visibility))
       : chip('vis', unread('visibility') ? 'Visibility couldn\'t be read' : 'Visibility not stated'),
-    state.weather.length ? chip('wx', state.weather.map(w => w.raw).join(' ')) : '',
+    state.weather.length ? chip('wx', state.weather.map(w => w.raw).join(' '))
+      : (unread('weather') ? chip('wx', 'Weather couldn\'t be read') : ''),
     state.sky.length ? chip('sky', buildSkyStr(state.sky)) : (cavok || state.skyKnown ? '' : chip('sky', unread('sky') ? 'Sky couldn\'t be read' : 'Sky not stated')),
     state.windShear ? chip('ws', buildWsStr(state.windShear)) : '',
   ].join('');
