@@ -259,3 +259,44 @@ test('TAF VV/// follows the same no-badge rule', () => {
   assert.equal(parsed.groups[0].flightCategory, null);
   assert.ok(parsed.warnings.length > 0);
 });
+
+// ── Trend groups after the altimeter describe the next two hours, never the current observation
+const trendFields = (parsed) => [...parsed.fields].filter((f) => f.label === 'Trend forecast').map((f) => f.token);
+
+test('BECMG 9999 NSC after a LIFR observation stays LIFR, and the trend is shown as a forecast', () => {
+  const p = site.parseMetar('METAR KXXX 070400Z 18005KT 0800 FG OVC002 10/10 Q1013 BECMG 9999 NSC');
+  assert.equal(p.flightCategory, 'LIFR');
+  assert.equal(p.visibility.raw, '0800');
+  assert.deepEqual([...p.sky].map((s) => s.raw), ['OVC002']);
+  assert.deepEqual(trendFields(p), ['BECMG', '9999', 'NSC']);
+  assert.deepEqual([...p.unreadable], []);
+  assert.deepEqual([...p.unrecognized], []);
+});
+
+test('TEMPO 0800 FG after a VFR observation stays VFR, and the trend is shown as a forecast', () => {
+  const p = site.parseMetar('METAR KXXX 070400Z 18005KT 9999 FEW030 10/10 Q1013 TEMPO 0800 FG');
+  assert.equal(p.flightCategory, 'VFR');
+  assert.equal(p.visibility.raw, '9999');
+  assert.deepEqual([...p.weather], []);
+  assert.deepEqual(trendFields(p), ['TEMPO', '0800', 'FG']);
+  assert.deepEqual([...p.unreadable], []);
+});
+
+test('a trend with a lower sky and worse visibility does not change the category either', () => {
+  const p = site.parseMetar('METAR KXXX 070400Z 18005KT 9999 FEW030 10/10 Q1013 TEMPO 0400 FG OVC001');
+  assert.equal(p.flightCategory, 'VFR');
+  assert.deepEqual([...p.sky].map((s) => s.raw), ['FEW030']);
+});
+
+test('NOSIG is a forecast note, and a real EGYM report takes its category from 8000 and OVC043 only', () => {
+  assert.equal(site.parseMetar('METAR KXXX 070400Z 18005KT 9999 FEW030 10/10 Q1013 NOSIG').flightCategory, 'VFR');
+  const p = site.parseMetar('METAR EGYM 291350Z 29010KT 8000 -RADZ FEW010 SCT037 OVC043 10/07 Q1008 BLU TEMPO 7000 -RADZ SCT020 WHT=');
+  assert.equal(p.flightCategory, 'MVFR', '8000 m is 5 SM, and the ceiling is 4,300 ft');
+  assert.equal(p.visibility.raw, '8000');
+  assert.deepEqual([...p.sky].map((s) => s.raw), ['FEW010', 'SCT037', 'OVC043']);
+  assert.deepEqual([...p.weather].map((w) => w.raw), ['-RADZ']);
+  assert.deepEqual([...p.unreadable], [], 'the BLU and WHT color codes do not block the category');
+  assert.deepEqual([...p.unrecognized], []);
+  assert.equal(p.fields.find((f) => f.token === 'BLU').label, 'Color state');
+  assert.deepEqual(trendFields(p), ['TEMPO', '7000', '-RADZ', 'SCT020', 'WHT=']);
+});
