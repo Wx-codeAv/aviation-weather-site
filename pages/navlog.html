@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-07">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-07b">
   <style>
     /* ─── Hero ─── */
     .nl-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--rule); }
@@ -820,9 +820,10 @@
               <ul>
                 <li>4000 ft table — ISA std = 7°C → dev = +9°C: KTAS = lerp(9, 0, 20, 109, 107) = <strong>108.1</strong></li>
                 <li>6000 ft table — ISA std = 3°C → dev = +13°C: KTAS = lerp(13, 0, 20, 108, 106) = <strong>106.7</strong></li>
-                <li>Lerp to 4500 ft (t = 0.25): 108.1 + (106.7−108.1) × 0.25 = 107.75 → <strong>108 kt</strong></li>
+                <li>Lerp to 4500 ft (t = 0.25): 108.1 + (106.7−108.1) × 0.25 = 107.75 → 108 kt (rounded)</li>
+                <li>Subtract the 2 kt speed-fairings deduction: 108 − 2 = <strong>106 kt</strong></li>
               </ul>
-              <p style="font-size:0.78rem;">Note: above 75% BHP use full rich mixture (POH §5-14). The 2 kt speed-fairings deduction is already applied to the result shown above.</p>
+              <p style="font-size:0.78rem;">Note: above 75% BHP use full rich mixture (POH §5-14). POH cruise speeds assume speed fairings, so 2 kt is subtracted from the interpolated result, as shown above.</p>
             </div>
           </details>
         </div>
@@ -1327,8 +1328,8 @@
     </div>
   </div>
 
-<script src="../js/poh-c172s.js?v=2026-11-07"></script>
-<script src="../js/poh-interp.js?v=2026-11-07"></script>
+<script src="../js/poh-c172s.js?v=2026-11-07b"></script>
+<script src="../js/poh-interp.js?v=2026-11-07b"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    NAV LOG CALCULATOR — CrosswindWx
@@ -2502,7 +2503,7 @@ function pohUpdateCruise() {
 
   if (!result) {
     callout.className = 'nl-poh-callout warn';
-    callout.textContent = '⚠ Outside POH data range — do not use extrapolated values for flight planning. Table covers PA 2000–6000 ft (current data); check that RPM falls within the available range for that altitude.';
+    callout.textContent = '⚠ Outside POH data range — do not use extrapolated values for flight planning. Table covers PA 2000–6000 ft and an OAT within 20°C of standard at each table altitude (current data); check that RPM falls within the available range for that altitude.';
     return;
   }
 
@@ -3305,6 +3306,6 @@ function waApply() {
   }
 }
 </script>
-  <script src="../js/main.js?v=2026-11-07"></script>
+  <script src="../js/main.js?v=2026-11-07b"></script>
 </body>
 </html>

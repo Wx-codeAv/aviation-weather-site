@@ -96,8 +96,9 @@ window.pohInterp = (function () {
 
   /* Internal: interpolate across temperature columns for one (altitude, RPM) cell.
      temp_dev is OAT − ISA_std at that table altitude.
-     Clamped to [−20, +20] — the spec requires null for out-of-bounds at the outer
-     level; clamping here prevents NaN arithmetic inside the bracket. */
+     _interpAtAlt returns null before this is called if temp_dev is outside the table's
+     [−20, +20] columns, so the clamp here is only a safety net against NaN arithmetic
+     inside the bracket. It is not the out-of-bounds handling. */
   function _tempInterpCell(cell, temp_dev) {
     const dev = Math.max(-20, Math.min(20, temp_dev));
     const pick = (f) => {
@@ -128,6 +129,9 @@ window.pohInterp = (function () {
     }
 
     const temp_dev = oat_C - stdTempC(altTable.pa_ft);
+    // The table has no data past its −20 and +20 columns. Returning an edge value here would be
+    // extrapolation that looks like a real lookup, so there is no result.
+    if (temp_dev < -20 || temp_dev > 20) return null;
     const cLo = _tempInterpCell(loR, temp_dev);
     const cHi = _tempInterpCell(hiR, temp_dev);
 
@@ -152,7 +156,7 @@ window.pohInterp = (function () {
        5. Lerp the two altitude results to pa_target_ft.
 
      Worked example — verified against POH Fig. 5-8:
-       cruisePerf(C172S_POH, 4500, 16, 2400) → expect 108 kt, 8.2 GPH
+       cruisePerf(C172S_POH, 4500, 16, 2400) → expect 106 kt, 8.2 GPH
 
        4000 ft table: ISA std = 7°C → temp_dev = 16−7 = +9°C
          2400 RPM std={61,109,8.5} p20={57,107,8.1}

@@ -1,12 +1,12 @@
 {
-  "version": "2026-11-07",
+  "version": "2026-11-07b",
   "files": {
     "css/main.css": "ce5798fa851855eee8232c06896162e81ffc9ed9649792cb32a99f90862ff6ba",
     "js/main.js": "4d5fc2595fbf3671ebd0bdf897cf0714f6062df65c67f368d361f9e5f790e53b",
     "js/metar-decoder.js": "17919e014d9669e8b447bdc7e024967670ae6df1ecaccba39edf5b6209842d55",
-    "js/minimums-check.js": "4a7b345b2a6490cc9598d12964095209273360b9555880eae1852e8a84178cc7",
+    "js/minimums-check.js": "9c63642755ff82d3df356c71abef0d53096a06d2dfb5ee4e653a020883a9c102",
     "js/poh-c172s.js": "615f64ca9dec58341cdd52148afafff911fa2e38b34bc1038cfde1c145725fb6",
-    "js/poh-interp.js": "8a0fa2da0f0a8cc9ab4d65171873beb156c342dbd9c35b9b5ebde5d29fb99843",
+    "js/poh-interp.js": "bf5ae747d7be75310fa08ef58866e8768f4c1a3c1d30124c773575a67d3c5b19",
     "js/taf-decoder.js": "ed200494280260d01d8eda6de58d0e74babbdedda9e7fb61011278d86402fbb9",
     "js/taf-slider.js": "5ede4b5c3c3566b3db4554944071f7290d8fd7bb1ffd8588ce63410fa0e413f2",
     "js/wind-math.js": "2258d3cade998685ad344c8ba4eadf10096ad08bc23b440ab2591657c62b25ba",
