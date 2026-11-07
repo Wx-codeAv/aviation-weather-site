@@ -75,6 +75,14 @@ function isGarbledWindToken(tok) {
     && !isWindOutage(tok);
 }
 
+// True when a token is shaped like a wind: it ends like one (KT, KTS, K, MPS, KMH after a digit),
+// or starts like one (VRB then a digit, or five or more digits), or has direction/speed with a
+// stray slash. Four digits plus letters (0800FG) is a visibility, not a wind, so it isn't one.
+function looksLikeWindToken(tok) {
+  return (/(KT|KTS|K|MPS|KMH)$/.test(tok) && /\d/.test(tok))
+    || /^VRB\d/.test(tok) || /^[0-9O]{5,}/.test(tok) || /^\d{3}\/\d/.test(tok);
+}
+
 // True when a token in the wind position is clearly some other element, so the report simply
 // has no wind and nothing should be flagged: visibility, weather, sky, temperature, altimeter,
 // RVR, remarks, trend, time, or a TAF-only token.
@@ -85,7 +93,7 @@ function looksLikeNonWind(tok) {
     || /^(WS|TX|TN)/.test(tok)
     || /SM$/.test(tok) || /^\d{4}(NDV|N|NE|E|SE|S|SW|W|NW)?$/.test(tok)
     || /^(SKC|CLR|NSC|NCD|VV|FEW|SCT|BKN|OVC|\/{3})/.test(tok)
-    || /^M?\d+\/M?\d+$/.test(tok) || /^\d{4}\/\d{4}$/.test(tok) || /^\d{6}Z?$/.test(tok)
+    || /^M?\d+\/M?\d+$/.test(tok) || /^\d{4}\/\d{4}$/.test(tok) || /^\d{6}Z?$/.test(tok) || /^\d{8}$/.test(tok)
     || /^[AQ](\d{4}|\/{4})$/.test(tok) || /^R\d{2}[LRC]?\//.test(tok) || /^\/+$/.test(tok)
     || decodeWeather(tok) !== null;
 }
@@ -248,8 +256,9 @@ function parseMetar(rawInput) {
     result.type = 'METAR';
   }
 
-  // 2 ── Station ICAO (4 letters)
-  if (i < tokens.length && /^[A-Z]{4}$/.test(tokens[i])) {
+  // 2 ── Station ID: four characters starting with a letter. Most are four letters, but many
+  // US airports have digits (KC83, K2J9). Four letters only would leave those unread.
+  if (i < tokens.length && /^[A-Z][A-Z0-9]{3}$/.test(tokens[i])) {
     result.station = tokens[i];
     push(tokens[i], 'station', 'Station ID', `ICAO airport identifier: ${tokens[i]}`);
     i++;
@@ -264,21 +273,30 @@ function parseMetar(rawInput) {
     i++;
   }
 
-  // 4 ── Modifier: AUTO / COR
-  while (i < tokens.length && /^(AUTO|COR)$/.test(tokens[i])) {
+  // 4 ── Modifier: AUTO / COR, or CCA, CCB, ... (Canadian correction indicators)
+  while (i < tokens.length && /^(AUTO|COR|CC[A-Z])$/.test(tokens[i])) {
     if (tokens[i] === 'AUTO') {
       result.auto = true;
       push('AUTO', 'modifier', 'Automated station',
         'Report from automated sensors — no human observer');
     } else {
       result.cor = true;
-      push('COR', 'modifier', 'Corrected report',
+      push(tokens[i], 'modifier', 'Corrected report',
         'Correction to a previously issued observation');
     }
     i++;
   }
 
   // 5 ── Wind: dddssKT, dddssGggKT, VRBssKT, 00000KT
+  // A token here that is neither a wind, nor shaped like one, nor any other element is not the
+  // wind. It might be a garbled visibility or sky, so it stays unreadable (no category), as it
+  // always was. If a real wind follows it, the wind is still read.
+  if (i < tokens.length && !WIND_PATTERN.test(tokens[i]) && !isWindOutage(tokens[i])
+      && !looksLikeWindToken(tokens[i]) && !looksLikeNonWind(tokens[i])) {
+    result.unreadable.push(tokens[i]);
+    pushUnrecognized(tokens[i]);
+    i++;
+  }
   if (i < tokens.length) {
     const wm = tokens[i].match(WIND_PATTERN);
     if (wm) {
@@ -316,8 +334,8 @@ function parseMetar(rawInput) {
       push(tokens[i], 'wind', 'Wind',
         'Not available — wind not reported by the automated sensor');
       i++;
-    } else if (!looksLikeNonWind(tokens[i])) {
-      // Something sits where the wind belongs, and it isn't a wind or any other element.
+    } else if (looksLikeWindToken(tokens[i]) && !looksLikeNonWind(tokens[i])) {
+      // Shaped like a wind but not one we can read.
       flagUnreadableWind(tokens[i]);
       i++;
     }

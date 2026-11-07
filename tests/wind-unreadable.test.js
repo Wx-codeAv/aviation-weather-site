@@ -32,10 +32,11 @@ test('a steady variable wind with no gust says no gust', () => {
 for (const [name, runway] of [['no runway chosen', null], ['runway 16', RWY_16], ['runway 07L', RWY_07L]]) {
   test(`a variable wind's full gust counts as possible crosswind with ${name}`, () => {
     const out = lines(metar('VRB06G20KT'), runway);
-    const gust = out.find((l) => /^Total gust wind /.test(l.text));
+    const gust = out.find((l) => /^Gust crosswind could be /.test(l.text));
     assert.ok(gust, out.map((l) => l.text).join(' | '));
     assert.equal(gust.status, 'exceeds');
-    assert.match(gust.text, /20 kt exceeds your 10 kt limit/);
+    assert.equal(gust.text, 'Gust crosswind could be the full 20 kt (variable wind), above your 10 kt limit.');
+    assert.equal(out.find((l) => /^Crosswind could be /.test(l.text)).text, 'Crosswind could be the full 6 kt (variable wind), within your 10 kt limit.');
     assert.ok(out.some((l) => /^Gusts 20 kt exceed your 18 kt limit/.test(l.text)));
   });
 }
@@ -79,7 +80,7 @@ for (const token of GARBLED) {
     assert.ok(wind, text);
     assert.equal(wind.status, 'notChecked');
     assert.equal(wind.text, 'Wind couldn\'t be read, so wind and crosswind limits weren\'t checked.');
-    for (const l of out) assert.ok(!/(Sustained wind|Gusts|crosswind|Crosswind|Total wind)/.test(l.text.replace(wind.text, '')), `compared wind: ${l.text}`);
+    for (const l of out) assert.ok(!/(Sustained wind|Gusts|crosswind|Crosswind)/.test(l.text.replace(wind.text, '')), `compared wind: ${l.text}`);
     assert.ok(out.some((l) => /^Ceiling 5,000 ft is above/.test(l.text)), 'ceiling still checked');
     assert.ok(out.some((l) => /^Visibility 10 SM is above/.test(l.text)), 'visibility still checked');
     assert.equal(site.incompleteSummary(out), 'wind couldn\'t be read, so wind and crosswind weren\'t checked.');
@@ -336,4 +337,138 @@ test('a garbled wind in a TAF leaves a sky we could not read flagged as before',
   assert.equal(g.unreadable, '5XSM');
   assert.deepEqual([...g.unreadableCovers], ['visibility', 'weather', 'sky']);
   assert.equal(g.windUnreadable, null);
+});
+
+// ── The unreadable wind belongs to the TEMPO window only
+const TEMPO_RAW = 'TAF KXXX 011130Z 0112/0212 18010KT 5SM BKN020 TEMPO 0118/0120 1801OKT 3SM';
+
+test('an unreadable TEMPO wind applies from 0118 to 0120 only, and the base wind returns after 0120 with no later group', () => {
+  // The slider steps are hours from the 12Z start. 18Z and 19Z are inside the window.
+  for (const [hourZ, inside] of [[16, false], [17, false], [18, true], [19, true], [20, false], [21, false], [28, false]]) {
+    const v = slider(TEMPO_RAW, hourZ - 12);
+    assert.equal(v.base.wind.raw, '18010KT', `${hourZ}Z: the base wind is never replaced`);
+    assert.equal(v.base.windUnreadable, null, `${hourZ}Z: the base wind is never marked unreadable`);
+    assert.equal(v.possible.length, inside ? 1 : 0, `${hourZ}Z: the TEMPO is ${inside ? '' : 'not '}in effect`);
+    if (inside) {
+      assert.equal(v.possible[0].state.wind, null);
+      assert.equal(v.possible[0].state.windUnreadable, '1801OKT');
+      assert.equal(v.possible[0].state.visibility.raw, '3SM');
+    }
+    assert.ok(sliderChips(v.base).includes('180° / 10 KT'), `${hourZ}Z`);
+    assert.ok(!sliderChips(v.base).some((c) => /couldn't be read/.test(c)), `${hourZ}Z: nothing unreadable in the base panel`);
+  }
+});
+
+test('the time resolver agrees at the edges of the TEMPO window', () => {
+  const parsed = parseTaf(TEMPO_RAW);
+  const at = (hour, min) => site.tafStateAt(parsed, { day: 1, hour, min });
+  assert.equal(at(17, 59).overlays.length, 0, 'one minute before 0118');
+  assert.equal(at(18, 0).overlays.length, 1, 'at 0118');
+  assert.equal(at(19, 59).overlays.length, 1, 'one minute before 0120');
+  assert.equal(at(20, 0).overlays.length, 0, 'at 0120');
+  for (const [h, m] of [[17, 59], [18, 0], [19, 59], [20, 0], [23, 0]]) {
+    assert.equal(at(h, m).prevailing.wind.raw, '18010KT', `${h}:${m}`);
+    assert.equal(at(h, m).prevailing.windUnreadable, null, `${h}:${m}`);
+  }
+  assert.equal(at(18, 30).overlays[0].state.windUnreadable, '1801OKT');
+});
+
+test('an unreadable wind in a later TEMPO does not leak into an earlier or a following one', () => {
+  const raw = 'TAF KXXX 011130Z 0112/0212 18010KT 5SM BKN020 TEMPO 0114/0116 27015G25KT 3SM TEMPO 0118/0120 1801OKT 3SM TEMPO 0122/0124 2SM';
+  assert.equal(slider(raw, 3).possible[0].state.wind.raw, '27015G25KT');
+  assert.equal(slider(raw, 7).possible[0].state.windUnreadable, '1801OKT');
+  const last = slider(raw, 11).possible[0].state;
+  assert.equal(last.wind.raw, '18010KT', 'a later TEMPO that omits wind inherits the base wind, not the unreadable one');
+  assert.equal(last.windUnreadable, null);
+});
+
+// ── Found by running the decoders over about 4,900 real METARs and 2,900 real TAFs (2026-11-07).
+// The wind-position rule must flag real garbles and nothing else.
+test('station IDs with digits are recognized, not read as a wind', () => {
+  for (const id of ['KC83', 'K2J9', 'KP08', 'K0V4', 'K20U']) {
+    const p = site.parseMetar(`METAR ${id} 070440Z AUTO 27005KT 10SM FEW034 12/04 A3008 RMK AO2`);
+    assert.equal(p.station, id);
+    assert.equal(p.time.raw, '070440Z');
+    assert.equal(p.windUnreadable, null);
+    assert.equal(p.wind.raw, '27005KT');
+    assert.equal(p.flightCategory, 'VFR');
+    assert.deepEqual([...p.unreadable], []);
+  }
+});
+
+test('Canadian correction indicators (CCA, CCB) are a modifier, not a wind', () => {
+  const p = site.parseMetar('METAR CYYU 070400Z CCB 00000KT 15SM SKC M03/M03 A3015');
+  assert.equal(p.cor, true);
+  assert.equal(p.windUnreadable, null);
+  assert.equal(p.wind.raw, '00000KT');
+  assert.equal(p.flightCategory, 'VFR');
+});
+
+test('junk before a real wind is not the wind: it stays unreadable (no category) and the wind is still read', () => {
+  const p = site.parseMetar('METAR KMKQ 070435Z AUO 00000KT 10SM BKN029 25/17 A3002');
+  assert.equal(p.windUnreadable, null);
+  assert.equal(p.wind.raw, '00000KT');
+  assert.deepEqual([...p.unreadable], ['AUO']);
+  assert.equal(p.flightCategory, null, 'it could have been a garbled visibility or sky');
+});
+
+for (const token of ['3404G14KT', 'E00000KT']) {
+  test(`real METAR garble ${token} is flagged and the rest is read`, () => {
+    const p = site.parseMetar(`METAR RKSG 070355Z ${token} 10SM CLR 11/M17 A3051`);
+    assert.equal(p.windUnreadable, token);
+    assert.equal(p.flightCategory, 'VFR');
+  });
+}
+
+for (const token of ['13008K', 'VRB02', '17010KT-SHRA', '30018G28', '0000KT', '0900KT', 'GRID30007KT']) {
+  test(`real TAF garble ${token} is flagged as a wind and the rest of the group is read`, () => {
+    const g = group(`${HEAD} TEMPO 0118/0120 ${token} 3SM BKN020`, 'TEMPO');
+    assert.equal(g.windUnreadable, token);
+    assert.equal(g.wind, null);
+    assert.equal(g.visibility.raw, '3SM');
+    assert.equal(g.sky[0].raw, 'BKN020');
+    assert.equal(g.unreadable, null);
+  });
+}
+
+test('a grid-north wind (GRID30007KT) is never read as a true wind', () => {
+  const g = group('TAF NZFX 070100Z 0701/0807 GRID30007KT 9999 SCT040', 'BASE');
+  assert.equal(g.wind, null);
+  assert.equal(g.windUnreadable, 'GRID30007KT');
+});
+
+// Tokens that are not winds must not be called winds, because a wind we couldn't read doesn't
+// block the category and these might be a visibility or weather we couldn't read.
+for (const [token, rest] of [['0800FG', 'BKN010'], ['VIS4000', 'TSRA SCT010'], ['TS/RA', 'BR SCT030'], ['TAF', '9999 SCT040']]) {
+  test(`TAF ${token} is not a wind: the group has no category unless a LIFR is certain`, () => {
+    const g = group(`${HEAD} PROB30 0118/0120 ${token} ${rest}`, 'PROB30');
+    assert.equal(g.windUnreadable, null);
+    assert.equal(g.unreadable, token);
+    assert.equal(g.flightCategory, null);
+    assert.ok(g.sky.length, 'the sky after it is still read');
+  });
+}
+
+test('an unreadable visibility with a certain LIFR ceiling is LIFR, not VFR (0800FG BKN001)', () => {
+  const g = group('TAF EHKD 070104Z 0702/0714 10007KT 9999 NSC PROB30 0702/0711 0800FG BKN001', 'PROB30');
+  assert.equal(g.flightCategory, 'LIFR');
+  assert.equal(g.unreadable, '0800FG');
+  assert.equal(g.windUnreadable, null);
+});
+
+test('VIS4000 is never allowed to look like the VFR it inherits', () => {
+  const g = group('TAF SARP 062300Z 0700/0724 14005KT 9999 SCT030 PROB40 0707/0712 VIS4000 TSRA SCT010 OVC040 FEW050CB', 'PROB40');
+  assert.equal(g.flightCategory, null);
+  assert.equal(g.weather[0].raw, 'TSRA');
+});
+
+test('a BECMG time missing its slash is not a wind', () => {
+  const g = group(`${HEAD} BECMG 07210722 4000 BR`, 'BECMG');
+  assert.equal(g.windUnreadable, null);
+});
+
+test('four digits plus letters (0800FG) in a METAR wind position is not a wind either', () => {
+  const p = site.parseMetar('METAR KXXX 070435Z 0800FG BKN010 10/09 A3000');
+  assert.equal(p.windUnreadable, null);
+  assert.deepEqual([...p.unreadable], ['0800FG']);
 });

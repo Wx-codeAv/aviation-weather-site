@@ -416,14 +416,20 @@ function parseGroup(tokens, isBase) {
     const bad = [], keep = tokens.slice(0, i);
     for (let k = i; k < tokens.length; k++) {
       const t = tokens[k];
-      const garbled = isGarbledWindToken(t) || isWindOutage(t)
-        || (k === i && !WIND_PATTERN.test(t) && !looksLikeNonWind(t));
-      (garbled ? bad : keep).push(t);
+      const atWind = k === i && !WIND_PATTERN.test(t) && !looksLikeNonWind(t);
+      if (isGarbledWindToken(t) || isWindOutage(t) || (atWind && looksLikeWindToken(t))) {
+        bad.push(t);
+      } else if (atWind) {
+        // Not a wind, not shaped like one, and not another element. It might be a garbled
+        // visibility, weather, or sky, so the group has no category, and the rest is still read.
+        group.unreadable = t;
+        group.unreadableCovers = unreadableCovers(tokens, k);
+      } else {
+        keep.push(t);
+      }
     }
-    if (bad.length) {
-      group.windUnreadable = bad.join(' ');
-      tokens = keep;
-    }
+    if (bad.length) group.windUnreadable = bad.join(' ');
+    tokens = keep;
   }
 
   // ── Wind
@@ -492,8 +498,9 @@ function parseGroup(tokens, isBase) {
   // A token shaped like sky or visibility that we couldn't read must not be skipped,
   // or the group would silently inherit the value it was trying to change.
   if (i < tokens.length && /^(FEW|SCT|BKN|OVC|VV)|SM$/.test(tokens[i])) {
-    group.unreadable = tokens[i];
-    group.unreadableCovers = unreadableCovers(tokens, i);
+    // An earlier unreadable token in this group stays named, and its doubts stay too.
+    group.unreadable = group.unreadable ? `${group.unreadable} ${tokens[i]}` : tokens[i];
+    group.unreadableCovers = [...new Set([...group.unreadableCovers, ...unreadableCovers(tokens, i)])];
   }
 
   // ── Wind shear: WS###/dddssKT (anywhere in remaining tokens)

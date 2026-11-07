@@ -74,6 +74,17 @@ function compareToLimit(name, value, limit) {
   return { status: 'within', text: `${name} ${formatKnots(v)} ${plural ? 'are' : 'is'} within your ${limit} kt limit.` };
 }
 
+// A variable wind has no direction, so the whole wind could be crosswind on any runway. The
+// number is the full speed or gust, compared with the saved crosswind limit. The wording says
+// so, because "Total wind" read like the sustained wind line.
+function compareVariableCrosswind(name, value, limit) {
+  const result = compareToLimit(name, value, limit);
+  if (limit === null || limit === undefined) return result;
+  const v = roundTenth(value);
+  const relation = v > limit ? 'above' : v === limit ? 'at' : 'within';
+  return { ...result, text: `${name} could be the full ${formatKnots(v)} (variable wind), ${relation} your ${limit} kt limit.` };
+}
+
 // The largest crosswind share of the wind anywhere in a variable sector, which runs
 // clockwise from fromM to toM. It peaks where the wind is square to the runway.
 function worstCrosswindFactor(fromM, toM, reportedM, runwayHdg) {
@@ -191,9 +202,9 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
   }
 
   if (w.dir === 'VRB') {
-    out.push({ status: 'info', explains: 'crosswind', text: 'Variable wind has no fixed direction, so crosswind for a runway can\'t be calculated. Any of it could be crosswind, so total wind is compared with your crosswind limit.' });
-    out.push({ ...compareToLimit('Total wind', w.speed, limits.crosswind), group: 'crosswind' });
-    if (w.gust) out.push({ ...compareToLimit('Total gust wind', w.gust, limits.crosswind), group: 'crosswind' });
+    out.push({ status: 'info', explains: 'crosswind', text: 'Variable wind has no fixed direction, so crosswind for a runway can\'t be calculated. Any of it could be crosswind, so the full wind and gust are compared with your crosswind limit.' });
+    out.push({ ...compareVariableCrosswind('Crosswind', w.speed, limits.crosswind), group: 'crosswind' });
+    if (w.gust) out.push({ ...compareVariableCrosswind('Gust crosswind', w.gust, limits.crosswind), group: 'crosswind' });
     return;
   }
 

@@ -179,16 +179,16 @@ test('the sector note rises with its lines when they exceed, above an unrelated 
   assert.equal(indexOf(lines, /worst case across/), 0);
 });
 
-test('the VRB explanation is directly above the total wind line', () => {
+test('the VRB explanation is directly above the crosswind line', () => {
   const lines = ordered(`VRB06KT ${GOOD}`);
-  assert.equal(indexOf(lines, /no fixed direction/) + 1, indexOf(lines, /^Total wind /));
+  assert.equal(indexOf(lines, /no fixed direction/) + 1, indexOf(lines, /^Crosswind could be /));
 });
 
 test('the VRB explanation stays above both lines when the gust alone exceeds', () => {
   const lines = ordered(`VRB06G14KT ${GOOD}`, { gusts: 35 });
   const note = indexOf(lines, /no fixed direction/);
-  assert.equal(note + 1, indexOf(lines, /^Total gust wind /));
-  assert.ok(note < indexOf(lines, /^Total wind /));
+  assert.equal(note + 1, indexOf(lines, /^Gust crosswind could be /));
+  assert.ok(note < indexOf(lines, /^Crosswind could be /));
 });
 
 test('other lines still sort most urgent first', () => {
@@ -198,22 +198,24 @@ test('other lines still sort most urgent first', () => {
 
 test('the rendered list uses this order', () => {
   const html = site.buildMinimumsLines(site.checkMetarAgainstMinimums(metar(`VRB06KT ${GOOD}`), limits(), null));
-  assert.ok(html.indexOf('no fixed direction') < html.indexOf('Total wind 6 kt'));
+  assert.ok(html.indexOf('no fixed direction') < html.indexOf('Crosswind could be the full 6 kt'));
 });
 
 // ── VRB: no runway-relative crosswind
-test('VRB explains why and compares total wind with the crosswind limit', () => {
+test('VRB explains why and compares the full wind with the crosswind limit', () => {
   const lines = check(`VRB06KT ${GOOD}`);
   assert.match(textOf(lines, /no fixed direction/).text, /can't be calculated/);
-  assert.deepEqual(textOf(lines, /^Total wind /), { status: 'within', text: 'Total wind 6 kt is within your 10 kt limit.' });
+  assert.deepEqual(textOf(lines, /^Crosswind could be /), { status: 'within', text: 'Crosswind could be the full 6 kt (variable wind), within your 10 kt limit.' });
 });
 test('VRB at the limit and over it', () => {
-  assert.equal(textOf(check(`VRB10KT ${GOOD}`), /^Total wind /).status, 'at');
-  assert.equal(textOf(check(`VRB11KT ${GOOD}`), /^Total wind /).status, 'exceeds');
+  assert.equal(textOf(check(`VRB10KT ${GOOD}`), /^Crosswind could be /).status, 'at');
+  assert.match(textOf(check(`VRB10KT ${GOOD}`), /^Crosswind could be /).text, /, at your 10 kt limit.$/);
+  assert.equal(textOf(check(`VRB11KT ${GOOD}`), /^Crosswind could be /).status, 'exceeds');
+  assert.match(textOf(check(`VRB11KT ${GOOD}`), /^Crosswind could be /).text, /, above your 10 kt limit.$/);
 });
 test('VRB checks its gust against the crosswind limit too', () => {
   const lines = check(`VRB06G14KT ${GOOD}`);
-  assert.equal(textOf(lines, /^Total gust wind /).status, 'exceeds');
+  assert.deepEqual(textOf(lines, /^Gust crosswind could be /), { status: 'exceeds', text: 'Gust crosswind could be the full 14 kt (variable wind), above your 10 kt limit.' });
 });
 test('VRB gives the same answer with or without a runway', () => {
   const without = check(`VRB06KT ${GOOD}`);
