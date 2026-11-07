@@ -120,11 +120,15 @@ function categoryBadge(category) {
 function stateChips(state) {
   const cavok = !!(state.visibility && state.visibility.cavok);
   const chip = (kind, text) => `<span class="taf-chip taf-chip-${kind}">${escHtml(text)}</span>`;
+  // "Not stated" means the group leaves the element out. If a token we couldn't read may be
+  // that element, say it couldn't be read instead.
+  const unread = element => (state.unreadableCovers || []).includes(element);
   return [
     state.wind ? chip('wind', buildWindStr(state.wind)) : chip('wind', 'Wind not stated'),
-    state.visibility ? chip('vis', buildVisStr(state.visibility)) : chip('vis', 'Visibility not stated'),
+    state.visibility ? chip('vis', buildVisStr(state.visibility))
+      : chip('vis', unread('visibility') ? 'Visibility couldn\'t be read' : 'Visibility not stated'),
     state.weather.length ? chip('wx', state.weather.map(w => w.raw).join(' ')) : '',
-    state.sky.length ? chip('sky', buildSkyStr(state.sky)) : (cavok || state.skyKnown ? '' : chip('sky', 'Sky not stated')),
+    state.sky.length ? chip('sky', buildSkyStr(state.sky)) : (cavok || state.skyKnown ? '' : chip('sky', unread('sky') ? 'Sky couldn\'t be read' : 'Sky not stated')),
     state.windShear ? chip('ws', buildWsStr(state.windShear)) : '',
   ].join('');
 }

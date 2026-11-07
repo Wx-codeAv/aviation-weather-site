@@ -143,6 +143,102 @@ test('an unreadable token does not hide a LIFR that is already certain', () => {
   assert.equal(view('TAF KXXX 011130Z 0112/0212 18010KT 1/2SM FG OVC0X0', 2).base.category, 'LIFR');
 });
 
+// ── Unreadable sky inside an FM, and a TEMPO that inherits it.
+// The FM starts at 16Z (step 4 from the 12Z start); the TEMPO runs 18Z to 20Z (step 6 and 7).
+const HEAD = 'TAF KXXX 011130Z 0112/0212 18010KT P6SM SKC';
+const bandTitles = (raw) => [...site.buildTafOverview(site.parseTaf(raw)).matchAll(/class="tl-seg[^"]*" style="[^"]*" title="([^"]*)"/g)].map((m) => m[1]);
+// The band segment that starts at the FM time (titles read "<category> D01 16:00Z → D02 12:00Z").
+const fmBandTitle = (raw) => bandTitles(raw).find((t) => /D01 16:00Z →/.test(t));
+const cardCategory = (raw, type) => site.parseTaf(raw).groups.find((g) => g.type === type).flightCategory;
+
+for (const [vis, why] of [['1/2SM FG', 'a fraction'], ['M1/4SM', 'less than'], ['3/4SM', 'three quarters'], ['0800', 'metric, under 1 SM']]) {
+  test(`an FM with OVC0X0 and visibility below 1 SM (${why}) is LIFR on the card, slider, and band`, () => {
+    const raw = `${HEAD} FM011600 18010KT ${vis} OVC0X0`;
+    assert.equal(cardCategory(raw, 'FM'), 'LIFR');
+    assert.equal(view(raw, 5).base.category, 'LIFR');
+    assert.match(fmBandTitle(raw), /^LIFR /);
+    assert.match(site.parseTaf(raw).warnings.join(' '), /LIFR is shown because the visibility it does state alone sets it/);
+  });
+}
+
+for (const vis of ['1SM', '5SM']) {
+  test(`an FM with OVC0X0 and ${vis} has no category anywhere, since that visibility does not settle LIFR`, () => {
+    const raw = `${HEAD} FM011600 18010KT ${vis} OVC0X0`;
+    assert.equal(cardCategory(raw, 'FM'), null);
+    assert.equal(view(raw, 5).base.category, null);
+    assert.match(fmBandTitle(raw), /^No category /);
+    assert.doesNotMatch(site.buildSliderReadout(view(raw, 5)), /cat-(vfr|mvfr|ifr|lifr)"/);
+  });
+}
+
+for (const [tempo, expected] of [
+  ['3SM', null], ['3SM -RA', null], ['-TSRA', null], ['P6SM', null], ['1SM', null],
+  ['1/2SM', 'LIFR'], ['3/4SM', 'LIFR'], ['0800', 'LIFR'],
+]) {
+  test(`a TEMPO "${tempo}" inside an FM with OVC0X0 inherits the unreadable sky: ${expected || 'no category'}`, () => {
+    const raw = `${HEAD} FM011600 18010KT 5SM OVC0X0 TEMPO 0118/0120 ${tempo}`;
+    assert.equal(cardCategory(raw, 'TEMPO'), expected, 'the group card');
+    const v = view(raw, 7);
+    assert.equal(v.possible[0].state.category, expected, 'the slider overlay');
+    assert.equal(v.base.category, null, 'the prevailing forecast stays unknown');
+    assert.match(fmBandTitle(raw), /^No category /, 'the band shows only the prevailing forecast');
+    assert.doesNotMatch(site.buildSliderReadout(v), /cat-vfr"/);
+  });
+}
+
+// ── Chip wording: "couldn't be read" for an unreadable token, "not stated" only when the group leaves it out
+const chipTexts = (raw, step) => [...site.buildSliderReadout(view(raw, step)).matchAll(/taf-chip-(wind|vis|sky)">([^<]*)</g)].map((m) => m[2]);
+
+test('an unreadable sky token makes the sky chip say it could not be read', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT 5SM OVC0X0`, 5);
+  assert.ok(chips.includes('Sky couldn\'t be read'), chips.join(' | '));
+  assert.ok(!chips.includes('Sky not stated'));
+  assert.ok(chips.includes('5SM'), 'the visibility it did state still shows');
+});
+
+test('an unreadable sky token does not blame the visibility chip', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT OVC0X0`, 5);
+  assert.ok(chips.includes('Visibility not stated'), 'the group really leaves visibility out');
+  assert.ok(chips.includes('Sky couldn\'t be read'));
+});
+
+test('an unreadable visibility token makes the visibility chip say so, and the sky after it too', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT 5XSM BKN020`, 5);
+  assert.ok(chips.includes('Visibility couldn\'t be read'), chips.join(' | '));
+  assert.ok(chips.includes('Sky couldn\'t be read'), 'BKN020 sits after the bad token and was never read');
+  assert.ok(!chips.includes('Visibility not stated') && !chips.includes('Sky not stated'));
+});
+
+test('an unreadable visibility token with nothing after it leaves the sky as truly not stated', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT 5XSM`, 5);
+  assert.ok(chips.includes('Visibility couldn\'t be read'));
+  assert.ok(chips.includes('Sky not stated'));
+});
+
+test('wind shear after an unreadable visibility token does not count as an unread sky', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT 5XSM WS020/25040KT`, 5);
+  assert.ok(chips.includes('Sky not stated'));
+});
+
+test('a group that truly omits visibility and sky still says not stated', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT`, 5);
+  assert.ok(chips.includes('Visibility not stated'));
+  assert.ok(chips.includes('Sky not stated'));
+  assert.ok(!chips.some((c) => /couldn't be read/.test(c)));
+});
+
+test('a TEMPO that inherits an unreadable sky shows the sky chip as unreadable, not not stated', () => {
+  const chips = chipTexts(`${HEAD} FM011600 18010KT 5SM OVC0X0 TEMPO 0118/0120 3SM`, 7);
+  assert.ok(chips.includes('Sky couldn\'t be read'), chips.join(' | '));
+  assert.ok(!chips.includes('Sky not stated'));
+});
+
+test('once a later group restates visibility and sky, the unreadable chip wording goes away', () => {
+  const raw = `${HEAD} FM011600 18010KT 5SM OVC0X0 FM011800 18010KT 5SM BKN020`;
+  assert.ok(!chipTexts(raw, 7).some((c) => /couldn't be read/.test(c)));
+  assert.ok(chipTexts(raw, 7).includes('BKN020'));
+});
+
 test('low-level wind shear shows on the slider', () => {
   const raw = 'TAF KXXX 011130Z 0112/0212 18010KT P6SM SKC WS020/25040KT';
   assert.match(site.buildSliderReadout(view(raw, 2)), /WS 2,000 ft: 250° \/ 40 KT/);

@@ -158,12 +158,15 @@ function tafStateFromGroup(group) {
     sky: group.sky,
     skyKnown: group.sky.length > 0 || cavok,
     windShear: group.windShear,
-    unreadable: group.unreadable
+    unreadable: group.unreadable,
+    unreadableCovers: group.unreadableCovers
   };
 }
 
 function mergeTafGroup(state, group) {
   const cavok = !!(group.visibility && group.visibility.cavok);
+  // An unreadable token could be anything, so it counts until visibility and sky are both restated.
+  const clears = !!(group.visibility && (group.sky.length || cavok));
   return {
     wind: group.wind || state.wind,
     visibility: group.visibility || state.visibility,
@@ -171,8 +174,8 @@ function mergeTafGroup(state, group) {
     sky: cavok ? [] : (group.sky.length ? group.sky : state.sky),
     skyKnown: group.sky.length > 0 || cavok || state.skyKnown,
     windShear: group.windShear || state.windShear,
-    // An unreadable token could be anything, so it counts until visibility and sky are both restated.
-    unreadable: group.unreadable || (group.visibility && (group.sky.length || cavok) ? null : state.unreadable)
+    unreadable: group.unreadable || (clears ? null : state.unreadable),
+    unreadableCovers: group.unreadable ? group.unreadableCovers : (clears ? [] : state.unreadableCovers)
   };
 }
 
@@ -315,7 +318,8 @@ function parseGroup(tokens, isBase) {
     nsw: false,
     flightCategory: null,   // set by resolveTafGroups, which knows what the group inherits
     carriedOver: '',
-    unreadable: null
+    unreadable: null,
+    unreadableCovers: []    // which "not stated" claims the unreadable token makes untrustworthy
   };
 
   let i = 0;
@@ -434,7 +438,15 @@ function parseGroup(tokens, isBase) {
 
   // A token shaped like sky or visibility that we couldn't read must not be skipped,
   // or the group would silently inherit the value it was trying to change.
-  if (i < tokens.length && /^(FEW|SCT|BKN|OVC|VV)|SM$/.test(tokens[i])) group.unreadable = tokens[i];
+  if (i < tokens.length && /^(FEW|SCT|BKN|OVC|VV)|SM$/.test(tokens[i])) {
+    group.unreadable = tokens[i];
+    // Reading stops at this token. A sky-shaped one is the sky itself. A visibility-shaped one
+    // also hides whatever follows it, so a sky layer after it was never read, and "sky not
+    // stated" would be untrue.
+    const isSky = /^(FEW|SCT|BKN|OVC|VV)/.test(tokens[i]);
+    group.unreadableCovers = isSky ? ['sky'] : ['visibility'];
+    if (!isSky && tokens.slice(i + 1).some(t => !/^WS/.test(t))) group.unreadableCovers.push('sky');
+  }
 
   // ── Wind shear: WS###/dddssKT (anywhere in remaining tokens)
   for (let j = i; j < tokens.length; j++) {

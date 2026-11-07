@@ -250,7 +250,7 @@ const MINIMUMS_NOTE = 'This compares the report with the limits you saved. It su
 let minimumsAirportLoad = null;
 function loadMinimumsAirports() {
   if (!minimumsAirportLoad) {
-    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-04b')
+    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-06')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
   }
   return minimumsAirportLoad;
