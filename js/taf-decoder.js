@@ -159,7 +159,8 @@ function tafStateFromGroup(group) {
     skyKnown: group.sky.length > 0 || cavok,
     windShear: group.windShear,
     unreadable: group.unreadable,
-    unreadableCovers: group.unreadableCovers
+    unreadableCovers: group.unreadableCovers,
+    windUnreadable: group.windUnreadable
   };
 }
 
@@ -168,7 +169,10 @@ function mergeTafGroup(state, group) {
   // An unreadable token could be anything, so it counts until visibility and sky are both restated.
   const clears = !!(group.visibility && (group.sky.length || cavok));
   return {
-    wind: group.wind || state.wind,
+    // An unreadable wind never falls back to the wind before it. A later group that gives a
+    // readable wind clears it.
+    wind: group.windUnreadable ? null : (group.wind || state.wind),
+    windUnreadable: group.windUnreadable || (group.wind ? null : state.windUnreadable),
     visibility: group.visibility || state.visibility,
     weather: (group.nsw || cavok) ? [] : (group.weather.length ? group.weather : state.weather),
     sky: cavok ? [] : (group.sky.length ? group.sky : state.sky),
@@ -266,6 +270,11 @@ function resolveTafGroups(parsed) {
   const name = g => (GROUP_META[g.type] && GROUP_META[g.type].label) || g.type;
 
   for (const g of parsed.groups) {
+    // A wind we couldn't read doesn't change the category, so this is a warning of its own.
+    if (g.windUnreadable) {
+      const when = g.validFrom && g.type !== 'BASE' ? ` at ${formatTafTime(g.validFrom)}` : '';
+      parsed.warnings.push(`Couldn't read ${g.windUnreadable} in the ${name(g)} group${when} where wind belongs. Its wind is shown as unreadable, and the rest of the group was read.`);
+    }
     if (g.type === 'BASE' || g.type === 'FM') {
       const own = tafStateFromGroup(g);
       g.flightCategory = categoryWithUnreadable(g, own);
@@ -301,7 +310,7 @@ function resolveTafGroups(parsed) {
     const prior = before.prevailing;
     const cavok = !!(g.visibility && g.visibility.cavok);
     g.carriedOver = [
-      !g.wind && prior.wind && prior.wind.raw,
+      !g.wind && !g.windUnreadable && prior.wind && prior.wind.raw,
       !g.visibility && prior.visibility && prior.visibility.raw,
       ...(!g.nsw && !cavok && !g.weather.length ? prior.weather.map(w => w.raw) : []),
       ...(!cavok && !g.sky.length ? prior.sky.map(l => l.raw) : []),
@@ -344,7 +353,8 @@ function parseGroup(tokens, isBase) {
     flightCategory: null,   // set by resolveTafGroups, which knows what the group inherits
     carriedOver: '',
     unreadable: null,
-    unreadableCovers: []    // which "not stated" claims the unreadable token makes untrustworthy
+    unreadableCovers: [],   // which "not stated" claims the unreadable token makes untrustworthy
+    windUnreadable: null    // wind-like tokens we couldn't read, joined. Wind stays null.
   };
 
   let i = 0;
@@ -395,6 +405,24 @@ function parseGroup(tokens, isBase) {
       const [f, t] = tokens[i++].split('/');
       group.validFrom = { day: +f.slice(0,2), hour: +f.slice(2,4) };
       group.validTo   = { day: +t.slice(0,2), hour: +t.slice(2,4) };
+    }
+  }
+
+  // A wind we can't read is taken out first, so it can't stop the visibility, weather, and sky
+  // after it from being read, and so the group can't quietly inherit the wind it was meant to
+  // change. That is any token ending like a wind that fails the wind pattern (wherever it sits),
+  // or the first token after the header when it is neither a wind nor any other element.
+  {
+    const bad = [], keep = tokens.slice(0, i);
+    for (let k = i; k < tokens.length; k++) {
+      const t = tokens[k];
+      const garbled = isGarbledWindToken(t) || isWindOutage(t)
+        || (k === i && !WIND_PATTERN.test(t) && !looksLikeNonWind(t));
+      (garbled ? bad : keep).push(t);
+    }
+    if (bad.length) {
+      group.windUnreadable = bad.join(' ');
+      tokens = keep;
     }
   }
 
@@ -609,7 +637,8 @@ function buildGroupCard(group) {
   // read shows that, since the element might be what we couldn't read.
   const unread = el => (group.unreadableCovers || []).includes(el);
   const chips = [
-    windStr  && `<span class="taf-chip taf-chip-wind">${escHtml(windStr)}</span>`,
+    windStr ? `<span class="taf-chip taf-chip-wind">${escHtml(windStr)}</span>`
+      : group.windUnreadable && '<span class="taf-chip taf-chip-wind">Wind couldn\'t be read</span>',
     visStr ? `<span class="taf-chip taf-chip-vis">${escHtml(visStr)}</span>`
       : unread('visibility') && '<span class="taf-chip taf-chip-vis">Visibility couldn\'t be read</span>',
     wxStr ? `<span class="taf-chip taf-chip-wx">${escHtml(wxStr)}</span>`

@@ -1725,6 +1725,9 @@ html[data-theme="dark"] .tl-ov-unknown { color: var(--buff); }
 .mins-tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); padding-top: 0.15rem; }
 .mins-line--exceeds, .mins-line--exceeds .mins-tag { color: var(--rust); font-weight: 600; }
 .mins-line--at .mins-tag { color: var(--ink); font-weight: 600; }
+/* The top line when any element couldn't be checked. Not a verdict: nothing here ever says "pass". */
+.mins-incomplete { margin: 0 0 0.6rem; padding: 0.5rem 0.7rem; background: var(--buff-dark); border-radius: 2px; font-size: 0.92rem; line-height: 1.45; color: var(--ink); }
+.mins-incomplete strong { font-weight: 700; }
 .mins-note, .mins-empty { margin: 0.7rem 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--ink-soft); }
 .mins-empty { font-size: 0.92rem; color: var(--ink); }
 @media (max-width: 480px) {
@@ -1917,6 +1920,15 @@ html[data-theme="dark"] .tl-ov-unknown { color: var(--buff); }
   background: var(--surface);
   border: 1px solid var(--rule);
   padding: 1rem;
+}
+/* A warning inside a visual card, such as a wind we couldn't read. Rust reads on both themes. */
+.vis-warn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--rust);
+  text-align: center;
+  margin: 0.5rem 0 0;
 }
 .vis-raw {
   font-family: var(--font-mono);

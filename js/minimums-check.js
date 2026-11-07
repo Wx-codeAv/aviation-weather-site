@@ -65,7 +65,8 @@ function formatKnots(value) {
 function compareToLimit(name, value, limit) {
   const v = roundTenth(value);
   if (limit === null || limit === undefined) {
-    return { status: 'notChecked', text: `${name} ${formatKnots(v)} wasn't checked because no limit is saved.` };
+    return { status: 'notChecked', text: `${name} ${formatKnots(v)} wasn't checked because no limit is saved.`,
+      incomplete: `no limit is saved for ${name.toLowerCase()}, so it wasn't checked` };
   }
   const plural = name === 'Gusts';
   if (v > limit) return { status: 'exceeds', text: `${name} ${formatKnots(v)} ${plural ? 'exceed' : 'exceeds'} your ${limit} kt limit.` };
@@ -92,14 +93,16 @@ function checkCeiling(parsed, limit, out) {
     && !parsed.sky.some(skyLayerUnknown) && !parsed.unreadable.length);
   const ceiling = getCeiling(parsed.sky);
   if (limit === null) {
-    out.push({ status: 'notChecked', text: 'Ceiling wasn\'t checked because no minimum is saved.' });
+    out.push({ status: 'notChecked', text: 'Ceiling wasn\'t checked because no minimum is saved.',
+      incomplete: 'no ceiling minimum is saved, so ceiling wasn\'t checked' });
     return;
   }
   const min = `your ${limit.toLocaleString()} ft minimum`;
   if (ceiling !== null && ceiling < limit) {
     out.push({ status: 'exceeds', text: `Ceiling ${ceiling.toLocaleString()} ft is below ${min}.` });
   } else if (!confirmed) {
-    out.push({ status: 'notChecked', text: 'Ceiling wasn\'t checked because sky condition is missing or unreadable in this report.' });
+    out.push({ status: 'notChecked', text: 'Ceiling wasn\'t checked because sky condition is missing or unreadable in this report.',
+      incomplete: 'sky condition is missing or unreadable, so ceiling wasn\'t checked' });
   } else if (ceiling === null) {
     out.push({ status: 'within', text: `No ceiling reported. ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
   } else if (ceiling === limit) {
@@ -127,11 +130,13 @@ function checkVisibility(parsed, limit, out) {
   const vis = parsed.visibility;
   const sm = visibilityInSM(vis);
   if (limit === null) {
-    out.push({ status: 'notChecked', text: 'Visibility wasn\'t checked because no minimum is saved.' });
+    out.push({ status: 'notChecked', text: 'Visibility wasn\'t checked because no minimum is saved.',
+      incomplete: 'no visibility minimum is saved, so visibility wasn\'t checked' });
     return;
   }
   if (sm === null) {
-    out.push({ status: 'notChecked', text: 'Visibility wasn\'t checked because it\'s missing or unreadable in this report.' });
+    out.push({ status: 'notChecked', text: 'Visibility wasn\'t checked because it\'s missing or unreadable in this report.',
+      incomplete: 'visibility is missing or unreadable, so visibility wasn\'t checked' });
     return;
   }
   const min = `your ${limit} SM minimum`;
@@ -143,7 +148,8 @@ function checkVisibility(parsed, limit, out) {
     if (limit <= floor) {
       out.push({ status: 'within', text: `Visibility ${said} meets ${min}.` });
     } else {
-      out.push({ status: 'notChecked', text: `Visibility ${said} can't be confirmed against ${min}.` });
+      out.push({ status: 'notChecked', text: `Visibility ${said} can't be confirmed against ${min}.`,
+        incomplete: `visibility ${vis.raw} can't be confirmed against ${min}, so it wasn't checked` });
     }
     return;
   }
@@ -156,12 +162,21 @@ function checkVisibility(parsed, limit, out) {
 
 function checkWind(parsed, limits, runway, noRunwayReason, out) {
   const w = parsed.wind;
+  // A wind token was present but we couldn't read it. Never compare, even if another wind
+  // token was readable, because we can't tell which one the report meant.
+  if (parsed.windUnreadable) {
+    out.push({ status: 'notChecked', text: 'Wind couldn\'t be read, so wind and crosswind limits weren\'t checked.',
+      incomplete: 'wind couldn\'t be read, so wind and crosswind weren\'t checked' });
+    return;
+  }
   if (!w) {
-    out.push({ status: 'notChecked', text: 'Wind isn\'t reported, so wind limits weren\'t checked.' });
+    out.push({ status: 'notChecked', text: 'Wind isn\'t reported, so wind limits weren\'t checked.',
+      incomplete: 'wind isn\'t reported, so wind and crosswind weren\'t checked' });
     return;
   }
   if (w.unit !== 'KT') {
-    out.push({ status: 'notChecked', text: `Wind is reported in ${w.unit} and your limits are in knots, so wind limits weren't checked.` });
+    out.push({ status: 'notChecked', text: `Wind is reported in ${w.unit} and your limits are in knots, so wind limits weren't checked.`,
+      incomplete: `wind is reported in ${w.unit} and your limits are in knots, so wind and crosswind weren't checked` });
     return;
   }
   if (w.speed === 0) {
@@ -183,7 +198,8 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
   }
 
   if (!runway) {
-    out.push({ status: 'notChecked', text: `${noRunwayReason || 'No runway selected.'} Crosswind wasn't checked. Total wind and gusts were.` });
+    out.push({ status: 'notChecked', text: `${noRunwayReason || 'No runway selected.'} Crosswind wasn't checked. Total wind and gusts were.`,
+      incomplete: `${(noRunwayReason || 'No runway selected.').replace(/\.$/, '').replace(/^./, c => c.toLowerCase())}, so crosswind wasn't checked` });
     return;
   }
 
@@ -239,6 +255,13 @@ function orderMinimumsLines(lines) {
   return sorted;
 }
 
+// The line at the top when any element couldn't be checked. It names what wasn't checked and
+// never says "pass". Null when everything was checked.
+function incompleteSummary(lines) {
+  const reasons = lines.filter(l => l.status === 'notChecked' && l.incomplete).map(l => l.incomplete);
+  return reasons.length ? `${reasons.join('; ')}.` : null;
+}
+
 function buildMinimumsLines(lines) {
   return orderMinimumsLines(lines)
     .map(l => `<li class="mins-line mins-line--${l.status}"><span class="mins-tag">${MINIMUMS_STATUS_LABEL[l.status]}</span><span>${escHtml(l.text)}</span></li>`)
@@ -250,7 +273,7 @@ const MINIMUMS_NOTE = 'This compares the report with the limits you saved. It su
 let minimumsAirportLoad = null;
 function loadMinimumsAirports() {
   if (!minimumsAirportLoad) {
-    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-06')
+    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-06b')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
   }
   return minimumsAirportLoad;
@@ -283,13 +306,18 @@ function renderMinimumsCheck(parsed) {
       <label for="mins-runway">Runway at ${escHtml(parsed.station)}</label>
       <select id="mins-runway" class="mins-select"><option value="">Choose a runway</option></select>
     </div>
+    <p id="mins-incomplete" class="mins-incomplete" hidden></p>
     <ul id="mins-lines" class="mins-lines"></ul>
     <p class="mins-note">${escHtml(MINIMUMS_NOTE)}</p>`;
   el.hidden = false;
 
   const draw = (runway, reason) => {
-    document.getElementById('mins-lines').innerHTML =
-      buildMinimumsLines(checkMetarAgainstMinimums(parsed, saved.limits, runway, reason));
+    const lines = checkMetarAgainstMinimums(parsed, saved.limits, runway, reason);
+    document.getElementById('mins-lines').innerHTML = buildMinimumsLines(lines);
+    const incomplete = incompleteSummary(lines);
+    const banner = document.getElementById('mins-incomplete');
+    banner.innerHTML = incomplete ? `<strong>Incomplete:</strong> ${escHtml(incomplete)}` : '';
+    banner.hidden = !incomplete;
   };
   draw(null, 'Loading runway data.');
 

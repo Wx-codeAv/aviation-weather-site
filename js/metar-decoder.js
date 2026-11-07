@@ -51,6 +51,45 @@ const HOMOGLYPHS = {
   'Т':'T','У':'Y','Х':'X'                              // Cyrillic
 };
 
+// ── Wind tokens, shared with the TAF decoder ─────────────────
+// A wind we can't read is not the same as a wind that isn't reported. "Couldn't be read" must
+// never fall back to a value, and it must never hide the visibility and sky that follow it.
+
+const WIND_PATTERN = /^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/;
+
+// The shapes a failed wind sensor really reports: direction and/or speed as slashes, such as
+// /////KT, ///10KT, or 180//KT. A slash in the middle of a number (180/10KT) is a typo, not an outage.
+function isWindOutage(tok) {
+  const m = tok.match(/^(\/{3}|\d{3}|VRB)(\/{2,3}|\d{2,3})(KT|MPS|KMH)$/);
+  return !!m && (m[1] === '///' || /^\/+$/.test(m[2]));
+}
+
+// Any token that ends like a wind (KT, KTS, K, MPS, KMH) but fails the wind pattern is a garbled
+// wind, wherever it sits. Wind shear (WS...) and the slash-only outage shapes are not.
+function isGarbledWindToken(tok) {
+  return tok.length >= 3
+    && /[\d/]/.test(tok)
+    && /(KT|KTS|K|MPS|KMH)$/.test(tok)
+    && !/^(WS|TX|TN)/.test(tok)
+    && !WIND_PATTERN.test(tok)
+    && !isWindOutage(tok);
+}
+
+// True when a token in the wind position is clearly some other element, so the report simply
+// has no wind and nothing should be flagged: visibility, weather, sky, temperature, altimeter,
+// RVR, remarks, trend, time, or a TAF-only token.
+function looksLikeNonWind(tok) {
+  return tok === 'CAVOK' || tok === 'NSW' || tok === 'RMK' || tok === 'NOSIG'
+    || /^(AUTO|COR|AMD|NIL)$/.test(tok)
+    || /^(BECMG|TEMPO|INTER|PROB\d{2}|FM\d{4,6}|TL\d{4}|AT\d{4})$/.test(tok)
+    || /^(WS|TX|TN)/.test(tok)
+    || /SM$/.test(tok) || /^\d{4}(NDV|N|NE|E|SE|S|SW|W|NW)?$/.test(tok)
+    || /^(SKC|CLR|NSC|NCD|VV|FEW|SCT|BKN|OVC|\/{3})/.test(tok)
+    || /^M?\d+\/M?\d+$/.test(tok) || /^\d{4}\/\d{4}$/.test(tok) || /^\d{6}Z?$/.test(tok)
+    || /^[AQ](\d{4}|\/{4})$/.test(tok) || /^R\d{2}[LRC]?\//.test(tok) || /^\/+$/.test(tok)
+    || decodeWeather(tok) !== null;
+}
+
 function parseMetar(rawInput) {
   // Normalize whitespace, then fold look-alike Greek/Cyrillic letters to Latin
   let raw = rawInput.trim().toUpperCase().replace(/\s+/g, ' ')
@@ -71,6 +110,8 @@ function parseMetar(rawInput) {
     type: null, station: null, time: null,
     auto: false, cor: false,
     wind: null, windVariable: null,
+    windUnreadable: null,   // wind-like tokens we couldn't read, joined. Wind stays null.
+    windWarning: null,
     visibility: null,
     weather: [], sky: [],
     temp: null, dewpoint: null,
@@ -94,6 +135,12 @@ function parseMetar(rawInput) {
     push(token, 'unknown', 'Unrecognized group',
       'Not recognized — skipped so the rest of the report could still decode. ' +
       'May be a coded element this decoder does not support yet, or a garbled group.');
+  }
+
+  // A wind we couldn't read. It is shown as unreadable and never given a value.
+  function flagUnreadableWind(tok) {
+    result.windUnreadable = result.windUnreadable ? `${result.windUnreadable} ${tok}` : tok;
+    push(tok, 'wind', 'Wind', `Couldn't be read. The report gave "${tok}".`);
   }
 
   // Reads one visibility group. Returns false if the token isn't one.
@@ -233,7 +280,7 @@ function parseMetar(rawInput) {
 
   // 5 ── Wind: dddssKT, dddssGggKT, VRBssKT, 00000KT
   if (i < tokens.length) {
-    const wm = tokens[i].match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/);
+    const wm = tokens[i].match(WIND_PATTERN);
     if (wm) {
       const dir = wm[1] === 'VRB' ? 'VRB' : +wm[1];
       const speed = +wm[2];
@@ -247,6 +294,7 @@ function parseMetar(rawInput) {
         desc = 'Calm — winds less than 3 knots';
       } else if (dir === 'VRB') {
         desc = `Variable direction at ${speed} ${unit}`;
+        if (gust) desc += `, gusting ${gust} ${unit}`;
       } else {
         desc = `From ${String(dir).padStart(3, '0')}° at ${speed} ${unit}`;
         if (gust) desc += `, gusting ${gust} ${unit}`;
@@ -263,10 +311,14 @@ function parseMetar(rawInput) {
           `Direction varying ${from}° to ${to}°`);
         i++;
       }
-    } else if (/^[\d/]{5,6}(KT|MPS|KMH)$/.test(tokens[i]) && tokens[i].includes('/')) {
+    } else if (isWindOutage(tokens[i])) {
       // Wind sensor unavailable: direction and/or speed reported as slashes (/////KT)
       push(tokens[i], 'wind', 'Wind',
         'Not available — wind not reported by the automated sensor');
+      i++;
+    } else if (!looksLikeNonWind(tokens[i])) {
+      // Something sits where the wind belongs, and it isn't a wind or any other element.
+      flagUnreadableWind(tokens[i]);
       i++;
     }
   }
@@ -388,6 +440,12 @@ function parseMetar(rawInput) {
       i++; continue;
     }
 
+    // A token that ends like a wind but isn't one, wherever it sits before remarks.
+    if (isGarbledWindToken(tok)) {
+      flagUnreadableWind(tok);
+      i++; continue;
+    }
+
     // Still in the body: read what belongs here, in any order.
     if (bodyOpen) {
       if (trySky(tok) || (!result.visibility && tryVisibility(tok))) { i++; continue; }
@@ -401,8 +459,9 @@ function parseMetar(rawInput) {
         push(tok, 'weather', 'Present weather', decoded);
         i++; continue;
       }
-      // A garbled wind can't change the category. Anything else here might be
-      // a garbled layer or visibility, so it can't be ruled out.
+      // A garbled wind was already taken above. A second, valid wind or an outage shape that
+      // lands here can't change the category either. Anything else might be a garbled layer
+      // or visibility, so it can't be ruled out.
       if (!/(KT|MPS|KMH)$/.test(tok)) result.unreadable.push(tok);
     }
 
@@ -413,6 +472,11 @@ function parseMetar(rawInput) {
 
   result.flightCategory = deriveFlightCategory(result);
   result.warnings = metarWarnings(result);
+  // Kept apart from the category warnings, which say why a category can't be shown. A wind
+  // we couldn't read doesn't change the category.
+  result.windWarning = result.windUnreadable
+    ? `Couldn't read ${result.windUnreadable} where wind belongs. Wind isn't shown, and wind and crosswind limits aren't checked. The rest of the report was read.`
+    : null;
   return result;
 }
 
@@ -1068,10 +1132,18 @@ function renderDecoder(parsed) {
   // Wind visual
   const windEl = document.getElementById('wind-visual');
   if (windEl) {
-    windEl.innerHTML = buildWindSVG(parsed.wind, parsed.windVariable);
+    // A wind we couldn't read gets its own message, so it can't look like a missing wind.
+    windEl.innerHTML = parsed.windUnreadable
+      ? '<div class="vis-placeholder">Wind couldn\'t be read</div>'
+      : buildWindSVG(parsed.wind, parsed.windVariable);
+    const windWarn = document.getElementById('wind-warning');
+    if (windWarn) {
+      windWarn.textContent = parsed.windWarning || '';
+      windWarn.hidden = !parsed.windWarning;
+    }
     const windDesc = document.getElementById('wind-desc');
     if (windDesc) windDesc.textContent = '';   // don't leave the previous report's wind on screen
-    if (windDesc && parsed.wind) {
+    if (windDesc && parsed.wind && !parsed.windUnreadable) {
       const wd = parsed.wind;
       // Space the direction away from the speed, e.g. "33011KT" → "330 11KT"
       if (wd.dir === 0 && wd.speed === 0) {
@@ -1085,7 +1157,7 @@ function renderDecoder(parsed) {
     const xlink = document.getElementById('wind-xlink');
     if (xlink) {
       const wd = parsed.wind;
-      if (wd && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
+      if (wd && !parsed.windUnreadable && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
         const q = `dir=${wd.dir}&speed=${wd.speed}${wd.gust ? '&gust=' + wd.gust : ''}${parsed.station ? '&station=' + parsed.station : ''}`;
         xlink.innerHTML = `<a href="crosswind.html?${q}">Send this wind to the Crosswind tool →</a>`;
         xlink.hidden = false;
