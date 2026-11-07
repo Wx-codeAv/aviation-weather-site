@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07b">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07c">
 </head>
 <body>
 
@@ -371,7 +371,7 @@
                   <th>Pressure Level</th>
                   <th>Approx. Altitude</th>
                   <th>Primary Use</th>
-                  <th>Issued</th>
+                  <th>Data time</th>
                 </tr>
               </thead>
               <tbody>
@@ -379,36 +379,37 @@
                   <td><strong>850 mb</strong></td>
                   <td>~5,000 ft MSL</td>
                   <td>Low-level moisture, low-level jet, warm/cold advection, icing level indicator</td>
-                  <td>4x daily</td>
+                  <td>00Z and 12Z (radiosonde observations)</td>
                 </tr>
                 <tr>
                   <td><strong>700 mb</strong></td>
                   <td>~10,000 ft MSL</td>
                   <td>Mid-level moisture and lift, precipitation forecasting, turbulence</td>
-                  <td>4x daily</td>
+                  <td>00Z and 12Z (radiosonde observations)</td>
                 </tr>
                 <tr style="background: rgba(74,123,166,0.06);">
                   <td><strong>500 mb</strong></td>
                   <td>~18,000 ft MSL</td>
                   <td>Upper-level trough/ridge pattern; the primary steering level for surface weather systems</td>
-                  <td>4x daily</td>
+                  <td>00Z and 12Z (radiosonde observations)</td>
                 </tr>
                 <tr style="background: rgba(217,165,33,0.06);">
                   <td><strong>300 mb</strong></td>
                   <td>~30,000 ft MSL</td>
                   <td>Jet stream location, CAT zones, high-altitude wind planning</td>
-                  <td>4x daily</td>
+                  <td>00Z and 12Z (radiosonde observations)</td>
                 </tr>
                 <tr>
                   <td><strong>200 mb</strong></td>
                   <td>~39,000 ft MSL</td>
                   <td>Core jet stream winds, turbulence adjacent to jet core</td>
-                  <td>4x daily</td>
+                  <td>00Z and 12Z (radiosonde observations)</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p style="font-size: 0.85rem; color: var(--ink-soft);">Altitudes are approximate and vary with temperature. Standard atmosphere values. (FAA-H-8083-28 §25.3)</p>
+          <p style="font-size: 0.85rem; color: var(--ink-soft);">Radiosondes are assigned observation times of 1200 UTC and 0000 UTC (FAA-H-8083-28 §24.8.1). Constant-pressure level forecasts from model output, which are the source for wind and temperature aloft forecasts, cover specified later times (FAA-H-8083-28 Ch. 25).</p>
 
           <h3>What's plotted</h3>
           <ul>
@@ -439,7 +440,7 @@
               <span class="hazard-label">Surface chart red flag</span>
               <h3>Tightly packed isobars along route</h3>
               <ul class="hazard-list">
-                <li>Spacing of 2–3° lat/lon between 4 mb isobars typically means 25+ kt surface winds</li>
+                <li>Closely spaced isobars mean a strong pressure gradient, and the closer the spacing, the stronger the wind</li>
                 <li>Watch for crosswind component at airports along route</li>
                 <li>Expect turbulence in boundary layer, especially in mountainous terrain</li>
               </ul>
@@ -449,7 +450,7 @@
               <span class="hazard-label">Surface chart red flag</span>
               <h3>Deepening low approaching route</h3>
               <ul class="hazard-list">
-                <li>A low with central pressure dropping more than 1 mb/hr is "bombogenesis" — explosive development</li>
+                <li>A low whose central pressure falls enough in 24 hours is "bombogenesis" (explosive development). NOAA gives the drop as about 17.8 mb over 24 hours at the latitude of New York City, and it scales with latitude</li>
                 <li>Rapid deepening = rapid deterioration in weather over a wide area</li>
                 <li>Winds will strengthen faster than a slowly developing system</li>
               </ul>
@@ -581,6 +582,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-07b"></script>
+  <script src="../../js/main.js?v=2026-11-07c"></script>
 </body>
 </html>

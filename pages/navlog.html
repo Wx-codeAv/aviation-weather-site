@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-07b">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-07c">
   <style>
     /* ─── Hero ─── */
     .nl-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--rule); }
@@ -999,7 +999,7 @@
               <th class="ch ch-comp" title="Magnetic Heading = TH + Var (+W, −E). Mnemonic: East is least (subtract), West is best (add)">MH °</th>
               <th class="ch" title="Compass deviation from aircraft compass correction card. Enter positive or negative degrees.">Dev °</th>
               <th class="ch ch-comp" title="Compass Heading = MH + Dev. This is the number you fly on the magnetic compass.">CH °</th>
-              <th class="ch" title="Altitude planned for this leg in feet MSL. For the hemispheric rule: odd thousands +500 ft eastbound, even thousands +500 ft westbound.">Alt ft</th>
+              <th class="ch" title="Altitude planned for this leg in feet MSL. The hemispheric check applies to VFR cruise more than 3,000 ft above the surface: odd thousands +500 ft eastbound, even thousands +500 ft westbound (14 CFR 91.159). IFR uses odd or even thousands with no 500 ft (14 CFR 91.179).">Alt ft</th>
               <th class="ch" title="NAVAID frequency for this checkpoint (VOR/VORTAC), optional.">NAV Freq</th>
               <th class="ch" title="NAVAID identifier (e.g. ORL), optional.">NAV ID</th>
               <th class="ch" title="Leg distance in nautical miles, measured on your sectional chart with a plotter.">Dist NM</th>
@@ -1328,8 +1328,8 @@
     </div>
   </div>
 
-<script src="../js/poh-c172s.js?v=2026-11-07b"></script>
-<script src="../js/poh-interp.js?v=2026-11-07b"></script>
+<script src="../js/poh-c172s.js?v=2026-11-07c"></script>
+<script src="../js/poh-interp.js?v=2026-11-07c"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    NAV LOG CALCULATOR — CrosswindWx
@@ -1849,7 +1849,7 @@ function hemisphericRuleMsg(alt_ft, mh_deg) {
 
   if (rem !== 500) {
     return (eastbound ? 'Eastbound (MH 0–179°): odd' : 'Westbound (MH 180–359°): even') +
-      ' thousands + 500 ft required above 3,000 ft AGL (14 CFR §91.159)';
+      ' thousands + 500 ft required more than 3,000 ft above the surface; altitude is MSL (14 CFR §91.159)';
   }
   if (eastbound && thou % 2 === 0) {
     return `Eastbound (MH ${Math.round(mh)}°): need odd thousands + 500 ft — e.g. ${thou + 1}500 ft, not ${alt_ft.toLocaleString()} ft (14 CFR §91.159)`;
@@ -3306,6 +3306,6 @@ function waApply() {
   }
 }
 </script>
-  <script src="../js/main.js?v=2026-11-07b"></script>
+  <script src="../js/main.js?v=2026-11-07c"></script>
 </body>
 </html>

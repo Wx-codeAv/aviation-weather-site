@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07b">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07c">
 </head>
 <body>
 
@@ -120,7 +120,7 @@
         <section id="overview">
           <h2>What the FB is</h2>
           <p>
-            The <strong>Winds and Temperatures Aloft Forecast (FB)</strong> is the text product that gives forecast wind direction, wind speed, and air temperature at specific altitudes above selected stations across the U.S. It is issued twice daily (based on 00Z and 12Z model runs) and comes in three valid-time versions: 6-hour, 12-hour, and 24-hour forecasts. The National Weather Service produces it; it's accessed through aviationweather.gov and most EFB apps.
+            The <strong>Winds and Temperatures Aloft Forecast (FB)</strong> is the text product that gives forecast wind direction, wind speed, and air temperature at specific altitudes above selected stations across the U.S. It is issued four times daily and comes in three valid-time versions: 6-hour, 12-hour, and 24-hour forecasts. The National Weather Service produces it; it's accessed through aviationweather.gov and most EFB apps.
           </p>
           <p>
             The product has two primary uses: planning which altitude to fly (to find the best headwind–tailwind–altitude tradeoff), and finding the freezing level (the altitude at which temperature crosses 0°C). Both uses require being able to decode the alphanumeric encoding correctly — including the traps.
@@ -268,7 +268,7 @@
 
           <h3>Rule 1 — Calm or light and variable (< 5 kt)</h3>
           <p>
-            Encoded as <strong><code>9900</code></strong> with no temperature appended. The "99" in the direction field is the flag that tells you this is not a real wind direction. If you try to decode 990° as a direction — or 00 as a speed — you'll get nonsense. When you see 9900, the answer is: winds are calm or less than 5 kt at that altitude.
+            Encoded as <strong><code>9900</code></strong> with no temperature appended. The "99" in the direction field is the flag that tells you this is not a real wind direction. If you try to decode 990° as a direction — or 00 as a speed — you'll get nonsense. When you see 9900, the answer is: winds are light and variable (less than 5 kt) at that altitude.
           </p>
 
           <h3>Rule 2 — Wind speed ≥ 100 knots (the high-wind encoding trap)</h3>
@@ -295,7 +295,7 @@
               </div>
               <div>
                 <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--sage); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.1em;">Decoding steps</p>
-                <p style="margin: 0 0 0.3rem; color: var(--ink);">First two digits 75 ≥ 50 → high-wind flag</p>
+                <p style="margin: 0 0 0.3rem; color: var(--ink);">First two digits 75 are in the 51 to 86 range → high-wind flag</p>
                 <p style="margin: 0 0 0.3rem; color: var(--ink);">Direction: 75 − 50 = 25 → <strong>250°</strong></p>
                 <p style="margin: 0 0 0.3rem; color: var(--ink);">Speed: 35 + 100 = <strong>135 kt</strong></p>
                 <p style="margin: 0; color: var(--ink);">Temp: 52 → implied negative = <strong>−52°C</strong></p>
@@ -308,7 +308,7 @@
           </div>
 
           <p>
-            The practical trigger: <strong>any time the first two digits of the encoded wind group are 45 or higher, you are looking at a high-wind encoding.</strong> (Direction codes run 01–36 for 010°–360°; 37–49 are not valid directions and don't appear; 50–86 are the high-wind codes for 010°–360°; the range 87–99 is not used for direction, with 99 reserved for calm.) In practice, encountering a first-two-digit value above 36 is the reliable flag.
+            The practical trigger: <strong>any time the first two digits of the encoded wind group are 51 to 86, you are looking at a high-wind encoding of 100 kt or more.</strong> (Direction codes run 01–36 for 010°–360°; 37–50 do not appear; 51–86 are the high-wind codes for 010°–360°, because 50 is added to the direction; 99 is a separate flag for light and variable winds, written 9900.) In practice, a first-two-digit value above 36 that is not 99 is the reliable flag.
           </p>
 
           <h3>Rule 3 — Maximum reportable speed</h3>
@@ -633,11 +633,11 @@
               </ul>
             </article>
             <article class="hazard-card hazard-tango">
-              <h3>High-wind encoding trap (direction ≥50 in FB)</h3>
+              <h3>High-wind encoding trap (direction code 51 to 86 in FB)</h3>
               <ul class="hazard-list">
-                <li>Any direction group of 50 or above in the FB means winds ≥100 kt — subtract 50 from direction, add 100 to speed</li>
+                <li>A direction group from 51 to 86 in the FB means winds of 100 kt or more — subtract 50 from direction, add 100 to speed</li>
                 <li>Misreading "7535" as 750°/35 kt instead of 250°/135 kt is a fundamental error that corrupts every calculation that follows</li>
-                <li>Always check: is the direction field ≥50? If so, the high-wind encoding is active (FAA-H-8083-28 §27.2.1.1.1)</li>
+                <li>Always check: is the direction field 51 to 86? If so, the high-wind encoding is active (FAA-H-8083-28 §27.2.1.1.1)</li>
               </ul>
             </article>
             <article class="hazard-card hazard-sierra">
@@ -678,7 +678,7 @@
 
           <details class="qa">
             <summary>Q: What is the high-wind encoding rule in the FB forecast? How do you decode "7535-52"?</summary>
-            <p>When forecast winds are 100 knots or greater, <strong>50 is added to the direction group</strong> and <strong>100 is subtracted from the speed</strong> to keep both values in two-digit format. Any direction group of 50 or above is the flag. To decode "7535-52": the first two digits (75) are ≥ 50, so subtract 50 → 25 → wind from <strong>250°</strong>; add 100 to the speed (35) → <strong>135 kt</strong>; temperature: −52°C. The common exam trap is decoding "7535" as 750° direction and 35 kt — the impossible direction is the giveaway that you've missed the high-wind flag. (FAA-H-8083-28 §27.2.1.1.1)</p>
+            <p>When forecast winds are 100 knots or greater, <strong>50 is added to the direction group</strong> and <strong>100 is subtracted from the speed</strong> to keep both values in two-digit format. Any direction group from 51 to 86 is the flag. To decode "7535-52": the first two digits (75) are in the 51 to 86 range, so subtract 50 → 25 → wind from <strong>250°</strong>; add 100 to the speed (35) → <strong>135 kt</strong>; temperature: −52°C. The common exam trap is decoding "7535" as 750° direction and 35 kt — the impossible direction is the giveaway that you've missed the high-wind flag. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
 
           <details class="qa">
@@ -714,7 +714,7 @@
             <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
           </p>
           <p>
-            You're planning an IFR flight from Denver (KDEN, elevation 5,433 ft) to Kansas City (KMCI) — 540 nm. Your Cessna 182T (turbocharged) cruises at 155 kt TAS. You pull the 12-hour FB for your 14:00Z departure:
+            You're planning a westbound IFR flight from Kansas City (KMCI) to Denver (KDEN, elevation 5,433 ft), 540 nm. Your Cessna 182T (turbocharged) cruises at 155 kt TAS. You pull the 12-hour FB for your 14:00Z departure:
           </p>
           <ul>
             <li>6,000 ft: <strong>(blank)</strong> — station is within 1,500 ft of terrain</li>
@@ -722,11 +722,11 @@
             <li>12,000 ft: <strong>2832-12</strong> → winds 280°/32 kt, −12°C</li>
             <li>18,000 ft: <strong>2848-28</strong> → winds 280°/48 kt, −28°C</li>
           </ul>
-          <p>The GFA shows an overcast layer from 11,000–16,000 ft along most of the route. AIRMET Zulu is not currently active. The freezing level from the FB at 9,000 ft is −5°C — well below freezing at all altitudes in the clouds.</p>
+          <p>The GFA shows an overcast layer from 11,000–16,000 ft along most of the route. AIRMET Zulu is not currently active. The FB temperature at 9,000 ft is −5°C, so every altitude in the cloud layer is below freezing.</p>
 
           <details class="qa">
-            <summary>Option A: File for 9,000 ft — lowest usable IFR altitude, smallest headwind.</summary>
-            <p><strong>Reasonable, but check the math.</strong> At 9,000 ft, 18 kt headwind on a 280° track heading roughly 090° gives a headwind component of approximately 18 kt. 155 − 18 = 137 kt groundspeed. 540 nm / 137 kt = 3.9 hours. Fuel: check. Clouds at 11,000 ft put 9,000 ft below the cloud layer — potentially VMC on top or under it depending on bases. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (FAA-H-8083-28 §27.2.1.1.1)</p>
+            <summary>Option A: File for 10,000 ft, an even thousand for a westbound IFR flight with the smallest headwind of the usable altitudes.</summary>
+            <p><strong>Reasonable, but check the math.</strong> The FB has no 10,000 ft entry, so interpolate between 9,000 ft (270°/18 kt, −5°C) and 12,000 ft (280°/32 kt, −12°C), as a briefer would (AIM 7-1-5). That gives about 270°/23 kt and −7°C at 10,000 ft. On a westbound track of roughly 270°, that wind is almost a direct headwind of about 23 kt. 155 − 23 = 132 kt groundspeed. 540 nm / 132 kt = 4.1 hours. Fuel: check. 10,000 ft is an even thousand, which 14 CFR 91.179 requires for a magnetic course of 180 through 359 degrees on an IFR flight in level cruise in uncontrolled airspace, so 9,000 ft is not an option here even though its headwind is smaller. Clouds start at 11,000 ft, so 10,000 ft is below the cloud layer. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
           <details class="qa">
             <summary>Option B: File for 12,000 ft — in the cloud layer with a 32-kt headwind.</summary>
@@ -734,11 +734,11 @@
           </details>
           <details class="qa">
             <summary>Option C: File for 18,000 ft — above the clouds, smooth air, but 48 kt headwind.</summary>
-            <p><strong>The headwind math kills this option.</strong> 155 − 48 = 107 kt groundspeed. 540 nm / 107 kt = 5.0 hours. That's 1.1 hours more than at 9,000 ft — easily 30–40 more gallons of fuel in a 182. At 18,000 ft you're also in the oxygen-required zone (above 14,000 ft for more than 30 minutes as a required crew member). Unless you have supplemental O₂ and the fuel, this isn't the answer. (14 CFR 91.211)</p>
+            <p><strong>The headwind math kills this option.</strong> 155 − 48 = 107 kt groundspeed. 540 nm / 107 kt = 5.0 hours. That's about 1.0 hour more than at 10,000 ft. At 18,000 ft you're also in the oxygen-required zone (above 14,000 ft for more than 30 minutes as a required crew member). Unless you have supplemental O₂ and the fuel, this isn't the answer. (14 CFR 91.211)</p>
           </details>
           <details class="qa">
-            <summary>Option D: File for 9,000 ft, check PIREPs for cloud bases, and plan an altitude amendment if tops are above 9,000 ft.</summary>
-            <p><strong>Best approach.</strong> Start with the lowest usable altitude and least headwind (9,000 ft). Before departure, get PIREPs to confirm cloud bases — if bases are at or above 9,000 ft, you'll be in the clouds, and you need to decide whether to stay below or climb to 12,000 ft through the layer. Filing 9,000 ft with a plan to request an amendment keeps options open. The key principle: work the actual numbers from the FB for groundspeed and fuel, don't assume an altitude is better without running the math. (FAA-H-8083-28 §27.2.1.1.1)</p>
+            <summary>Option D: File for 10,000 ft, check PIREPs for cloud bases, and plan an altitude amendment if the bases are at or below 10,000 ft.</summary>
+            <p><strong>Best approach.</strong> Start with the altitude that has the least headwind among the even thousands (10,000 ft). Before departure, get PIREPs to confirm cloud bases. If the bases are at or below 10,000 ft, you'll be in the clouds at a temperature below freezing, and you need to decide whether to descend or climb to 12,000 ft through the layer. Filing 10,000 ft with a plan to request an amendment keeps options open. The key principle: work the actual numbers from the FB for groundspeed and fuel, don't assume an altitude is better without running the math. (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
         </section>
 
@@ -749,7 +749,7 @@
             <ul class="takeaway-list">
               <li><strong>The FB format: DDSS±TT.</strong> Two-digit direction in tens of degrees, two-digit speed in knots, signed temperature in °C. No temperature at 3,000 ft. Blank entries at a station mean the altitude is within 1,500 ft of terrain — not calm winds.</li>
               <li><strong>"9900" = calm or light and variable (less than 5 kt).</strong> The 99 is a flag, not a direction. Never try to decode it as a wind direction.</li>
-              <li><strong>High-wind encoding: first two digits ≥ 50 means speed ≥ 100 kt.</strong> Subtract 50 from the direction group, add 100 to the speed. "7535" → 250° at 135 kt, not 750° at 35 kt. Any impossible direction value (above 36) is the trigger to apply this rule.</li>
+              <li><strong>High-wind encoding: first two digits 51 to 86 means speed 100 kt or more.</strong> Subtract 50 from the direction group, add 100 to the speed. "7535" → 250° at 135 kt, not 750° at 35 kt. Any impossible direction value (above 36, other than 99) is the trigger to apply this rule.</li>
               <li><strong>"TEMPS NEG ABV 24000" means the minus sign is dropped at FL240+.</strong> A temperature of "52" at 30,000 ft is −52°C. Missing this makes every high-altitude temperature analysis wrong.</li>
               <li><strong>CAT is most intense on the poleward flank and in the exit region of the jet stream.</strong> The core is often smoother than the flanks. CAT risk extends 100–200 nm from the jet axis. In winter, the polar jet can sit over the contiguous U.S. at FL300–FL380 with 150–200 kt winds and severe CAT zones on both flanks.</li>
               <li><strong>The freezing level is in the temperature column.</strong> Find where sign changes from positive to negative. A positive-negative-positive temperature profile with altitude means a warm layer aloft — freezing rain risk below the upper cold layer. This is the most dangerous icing setup and it appears directly in the FB numbers.</li>
@@ -776,6 +776,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-07b"></script>
+  <script src="../../js/main.js?v=2026-11-07c"></script>
 </body>
 </html>

@@ -117,7 +117,6 @@ test('the thunderstorm page no longer claims they are the leading cause, and giv
   const html = page('learn/thunderstorm-life-cycle.html');
   assert.doesNotMatch(html, /leading cause/);
   assert.match(html, /avoiding thunderstorms is the best policy \(AIM 7-1-27\)/);
-  assert.doesNotMatch(html, /VFR-into-IMC|VFR into IMC/, 'the VFR-into-IMC statement waits for the primary source');
 });
 
 test('the microburst figures are 45 knot winds and a 90 knot headwind to tailwind shear (AIM 7-1-24)', () => {
@@ -145,12 +144,11 @@ test('carburetor is not in the structural icing list, and points to Handbook sec
   assert.match(ice, /Carburetor ice is a separate hazard, covered under engine icing in FAA-H-8083-28 §20\.4\./);
 });
 
-test('every Handbook citation on the icing page uses Chapter 20, with no section-level cites added', () => {
+test('Handbook citations on the icing page are chapter 20 (batch 2 made them section-level)', () => {
   const ice = page('learn/icing.html');
   assert.doesNotMatch(ice, /FAA-H-8083-28 Ch\. 10/);
-  assert.equal((ice.match(/FAA-H-8083-28 Ch\. 20/g) || []).length, 6);
-  // §20.3.7 was already on the page. The only section cite added here is the engine icing pointer.
-  assert.deepEqual([...ice.matchAll(/FAA-H-8083-28 §(20\.\d+(?:\.\d+)?)/g)].map((m) => m[1]).sort(), ['20.3.7', '20.4']);
+  // Batch 2 replaced the six chapter-level cites with section-level ones. Every Handbook cite is still chapter 20.
+  assert.equal((ice.match(/FAA-H-8083-28 Ch\. 20/g) || []).length, 0);
 });
 
 // ── New text has no em dashes

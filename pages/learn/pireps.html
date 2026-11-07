@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07b">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07c">
 </head>
 <body>
 
@@ -124,13 +124,16 @@
 
           <h3>UA vs. UUA — Routine vs. Urgent</h3>
           <p>
-            <strong>UA</strong> is a routine PIREP, filed when conditions are observed and worth sharing. <strong>UUA</strong> is an urgent PIREP, filed when a pilot encounters hazardous conditions that were not forecast or are significantly worse than forecast. Urgent PIREPs must be filed immediately with ATC or FSS and are given priority dissemination. They are required for:
+            <strong>UA</strong> is a routine PIREP, filed when conditions are observed and worth sharing. <strong>UUA</strong> is an urgent PIREP, filed when a pilot encounters hazardous conditions that were not forecast or are significantly worse than forecast. Urgent PIREPs must be filed immediately with ATC or FSS and are given priority dissemination. The Handbook lists these as urgent (FAA-H-8083-28 §24.5.1.1.1):
           </p>
           <ul>
-            <li>Severe or extreme turbulence</li>
+            <li>Tornadoes, funnel clouds, and waterspouts</li>
+            <li>Severe or extreme turbulence (including CAT)</li>
             <li>Severe icing</li>
-            <li>A tornado, funnel cloud, or waterspout</li>
-            <li>Any other conditions hazardous to flight not previously reported</li>
+            <li>Hail</li>
+            <li>Low-level wind shear (LLWS) within 2,000 ft of the surface (classified as UUA if the pilot reports airspeed fluctuations of 10 kt or more, or if LLWS is reported without airspeed fluctuations)</li>
+            <li>Volcanic ash clouds</li>
+            <li>Any other weather the controller or Flight Service specialist receiving the report considers hazardous, or potentially hazardous, to flight operations</li>
           </ul>
           <p>
             In preflight, treat a UUA on your route the same way you treat a SIGMET — it's a real aircraft reporting conditions hazardous enough to trigger an urgent filing. If the UUA was filed within the past 1–2 hours and the synoptic pattern hasn't changed, assume the conditions it describes are still there.
@@ -204,7 +207,7 @@
             <div class="pirep-field-row">
               <span class="pirep-field-code ptok-sky">/SK</span>
               <span class="pirep-field-label">Sky condition</span>
-              <span class="pirep-field-desc"><strong>BKN045-TOP065</strong> — broken cloud layer with bases at 4,500 ft AGL, tops at 6,500 ft AGL. PIREPs are one of the few ways to get actual cloud tops — forecasts estimate them, PIREPs observe them. Extremely valuable for IFR altitude planning.</span>
+              <span class="pirep-field-desc"><strong>BKN045-TOP065</strong> — broken cloud layer with bases at 4,500 ft MSL, tops at 6,500 ft MSL. PIREPs are one of the few ways to get actual cloud tops — forecasts estimate them, PIREPs observe them. Extremely valuable for IFR altitude planning.</span>
             </div>
 
             <div class="pirep-field-row">
@@ -256,9 +259,9 @@
           <div class="card-grid card-grid-3" style="margin: 1.5rem 0 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
 
             <article class="hazard-card" style="border-top: 4px solid var(--sage); flex: 1 1 200px;">
-              <span class="hazard-label">NIL / Smooth</span>
+              <span class="hazard-label">NEG</span>
               <h3>Smooth</h3>
-              <p>No turbulence. Not typically reported in PIREPs except in remarks as confirmation of smooth conditions — useful when forecasts call for turbulence and you want to confirm they're wrong.</p>
+              <p>No turbulence. NEG is entered when turbulence was forecast but not encountered (FAA-H-8083-28 §24.5), which is useful when forecasts call for turbulence and you want to confirm they're wrong.</p>
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--sage); flex: 1 1 200px;">
@@ -274,13 +277,13 @@
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--rust); flex: 1 1 200px;">
-              <span class="hazard-label">SVR</span>
+              <span class="hazard-label">SEV</span>
               <h3>Severe</h3>
               <p>Large, abrupt changes in altitude and/or attitude. Aircraft may be temporarily out of control. Occupants are forced violently against seat belts. Unsecured objects are tossed about. Food and beverage service and walking are impossible. Triggers a UUA filing requirement.</p>
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--rust); flex: 1 1 200px;">
-              <span class="hazard-label">EXTM</span>
+              <span class="hazard-label">EXTRM</span>
               <h3>Extreme</h3>
               <p>Aircraft is violently tossed about and is practically impossible to control. May cause structural damage. Rare but documented. Any extreme turbulence PIREP on your route is an immediate go-around-level concern regardless of other factors. Requires UUA filing.</p>
             </article>
@@ -321,7 +324,7 @@
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--rust);">
-              <span class="hazard-label">SVR</span>
+              <span class="hazard-label">SEV</span>
               <h3>Severe</h3>
               <p>Rate of accumulation is such that deicing/anti-icing equipment fails to reduce or control the hazard. Immediate diversion is necessary. Any severe icing PIREP on your route requires a UUA filing by the reporting pilot and should be treated as a hard stop for any aircraft not certificated for flight in known icing.</p>
             </article>
@@ -387,7 +390,7 @@
             <article class="hazard-card" style="border-top: 4px solid var(--sun);">
               <span class="hazard-label">Flag 03</span>
               <h3>Severe turbulence altitude near your planned level</h3>
-              <p>Severe turbulence at 9,000 ft while you're planning 8,000 ft — that's one altimeter setting's worth of difference. The turbulence layer is not a precisely bounded box. If a SVR report is close to your altitude, treat it as covering your altitude unless a recent PIREP explicitly at your altitude shows a better ride.</p>
+              <p>Severe turbulence at 9,000 ft while you're planning 8,000 ft — that's one altimeter setting's worth of difference. The turbulence layer is not a precisely bounded box. If a SEV report is close to your altitude, treat it as covering your altitude unless a recent PIREP explicitly at your altitude shows a better ride.</p>
             </article>
 
             <article class="hazard-card" style="border-top: 4px solid var(--sky);">
@@ -427,7 +430,7 @@
 
           <details class="qa">
             <summary>Q: What are the turbulence intensity levels used in PIREPs?</summary>
-            <p>Four intensities: Light (LGT), Moderate (MOD), Severe (SEV), and Extreme (EXTRM); smooth air is reported as negative (NEG). Light produces slight, erratic changes in altitude and attitude. Moderate produces similar but stronger effects; occupants feel definite strain against seat belts. Severe produces large abrupt changes and may momentarily leave the aircraft out of control. Extreme makes the aircraft practically impossible to control and may cause structural damage. Both severe and extreme require an urgent PIREP. (AIM 7-1-21)</p>
+            <p>Four intensities: Light (LGT), Moderate (MOD), Severe (SEV), and Extreme (EXTRM); NEG is entered when turbulence was forecast but not encountered. Light produces slight, erratic changes in altitude and attitude. Moderate produces similar but stronger effects; occupants feel definite strain against seat belts. Severe produces large abrupt changes and may momentarily leave the aircraft out of control. Extreme makes the aircraft practically impossible to control and may cause structural damage. Both severe and extreme require an urgent PIREP. (AIM 7-1-21)</p>
           </details>
 
           <details class="qa">
@@ -470,7 +473,7 @@
             <p class="scenario-question">How do you read these PIREPs and what do they tell you?</p>
 
             <ol class="scenario-questions">
-              <li><strong>The Bonanza (2 hrs ago) — moderate mixed icing:</strong> A BE36 is a pressurized, de-ice equipped aircraft. Its "moderate" report should be read as at least moderate for your 172. Anti-ice required throughout the descent means the icing layer was continuous and significant. This PIREP is 2 hours old — concerning, but conditions may have evolved.</li>
+              <li><strong>The Bonanza (2 hrs ago) — moderate mixed icing:</strong> A BE36 is a piston single (Beechcraft Bonanza), not a pressurized aircraft. Its remarks say anti-ice was on for the entire descent, so it was carrying ice protection and still reported moderate icing. Read that as at least moderate for your 172, which has none. Anti-ice on throughout the descent suggests the icing layer was continuous and significant. This PIREP is 2 hours old — concerning, but conditions may have evolved.</li>
               <li><strong>The Caravan (1 hr 10 min ago) — light rime:</strong> A turboprop Caravan has full de-ice equipment and is operated by professional crews. Its "light rime" is the most optimistic report in this set — but a C172 without icing equipment should not interpret a Caravan's "light" as safe for an unequipped aircraft. The ice is still there.</li>
               <li><strong>The C172 (45 min ago) — moderate clear ice, diverted:</strong> This is your aircraft type. Same airframe. Moderate clear icing at 7,500 ft. The pilot could not maintain altitude and diverted. This PIREP is 45 minutes old — recent enough to be highly relevant in a slowly evolving stable airmass. This is an urgent-level signal for an identical aircraft.</li>
             </ol>
@@ -499,6 +502,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-07b"></script>
+  <script src="../../js/main.js?v=2026-11-07c"></script>
 </body>
 </html>
