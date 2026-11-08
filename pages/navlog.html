@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-08b">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-08c">
   <style>
     /* ─── Hero ─── */
     .nl-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--rule); }
@@ -527,7 +527,7 @@
               <input type="text" id="dep-id" placeholder="KDAB" maxlength="8" data-meta="depId">
             </div>
             <div class="nl-pf">
-              <label for="dep-elev" title="Field elevation in feet MSL. Feeds the climb calculation.">Field Elev (ft)</label>
+              <label for="pf-depelev" title="Field elevation in feet MSL. Feeds the climb calculation.">Field Elev (ft)</label>
               <input type="number" id="pf-depelev" min="0" max="14000" step="10" placeholder="34" data-meta="depElev">
             </div>
             <div class="nl-pf">
@@ -595,7 +595,7 @@
               <input type="text" id="arr-id" placeholder="KSGJ" maxlength="8" data-meta="arrId">
             </div>
             <div class="nl-pf">
-              <label for="arr-elev" title="Field elevation in feet MSL. Feeds the descent estimate.">Field Elev (ft)</label>
+              <label for="pf-destelev" title="Field elevation in feet MSL. Feeds the descent estimate.">Field Elev (ft)</label>
               <input type="number" id="pf-destelev" min="0" max="14000" step="10" placeholder="10" data-meta="destElev">
             </div>
             <div class="nl-pf">
@@ -1328,8 +1328,8 @@
     </div>
   </div>
 
-<script src="../js/poh-c172s.js?v=2026-11-08b"></script>
-<script src="../js/poh-interp.js?v=2026-11-08b"></script>
+<script src="../js/poh-c172s.js?v=2026-11-08c"></script>
+<script src="../js/poh-interp.js?v=2026-11-08c"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    NAV LOG CALCULATOR — CrosswindWx
@@ -3306,6 +3306,6 @@ function waApply() {
   }
 }
 </script>
-  <script src="../js/main.js?v=2026-11-08b"></script>
+  <script src="../js/main.js?v=2026-11-08c"></script>
 </body>
 </html>

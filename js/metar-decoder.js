@@ -1290,6 +1290,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (decodeBtn && metarInput) {
     decodeBtn.addEventListener('click', () => {
       clearError();
+      // Clear the previous result first. A failed decode must show only its error, so an old METAR
+      // can't be read as the new one.
+      hideOutput();
       const raw = metarInput.value.trim();
       if (!raw) { showError('Paste a METAR to decode.'); return; }
       try {
@@ -1297,6 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!parsed.station) { showError('Could not parse — check that this is a valid METAR.'); return; }
         renderDecoder(parsed);
       } catch (e) {
+        hideOutput();
         showError('Parse error: ' + e.message);
       }
     });

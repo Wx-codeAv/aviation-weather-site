@@ -580,11 +580,16 @@ function renderTaf(parsed) {
 
   if (stationEl) stationEl.textContent = parsed.station || '—';
   if (typeEl)    typeEl.textContent    = parsed.type || 'TAF';
-  if (validEl && parsed.validFrom && parsed.validTo) {
-    validEl.textContent = `Valid ${formatTafTime(parsed.validFrom)} – ${formatTafTime(parsed.validTo)}`;
+  // Set both every time. Leaving them alone when this TAF lacks them would show the previous TAF's times.
+  if (validEl) {
+    validEl.textContent = (parsed.validFrom && parsed.validTo)
+      ? `Valid ${formatTafTime(parsed.validFrom)} – ${formatTafTime(parsed.validTo)}`
+      : 'Valid period could not be read';
   }
-  if (issuedEl && parsed.issueTime) {
-    issuedEl.textContent = `Issued D${String(parsed.issueTime.day).padStart(2,'0')} ${String(parsed.issueTime.hour).padStart(2,'0')}:${String(parsed.issueTime.min).padStart(2,'0')}Z`;
+  if (issuedEl) {
+    issuedEl.textContent = parsed.issueTime
+      ? `Issued D${String(parsed.issueTime.day).padStart(2,'0')} ${String(parsed.issueTime.hour).padStart(2,'0')}:${String(parsed.issueTime.min).padStart(2,'0')}Z`
+      : 'Issue time could not be read';
   }
 
   // Raw TAF display
@@ -788,6 +793,16 @@ function buildConditionsStr(group) {
 
 // ── TAF init ─────────────────────────────────────────────────
 
+// True when the text has a station name but nothing a forecast is made of: no valid period and no
+// readable wind, visibility, weather, sky, or wind shear in any group. A bare word like "THIS" reads
+// as a station, so without this check it would show a decoded-looking card with a made-up station.
+// A TAF with readable weather but a valid period we can't use (for example over 30 hours) still decodes.
+function tafNothingReadable(parsed) {
+  if (parsed.validFrom && parsed.validTo) return false;
+  return (parsed.groups || []).every(g =>
+    !g.wind && !g.visibility && !(g.weather && g.weather.length) && !(g.sky && g.sky.length) && !g.windShear && !g.nsw);
+}
+
 function initTafDecoder() {
   const tafInput   = document.getElementById('taf-input');
   const btnDecodeTaf = document.getElementById('btn-decode-taf');
@@ -808,13 +823,21 @@ function initTafDecoder() {
   if (btnDecodeTaf && tafInput) {
     btnDecodeTaf.addEventListener('click', () => {
       clearTafError();
+      // Clear the previous result first. A failed decode must show only its error, so an old TAF
+      // can't be read as the new one.
+      hideTafOutput();
       const raw = tafInput.value.trim();
       if (!raw) { showTafError('Paste a TAF to decode.'); return; }
       try {
         const parsed = parseTaf(raw);
         if (!parsed.station) { showTafError('Could not parse — check that this is a valid TAF.'); return; }
+        if (tafNothingReadable(parsed)) {
+          showTafError('Could not read a forecast from this text. It has no valid period (like 0303/0406) and no readable wind, visibility, weather, or sky. Check that this is a complete TAF.');
+          return;
+        }
         renderTaf(parsed);
       } catch (e) {
+        hideTafOutput();
         showTafError('Parse error: ' + e.message);
       }
     });

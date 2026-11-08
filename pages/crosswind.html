@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-08b">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-08c">
   <style>
     .cw-hero {
       padding: 4rem 0 3rem;
@@ -409,6 +409,7 @@
 
         <!-- Left: inputs -->
         <div class="cw-inputs-panel">
+          <h2 class="sr-only">Wind and runway inputs</h2>
 
           <div class="cw-card">
             <h3 class="cw-card-title">Airport <span class="cw-source">optional · US only</span></h3>
@@ -488,6 +489,7 @@
 
         <!-- Right: diagrams + results + comparison -->
         <div class="cw-diagram-panel">
+          <h2 class="sr-only">Results</h2>
           <div class="cw-svg-wrap">
             <svg id="cw-svg" viewBox="0 0 360 340" role="img" aria-label="Wind component diagram for runway 1"></svg>
             <p class="cw-svg-caption" id="cw-caption">Enter wind speed and a runway number to see the diagram.</p>
@@ -525,6 +527,7 @@
   <!-- ============== Educational section ============== -->
   <section class="cw-edu">
     <div class="container">
+      <h2 class="sr-only">How it works</h2>
       <div class="cw-edu-grid">
 
         <div class="cw-edu-block">
@@ -598,7 +601,7 @@
     </div>
   </footer>
 
-<script src="../js/wind-math.js?v=2026-11-08b"></script>
+<script src="../js/wind-math.js?v=2026-11-08c"></script>
 <script>
 // ── SVG constants ──
 const C = [180, 170];        // diagram center (compass + runway pivot)
@@ -688,11 +691,12 @@ function compute() {
   const r1r   = calc(dir, speed, gusts, rwy1r);
 
   drawSVG(r1, speed, gusts, 'cw-svg');
-  setCaption(`RWY ${pad(rwy1)} / ${pad(rwy1r)} — θ = ${Math.round(Math.abs(r1.ad))}° from RWY ${pad(rwy1)}`);
+  const rwy2Same = rwy2 !== null && (rwy2 === rwy1 || rwy2 === rwy1r);
+  setCaption(`RWY ${pad(rwy1)} / ${pad(rwy1r)} — θ = ${Math.round(Math.abs(r1.ad))}° from RWY ${pad(rwy1)}` + (rwy2Same ? ' · Runway 2 is the same runway, so it is shown once' : ''));
 
   // Compute RWY 2 + its reciprocal (if entered)
   let r2 = null, r2r = null;
-  if (rwy2 !== null) {
+  if (rwy2 !== null && !rwy2Same) {
     const rwy2r = recip(rwy2);
     r2  = calc(dir, speed, gusts, rwy2);
     r2r = calc(dir, speed, gusts, rwy2r);
@@ -722,7 +726,7 @@ let airportData = null, airportLoad = null;
 
 function loadAirportData() {
   if (!airportLoad) {
-    airportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08b')
+    airportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08c')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
       .then(data => { airportData = data; return data; });
   }
@@ -839,10 +843,11 @@ function computeAirport(airport, dir, source, speed, gusts) {
   const r1 = build(pair1[0]), r1r = build(pair1[1]);
   r1.recipLabel = r1r.label;
   drawSVG(r1, speed, gusts, 'cw-svg');
-  setCaption(caption(r1, r1r));
+  const samePair = !!pair2 && pair2 === pair1;   // the same runway chosen twice: show it once, and say so
+  setCaption(caption(r1, r1r) + (samePair ? ' · Runway 2 is the same runway, so it is shown once' : ''));
 
   const all = [r1, r1r];
-  if (pair2) {
+  if (pair2 && !samePair) {
     const r2 = build(pair2[0]), r2r = build(pair2[1]);
     r2.recipLabel = r2r.label;
     drawSVG(r2, speed, gusts, 'cw-svg2');
@@ -1185,6 +1190,6 @@ drawRunway(null);
   compute();
 })();
 </script>
-  <script src="../js/main.js?v=2026-11-08b"></script>
+  <script src="../js/main.js?v=2026-11-08c"></script>
 </body>
 </html>

@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-08b">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-08c">
 </head>
 <body>
 
@@ -80,10 +80,10 @@
     <div class="container">
 
       <!-- Product selector: METAR | TAF -->
-      <div class="product-selector">
-        <button class="product-tab active" data-product="metar">METAR</button>
-        <button class="product-tab" data-product="taf">TAF</button>
-        <span class="product-selector-hint">Current observation · Forecast</span>
+      <div class="product-selector" role="tablist" aria-label="Product to decode">
+        <button class="product-tab active" id="tab-metar" role="tab" aria-selected="true" aria-controls="metar-section" data-product="metar">METAR</button>
+        <button class="product-tab" id="tab-taf" role="tab" aria-selected="false" aria-controls="taf-section" tabindex="-1" data-product="taf">TAF</button>
+        <span class="product-selector-hint" aria-hidden="true">Current observation · Forecast</span>
       </div>
 
       <!-- ── METAR INPUT ── -->
@@ -91,7 +91,7 @@
            headers, so it can't succeed from a static site at all (not just
            when opened as a local file). Revisit if/when a host-locked proxy
            (e.g. Cloudflare Worker) is built. -->
-      <div id="metar-section" class="product-section">
+      <div id="metar-section" class="product-section" role="tabpanel" aria-labelledby="tab-metar">
         <div id="panel-paste" class="decoder-panel">
           <p class="decoder-hint">Paste a raw METAR exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
           <div class="decoder-input-row decoder-input-row--paste">
@@ -110,7 +110,7 @@
 
       <!-- ── TAF INPUT ── -->
       <!-- Airport-code live lookup removed: see note above METAR section. -->
-      <div id="taf-section" class="product-section" hidden>
+      <div id="taf-section" class="product-section" role="tabpanel" aria-labelledby="tab-taf" hidden>
         <div id="taf-panel-paste" class="taf-subpanel">
           <p class="decoder-hint">Paste a raw TAF exactly as it appears in a weather brief or <code>aviationweather.gov</code>.</p>
           <div class="decoder-input-row decoder-input-row--paste">
@@ -238,25 +238,41 @@
     </div>
   </footer>
 
-  <script src="../js/metar-decoder.js?v=2026-11-08b"></script>
-  <script src="../js/taf-decoder.js?v=2026-11-08b"></script>
-  <script src="../js/taf-slider.js?v=2026-11-08b"></script>
-  <script src="../js/wind-math.js?v=2026-11-08b"></script>
-  <script src="../js/minimums-check.js?v=2026-11-08b"></script>
+  <script src="../js/metar-decoder.js?v=2026-11-08c"></script>
+  <script src="../js/taf-decoder.js?v=2026-11-08c"></script>
+  <script src="../js/taf-slider.js?v=2026-11-08c"></script>
+  <script src="../js/wind-math.js?v=2026-11-08c"></script>
+  <script src="../js/minimums-check.js?v=2026-11-08c"></script>
   <script>
-    // Product tab switching (METAR ↔ TAF)
-    document.querySelectorAll('.product-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const product = tab.dataset.product;
-        document.getElementById('metar-section').hidden = (product !== 'metar');
-        document.getElementById('taf-section').hidden   = (product !== 'taf');
-        document.getElementById('decoder-output').hidden = true;
-        document.getElementById('taf-output').hidden     = true;
+    // Product tab switching (METAR ↔ TAF). aria-selected and the roving tabindex follow the active tab,
+    // and the arrow keys, Home, and End move between tabs.
+    const productTabs = [...document.querySelectorAll('.product-tab')];
+    function selectProductTab(tab, moveFocus) {
+      productTabs.forEach(t => {
+        const on = (t === tab);
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      const product = tab.dataset.product;
+      document.getElementById('metar-section').hidden = (product !== 'metar');
+      document.getElementById('taf-section').hidden   = (product !== 'taf');
+      document.getElementById('decoder-output').hidden = true;
+      document.getElementById('taf-output').hidden     = true;
+      if (moveFocus) tab.focus();
+    }
+    productTabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => selectProductTab(tab, false));
+      tab.addEventListener('keydown', e => {
+        let next = null;
+        if (e.key === 'ArrowRight') next = (i + 1) % productTabs.length;
+        else if (e.key === 'ArrowLeft') next = (i - 1 + productTabs.length) % productTabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = productTabs.length - 1;
+        if (next !== null) { e.preventDefault(); selectProductTab(productTabs[next], true); }
       });
     });
   </script>
-  <script src="../js/main.js?v=2026-11-08b"></script>
+  <script src="../js/main.js?v=2026-11-08c"></script>
 </body>
 </html>
