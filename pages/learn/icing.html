@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-08">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-08b">
 </head>
 <body>
 
@@ -85,7 +85,7 @@
       <div class="concept-meta">
         <span class="concept-meta-item"><strong>ACS:</strong> PA.I.C.K3b · IR.I.B.K3b · CA.I.C.K3b</span>
         <span class="concept-meta-item"><strong>Risk:</strong> .R1c · .R1d</span>
-        <span class="concept-meta-item"><strong>Sources:</strong> AC 91-74B · AC 91-51A · FAA-H-8083-28</span>
+        <span class="concept-meta-item"><strong>Sources:</strong> AC 91-74B · FAA-H-8083-28 · NASA Pilot's Guide to Inflight Icing</span>
         <span class="concept-meta-item"><strong>Read time:</strong> ~15 min</span>
       </div>
     </div>
@@ -206,7 +206,7 @@
               <span class="hazard-label">Ice Type 01</span>
               <h3>Rime Ice</h3>
               <p class="hazard-mnemonic" style="font-family: var(--font-mono); font-size: 0.85rem; background: rgba(74,123,166,0.1); padding: 0.5rem 0.75rem; border-radius: 3px;">
-                Most common: <strong>−15°C to −20°C</strong>
+                Most common: <strong>colder than −15°C</strong>
               </p>
               <ul class="hazard-list">
                 <li><strong>Droplets:</strong> Small supercooled water droplets (stratiform clouds)</li>
@@ -271,7 +271,7 @@
               </div>
               <div style="text-align: center; padding: 0.8rem; background: rgba(93,111,60,0.08); border: 1px solid var(--rule); border-radius: 3px;">
                 <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); margin: 0 0 0.4rem;">RIME</p>
-                <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--sage); margin: 0;">−15°C to −20°C</p>
+                <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--sage); margin: 0;">colder than −15°C</p>
                 <p style="font-size: 0.8rem; color: var(--ink-soft); margin: 0.3rem 0 0;">+5°F to −4°F</p>
               </div>
             </div>
@@ -332,7 +332,7 @@
                   <text x="119" y="232" font-family="Manrope, sans-serif" font-size="11" fill="#1a5ba6" text-anchor="middle" font-style="italic">Milky-white, snow-like, opaque</text>
                   <text x="119" y="250" font-family="Manrope, sans-serif" font-size="11" fill="#2d4360" text-anchor="middle">Rough · brittle · blunt deposit</text>
                   <text x="119" y="266" font-family="Manrope, sans-serif" font-size="10" fill="#2d4360" text-anchor="middle">Forms at the stagnation point</text>
-                  <text x="119" y="288" font-family="JetBrains Mono, monospace" font-size="10" fill="#1a5ba6" text-anchor="middle">−15°C to −20°C · cold/dry</text>
+                  <text x="119" y="288" font-family="JetBrains Mono, monospace" font-size="10" fill="#1a5ba6" text-anchor="middle">colder than −15°C · cold/dry</text>
 
                   <!-- ============ PANEL 2 · CLEAR ============ -->
                   <g transform="translate(299,150)">
@@ -389,7 +389,7 @@
                 </svg>
                 <figcaption>
                   Airfoil leading-edge cross-sections (ice exaggerated for clarity). <strong>Rime ice</strong> is milky-white and snow-like — supercooled droplets freeze on contact, trapping air, so it builds a rough, opaque, brittle deposit at the stagnation point in cold, dry cloud. <strong>Clear ice</strong> is glassy and nearly transparent — droplets flow back before freezing into a dense, smooth sheet, forming the "double horns" that most disrupt airflow; it's the hardest to see and the most dangerous. <strong>Mixed ice</strong> combines a white rime core with clear extensions into an irregular shape.
-                  <span class="src">Ref: AC 91-74B §4.1.2 · AC 91-51A · FAA-H-8083-28 §20.3</span>
+                  <span class="src">Ref: AC 91-74B §4.1.2 · FAA-H-8083-28 §20.3</span>
                 </figcaption>
               </figure>
         </section>
@@ -398,7 +398,7 @@
         <section id="clear">
           <h2>Clear ice — why it's the most dangerous</h2>
           <p>
-            Clear ice (also called glaze ice) earns the "most dangerous" designation for several compounding reasons that go beyond aerodynamic shape alone. AC 91-74B and AC 91-51A are explicit on this point.
+            Clear ice (also called glaze ice) earns the "most dangerous" designation for several compounding reasons that go beyond aerodynamic shape alone. AC 91-74B and FAA-H-8083-28 §20.3.2 are explicit on this point.
           </p>
 
           <div class="compare-table">
@@ -472,7 +472,7 @@
 
           <h3>Why the tailplane ices faster than the wing</h3>
           <p>
-            The horizontal stabilizer has a <strong>much smaller chord length</strong> than the wing — typically one-quarter to one-third the wing chord. The smaller the chord, the thinner the boundary layer, and the more efficiently the surface collects impinging water droplets. Ice accumulates on the tailplane at a higher rate per unit of surface area than on the wing, often at a 2:1 ratio or greater. AC 91-74B says the tailplane is a better ice collector than the wings because it presents a thinner surface to the airstream (AC 91-74B ¶3-1).
+            The horizontal stabilizer is ordinarily thinner than the wing, and a thinner surface collects ice more efficiently. AC 91-74B: "Since the tailplane is ordinarily thinner than the wing, it is a more efficient collector of ice" (¶3-7b). It also says: "An aircraft's tailplane will be a better collector than its wings, because the tailplane presents a thinner surface to the airstream" (¶3-1).
           </p>
 
           <h3>The tailplane as a tail-down force surface</h3>
@@ -490,14 +490,14 @@
           <h3>Symptoms of a tailplane stall</h3>
           <ul>
             <li>Sudden, uncommanded pitch-down movement</li>
-            <li>Elevator buffet or vibration (easily confused with wing buffet before a wing stall)</li>
+            <li>Lightening of the controls, difficulty trimming, or buffet in the control column, usually after flap extension (NASA Pilot's Guide to Inflight Icing). If you have not just deployed full flaps, suspect a wing stall first (AC 91-74B ¶5-12b)</li>
             <li>Decreased or ineffective elevator authority</li>
             <li>Abnormal pitch oscillations that cannot be controlled with normal inputs</li>
             <li>Nose pitching down during flap extension on approach — the classic trigger scenario</li>
           </ul>
 
           <p class="callout">
-            <strong>Do not recover by reflex.</strong> Ice contamination may lead to wing stall, ice-contaminated tailplane stall (ICTS), or roll upset (AC 91-74B ¶5-10d). Wing stall and tailplane stall are not recovered the same way. The AC says its roll upset procedures, which include "Reduce the AOA by reducing the aircraft pitch", are "similar to those for wing stall recovery, and in some respects opposite from those for recovery from the ICTS" (AC 91-74B ¶5-13a). It does not say which respects. Use the procedure your AFM or POH gives, and do not assume that a pitch or flap input that fixes one of these will fix another.
+            <strong>Do not recover by reflex.</strong> Ice contamination may lead to wing stall, ice-contaminated tailplane stall (ICTS), or roll upset (AC 91-74B ¶5-10d). Wing stall and tailplane stall are not recovered the same way. The AC says its roll upset procedures, which include "Reduce the AOA by reducing the aircraft pitch", are "similar to those for wing stall recovery, and in some respects opposite from those for recovery from the ICTS" (AC 91-74B ¶5-13a). It does not say which respects. NASA's Pilot's Guide to Inflight Icing says: "If you experience a tail stall, immediately pull back on the yoke. This is opposite to the action that you have been taught and have practiced for recovering from a wing stall." Use the procedure your AFM or POH gives, and do not assume that a pitch or flap input that fixes one of these will fix another.
           </p>
         </section>
 
@@ -505,7 +505,7 @@
         <section id="flaps">
           <h2>The flaps-and-icing scenario</h2>
           <p>
-            Flap extension is the most common trigger for a tailplane stall in icing conditions. The mechanism is precise and well-documented, and the rule it generates is one of the most important icing rules a pilot can know: <strong>do not extend flaps if you suspect ice contamination on the tailplane.</strong>
+            Flap extension is the usual trigger for a tailplane stall in icing. AC 91-74B says ICTS "rarely occurs until flaps are fully extended on susceptible airplanes" (¶5-10e) and "There are no known incidents of ICTS in cruise (when flaps would not ordinarily be deployed) or with partial flaps" (¶5-12a). <strong>Follow your AFM or POH on flaps in icing.</strong> If your airplane was certified for icing after 1994, "adhere to AFM limitations and procedures for flap use in icing, if any" (¶5-10e(1)). If it was certified before 1994 and weighs less than 19,000 lb, "consider a partial- or no-flap landing" (¶5-10e(2)). If it is not certificated for icing, the FAA recommends exiting icing conditions "as expeditiously as possible" (¶3-13c(1)).
           </p>
 
           <h3>The mechanism — step by step</h3>
@@ -520,13 +520,25 @@
 
           <h3>Recovery from tailplane stall</h3>
           <p>
-            AC 91-74B does not list a tailplane stall recovery procedure. For anomalies when configuring for landing, it says that for some aircraft retracting flaps could lead to a stall, so configuration changes should be made only per manufacturer guidance (AC 91-74B ¶5-10a(2)). Check your AFM or POH. General guidance:
+            AC 91-74B does not list a tailplane stall recovery procedure. The steps below are in the order to use them. The NASA steps come from NASA training material, not from your AFM or POH, and they do not replace your airplane's procedure.
           </p>
           <ul>
             <li><strong>Follow the AFM or POH procedure for your airplane.</strong> AC 91-74B ¶5-10a(2): "configuration changes in this situation should only be performed per manufacturer guidance."</li>
             <li><strong>Do not treat flap retraction as a universal first step.</strong> AC 91-74B ¶5-10a(2): "For some aircraft, if anomalies occur, it is best not to increase the amount of flaps or slats and perhaps even to retract them depending on how much the aircraft is deviating from normal performance. For other aircraft, retracting the flaps or slats at this stage could lead to a stall."</li>
-            <li><strong>Know which stall you may be facing.</strong> Wing stall recovery is trained as recovery at the first indication of stall: "Complying with the FAA template and/or manufacturer guidance for aircraft stall recovery will restore control in both pitch and roll for all aircraft" (AC 91-74B ¶5-11c). The AC gives no separate ICTS recovery steps, so the AFM or POH governs.</li>
+            <li><strong>If you have not just deployed full flaps, suspect a wing stall first.</strong> AC 91-74B ¶5-12b: "you should always suspect a wing stall with any vibration or buffet if you have not just deployed full flaps." For a wing stall, "Complying with the FAA template and/or manufacturer guidance for aircraft stall recovery will restore control in both pitch and roll for all aircraft" (AC 91-74B ¶5-11c).</li>
+            <li><strong>If you have just extended full flaps and notice lightening of the controls, difficulty trimming, or buffet in the control column, suspect a tail stall.</strong> NASA's Pilot's Guide to Inflight Icing says tail stalls "usually occur during an approach when flaps are at full extension and/or the aircraft is being flown near the upper speed limit for flap extension", and: "If flaps are extended and you experience lightening of the controls, difficulty trimming, or buffet in the control column, immediately retract the flaps and maintain or reduce thrust." Its steps:
+              <ul>
+                <li><strong>Retract the flaps.</strong> "Immediately retract flaps to the previous setting."</li>
+                <li><strong>Pull back on the yoke.</strong> "If you experience a tail stall, immediately pull back on the yoke. This is opposite to the action that you have been taught and have practiced for recovering from a wing stall."</li>
+                <li><strong>Maintain or reduce thrust.</strong> "Power additions usually increase airspeed and bring the tailplane closer to the stall."</li>
+                <li><strong>Watch for a wing stall as the flaps come up.</strong> "As the flaps retract, you may need to reduce the back pressure on the yoke to avoid a subsequent wing stall."</li>
+              </ul>
+            </li>
+            <li><strong>If the AFM or POH gives no procedure for your piston airplane, use the AC's icing checklist.</strong> AC 91-74B Appendix 2, 1.c(1): "Be prepared for unexpected attitude changes when changing the airplane's configuration. If the aircraft begins to roll or pitch unexpectedly, return to the previous configuration." The appendix says its checklists "should not replace or supersede Airplane Flight Manual (AFM) or pilot's operating handbook (POH)."</li>
           </ul>
+          <p>
+            <strong>Roll upset guidance, not tail stall recovery (AC 91-74B ¶5-13a):</strong> "If the flaps are extended, do not retract them unless it can be determined that the upper surface of the airfoil is clear of ice. Retracting the flaps will increase the AOA at a given airspeed." This applies to a roll upset caused by ice forward of the ailerons. It is a different event from a tail stall.
+          </p>
 
           <!-- Diagram: Tailplane icing & flap extension — iced tail, flaps up vs flaps down (AC 91-74B ¶3-7) -->
           <figure class="diagram">
@@ -1009,7 +1021,7 @@
               <h3>Temperature between 0°C and −20°C in visible moisture</h3>
               <ul class="hazard-list">
                 <li>This is the prime icing window — most supercooled liquid water exists in this range</li>
-                <li>0°C to −10°C produces the worst clear ice; −15°C to −20°C produces rime</li>
+                <li>0°C to −10°C produces the worst clear ice; colder than −15°C favors rime</li>
                 <li>Check the FB for freezing level and temperature at your planned altitude before every IFR flight</li>
               </ul>
             </article>
@@ -1042,7 +1054,7 @@
               <ul class="hazard-list">
                 <li>If you need more power than usual to maintain altitude, or the stall warning activates at an unusual airspeed — suspect ice even if you didn't see accumulation</li>
                 <li>Ice on the tailplane may cause an unusual nose-down pitch with flap extension. If anomalies occur, follow your AFM or POH: for some aircraft it is best not to add flaps (AC 91-74B ¶5-10a(2))</li>
-                <li>Exit the icing layer immediately: climb above, descend below, or divert. Do not wait and see. (AC 91-74B §5.2)</li>
+                <li>Exit the icing conditions immediately, coordinating with ATC and declaring an emergency if needed (AC 91-74B ¶1-4b). In stratiform cloud the icing is often a thin layer, so climbing or descending may exit it (¶4-1h). Do not wait and see.</li>
               </ul>
             </article>
           </div>
@@ -1057,7 +1069,7 @@
 
           <details class="qa">
             <summary>Q: What are the three types of structural ice and what temperature range does each form in?</summary>
-            <p><strong>Clear ice (glaze): 0°C to −10°C.</strong> Large supercooled droplets, freezes slowly, transparent, double-horn shape, most dangerous. <strong>Mixed ice: −10°C to −15°C.</strong> Both small and large droplets, combination of rime and clear properties, irregular shape. <strong>Rime ice: −15°C to −20°C.</strong> Small supercooled droplets, freeze on impact, opaque white, confined to the leading edge stagnation point. (AC 91-51A Table 1)</p>
+            <p><strong>Clear ice (glaze): 0°C to −10°C.</strong> Large supercooled droplets, freezes slowly, transparent, double-horn shape, most dangerous. <strong>Mixed ice: −10°C to −15°C.</strong> Both small and large droplets, combination of rime and clear properties, irregular shape. <strong>Rime ice: colder than −15°C.</strong> Small supercooled droplets, freeze on impact, opaque white, confined to the leading edge stagnation point. (FAA-H-8083-28 §20.3.1 to §20.3.4)</p>
           </details>
 
           <details class="qa">
@@ -1072,7 +1084,7 @@
 
           <details class="qa">
             <summary>Q: How does the tailplane collect ice differently than the wing?</summary>
-            <p>The horizontal stabilizer has a much smaller chord than the wing — typically one-quarter to one-third the wing chord. A smaller chord means a thinner boundary layer and a higher collection efficiency for supercooled droplets. Under identical icing conditions, the tailplane accumulates ice faster per unit of surface area than the wing, often at a 2:1 ratio or higher. AC 91-74B says the tailplane is a better ice collector than the wings because it presents a thinner surface to the airstream (AC 91-74B ¶3-1).</p>
+            <p>The horizontal stabilizer is ordinarily thinner than the wing, and a thinner surface collects ice more efficiently. AC 91-74B: "Since the tailplane is ordinarily thinner than the wing, it is a more efficient collector of ice" (¶3-7b). It also says: "An aircraft's tailplane will be a better collector than its wings, because the tailplane presents a thinner surface to the airstream" (¶3-1).</p>
           </details>
 
           <details class="qa">
@@ -1136,9 +1148,9 @@
           <div class="takeaway-box">
             <ul class="takeaway-list">
               <li><strong>Three conditions: visible moisture, freezing temperature at the surface, aircraft in the cloud.</strong> Remove one and no icing occurs. All three present at once means structural icing is possible.</li>
-              <li><strong>Temperature ranges (know these — AC 91-51A Table 1):</strong> Clear ice 0°C to −10°C. Mixed −10°C to −15°C. Rime −15°C to −20°C. Clear ice is the most dangerous — transparent, double-horn shape, dense, runs back beyond de-ice coverage.</li>
+              <li><strong>Temperature ranges (know these, FAA-H-8083-28 §20.3.4):</strong> Clear ice warmer than −10°C (down to 0°C). Mixed −10°C to −15°C. Rime colder than −15°C. The Handbook calls this "only general guidance." Clear ice is the most dangerous — transparent, double-horn shape, dense, runs back beyond de-ice coverage.</li>
               <li><strong>Runback ice builds where no boot reaches.</strong> A cycling de-ice boot does not mean the aircraft is ice-free. Clear ice melt water flows aft and refreezes behind the protected zone, creating ridge ice that is aerodynamically more destructive than leading-edge ice — and invisible from the cockpit.</li>
-              <li><strong>The tailplane ices faster than the wing</strong> due to its smaller chord and thinner boundary layer. It operates as a tail-down force surface — its stall pitches the nose DOWN. Recovery depends on the aircraft, so follow your AFM or POH (AC 91-74B ¶5-10a(2)).</li>
+              <li><strong>The tailplane ices faster than the wing</strong> because it is ordinarily thinner and a more efficient collector of ice (AC 91-74B ¶3-7b). It operates as a tail-down force surface — its stall pitches the nose DOWN. Recovery depends on the aircraft, so follow your AFM or POH (AC 91-74B ¶5-10a(2)).</li>
               <li><strong>Follow your AFM or POH on flaps in icing.</strong> Flap extension increases the nose-down pitching moment and demands more tail-down force from the tail, and with ice on the tailplane it "may stall after deployment of flaps" (AC 91-74B ¶3-7a). If the nose pitches down or anything unexpected happens after a flap change, do not assume retracting flaps is right: for some aircraft it could lead to a stall, so follow manufacturer guidance (AC 91-74B ¶5-10a(2)).</li>
               <li><strong>AIRMET Zulu = moderate icing + always includes freezing level.</strong> No Zulu does not mean no icing — it means no moderate icing. Trace and light icing are always possible without an advisory. PIREPs are your best real-time icing data.</li>
               <li><strong>"IFR certificated" ≠ "FIKI."</strong> Receiving an AIRMET Zulu covering your route creates known icing conditions. A non-FIKI aircraft may not legally enter known icing. Plan an alternate before departure; don't make the go/no-go call from inside the cloud.</li>
@@ -1164,6 +1176,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-08"></script>
+  <script src="../../js/main.js?v=2026-11-08b"></script>
 </body>
 </html>

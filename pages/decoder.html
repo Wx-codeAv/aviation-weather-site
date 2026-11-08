@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../css/main.css?v=2026-11-08">
+  <link rel="stylesheet" href="../css/main.css?v=2026-11-08b">
 </head>
 <body>
 
@@ -222,8 +222,8 @@
           <div><span class="taf-type-label taf-type-fm">From</span> <span class="taf-legend-desc">Conditions change abruptly and completely at this time.</span></div>
           <div><span class="taf-type-label taf-type-tempo">Temporarily</span> <span class="taf-legend-desc">Conditions expected for less than half of the indicated period, each occurrence lasting less than 1 hour.</span></div>
           <div><span class="taf-type-label taf-type-becmg">Becoming</span> <span class="taf-legend-desc">Gradual change at an unspecified time within the indicated period. The new conditions then persist. NWS TAFs don't use it, but military and foreign TAFs do.</span></div>
-          <div><span class="taf-type-label taf-type-prob30">30% probability</span> <span class="taf-legend-desc">30–39% chance of a thunderstorm or precipitation event, with these associated conditions. This is the only probability group NWS TAFs use.</span></div>
-          <div><span class="taf-type-label taf-type-prob40">40% probability</span> <span class="taf-legend-desc">40–49% chance of these conditions. NWS TAFs don't use it, but military and foreign TAFs can.</span></div>
+          <div><span class="taf-type-label taf-type-prob30">30% probability</span> <span class="taf-legend-desc">A 30% chance of a thunderstorm or precipitation event and its associated wind, visibility, and sky conditions. NWS PROB30 groups do not exceed 6 hours. It is the only probability group NWS TAFs use (NWSI 10-813).</span></div>
+          <div><span class="taf-type-label taf-type-prob40">40% probability</span> <span class="taf-legend-desc">A 40% chance of these conditions. NWS TAFs don't use PROB40, but U.S. military and international TAFs may (FAA-H-8083-28 §27.4.2.10.3).</span></div>
         </div>
         <p class="taf-legend-note">A From group replaces the whole forecast. Temporarily, Becoming, and probability groups list only what changes, and anything they don't list carries over. Each badge includes those carried-over values, shown under the group.</p>
       </div>
@@ -238,11 +238,11 @@
     </div>
   </footer>
 
-  <script src="../js/metar-decoder.js?v=2026-11-08"></script>
-  <script src="../js/taf-decoder.js?v=2026-11-08"></script>
-  <script src="../js/taf-slider.js?v=2026-11-08"></script>
-  <script src="../js/wind-math.js?v=2026-11-08"></script>
-  <script src="../js/minimums-check.js?v=2026-11-08"></script>
+  <script src="../js/metar-decoder.js?v=2026-11-08b"></script>
+  <script src="../js/taf-decoder.js?v=2026-11-08b"></script>
+  <script src="../js/taf-slider.js?v=2026-11-08b"></script>
+  <script src="../js/wind-math.js?v=2026-11-08b"></script>
+  <script src="../js/minimums-check.js?v=2026-11-08b"></script>
   <script>
     // Product tab switching (METAR ↔ TAF)
     document.querySelectorAll('.product-tab').forEach(tab => {
@@ -257,6 +257,6 @@
       });
     });
   </script>
-  <script src="../js/main.js?v=2026-11-08"></script>
+  <script src="../js/main.js?v=2026-11-08b"></script>
 </body>
 </html>

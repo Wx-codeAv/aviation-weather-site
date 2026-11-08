@@ -80,9 +80,11 @@ test('three possible groups each keep a category, and the lowest is named', () =
 test('each possible group says what it means', () => {
   const [tempo, prob40, prob30] = view(REAL_TAFS.T6, 5).possible;
   assert.match(tempo.meaning, /less than half of this period/);
-  assert.match(prob40.meaning, /^40 to 49% chance.*less than half/);
-  assert.match(prob30.meaning, /^30 to 39% chance/);
-  assert.match(view(REAL_TAFS.T2, 26).possible[0].meaning, /^30 to 39% chance of these conditions during this period/);
+  assert.match(prob40.meaning, /^40% chance.*less than half/);
+  assert.match(prob40.meaning, /NWS TAFs don't use PROB40, but U.S. military and international TAFs may/);
+  assert.match(prob30.meaning, /^30% chance/);
+  assert.doesNotMatch(prob30.meaning, /PROB40/);
+  assert.match(view(REAL_TAFS.T2, 26).possible[0].meaning, /^30% chance of these conditions during this period/);
 });
 
 // ── Lowest category

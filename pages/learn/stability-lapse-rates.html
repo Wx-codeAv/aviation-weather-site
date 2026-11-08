@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-08">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-08b">
 </head>
 <body>
 
@@ -260,7 +260,7 @@
           </div>
 
           <p>
-            The DALR and MALR describe what a <em>parcel</em> does — they're physics. The ELR describes what the <em>environment</em> is doing — whatever the atmosphere happens to be on a given day.
+            The DALR and MALR describe what a <em>parcel</em> does — they're physics. The ELR describes what the <em>environment</em> is doing — whatever the atmosphere happens to be on a given day. (FAA-H-8083-28 §13.3)
           </p>
         </section>
 
@@ -268,13 +268,13 @@
         <section id="conditional">
           <h2>Conditional instability</h2>
           <p>
-            Compare the ELR to the DALR (10°C/km) and MALR (6°C/km). The relationship determines stability:
+            Compare the ELR to the DALR (about 10°C/km) and MALR (about 6°C/km). The moist rate varies with temperature, so 6°C/km is a teaching value. The relationship determines stability:
           </p>
 
           <ul>
             <li><strong>ELR &gt; 10°C/km</strong> (steeper than DALR) → <strong>absolutely unstable</strong>. Both dry and saturated parcels cool slower than the environment, so both keep rising.</li>
             <li><strong>ELR &lt; 6°C/km</strong> (shallower than MALR) → <strong>absolutely stable</strong>. Both dry and saturated parcels cool faster than the environment, so both sink back.</li>
-            <li><strong>ELR between 6 and 10°C/km</strong> → <strong>conditionally unstable</strong>. A parcel is unstable when saturated, stable when unsaturated. The "condition" is whether the parcel saturates.</li>
+            <li><strong>ELR between 6 and 10°C/km</strong> → <strong>conditionally unstable</strong>. A parcel is unstable when saturated, stable when unsaturated. The "condition" is whether the parcel saturates. (FAA-H-8083-28 §13.3.4 defines it as a lapse rate "less than the dry adiabatic lapse rate but greater than the moist adiabatic lapse rate.")</li>
           </ul>
 
           <!-- Diagram: 5 ELRs from class question, same as the textbook problem -->
@@ -431,7 +431,7 @@
             Lapse rate is defined as the rate of temperature <em>decrease</em> with height, so a <strong>positive</strong> lapse rate means temperature drops with increasing altitude (the normal case) and a <strong>negative</strong> lapse rate means temperature <em>rises</em> with altitude — a temperature inversion.
           </p>
           <p>
-            Five examples — these mirror the kind of question you'll see in WX 301 and on quizzes. Assume MALR = 6°C/km, DALR = 10°C/km.
+            Five examples — these mirror the kind of question you'll see in WX 301 and on quizzes. Assume MALR = about 6°C/km (it varies with temperature) and DALR = about 10°C/km.
           </p>
 
           <details class="qa">
@@ -449,13 +449,13 @@
           <details class="qa">
             <summary>ELR 3: Temp at surface = 20°C, temp at 2.5 km = -10°C</summary>
             <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 20 − (−10) = 30°C, Δz = 2.5 km. Lapse rate = 30/2.5 = <strong>12°C/km</strong>.</p>
-            <p>12°C/km is greater than the DALR (10°C/km), so this layer is <strong>absolutely unstable</strong>. Both dry and saturated parcels cool slower than the environment and keep rising. This kind of profile is rare but signals strong convective potential.</p>
+            <p>12°C/km is greater than the DALR (about 10°C/km), so this layer is <strong>absolutely unstable</strong>. Both dry and saturated parcels cool slower than the environment and keep rising. This kind of profile is rare but signals strong convective potential.</p>
           </details>
 
           <details class="qa">
             <summary>ELR 4: Temp at surface = 20°C, temp at 2.5 km = 0°C</summary>
             <p><strong>Calculation:</strong> T<sub>bottom</sub> − T<sub>top</sub> = 20 − 0 = 20°C, Δz = 2.5 km. Lapse rate = 20/2.5 = <strong>8°C/km</strong>.</p>
-            <p>8°C/km is between MALR (6) and DALR (10), so this layer is <strong>conditionally unstable</strong>. Stable for unsaturated parcels, unstable for saturated ones. This is the most common real-atmosphere case.</p>
+            <p>8°C/km is between MALR (about 6) and DALR (about 10), so this layer is <strong>conditionally unstable</strong>. Stable for unsaturated parcels, unstable for saturated ones. This is the most common real-atmosphere case.</p>
           </details>
 
           <details class="qa">
@@ -465,7 +465,7 @@
           </details>
 
           <p>
-            The pattern: compute lapse rate from (T<sub>bottom</sub> − T<sub>top</sub>)/Δz, then compare the result to 10 (DALR) and 6 (MALR). Above 10 = absolutely unstable. Below 6 = absolutely stable. Between = conditionally unstable. Negative or zero = absolutely stable.
+            The pattern: compute lapse rate from (T<sub>bottom</sub> − T<sub>top</sub>)/Δz, then compare the result to about 10 (DALR) and about 6 (MALR). Above 10 = absolutely unstable. Below 6 = absolutely stable. Between = conditionally unstable. Negative or zero = absolutely stable.
           </p>
         </section>
 
@@ -780,7 +780,7 @@
             <li><strong>LCL — Lifted Condensation Level.</strong> The altitude at which a rising surface parcel becomes saturated. Trace the temperature ELR up from the surface along the DALR (red dashed) — it's unsaturated and cools at the dry rate. At the same time, trace the surface dewpoint up along the corresponding mixing-ratio line (green dashed). Where those two traces meet is the LCL. Above this point, the parcel is now saturated, so it follows the MALR (blue dashed) instead — and the curve becomes more gentle.</li>
             <li><strong>LFC — Level of Free Convection.</strong> Continue the parcel path upward along the MALR. Eventually it crosses the temperature ELR (solid red line). At that point, the parcel becomes <em>warmer</em> than its surroundings — it's now to the <em>right</em> of the ELR. That's the LFC. From here, the parcel accelerates upward on its own without any external lifting force.</li>
             <li><strong>EL — Equilibrium Level.</strong> The parcel keeps rising along the MALR, staying warmer than the environment, gaining buoyancy. Eventually the temperature ELR catches up and crosses back through the parcel path. At that point the parcel is once again the same temperature as its surroundings, and just above it, the parcel becomes <em>colder</em> than the environment — to the <em>left</em> of the ELR. That's the EL. The parcel decelerates and stops rising freely.</li>
-            <li><strong>CAPE — Convective Available Potential Energy.</strong> The shaded area between the parcel path (warmer, on the right) and the temperature ELR (colder, on the left), bounded below by the LFC and above by the EL. Larger CAPE = more energy available for convection = stronger updrafts and more violent thunderstorms.</li>
+            <li><strong>CAPE — Convective Available Potential Energy.</strong> The shaded area between the parcel path (warmer, on the right) and the temperature ELR (colder, on the left), bounded below by the LFC and above by the EL. Larger CAPE = more energy available for convection = stronger updrafts and more violent thunderstorms. (FAA-H-8083-28 §13.5.2: "CAPE is the maximum amount of energy available to an ascending air parcel for convection.")</li>
           </ul>
 
           <p>
@@ -926,7 +926,7 @@
 
           <details class="qa">
             <summary>Q: Why does saturated air cool more slowly than dry air as it rises?</summary>
-            <p>Because condensation releases latent heat. As water vapor condenses into liquid droplets inside the parcel, it gives up heat that partially offsets the adiabatic cooling. This is why the MALR (~6°C/km) is shallower than the DALR (10°C/km).</p>
+            <p>Because condensation releases latent heat. As water vapor condenses into liquid droplets inside the parcel, it gives up heat that partially offsets the adiabatic cooling. This is why the MALR (about 6°C/km) is shallower than the DALR (about 10°C/km).</p>
           </details>
 
           <details class="qa">
@@ -982,7 +982,7 @@
           <div class="takeaway-box">
             <ul class="takeaway-list">
               <li><strong>Stability comes from a comparison.</strong> A lifted parcel cools at one rate; the environment around it has its own profile. Parcel ends up warmer than surroundings → keeps rising (unstable). Colder → sinks back (stable).</li>
-              <li><strong>Three lapse rates, two purposes.</strong> DALR (10°C/km) and MALR (~6°C/km) describe how a parcel cools. ELR is what the atmosphere is actually doing today. Compare them.</li>
+              <li><strong>Three lapse rates, two purposes.</strong> DALR (about 10°C/km) and MALR (about 6°C/km, which varies with temperature) describe how a parcel cools. ELR is what the atmosphere is actually doing today. Compare them.</li>
               <li><strong>The 6-10 rule.</strong> ELR &gt; 10°C/km = absolutely unstable. ELR &lt; 6°C/km = absolutely stable. Between 6 and 10 = conditionally unstable (most common in real atmosphere).</li>
               <li><strong>Standard atmosphere reference.</strong> 15°C / 29.92"Hg / 1013.2 mb at sea level, 2°C/1,000 ft lapse rate. Memorize these.</li>
               <li><strong>Altimetry is a separate topic.</strong> The standard atmosphere chart, Kollsman window mechanics, and three worked altimeter problems are now covered on the dedicated <a href="altimetry.html">Altimetry page</a>.</li>
@@ -1009,6 +1009,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-08"></script>
+  <script src="../../js/main.js?v=2026-11-08b"></script>
 </body>
 </html>

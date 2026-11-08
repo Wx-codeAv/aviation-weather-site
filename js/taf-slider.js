@@ -10,10 +10,12 @@ const CATEGORY_ORDER = ['VFR', 'MVFR', 'IFR', 'LIFR'];
 // What each kind of possible group means. Same wording as the legend on the page.
 function possibleMeaning(type) {
   const prob = type.match(/^PROB(\d)0/);
-  const chance = prob ? `${prob[1]}0 to ${prob[1]}9% chance of these conditions` : '';
-  if (type.endsWith('TEMPO') && prob) return `${chance}, for less than half of this period, each time lasting less than 1 hour.`;
+  const chance = prob ? `${prob[1]}0% chance of these conditions` : '';
+  // FAA-H-8083-28 section 27.4.2.10.3: NWS TAFs use only PROB30. U.S. military and international TAFs may use PROB40.
+  const note = type.startsWith('PROB40') ? " NWS TAFs don't use PROB40, but U.S. military and international TAFs may." : '';
+  if (type.endsWith('TEMPO') && prob) return `${chance}, for less than half of this period, each time lasting less than 1 hour.${note}`;
   if (type === 'TEMPO') return 'Expected for less than half of this period, each time lasting less than 1 hour.';
-  return prob ? `${chance} during this period.` : '';
+  return prob ? `${chance} during this period.${note}` : '';
 }
 
 // ── Time ─────────────────────────────────────────────────────
