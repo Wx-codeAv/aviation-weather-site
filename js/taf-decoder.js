@@ -179,6 +179,11 @@ function windInDoubt(x) {
   return !!(x.windUnreadable || (x.unreadableCovers || []).includes('wind'));
 }
 
+function mergeTafHazards(before, own) {
+  const restated = new Set(own.map(h => h.kind));
+  return [...before.filter(h => !restated.has(h.kind)), ...own];
+}
+
 function mergeTafGroup(state, group) {
   const cavok = !!(group.visibility && group.visibility.cavok);
   // An unreadable token could be anything, so it counts until visibility and sky are both restated.
@@ -191,8 +196,9 @@ function mergeTafGroup(state, group) {
     wind: (group.windUnreadable || group.gridWind || (!group.wind && windInDoubt(group))) ? null : (group.wind || state.wind),
     windUnreadable: group.windUnreadable || (group.wind || group.gridWind ? null : state.windUnreadable),
     gridWind: group.gridWind || (group.wind || group.windUnreadable ? null : state.gridWind),
-    // Turbulence and icing are only shown where a group states them.
-    hazards: group.hazards || [],
+    // FM replaces everything, so it never reaches this merge. A TEMPO, BECMG, or PROB group keeps the
+    // icing and turbulence of the forecast it modifies, unless it states its own of that kind.
+    hazards: mergeTafHazards(state.hazards || [], group.hazards || []),
     // An element the group's own unreadable token might be isn't inherited either, because the
     // earlier value may not apply. It shows as unreadable instead.
     visibility: group.visibility || (hides('visibility') ? null : state.visibility),
@@ -304,7 +310,7 @@ function resolveTafGroups(parsed) {
     if (g.gridWind) parsed.notes.push(`In the ${name(g)} group${noteWhen}: ${g.gridWind.raw} is a grid wind, not referenced to true north. It is shown as written, not converted.`);
     if (g.wind && g.wind.directionMissing) parsed.notes.push(`In the ${name(g)} group${noteWhen}: ${g.wind.raw} has no wind direction, only a speed.`);
     // A wind we couldn't read doesn't change the category, so this is a warning of its own.
-    if (g.windUnreadable) {
+    if (g.windUnreadable && g.windUnreadable !== g.unreadable) {
       const when = g.validFrom && g.type !== 'BASE' ? ` at ${formatTafTime(g.validFrom)}` : '';
       parsed.warnings.push(`Couldn't read ${g.windUnreadable} in the ${name(g)} group${when} where wind belongs. Its wind is shown as unreadable, and the rest of the group was read.`);
     }
@@ -364,6 +370,7 @@ function resolveTafGroups(parsed) {
 const TAF_REMARK_START = /^(RMK|LAST|NEXT|NXT|AMD|AMDS|AUTOMATED|WSCONDS|WND|COR|NIL|CNL)$/;
 // Groups that carry no visibility, weather, sky, or wind: wind shear, max and min temperature,
 // military altimeter (QNH3023INS), and the 5xxxxx turbulence and 6xxxxx icing groups.
+const FUSED_WIND_PREFIX = /^(?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?(?:KT|MPS|KMH)(?=.)/;
 const TAF_QUIET_GROUP = /^(WS\d|TX|TN|QNH\d{3,4}(INS|NS)?$|[56]\d{5}$)/;
 
 function unreadableCovers(tokens, at, atWindPosition = false) {
@@ -508,6 +515,15 @@ function parseGroup(tokens, isBase) {
       const atWind = k === i && !WIND_PATTERN.test(t) && !looksLikeNonWind(t);
       if (odd && k === i) {
         keep.push(t);
+      } else if (FUSED_WIND_PREFIX.test(t) && !isGarbledWindToken(t)) {
+        // A wind with something run on after it that did not split cleanly (17010KT-ZZZ). The part
+        // after the wind could be a visibility, weather, or sky group, so the wind is unreadable and
+        // the group gets no category, the same as in a METAR.
+        bad.push(t);
+        if (!group.unreadable) {
+          group.unreadable = t;
+          group.unreadableCovers = unreadableCovers(tokens, k, true);
+        }
       } else if (odd || isGarbledWindToken(t) || isWindOutage(t) || (atWind && looksLikeWindToken(t))) {
         bad.push(t);
       } else if (atWind) {
@@ -673,7 +689,7 @@ function renderTaf(parsed) {
   // Visual overview band
   const overviewEl = document.getElementById('taf-overview');
   if (overviewEl) {
-    const notes = (parsed.notes || []).map(n => `<p class="decoder-note">${escHtml(n)}</p>`).join('');
+    const notes = (parsed.notes || []).map(n => `<p class="decoder-note">${keepSign(escHtml(n))}</p>`).join('');
     const warnings = parsed.warnings.map(w => `<p class="decoder-error">${escHtml(w)}</p>`).join('');
     overviewEl.innerHTML = notes + warnings + buildTafOverview(parsed);
   }

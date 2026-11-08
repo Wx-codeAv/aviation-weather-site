@@ -109,9 +109,29 @@ test('a fused token stays unrecognized, and the category stays withheld, when an
     assert.equal(p.notes.length, 0, bad);
   }
   const t = taf('27010KT 9999 SCT030 TEMPO 0814/0818 17010KT-ZZZ');
-  // In a TAF a token that starts like a wind is flagged as an unreadable wind, never split and never read.
-  assert.equal(t.groups[1].windUnreadable, '17010KT-ZZZ');
-  assert.equal(t.groups[1].wind, null);
+  // In a TAF a wind with junk run on after it is an unreadable wind, never split and never read. The junk
+  // could be a visibility, weather, or sky group, so the group has no category, as in a METAR.
+  const bad = t.groups[1];
+  assert.equal(bad.windUnreadable, '17010KT-ZZZ');
+  assert.equal(bad.wind, null);
+  assert.equal(bad.unreadable, '17010KT-ZZZ');
+  assert.deepEqual(Array.from(bad.unreadableCovers).sort(), ['sky', 'visibility', 'weather', 'wind']);
+  assert.equal(bad.flightCategory, null);
+  assert.match(site.buildGroupCard(bad), /Wind couldn't be read/);
+  assert.ok(t.warnings.some((w) => /Couldn't read 17010KT-ZZZ/.test(w) && /No flight category is shown/.test(w)));
+  // The same in the base group, and with a readable visibility and sky after it.
+  for (const body of ['17010KT-ZZZ 9999 SCT030', '17010KT-ZZZ']) {
+    const b = taf(body).groups[0];
+    assert.equal(b.flightCategory, null, body);
+    assert.equal(b.windUnreadable, '17010KT-ZZZ', body);
+  }
+  // Only a certain LIFR survives it.
+  assert.equal(taf('17010KT-ZZZ 0400 OVC001').groups[0].flightCategory, 'LIFR');
+  // The slider state for that group also shows the wind as unreadable and no category.
+  const parsedBad = taf('27010KT 9999 SCT030 TEMPO 0814/0818 17010KT-ZZZ');
+  const at = site.tafStateAtHours(parsedBad, site.tafTimeBase(parsedBad), 3);
+  assert.equal(at.overlays[0].state.category, null);
+  assert.match(site.stateChips(at.overlays[0].state), /Wind couldn't be read/);
   assert.equal(t2bad('-SHRASCT030CBX').groups[1].flightCategory, null);
 });
 
@@ -179,6 +199,59 @@ test('decoded 5 and 6 groups show on the group card and on the slider chips', ()
   assert.match(card, /650203: Moderate icing in cloud \(rime\), 2,000 to 5,000 ft AGL/);
   assert.match(card, /561205: Severe turbulence in clear air, occasional, 12,000 to 17,000 ft AGL/);
   assert.match(site.stateChips(site.tafStateFromGroup(g)), /650203: Moderate icing in cloud/);
+});
+
+// ── 3b. Slider: FM replaces icing and turbulence, TEMPO, BECMG and PROB inherit them unless restated
+const hours = (parsed, T) => site.tafStateAtHours(parsed, site.tafTimeBase(parsed), T);
+const kinds = (state) => Array.from(state.hazards, (h) => h.raw);
+const BASE = '27010KT 9999 SCT030 650203 561205';
+
+test('an FM group replaces everything, including icing and turbulence it does not restate', () => {
+  const p = taf(`${BASE} FM081800 18010KT 9999 SCT040`);
+  assert.deepEqual(kinds(hours(p, 2).prevailing), ['650203', '561205']);   // 14Z, before the FM
+  assert.deepEqual(kinds(hours(p, 8).prevailing), []);                      // 20Z, after the FM
+  assert.doesNotMatch(site.stateChips(hours(p, 8).prevailing), /icing|turbulence/);
+  const restated = taf(`${BASE} FM081800 18010KT 9999 SCT040 620503`);
+  assert.deepEqual(kinds(hours(restated, 8).prevailing), ['620503']);       // its own icing only, no turbulence
+});
+
+test("a TEMPO that changes only visibility still shows the base forecast's icing and turbulence", () => {
+  const p = taf(`${BASE} TEMPO 0814/0818 3000 BR`);
+  const at = hours(p, 3);   // 15Z
+  assert.equal(at.overlays.length, 1);
+  assert.deepEqual(kinds(at.overlays[0].state), ['650203', '561205']);
+  assert.match(site.stateChips(at.overlays[0].state), /650203: Moderate icing in cloud/);
+  assert.match(site.stateChips(at.overlays[0].state), /561205: Severe turbulence/);
+  assert.deepEqual(kinds(at.prevailing), ['650203', '561205']);
+});
+
+test('a TEMPO that restates icing replaces the base icing for those hours only, and keeps the turbulence', () => {
+  const p = taf(`${BASE} TEMPO 0814/0818 3000 BR 620503`);
+  const at = hours(p, 3);
+  assert.deepEqual(kinds(at.overlays[0].state), ['561205', '620503']);
+  assert.deepEqual(kinds(at.prevailing), ['650203', '561205']);             // the base is untouched
+  assert.deepEqual(kinds(hours(p, 8).prevailing), ['650203', '561205']);    // after the TEMPO window
+  assert.equal(hours(p, 8).overlays.length, 0);
+});
+
+test('a TEMPO that restates turbulence replaces the base turbulence and keeps the icing', () => {
+  const at = hours(taf(`${BASE} TEMPO 0814/0818 3000 BR 511003`), 3);
+  assert.deepEqual(kinds(at.overlays[0].state), ['650203', '511003']);
+});
+
+test('BECMG and PROB groups inherit the same way', () => {
+  const becmg = taf(`${BASE} BECMG 0814/0816 18010KT 9999 SCT040`);
+  assert.deepEqual(kinds(hours(becmg, 3).transitions[0].state), ['650203', '561205']);   // inside the window, after state
+  assert.deepEqual(kinds(hours(becmg, 6).prevailing), ['650203', '561205']);             // the change has completed
+  const prob = taf(`${BASE} PROB30 0814/0818 3000 TSRA`);
+  assert.deepEqual(kinds(hours(prob, 3).overlays[0].state), ['650203', '561205']);
+  const probTempo = taf(`${BASE} PROB40 TEMPO 0814/0818 3000 BR 600502`);
+  assert.deepEqual(kinds(hours(probTempo, 3).overlays[0].state), ['561205', '600502']);
+});
+
+test("a TEMPO's own group card lists only what it states", () => {
+  const g = taf(`${BASE} TEMPO 0814/0818 3000 BR 620503`).groups[1];
+  assert.deepEqual(Array.from(g.hazards, (h) => h.raw), ['620503']);
 });
 
 // ── 4. BLACK

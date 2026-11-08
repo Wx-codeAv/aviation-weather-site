@@ -2493,3 +2493,5 @@ select:focus-visible,
   padding-left: 0.6rem;
   border-left: 3px solid var(--sky);
 }
+/* A token the report ran together stays on one line, so it never breaks at its hyphen. */
+.tok-note { white-space: nowrap; }

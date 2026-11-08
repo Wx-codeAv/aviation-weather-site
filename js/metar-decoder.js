@@ -104,6 +104,11 @@ function splitFusedTokens(tokens, from, isStop) {
   return { tokens: out, fused };
 }
 
+// Rendered text only: a weather sign stays attached to its code (-SHRA), so a line never ends with a lone "-".
+function keepSign(escaped) {
+  return String(escaped).replace(/([-+])(?=[A-Z])/g, '$1⁠');
+}
+
 function fusedNote(f) {
   return `The report wrote ${f.parts.join(' and ')} with no space, as ${f.raw}. Each part is a complete group on its own, so they were read as separate groups.`;
 }
@@ -1262,7 +1267,7 @@ function renderDecoder(parsed) {
 
   // "Why this category" scale
   const scaleEl = document.getElementById('cat-scale');
-  if (scaleEl) scaleEl.innerHTML = (parsed.notes || []).map(n => `<p class="decoder-note">${escHtml(n)}</p>`).join('') + buildCategoryScale(parsed);
+  if (scaleEl) scaleEl.innerHTML = (parsed.notes || []).map(n => `<p class="decoder-note">${keepSign(escHtml(n))}</p>`).join('') + buildCategoryScale(parsed);
 
   // Comparison with the pilot's saved limits
   if (typeof renderMinimumsCheck === 'function') renderMinimumsCheck(parsed);
@@ -1283,7 +1288,7 @@ function renderDecoder(parsed) {
       .map(f => `<div class="field-row">
         <span class="field-token tok tok-${f.type}">${escHtml(f.token)}</span>
         <span class="field-label">${escHtml(f.label)}</span>
-        <span class="field-explanation">${escHtml(f.explanation)}</span>
+        <span class="field-explanation">${keepSign(escHtml(f.explanation))}</span>
       </div>`)
       .join('');
   }
