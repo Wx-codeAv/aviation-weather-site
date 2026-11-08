@@ -34,8 +34,16 @@ function parseTaf(rawInput) {
     }
   }
 
+  // Navy TAFs end with an FN group (FN20003). No primary source for its meaning was found, so it is
+  // shown as not decoded. As the very last token nothing can follow it, so it cannot be hiding a
+  // condition and it must not hold back a flight category.
+  let fnGroup = null;
+  if (tokens.length > 1 && /^FN\d{5}$/.test(tokens[tokens.length - 1])) fnGroup = tokens.pop();
+
   const result = {
     raw,
+    notes: fnGroup ? [`FN group (not decoded): ${fnGroup}. It ends the TAF, so it does not change any forecast condition or flight category.`] : [],
+    fnGroup,
     type: 'TAF',
     station: null,
     issueTime: null,
@@ -160,7 +168,9 @@ function tafStateFromGroup(group) {
     windShear: group.windShear,
     unreadable: group.unreadable,
     unreadableCovers: group.unreadableCovers,
-    windUnreadable: group.windUnreadable
+    windUnreadable: group.windUnreadable,
+    gridWind: group.gridWind,
+    hazards: group.hazards || []
   };
 }
 
@@ -177,8 +187,12 @@ function mergeTafGroup(state, group) {
   return {
     // An unreadable wind never falls back to the wind before it. A later group that gives a
     // readable wind clears it.
-    wind: (group.windUnreadable || (!group.wind && windInDoubt(group))) ? null : (group.wind || state.wind),
-    windUnreadable: group.windUnreadable || (group.wind ? null : state.windUnreadable),
+    // A grid wind is a wind the group states, so it never falls back to the true wind before it.
+    wind: (group.windUnreadable || group.gridWind || (!group.wind && windInDoubt(group))) ? null : (group.wind || state.wind),
+    windUnreadable: group.windUnreadable || (group.wind || group.gridWind ? null : state.windUnreadable),
+    gridWind: group.gridWind || (group.wind || group.windUnreadable ? null : state.gridWind),
+    // Turbulence and icing are only shown where a group states them.
+    hazards: group.hazards || [],
     // An element the group's own unreadable token might be isn't inherited either, because the
     // earlier value may not apply. It shows as unreadable instead.
     visibility: group.visibility || (hides('visibility') ? null : state.visibility),
@@ -285,6 +299,10 @@ function resolveTafGroups(parsed) {
   const name = g => (GROUP_META[g.type] && GROUP_META[g.type].label) || g.type;
 
   for (const g of parsed.groups) {
+    const noteWhen = g.validFrom && g.type !== 'BASE' ? ` at ${formatTafTime(g.validFrom)}` : '';
+    for (const f of g.fused || []) parsed.notes.push(`In the ${name(g)} group${noteWhen}: ${fusedNote(f)}`);
+    if (g.gridWind) parsed.notes.push(`In the ${name(g)} group${noteWhen}: ${g.gridWind.raw} is a grid wind, not referenced to true north. It is shown as written, not converted.`);
+    if (g.wind && g.wind.directionMissing) parsed.notes.push(`In the ${name(g)} group${noteWhen}: ${g.wind.raw} has no wind direction, only a speed.`);
     // A wind we couldn't read doesn't change the category, so this is a warning of its own.
     if (g.windUnreadable) {
       const when = g.validFrom && g.type !== 'BASE' ? ` at ${formatTafTime(g.validFrom)}` : '';
@@ -367,6 +385,37 @@ function unreadableCovers(tokens, at, atWindPosition = false) {
   return [...new Set(covers)];
 }
 
+// Military TAF turbulence (5BhhhtL) and icing (6IchhhtL) groups, from AFMAN 15-124 (28 Oct 2009)
+// paragraphs 1.3.4.7 and 1.3.4.8 and Tables 1.4 to 1.7. Heights are hundreds of feet AGL, and the
+// last digit is the layer thickness in thousands of feet (1 to 9). These are not NWS TAF groups.
+const TAF_ICING_TYPE = {
+  0: 'Trace icing', 1: 'Light icing (mixed)', 2: 'Light icing in cloud (rime)', 3: 'Light icing in precipitation (clear)',
+  4: 'Moderate icing (mixed)', 5: 'Moderate icing in cloud (rime)', 6: 'Moderate icing in precipitation (clear)',
+  7: 'Severe icing (mixed)', 8: 'Severe icing in cloud (rime)', 9: 'Severe icing in precipitation (clear)'
+};
+const TAF_TURB_TYPE = {
+  0: 'No turbulence', 1: 'Light turbulence',
+  2: 'Moderate turbulence in clear air, occasional', 3: 'Moderate turbulence in clear air, frequent',
+  4: 'Moderate turbulence in cloud, occasional', 5: 'Moderate turbulence in cloud, frequent',
+  6: 'Severe turbulence in clear air, occasional', 7: 'Severe turbulence in clear air, frequent',
+  8: 'Severe turbulence in cloud, occasional', 9: 'Severe turbulence in cloud, frequent',
+  X: 'Extreme turbulence'
+};
+
+function decodeTafHazard(tok) {
+  const icing = tok[0] === '6';
+  const m = icing ? tok.match(/^6([0-9])(\d{3})([1-9])$/) : tok.match(/^5([0-9X])(\d{3})([1-9])$/);
+  const kind = icing ? 'icing' : 'turbulence';
+  if (!m) return { kind, raw: tok, text: null, label: `${icing ? 'Icing' : 'Turbulence'} group (not decoded): ${tok}` };
+  const type = (icing ? TAF_ICING_TYPE : TAF_TURB_TYPE)[m[1]];
+  const hhh = +m[2], thick = +m[3] * 1000;
+  let where;
+  if (hhh === 999) where = `from 100,000 ft or more AGL`;
+  else if (hhh === 0) where = `from below 100 ft up to about ${thick.toLocaleString('en-US')} ft AGL`;
+  else where = `${(hhh * 100).toLocaleString('en-US')} to ${(hhh * 100 + thick).toLocaleString('en-US')} ft AGL`;
+  return { kind, raw: tok, text: `${type}, ${where}`, label: `${tok}: ${type}, ${where}` };
+}
+
 function parseGroup(tokens, isBase) {
   const group = {
     type: isBase ? 'BASE' : '?',
@@ -383,8 +432,18 @@ function parseGroup(tokens, isBase) {
     unreadable: null,
     unreadableCovers: [],   // which "not stated" claims the unreadable token makes untrustworthy
     windUnreadable: null,   // wind-like tokens we couldn't read, joined. Wind stays null.
+    gridWind: null,         // a grid-north wind (GRID30007KT). Wind stays null.
+    hazards: [],            // military turbulence (5xxxxx) and icing (6xxxxx) groups
+    fused: [],              // groups the report ran together that were split
     unparsed: []            // tokens left over after reading, which were never read
   };
+
+  // Two groups run together with no space are split when each part is a complete group on its own.
+  {
+    const split = splitFusedTokens(tokens, 0, t => TAF_REMARK_START.test(t));
+    tokens = split.tokens;
+    group.fused = split.fused;
+  }
 
   let i = 0;
   const tok0 = tokens[0];
@@ -445,8 +504,11 @@ function parseGroup(tokens, isBase) {
     const bad = [], keep = tokens.slice(0, i);
     for (let k = i; k < tokens.length; k++) {
       const t = tokens[k];
+      const odd = WIND_NO_DIR.test(t) || GRID_WIND.test(t);   // read below when it sits in the wind position
       const atWind = k === i && !WIND_PATTERN.test(t) && !looksLikeNonWind(t);
-      if (isGarbledWindToken(t) || isWindOutage(t) || (atWind && looksLikeWindToken(t))) {
+      if (odd && k === i) {
+        keep.push(t);
+      } else if (odd || isGarbledWindToken(t) || isWindOutage(t) || (atWind && looksLikeWindToken(t))) {
         bad.push(t);
       } else if (atWind) {
         // Not a wind, not shaped like one, and not another element. It might be a garbled
@@ -462,7 +524,13 @@ function parseGroup(tokens, isBase) {
   }
 
   // ── Wind
-  if (i < tokens.length) {
+  if (i < tokens.length && WIND_NO_DIR.test(tokens[i])) {
+    group.wind = readNoDirWind(tokens[i]);
+    i++;
+  } else if (i < tokens.length && GRID_WIND.test(tokens[i])) {
+    group.gridWind = readGridWind(tokens[i]);
+    i++;
+  } else if (i < tokens.length) {
     const wm = tokens[i].match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/);
     if (wm) {
       group.wind = {
@@ -522,6 +590,12 @@ function parseGroup(tokens, isBase) {
       group.sky.push({ raw: tok, cover: sm[1], height: +sm[2] * 100, cb: sm[3] || null });
       i++;
     }
+  }
+
+  // Turbulence and icing groups can sit anywhere after the conditions. They never set the category.
+  for (let k = i; k < tokens.length; k++) {
+    if (TAF_REMARK_START.test(tokens[k])) break;
+    if (/^[56]\d{5}$/.test(tokens[k])) group.hazards.push(decodeTafHazard(tokens[k]));
   }
 
   // A token shaped like sky or visibility that we couldn't read must not be skipped,
@@ -599,8 +673,9 @@ function renderTaf(parsed) {
   // Visual overview band
   const overviewEl = document.getElementById('taf-overview');
   if (overviewEl) {
+    const notes = (parsed.notes || []).map(n => `<p class="decoder-note">${escHtml(n)}</p>`).join('');
     const warnings = parsed.warnings.map(w => `<p class="decoder-error">${escHtml(w)}</p>`).join('');
-    overviewEl.innerHTML = warnings + buildTafOverview(parsed);
+    overviewEl.innerHTML = notes + warnings + buildTafOverview(parsed);
   }
 
   // Hour-by-hour slider
@@ -677,6 +752,10 @@ function buildTafOverview(parsed) {
   return `<div class="tl-band">${band}</div>${overlays ? overlays : ''}<div class="tl-axis">${ticks}</div>`;
 }
 
+function gridWindChip(g) {
+  return `Grid wind, not referenced to true north: ${g.raw}`;
+}
+
 function buildGroupCard(group) {
   const meta = GROUP_META[group.type] || { label: group.type, indent: false };
   const cat  = (group.flightCategory || 'unknown').toLowerCase();
@@ -696,6 +775,7 @@ function buildGroupCard(group) {
   const unread = el => (group.unreadableCovers || []).includes(el);
   const chips = [
     windStr ? `<span class="taf-chip taf-chip-wind">${escHtml(windStr)}</span>`
+      : group.gridWind ? `<span class="taf-chip taf-chip-wind">${escHtml(gridWindChip(group.gridWind))}</span>`
       : windInDoubt(group) && '<span class="taf-chip taf-chip-wind">Wind couldn\'t be read</span>',
     visStr ? `<span class="taf-chip taf-chip-vis">${escHtml(visStr)}</span>`
       : unread('visibility') && '<span class="taf-chip taf-chip-vis">Visibility couldn\'t be read</span>',
@@ -704,6 +784,7 @@ function buildGroupCard(group) {
     skyStr ? `<span class="taf-chip taf-chip-sky">${escHtml(skyStr)}</span>`
       : unread('sky') && '<span class="taf-chip taf-chip-sky">Sky couldn\'t be read</span>',
     wsStr    && `<span class="taf-chip taf-chip-ws">${escHtml(wsStr)}</span>`,
+    ...(group.hazards || []).map(h => `<span class="taf-chip taf-chip-ws">${escHtml(h.label)}</span>`),
   ].filter(Boolean).join('');
   const inherited = group.unreadableInherited || [];
   const badge = group.flightCategory
@@ -751,6 +832,7 @@ function buildTimeStr(group) {
 function buildWindStr(wind) {
   if (!wind) return '';
   if (wind.dir === 0 && wind.speed === 0) return 'Calm';
+  if (wind.directionMissing) return `Direction not reported / ${wind.speed} ${wind.unit}${wind.gust ? ` G${wind.gust}` : ''}`;
   const dir = wind.dir === 'VRB' ? 'VRB' : String(wind.dir).padStart(3,'0') + '°';
   let s = `${dir} / ${wind.speed} ${wind.unit}`;
   if (wind.gust) s += ` G${wind.gust}`;

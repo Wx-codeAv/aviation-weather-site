@@ -2484,3 +2484,12 @@ select:focus-visible,
   white-space: nowrap;
   border: 0;
 }
+/* A plain statement about how a report was read. Not a problem, so it is not the warning color. */
+.decoder-note {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin: 0 0 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid var(--sky);
+}

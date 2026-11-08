@@ -134,7 +134,8 @@ test('wind shear is not a garbled wind', () => {
 });
 
 // ── "Not reported" stays for a wind that is really missing or a real sensor outage
-for (const token of ['/////KT', '///10KT', '180//KT']) {
+// ///10KT is not an outage: the speed was reported, so it is kept (tests/decoder-backlog.test.js).
+for (const token of ['/////KT', '180//KT']) {
   test(`METAR ${token}: a real sensor outage is labelled as one, not as unreadable`, () => {
     const p = metar(token);
     assert.equal(p.windUnreadable, null);
@@ -420,7 +421,9 @@ for (const token of ['3404G14KT', 'E00000KT']) {
   });
 }
 
-for (const token of ['13008K', 'VRB02', '17010KT-SHRA', '30018G28', '0000KT', '0900KT', 'GRID30007KT']) {
+// 17010KT-SHRA is now split into a wind and a weather group, and GRID30007KT is shown as a grid wind
+// (tests/decoder-backlog.test.js). The rest are still garbled winds.
+for (const token of ['13008K', 'VRB02', '30018G28', '0000KT', '0900KT']) {
   test(`real TAF garble ${token} is flagged as a wind and the rest of the group is read`, () => {
     const g = group(`${HEAD} TEMPO 0118/0120 ${token} 3SM BKN020`, 'TEMPO');
     assert.equal(g.windUnreadable, token);
@@ -434,7 +437,8 @@ for (const token of ['13008K', 'VRB02', '17010KT-SHRA', '30018G28', '0000KT', '0
 test('a grid-north wind (GRID30007KT) is never read as a true wind', () => {
   const g = group('TAF NZFX 070100Z 0701/0807 GRID30007KT 9999 SCT040', 'BASE');
   assert.equal(g.wind, null);
-  assert.equal(g.windUnreadable, 'GRID30007KT');
+  assert.equal(g.gridWind.raw, 'GRID30007KT');
+  assert.equal(g.windUnreadable, null);
 });
 
 // Tokens that are not winds must not be called winds, because a wind we couldn't read doesn't

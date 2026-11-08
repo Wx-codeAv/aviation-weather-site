@@ -56,10 +56,62 @@ const HOMOGLYPHS = {
 // never fall back to a value, and it must never hide the visibility and sky that follow it.
 
 const WIND_PATTERN = /^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/;
+// A wind whose direction is missing but whose speed was reported: ///10KT, ///10G20KT. The speed is
+// real, so it is kept and compared as possible crosswind, the same as a variable wind.
+const WIND_NO_DIR = /^\/{3}(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/;
+// Antarctic stations (NZFX, NZWD) report wind against grid north, not true north: GRID30007KT.
+const GRID_WIND = /^GRID(\d{3})(\d{2,3})(?:G(\d{2,3}))?(KT|MPS|KMH)$/;
+const SKY_TOKEN = /^(?:(?:FEW|SCT|BKN|OVC|VV)\d{3}(?:CB|TCU)?|SKC|CLR|NSC|NCD)$/;
+
+function readNoDirWind(tok) {
+  const m = tok.match(WIND_NO_DIR);
+  return m ? { raw: tok, dir: null, directionMissing: true, speed: +m[1], gust: m[2] ? +m[2] : null, unit: m[3] } : null;
+}
+
+function readGridWind(tok) {
+  const m = tok.match(GRID_WIND);
+  return m ? { raw: tok, gridDir: +m[1], speed: +m[2], gust: m[3] ? +m[3] : null, unit: m[4] } : null;
+}
+
+function gridWindText(g) {
+  return `Reported as grid direction ${String(g.gridDir).padStart(3, '0')} at ${g.speed}${g.gust ? ' gusting ' + g.gust : ''} ${g.unit}, as written. It is not converted, so no crosswind or minimums result is given for it.`;
+}
+
+// Two groups written with no space between them. Split only when every part is a complete element
+// on its own: a wind then a weather group (17010KT-SHRA), or a weather group then a sky layer
+// (-SHRASCT030CB). One clean split only. Anything else stays one unrecognized token.
+function splitFusedGroup(tok) {
+  if (WIND_PATTERN.test(tok) || SKY_TOKEN.test(tok) || decodeWeather(tok) !== null) return null;
+  const w = tok.match(/^((?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?(?:KT|MPS|KMH))(.+)$/);
+  if (w && decodeWeather(w[2]) !== null) return [w[1], w[2]];
+  const found = [];
+  for (let k = 1; k < tok.length; k++) {
+    const a = tok.slice(0, k), b = tok.slice(k);
+    if (decodeWeather(a) !== null && SKY_TOKEN.test(b)) found.push([a, b]);
+  }
+  return found.length === 1 ? found[0] : null;
+}
+
+// Run the split over a token list, stopping at remarks. Returns the new list and what was split.
+function splitFusedTokens(tokens, from, isStop) {
+  const out = tokens.slice(0, from), fused = [];
+  let stopped = false;
+  for (let j = from; j < tokens.length; j++) {
+    if (isStop(tokens[j])) stopped = true;
+    const parts = stopped ? null : splitFusedGroup(tokens[j]);
+    if (parts) { fused.push({ raw: tokens[j], parts }); out.push(...parts); } else out.push(tokens[j]);
+  }
+  return { tokens: out, fused };
+}
+
+function fusedNote(f) {
+  return `The report wrote ${f.parts.join(' and ')} with no space, as ${f.raw}. Each part is a complete group on its own, so they were read as separate groups.`;
+}
 
 // The shapes a failed wind sensor really reports: direction and/or speed as slashes, such as
 // /////KT, ///10KT, or 180//KT. A slash in the middle of a number (180/10KT) is a typo, not an outage.
 function isWindOutage(tok) {
+  if (WIND_NO_DIR.test(tok)) return false;
   const m = tok.match(/^(\/{3}|\d{3}|VRB)(\/{2,3}|\d{2,3})(KT|MPS|KMH)$/);
   return !!m && (m[1] === '///' || /^\/+$/.test(m[2]));
 }
@@ -72,6 +124,8 @@ function isGarbledWindToken(tok) {
     && /(KT|KTS|K|MPS|KMH)$/.test(tok)
     && !/^(WS|TX|TN)/.test(tok)
     && !WIND_PATTERN.test(tok)
+    && !WIND_NO_DIR.test(tok)
+    && !GRID_WIND.test(tok)
     && !isWindOutage(tok);
 }
 
@@ -105,6 +159,14 @@ function quietMetarGroup(tok, altimeterSeen, bodyOpen) {
     return { label: 'Recent weather', text: 'Weather that ended within the last hour. It does not set the flight category.' };
   }
   if (/^(?:BLACK)?(?:BLU|WHT|GRN|YLO[12]?|AMB|RED)\+?$/.test(tok) || tok === 'BLACK') {
+    if (/^BLACK/.test(tok)) {
+      const state = tok.slice(5).replace(/\+$/, '');
+      return {
+        label: 'BLACK prefix',
+        text: `BLACK: the airfield is not usable for reasons other than cloud or visibility minima (UK Met Office aerodrome colour state register).${state ? ` The color state that follows is ${state}.` : ''} The flight category shown here is from weather only and does not say the airfield is usable.`,
+        note: `${tok}: the airfield is not usable for reasons other than cloud or visibility minima, such as an obstructed runway. The flight category above is from weather only.`
+      };
+    }
     return { label: 'Color state', text: 'Military airfield color state. It does not set the flight category.' };
   }
   if (/^W(?:\d{2}|\/\/)\/(?:[SH](?:\d+|\/+)|\/\/)$/.test(tok)) {
@@ -137,11 +199,21 @@ function parseMetar(rawInput) {
     }
   }
 
+  // Two groups run together with no space are split when each part is a complete group on its own.
+  // Station and time stay put, and nothing after RMK is touched.
+  const split = splitFusedTokens(tokens, Math.min(2, tokens.length), t => t === 'RMK');
+  tokens.length = 0;
+  tokens.push(...split.tokens);
+  const fusedFirst = new Map(split.fused.map(f => [f.parts[0], f]));
+
   const result = {
     raw,
     type: null, station: null, time: null,
     auto: false, cor: false,
     wind: null, windVariable: null,
+    gridWind: null,         // a grid-north wind (GRID30007KT). Wind stays null.
+    fused: split.fused,
+    notes: split.fused.map(fusedNote),   // plain statements, not problems: shown above the breakdown
     windUnreadable: null,   // wind-like tokens we couldn't read, joined. Wind stays null.
     windDoubt: null,        // a token we couldn't place sat where the wind belongs. It might be the wind.
     windWarning: null,
@@ -158,6 +230,11 @@ function parseMetar(rawInput) {
   };
 
   function push(token, type, label, explanation) {
+    const f = fusedFirst.get(token);
+    if (f && !f.noted) {
+      f.noted = true;
+      result.fields.push({ token: f.raw, type: 'note', label: 'Groups run together', explanation: fusedNote(f) });
+    }
     result.fields.push({ token, type, label, explanation });
   }
 
@@ -356,6 +433,18 @@ function parseMetar(rawInput) {
           `Direction varying ${from}° to ${to}°`);
         i++;
       }
+    } else if (WIND_NO_DIR.test(tokens[i])) {
+      result.wind = readNoDirWind(tokens[i]);
+      const w = result.wind;
+      push(tokens[i], 'wind', 'Wind',
+        `Direction not reported, ${w.speed}${w.gust ? ' gusting ' + w.gust : ''} ${w.unit}. The speed is kept. With no direction, all of it could be crosswind.`);
+      result.notes.push(`${tokens[i]}: the wind direction is missing but the speed was reported. The full speed${w.gust ? ' and gust are' : ' is'} treated as possible crosswind.`);
+      i++;
+    } else if (GRID_WIND.test(tokens[i])) {
+      result.gridWind = readGridWind(tokens[i]);
+      push(tokens[i], 'wind', 'Grid wind, not referenced to true north', gridWindText(result.gridWind));
+      result.notes.push(`${tokens[i]}: grid wind, not referenced to true north. It is shown as written, not converted, and no crosswind or minimums result is given for it.`);
+      i++;
     } else if (isWindOutage(tokens[i])) {
       // Wind sensor unavailable: direction and/or speed reported as slashes (/////KT)
       push(tokens[i], 'wind', 'Wind',
@@ -446,8 +535,10 @@ function parseMetar(rawInput) {
       push(tok, 'temp', 'Temperature / Dewpoint', desc);
       i++; continue;
     }
-    // Temperature / dewpoint sensor unavailable: //// or M//// or //M// etc.
-    if (result.temp === null && result.altimeter === null && /^\/{4,5}$/.test(tok)) {
+    // Temperature / dewpoint sensor unavailable. Only when the position settles it: the body has a
+    // sky group already and the next group is the altimeter. Anywhere else the field is unclear.
+    if (result.temp === null && result.altimeter === null && /^\/{4,5}$/.test(tok)
+        && (result.sky.length > 0 || result.visibility) && /^[AQ](\d{4}|\/{4})$/.test(tokens[i + 1] || '')) {
       bodyOpen = false;
       push(tok, 'temp', 'Temperature / Dewpoint',
         'Not available — temperature/dewpoint not reported by the automated sensor');
@@ -483,13 +574,15 @@ function parseMetar(rawInput) {
 
     // A group of only slashes in a slot we didn't anchor: sensor data missing.
     if (/^\/+$/.test(tok)) {
-      push(tok, 'unknown', 'Data not available',
-        'Reported as all slashes — the automated sensor had no value for this group');
+      push(tok, 'unknown', 'Missing group (field unclear)',
+        'Reported as all slashes, so the sensor had no value, but where it sits does not say which field it was. It is not guessed.');
+      // Before temperature, it might be the visibility, weather, or sky, so it is not a settled VFR.
+      if (bodyOpen) result.unreadable.push(tok);
       i++; continue;
     }
 
     // A token that ends like a wind but isn't one, wherever it sits before remarks.
-    if (isGarbledWindToken(tok)) {
+    if (isGarbledWindToken(tok) || WIND_NO_DIR.test(tok) || GRID_WIND.test(tok)) {
       flagUnreadableWind(tok);
       i++; continue;
     }
@@ -499,6 +592,7 @@ function parseMetar(rawInput) {
     const quiet = quietMetarGroup(tok, result.altimeter !== null, bodyOpen);
     if (quiet) {
       push(tok, 'extra', quiet.label, quiet.text);
+      if (quiet.note) result.notes.push(quiet.note);
       i++; continue;
     }
 
@@ -946,8 +1040,14 @@ function windBarb(dir, speed, cx, cy, color) {
   return out;
 }
 
-function buildWindSVG(wind, windVar) {
+function buildWindSVG(wind, windVar, gridWind) {
+  if (!wind && gridWind) {
+    return `<div class="vis-placeholder">Grid wind, not referenced to true north<br>${escHtml(gridWind.raw)}</div>`;
+  }
   if (!wind) return '<div class="vis-placeholder">No wind data</div>';
+  if (wind.directionMissing) {
+    return `<div class="vis-placeholder">Wind direction not reported<br>${wind.speed}${wind.gust ? ' gusting ' + wind.gust : ''} ${wind.unit}</div>`;
+  }
 
   const size = 220, h = 246;
   const cx = 110, cy = 92, r = 72;
@@ -1162,7 +1262,7 @@ function renderDecoder(parsed) {
 
   // "Why this category" scale
   const scaleEl = document.getElementById('cat-scale');
-  if (scaleEl) scaleEl.innerHTML = buildCategoryScale(parsed);
+  if (scaleEl) scaleEl.innerHTML = (parsed.notes || []).map(n => `<p class="decoder-note">${escHtml(n)}</p>`).join('') + buildCategoryScale(parsed);
 
   // Comparison with the pilot's saved limits
   if (typeof renderMinimumsCheck === 'function') renderMinimumsCheck(parsed);
@@ -1194,7 +1294,7 @@ function renderDecoder(parsed) {
     // A wind we couldn't read gets its own message, so it can't look like a missing wind.
     windEl.innerHTML = (parsed.windUnreadable || parsed.windDoubt)
       ? '<div class="vis-placeholder">Wind couldn\'t be read</div>'
-      : buildWindSVG(parsed.wind, parsed.windVariable);
+      : buildWindSVG(parsed.wind, parsed.windVariable, parsed.gridWind);
     const windWarn = document.getElementById('wind-warning');
     if (windWarn) {
       windWarn.textContent = parsed.windWarning || '';
@@ -1207,6 +1307,8 @@ function renderDecoder(parsed) {
       // Space the direction away from the speed, e.g. "33011KT" → "330 11KT"
       if (wd.dir === 0 && wd.speed === 0) {
         windDesc.textContent = wd.raw;
+      } else if (wd.directionMissing) {
+        windDesc.textContent = `direction not reported, ${wd.speed}${wd.gust ? 'G' + wd.gust : ''}${wd.unit}`;
       } else {
         const dirStr = wd.dir === 'VRB' ? 'VRB' : String(wd.dir).padStart(3, '0');
         windDesc.textContent = `${dirStr} ${wd.speed}${wd.gust ? 'G' + wd.gust : ''}${wd.unit}`;
@@ -1216,7 +1318,7 @@ function renderDecoder(parsed) {
     const xlink = document.getElementById('wind-xlink');
     if (xlink) {
       const wd = parsed.wind;
-      if (wd && !parsed.windUnreadable && !parsed.windDoubt && wd.dir !== 'VRB' && !(wd.dir === 0 && wd.speed === 0)) {
+      if (wd && !parsed.windUnreadable && !parsed.windDoubt && wd.dir !== 'VRB' && !wd.directionMissing && !(wd.dir === 0 && wd.speed === 0)) {
         const q = `dir=${wd.dir}&speed=${wd.speed}${wd.gust ? '&gust=' + wd.gust : ''}${parsed.station ? '&station=' + parsed.station : ''}`;
         xlink.innerHTML = `<a href="crosswind.html?${q}">Send this wind to the Crosswind tool →</a>`;
         xlink.hidden = false;

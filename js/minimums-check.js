@@ -77,12 +77,12 @@ function compareToLimit(name, value, limit) {
 // A variable wind has no direction, so the whole wind could be crosswind on any runway. The
 // number is the full speed or gust, compared with the saved crosswind limit. The wording says
 // so, because "Total wind" read like the sustained wind line.
-function compareVariableCrosswind(name, value, limit) {
+function compareVariableCrosswind(name, value, limit, because = 'variable wind') {
   const result = compareToLimit(name, value, limit);
   if (limit === null || limit === undefined) return result;
   const v = roundTenth(value);
   const relation = v > limit ? 'above' : v === limit ? 'at' : 'within';
-  return { ...result, text: `${name} could be the full ${formatKnots(v)} (variable wind), ${relation} your ${limit} kt limit.` };
+  return { ...result, text: `${name} could be the full ${formatKnots(v)} (${because}), ${relation} your ${limit} kt limit.` };
 }
 
 // The largest crosswind share of the wind anywhere in a variable sector, which runs
@@ -180,6 +180,11 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
       incomplete: 'wind couldn\'t be read, so wind and crosswind weren\'t checked' });
     return;
   }
+  if (!w && parsed.gridWind) {
+    out.push({ status: 'notChecked', text: `Wind is a grid wind (${parsed.gridWind.raw}), not referenced to true north, so wind and crosswind limits weren't checked.`,
+      incomplete: "the wind is a grid wind, not referenced to true north, so wind and crosswind weren't checked" });
+    return;
+  }
   if (!w) {
     out.push({ status: 'notChecked', text: 'Wind isn\'t reported, so wind limits weren\'t checked.',
       incomplete: 'wind isn\'t reported, so wind and crosswind weren\'t checked' });
@@ -201,10 +206,13 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
     if (limits.gustSpreadOn) out.push(compareToLimit('Gust spread', w.gust - w.speed, limits.gustSpread));
   }
 
-  if (w.dir === 'VRB') {
-    out.push({ status: 'info', explains: 'crosswind', text: 'Variable wind has no fixed direction, so crosswind for a runway can\'t be calculated. Any of it could be crosswind, so the full wind and gust are compared with your crosswind limit.' });
-    out.push({ ...compareVariableCrosswind('Crosswind', w.speed, limits.crosswind), group: 'crosswind' });
-    if (w.gust) out.push({ ...compareVariableCrosswind('Gust crosswind', w.gust, limits.crosswind), group: 'crosswind' });
+  if (w.dir === 'VRB' || w.directionMissing) {
+    const why = w.directionMissing
+      ? "The wind direction isn't reported, so crosswind for a runway can't be calculated."
+      : "Variable wind has no fixed direction, so crosswind for a runway can't be calculated.";
+    out.push({ status: 'info', explains: 'crosswind', text: `${why} Any of it could be crosswind, so the full wind and gust are compared with your crosswind limit.` });
+    out.push({ ...compareVariableCrosswind('Crosswind', w.speed, limits.crosswind, w.directionMissing ? 'direction not reported' : undefined), group: 'crosswind' });
+    if (w.gust) out.push({ ...compareVariableCrosswind('Gust crosswind', w.gust, limits.crosswind, w.directionMissing ? 'direction not reported' : undefined), group: 'crosswind' });
     return;
   }
 
@@ -284,7 +292,7 @@ const MINIMUMS_NOTE = 'This compares the report with the limits you saved. It su
 let minimumsAirportLoad = null;
 function loadMinimumsAirports() {
   if (!minimumsAirportLoad) {
-    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08c')
+    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08d')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
   }
   return minimumsAirportLoad;

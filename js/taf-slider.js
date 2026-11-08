@@ -127,6 +127,7 @@ function stateChips(state) {
   const unread = element => (state.unreadableCovers || []).includes(element);
   return [
     state.wind ? chip('wind', buildWindStr(state.wind))
+      : state.gridWind ? chip('wind', gridWindChip(state.gridWind))
       : chip('wind', windInDoubt(state) ? 'Wind couldn\'t be read' : 'Wind not stated'),
     state.visibility ? chip('vis', buildVisStr(state.visibility))
       : chip('vis', unread('visibility') ? 'Visibility couldn\'t be read' : 'Visibility not stated'),
@@ -134,6 +135,7 @@ function stateChips(state) {
       : (unread('weather') ? chip('wx', 'Weather couldn\'t be read') : ''),
     state.sky.length ? chip('sky', buildSkyStr(state.sky)) : (cavok || state.skyKnown ? '' : chip('sky', unread('sky') ? 'Sky couldn\'t be read' : 'Sky not stated')),
     state.windShear ? chip('ws', buildWsStr(state.windShear)) : '',
+    ...(state.hazards || []).map(h => chip('ws', h.label)),
   ].join('');
 }
 
