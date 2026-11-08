@@ -57,6 +57,14 @@ matrix rows can link anywhere meaningful:
   - Most of the page IS coverable: stability types (neutral / absolutely stable / absolutely unstable / conditionally unstable — Handbook uses slightly different naming, e.g. "Conditional Instability") plus CAPE and lifted index are all in Ch. 13. Verify each claim against the chapter and cite it — this is a real mapping job, not an unsourceable page.
   - The Skew-T/Log-P section is NOT in the Handbook and should NOT be force-cited to it. Skew-T analysis is beyond standard FAA pilot-training scope — it's meteorology-track material (e.g. ERAU WX 301). Present that section as established atmospheric science without an FAA cite, same treatment as the mountain-wave and dry-microburst items elsewhere on the site. Optionally note it goes beyond typical pilot training. Keep the section as-is otherwise — it's strong, well-done content and shouldn't be cut just because the Handbook doesn't cover it.
 
+Format gaps (carried over from the deleted `audit-fixes` branch, 2026-11-08): pages missing pieces of the standard
+six-section Learn page structure (see project-principles.md), to be written by the author in his
+own voice, not drafted speculatively during a correction pass:
+
+- [ ] pireps.html — missing a standalone "Why pilots care" section and a
+      closing "Pilot takeaway" section (found during the 2026-07 audit fix
+      pass, Batch 3 Group 4; every other page in its review batch had both)
+
 ## Stretch goals — long-term, not committed
 
 - Interactive skew-T tool with live sounding data (foundation in tools/ — Python 3.11 + SHARPpy venv)
