@@ -692,7 +692,7 @@ function compute() {
 
   drawSVG(r1, speed, gusts, 'cw-svg');
   const rwy2Same = rwy2 !== null && (rwy2 === rwy1 || rwy2 === rwy1r);
-  setCaption(`RWY ${pad(rwy1)} / ${pad(rwy1r)} — θ = ${Math.round(Math.abs(r1.ad))}° from RWY ${pad(rwy1)}` + (rwy2Same ? ' · Runway 2 is the same runway, so it is shown once' : ''));
+  setCaption(`RWY ${pad(rwy1)} / ${pad(rwy1r)} — θ = ${Math.round(Math.abs(r1.ad))}° from RWY ${pad(rwy1)}` + (rwy2Same ? ' · Runway 2 has the same number or its reciprocal, so it is shown once. Manual mode takes numbers only, so parallel runways like 09L and 09R look the same here; use an airport to compare them' : ''));
 
   // Compute RWY 2 + its reciprocal (if entered)
   let r2 = null, r2r = null;

@@ -5,7 +5,9 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const { readRepoFile } = require('./load-site');
+const { readRepoFile, loadDecoders } = require('./load-site');
+const site = loadDecoders();
+for (const f of ['js/wind-math.js', 'js/minimums-check.js']) vm.runInContext(readRepoFile(f), site, { filename: f });
 
 const ROOT = path.join(__dirname, '..');
 const pageFiles = [
@@ -56,7 +58,8 @@ test('crosswind: Runway 2 entered as Runway 1 or its reciprocal is shown once, a
   assert.match(c, /if \(rwy2 !== null && !rwy2Same\) \{/);
   assert.match(c, /const samePair = !!pair2 && pair2 === pair1;/);
   assert.match(c, /if \(pair2 && !samePair\) \{/);
-  assert.equal((c.match(/Runway 2 is the same runway, so it is shown once/g) || []).length, 2);
+  assert.equal((c.match(/Runway 2 is the same runway, so it is shown once/g) || []).length, 1);
+  assert.equal((c.match(/Runway 2 has the same number or its reciprocal, so it is shown once/g) || []).length, 1);
 });
 
 test('headings: no page skips a level, and the fixes use a visually hidden h2', () => {
@@ -117,4 +120,31 @@ test('decoder tabs: aria-selected and tabindex follow the active tab, and arrow 
   assert.equal(tabs[0].focused, true);
   tabs[0].listeners.keydown({ key: 'End', preventDefault() {} });
   assert.equal(tabs[1].attrs['aria-selected'], 'true');
+});
+
+test('crosswind airport mode: every runway pair is reciprocal with matching L/C/R suffixes, so same-pair and different-pair choices are unambiguous', () => {
+  const data = JSON.parse(text('assets/data/airports-us.json'));
+  const swap = { L: 'R', R: 'L', C: 'C', '': '' };
+  for (const [id, a] of Object.entries(data.airports)) {
+    const seen = new Set();
+    for (const [[p], [q]] of a.r) {
+      const [pn, ps] = [parseInt(p, 10), p.replace(/^\d+/, '')];
+      const [qn, qs] = [parseInt(q, 10), q.replace(/^\d+/, '')];
+      if (!(ps in swap) || !(qs in swap)) continue;   // unusual designators are not asserted here
+      assert.equal(((pn + 17) % 36) + 1, qn, `${id} ${p}/${q}`);
+      assert.equal(swap[ps], qs, `${id} ${p}/${q}`);
+      assert.ok(!seen.has(p) && !seen.has(q), `${id}: ${p} or ${q} listed twice`);
+      seen.add(p); seen.add(q);
+    }
+  }
+  const c = text('pages/crosswind.html');
+  assert.match(c, /const samePair = !!pair2 && pair2 === pair1;/);   // identity of the chosen pair, never a bare number
+});
+
+test('a METAR of just THIS shows no flight category and nothing is passed or failed', () => {
+  const p = site.parseMetar('THIS');
+  assert.equal(p.flightCategory, null);
+  const lines = [...site.checkMetarAgainstMinimums(p, { ceiling: 2500, visibility: 5, crosswind: 10, wind: 15, gusts: 20, gustSpreadOn: false, gustSpread: null }, null, 'x')];
+  assert.ok(lines.length > 0);
+  assert.ok(lines.every((l) => l.status === 'notChecked'), lines.map((l) => l.status).join());
 });
