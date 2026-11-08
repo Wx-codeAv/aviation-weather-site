@@ -2504,3 +2504,4 @@ select:focus-visible,
 .mins-unplaced { margin: 0 0 0.6rem; padding: 0.5rem 0.7rem; border-left: 3px solid var(--sky); font-size: 0.88rem; line-height: 1.45; color: var(--ink); }
 .mins-summary[hidden] { display: none; }
 .taf-mins { margin-top: 1rem; }
+.mins-source-range { white-space: nowrap; }

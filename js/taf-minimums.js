@@ -175,9 +175,14 @@ const TAF_MINIMUMS_NOTE = 'This compares each hour of the forecast with the limi
 
 let tafMinsPanel = null;
 
+// Rendered text only: a time like D08 16:00Z never breaks between the day and the hour.
+function keepTimes(escaped) {
+  return String(escaped).replace(/(D\d\d) (\d\d:\d\dZ)/g, '$1 $2');
+}
+
 function buildTafMinimumsBlocks(result) {
   return result.blocks.map(b => `<section class="mins-source">
-      <h4 class="mins-source-title">${escHtml(b.label)}${b.range ? ` <span class="mins-source-range">${escHtml(b.range)}</span>` : ''}</h4>
+      <h4 class="mins-source-title">${keepTimes(escHtml(b.label))}${b.range ? ` <span class="mins-source-range">${keepTimes(escHtml(b.range))}</span>` : ''}</h4>
       ${b.lines.length
         ? `<ul class="mins-lines">${buildMinimumsLines(b.lines)}</ul>`
         : '<p class="mins-source-none">This group states no ceiling, visibility, or wind, so there is nothing new to check.</p>'}
@@ -202,10 +207,10 @@ function tafMinimumsDraw() {
   }
   label.textContent = `Your minimums at ${result.timeZ}`;
   blocks.innerHTML = buildTafMinimumsBlocks(result);
-  incomplete.innerHTML = result.incomplete ? `<strong>Incomplete at this hour:</strong> ${escHtml(result.incomplete)}` : '';
+  incomplete.innerHTML = result.incomplete ? `<strong>Incomplete at this hour:</strong> ${keepTimes(escHtml(result.incomplete))}` : '';
   incomplete.hidden = !result.incomplete;
   const text = tafMinimumsSummary(result);
-  summary.textContent = text || '';
+  summary.innerHTML = text ? keepTimes(escHtml(text)) : '';
   summary.hidden = !text;
 }
 
@@ -238,7 +243,7 @@ function tafMinimumsInit(parsed) {
       <label for="taf-mins-runway">Runway at ${escHtml(parsed.station || '')}</label>
       <select id="taf-mins-runway" class="mins-select"><option value="">Choose a runway</option></select>
     </div>
-    ${unplaced.length ? `<p class="mins-unplaced"><strong>Not placed in time:</strong> ${escHtml(unplaced.join('; '))}. No hour's check includes these groups, because their time can't be placed inside the valid period.</p>` : ''}
+    ${unplaced.length ? `<p class="mins-unplaced"><strong>Not placed in time:</strong> ${keepTimes(escHtml(unplaced.join('; ')))}. No hour's check includes these groups, because their time can't be placed inside the valid period.</p>` : ''}
     <p id="taf-mins-incomplete" class="mins-incomplete" hidden></p>
     <p id="taf-mins-summary" class="mins-summary" hidden></p>
     <div id="taf-mins-blocks"></div>

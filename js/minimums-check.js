@@ -12,8 +12,8 @@ const MINIMUMS_KEY = 'crosswindwx_minimums_v2';
 
 // What the thing being checked is called in the sentences. A METAR check says "report". The forecast
 // check passes FORECAST_WORDS so the same functions say "forecast" and "stated".
-const REPORT_WORDS = { noun: 'report', reported: 'reported' };
-const FORECAST_WORDS = { noun: 'forecast', reported: 'stated' };
+const REPORT_WORDS = { noun: 'report', reported: 'reported', ceilingNone: 'No ceiling reported.' };
+const FORECAST_WORDS = { noun: 'forecast', reported: 'stated', ceilingNone: 'No ceiling forecast.' };
 
 // Reads the builder's saved profile. Never fills in a default: a limit nobody
 // saved is null, and the check reports it as not checked.
@@ -120,7 +120,7 @@ function checkCeiling(parsed, limit, out, words = REPORT_WORDS) {
     out.push({ status: 'notChecked', text: `Ceiling wasn't checked because sky condition is missing or unreadable in this ${words.noun}.`,
       incomplete: 'sky condition is missing or unreadable, so ceiling wasn\'t checked' });
   } else if (ceiling === null) {
-    out.push({ status: 'within', text: `No ceiling ${words.reported}. ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
+    out.push({ status: 'within', text: `${words.ceilingNone} ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
   } else if (ceiling === limit) {
     out.push({ status: 'at', text: `Ceiling ${ceiling.toLocaleString()} ft is at ${min}.` });
   } else {

@@ -439,7 +439,7 @@ test('the panel draws the hour, offers the airport runways, and redraws when the
   sel.value = String(index);
   sel.listeners.change();
   assert.match(els['taf-mins-blocks'].innerHTML, /RWY 16L: wind 200°T − 14\.8°E = 185\.2°M, runway 165\.2°M, 20\.0° apart\./);
-  assert.match(els['taf-mins-summary'].textContent, /Temporarily \(visibility\)/);
+  assert.match(els['taf-mins-summary'].innerHTML, /Temporarily \(visibility\)/);
   // slider to an hour with nothing special
   world.tafMinimumsUpdate(1);
   assert.equal(els['taf-mins-label'].textContent, 'Your minimums at D08 13:00Z');
