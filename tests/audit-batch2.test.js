@@ -38,7 +38,6 @@ test('winds aloft scenario: westbound KMCI to KDEN with an even-thousand IFR alt
   assert.match(w, /assume your Cessna T182T \(turbocharged\) cruises at 155 kt TAS at every altitude below/);
   assert.doesNotMatch(w, /Cessna 182T/);
   assert.match(w, /"The briefer will interpolate wind directions and speeds between levels and stations as necessary to provide expected conditions at planned altitudes" \(AIM 7-1-5\)/);
-  assert.match(w, /"during the entire flight time" at cabin pressure altitudes above 14,000 ft MSL, and each occupant to be provided with it above 15,000 ft MSL/);
   assert.doesNotMatch(w, /for more than 30 minutes as a required crew member/);
   assert.match(w, /if the bases are at or below 10,000 ft/);
   assert.doesNotMatch(w, /from Denver \(KDEN/);
@@ -100,8 +99,31 @@ test('icing: Handbook section cites, friction heating, droplet-size weight, tail
   assert.equal((i.match(/AC 91-74B ¶3-7/g) || []).length, 5, 'Ref line, two flap cites, the lift sentence, the diagram comment');
   assert.match(i, /AC 91-74B says the tailplane is a better ice collector than the wings because it presents a thinner surface to the airstream \(AC 91-74B ¶3-1\)/);
   assert.match(i, /retracting flaps could lead to a stall, so configuration changes should be made only per manufacturer guidance \(AC 91-74B ¶5-10a\(2\)\)/);
-  assert.match(i, /<strong>The symptom trap:<\/strong>/);
+  assert.match(i, /<strong>Do not recover by reflex\.<\/strong>/);
   assert.doesNotMatch(i, /Tailplane Icing Program · FAA-H-8083-28/);
+});
+
+test('icing: no universal flap retraction or reflex recovery advice, and the AFM or POH governs', () => {
+  const i = text('learn/icing.html');
+  assert.doesNotMatch(i, /retract(?:ing)? (?:the )?flaps immediately|Immediately retract the flaps/i);
+  assert.doesNotMatch(i, /recovery is (?:the )?opposite|the response is opposite|apply nose-up trim|back pressure|Do not re-extend flaps|entire chapter/i);
+  assert.doesNotMatch(i, /push the yoke forward|Pushing forward in a tailplane stall/);
+  assert.match(i, /Do not treat flap retraction as a universal first step/);
+  assert.match(i, /For other aircraft, retracting the flaps or slats at this stage could lead to a stall\./);
+  assert.match(i, /"similar to those for wing stall recovery, and in some respects opposite from those for recovery from the ICTS" \(AC 91-74B ¶5-13a\)/);
+  assert.match(i, /"adhere to AFM limitations and procedures for flap use in icing, if any" \(AC 91-74B ¶5-10e\(1\)\)/);
+  assert.match(i, /"consider a partial- or no-flap landing" \(AC 91-74B ¶5-10e\(2\)\)/);
+  // each of the lines that used to give a flap or stall recovery action now defers to the AFM or POH and cites 5-10
+  assert.ok((i.match(/AC 91-74B ¶5-10a\(2\)/g) || []).length >= 7);
+  assert.doesNotMatch(i, /\(AC 91-74B ¶3-7\)<\/p>|retract flaps immediately\. \(AC 91-74B ¶3-7\)/);
+});
+
+test('winds aloft Option C: the oxygen sentence names (a)(1), (a)(2), and (a)(3) for an 18,000 ft flight', () => {
+  const w = text('learn/winds-aloft-jet-stream.html');
+  assert.match(w, /more than 30 minutes at cabin pressure altitudes above 12,500 ft MSL up to and including 14,000 ft MSL \(a\)\(1\)/);
+  assert.match(w, /during the entire flight time at cabin pressure altitudes above 14,000 ft MSL \(a\)\(2\)/);
+  assert.match(w, /above 15,000 ft MSL \(a\)\(3\)/);
+  assert.match(w, /\(14 CFR 91\.211\(a\)\(1\), \(a\)\(2\), and \(a\)\(3\)\)/);
 });
 
 test('thunderstorm page: VFR into IMC statement, convective SIGMET criteria and validity', () => {
