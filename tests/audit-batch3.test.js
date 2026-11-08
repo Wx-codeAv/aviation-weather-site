@@ -110,7 +110,7 @@ test('minimums page: the set-them-on-the-ground sentence is there with no em das
 
 test('decoder legend: PROB30 matches NWSI 10-813 and PROB40 is explained for military and international TAFs', () => {
   const d = text('pages/decoder.html');
-  assert.match(d, /A 30% chance of a thunderstorm or precipitation event and its associated wind, visibility, and sky conditions\. NWS PROB30 groups do not exceed 6 hours\. It is the only probability group NWS TAFs use \(NWSI 10-813\)\./);
+  assert.match(d, /A 30% chance of the conditions in this group\. In NWS TAFs, PROB30 is used only for a thunderstorm or precipitation event and its associated wind, visibility, and sky conditions, does not exceed 6 hours, and is the only probability group used \(NWSI 10-813\)\./);
   assert.match(d, /A 40% chance of these conditions\. NWS TAFs don't use PROB40, but U\.S\. military and international TAFs may \(FAA-H-8083-28 §27\.4\.2\.10\.3\)\./);
   assert.doesNotMatch(d, /30–39%|40–49%/);
 });
@@ -129,7 +129,7 @@ test('text added in batch 3 has no em dashes', () => {
     ['pages/learn/weather-product-ladder.html', 'This is a self-briefing order', '</p>'],
     ['pages/learn/fog-formation.html', 'often well ahead of the frontal surface', '.'],
     ['pages/minimums.html', 'Set them on the ground', '</p>'],
-    ['pages/decoder.html', 'A 30% chance of a thunderstorm', '</span>'],
+    ['pages/decoder.html', 'A 30% chance of the conditions in this group', '</span>'],
     ['pages/decoder.html', 'A 40% chance of these conditions', '</span>'],
   ];
   for (const [file, start, end] of added) {
