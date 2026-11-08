@@ -10,6 +10,11 @@
 
 const MINIMUMS_KEY = 'crosswindwx_minimums_v2';
 
+// What the thing being checked is called in the sentences. A METAR check says "report". The forecast
+// check passes FORECAST_WORDS so the same functions say "forecast" and "stated".
+const REPORT_WORDS = { noun: 'report', reported: 'reported' };
+const FORECAST_WORDS = { noun: 'forecast', reported: 'stated' };
+
 // Reads the builder's saved profile. Never fills in a default: a limit nobody
 // saved is null, and the check reports it as not checked.
 function readMinimums(storage) {
@@ -98,7 +103,7 @@ function worstCrosswindFactor(fromM, toM, reportedM, runwayHdg) {
   return worst;
 }
 
-function checkCeiling(parsed, limit, out) {
+function checkCeiling(parsed, limit, out, words = REPORT_WORDS) {
   const cavok = !!(parsed.visibility && parsed.visibility.cavok);
   const confirmed = cavok || (parsed.sky.length > 0
     && !parsed.sky.some(skyLayerUnknown) && !parsed.unreadable.length);
@@ -112,7 +117,7 @@ function checkCeiling(parsed, limit, out) {
   if (ceiling !== null && ceiling < limit) {
     out.push({ status: 'exceeds', text: `Ceiling ${ceiling.toLocaleString()} ft is below ${min}.` });
   } else if (!confirmed) {
-    out.push({ status: 'notChecked', text: 'Ceiling wasn\'t checked because sky condition is missing or unreadable in this report.',
+    out.push({ status: 'notChecked', text: `Ceiling wasn't checked because sky condition is missing or unreadable in this ${words.noun}.`,
       incomplete: 'sky condition is missing or unreadable, so ceiling wasn\'t checked' });
   } else if (ceiling === null) {
     out.push({ status: 'within', text: `No ceiling reported. ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
@@ -137,7 +142,7 @@ function formatExactSM(sm, limit) {
   return sm.toFixed(5);
 }
 
-function checkVisibility(parsed, limit, out) {
+function checkVisibility(parsed, limit, out, words = REPORT_WORDS) {
   const vis = parsed.visibility;
   const sm = visibilityInSM(vis);
   if (limit === null) {
@@ -146,8 +151,18 @@ function checkVisibility(parsed, limit, out) {
     return;
   }
   if (sm === null) {
-    out.push({ status: 'notChecked', text: 'Visibility wasn\'t checked because it\'s missing or unreadable in this report.',
+    out.push({ status: 'notChecked', text: `Visibility wasn't checked because it's missing or unreadable in this ${words.noun}.`,
       incomplete: 'visibility is missing or unreadable, so visibility wasn\'t checked' });
+    return;
+  }
+  // A forecast group's unreadable token might be another visibility. Only a value already below the
+  // limit is certain, so any other result becomes "not checked". Nothing sets this for a METAR.
+  if (parsed.visibilityDoubt) {
+    const probe = [];
+    checkVisibility({ visibility: vis }, limit, probe, words);
+    if (probe[0].status === 'exceeds') { out.push(probe[0]); return; }
+    out.push({ status: 'notChecked', text: `Visibility wasn't confirmed because part of this ${words.noun} couldn't be read.`,
+      incomplete: 'part of the forecast couldn\'t be read, so visibility wasn\'t confirmed' });
     return;
   }
   const min = `your ${limit} SM minimum`;
@@ -171,7 +186,7 @@ function checkVisibility(parsed, limit, out) {
   else out.push({ status: 'within', text: `Visibility ${said} is above ${min}.` });
 }
 
-function checkWind(parsed, limits, runway, noRunwayReason, out) {
+function checkWind(parsed, limits, runway, noRunwayReason, out, words = REPORT_WORDS) {
   const w = parsed.wind;
   // A wind token was present but we couldn't read it. Never compare, even if another wind
   // token was readable, because we can't tell which one the report meant.
@@ -186,8 +201,8 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
     return;
   }
   if (!w) {
-    out.push({ status: 'notChecked', text: 'Wind isn\'t reported, so wind limits weren\'t checked.',
-      incomplete: 'wind isn\'t reported, so wind and crosswind weren\'t checked' });
+    out.push({ status: 'notChecked', text: `Wind isn't ${words.reported}, so wind limits weren't checked.`,
+      incomplete: `wind isn't ${words.reported}, so wind and crosswind weren't checked` });
     return;
   }
   if (w.unit !== 'KT') {
@@ -251,12 +266,17 @@ function checkWind(parsed, limits, runway, noRunwayReason, out) {
 }
 
 // runway is null, or { id, t, variation }. Null means none was chosen, and it stays that way.
-function checkMetarAgainstMinimums(parsed, limits, runway, noRunwayReason) {
+// elements says which of ceiling, visibility, and wind to check. All three when it is left out.
+function checkAgainstMinimums(view, limits, runway, noRunwayReason, words = REPORT_WORDS, elements = null) {
   const lines = [];
-  checkCeiling(parsed, limits.ceiling, lines);
-  checkVisibility(parsed, limits.visibility, lines);
-  checkWind(parsed, limits, runway, noRunwayReason, lines);
+  if (!elements || elements.ceiling) checkCeiling(view, limits.ceiling, lines, words);
+  if (!elements || elements.visibility) checkVisibility(view, limits.visibility, lines, words);
+  if (!elements || elements.wind) checkWind(view, limits, runway, noRunwayReason, lines, words);
   return lines;
+}
+
+function checkMetarAgainstMinimums(parsed, limits, runway, noRunwayReason) {
+  return checkAgainstMinimums(parsed, limits, runway, noRunwayReason);
 }
 
 // ── Page ─────────────────────────────────────────────────────
@@ -292,10 +312,19 @@ const MINIMUMS_NOTE = 'This compares the report with the limits you saved. It su
 let minimumsAirportLoad = null;
 function loadMinimumsAirports() {
   if (!minimumsAirportLoad) {
-    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08d')
+    minimumsAirportLoad = fetch('../assets/data/airports-us.json?v=2026-11-08e')
       .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); });
   }
   return minimumsAirportLoad;
+}
+
+// Why nothing was compared, when no usable profile is saved. thing is "report" or "forecast".
+function minimumsEmptyMessage(status, thing) {
+  return {
+    none: `No saved minimums yet. Set them in the <a href="minimums.html">Personal Minimums builder</a> to compare this ${thing} with your limits.`,
+    invalid: 'Your saved minimums couldn\'t be read, so nothing was compared. Open the <a href="minimums.html">Personal Minimums builder</a> and check them.',
+    unavailable: 'This browser is blocking saved data, so your minimums couldn\'t be read and nothing was compared.',
+  }[status];
 }
 
 function renderMinimumsCheck(parsed) {
@@ -309,11 +338,7 @@ function renderMinimumsCheck(parsed) {
   }
 
   if (saved.status !== 'ok') {
-    const message = {
-      none: 'No saved minimums yet. Set them in the <a href="minimums.html">Personal Minimums builder</a> to compare this report with your limits.',
-      invalid: 'Your saved minimums couldn\'t be read, so nothing was compared. Open the <a href="minimums.html">Personal Minimums builder</a> and check them.',
-      unavailable: 'This browser is blocking saved data, so your minimums couldn\'t be read and nothing was compared.',
-    }[saved.status];
+    const message = minimumsEmptyMessage(saved.status, 'report');
     el.innerHTML = `<p class="decoder-section-label">Your minimums</p><p class="mins-empty">${message}</p>`;
     el.hidden = false;
     return;

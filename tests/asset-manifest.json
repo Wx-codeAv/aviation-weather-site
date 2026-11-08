@@ -1,10 +1,10 @@
 {
-  "version": "2026-11-08d",
+  "version": "2026-11-08e",
   "files": {
     "css/main.css": "0058633e50c78820a02eb5d2867c4a0ca3ba5b892e44d52e88c771cfedb7242f",
     "js/main.js": "4d5fc2595fbf3671ebd0bdf897cf0714f6062df65c67f368d361f9e5f790e53b",
     "js/metar-decoder.js": "02a27f38d2913d8ae1e0d21ab938ad714bf5af372e3e4196c549b9485777f34b",
-    "js/minimums-check.js": "6322377e6670a4a8e16131d402786353ff15f7b1a1c094d68454b178db6e511f",
+    "js/minimums-check.js": "57413f71676fc6f1f4e10978ff74d58bbf5ea2cc843250004547e428f56c1f71",
     "js/poh-c172s.js": "615f64ca9dec58341cdd52148afafff911fa2e38b34bc1038cfde1c145725fb6",
     "js/poh-interp.js": "bf5ae747d7be75310fa08ef58866e8768f4c1a3c1d30124c773575a67d3c5b19",
     "js/taf-decoder.js": "e8c2f94b2ccbd3b090f985ae827c90ca734af7995288ce9f2f0c3095f26b3b07",
