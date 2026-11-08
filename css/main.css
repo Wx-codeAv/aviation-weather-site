@@ -2495,3 +2495,12 @@ select:focus-visible,
 }
 /* A token the report ran together stays on one line, so it never breaks at its hyphen. */
 .tok-note { white-space: nowrap; }
+/* The minimums check on the TAF slider: one block per group that could apply at the hour. */
+.mins-source { margin: 0 0 0.9rem; }
+.mins-source-title { margin: 0 0 0.2rem; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); }
+.mins-source-range { font-weight: 400; color: var(--ink-soft); }
+.mins-source-none { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
+.mins-summary { margin: 0 0 0.7rem; padding: 0.5rem 0.7rem; border-left: 3px solid var(--rust); font-size: 0.92rem; line-height: 1.45; color: var(--ink); }
+.mins-unplaced { margin: 0 0 0.6rem; padding: 0.5rem 0.7rem; border-left: 3px solid var(--sky); font-size: 0.88rem; line-height: 1.45; color: var(--ink); }
+.mins-summary[hidden] { display: none; }
+.taf-mins { margin-top: 1rem; }

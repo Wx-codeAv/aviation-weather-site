@@ -234,15 +234,18 @@ function renderTafSlider(parsed, now = new Date()) {
       ${buildSliderAxis(parsed, base)}
     </div>
     <div id="taf-sl-readout" aria-live="off"></div>
+    <div id="taf-mins" class="minimums-check taf-mins" hidden></div>
     <p class="taf-sl-note">This shows what the TAF says for each hour, not what will happen at that exact time.${noLocal}</p>`;
 
   const input = document.getElementById('taf-sl-input');
+  if (typeof tafMinimumsInit === 'function') tafMinimumsInit(parsed);
   const update = () => {
     const view = tafSliderView(parsed, Number(input.value), start);
     document.getElementById('taf-sl-z').textContent = view.timeZ;
     document.getElementById('taf-sl-local').textContent = view.timeLocal ? `${view.timeLocal} on your device` : '';
     document.getElementById('taf-sl-readout').innerHTML = buildSliderReadout(view);
     input.setAttribute('aria-valuetext', tafSliderSpoken(view));
+    if (typeof tafMinimumsUpdate === 'function') tafMinimumsUpdate(Number(input.value));
   };
   input.addEventListener('input', update);
   update();

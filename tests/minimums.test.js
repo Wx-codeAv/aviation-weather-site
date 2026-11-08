@@ -292,7 +292,7 @@ test('P6SM meets a limit it can confirm, and only those', () => {
   assert.equal(textOf(check('18005KT P6SM CLR', { visibility: 6 }), /^Visibility P6SM/).status, 'within');
   assert.equal(textOf(check('18005KT P6SM CLR', { visibility: 8 }), /^Visibility P6SM/).status, 'notChecked');
 });
-test('9999 and CAVOK meet about 6 SM and no more', () => {
+test('9999 and CAVOK meet about 6.2 SM (10 km) and no more', () => {
   assert.equal(textOf(check('18005KT 9999 CLR', { visibility: 6 }), /^Visibility 9999/).status, 'within');
   assert.equal(textOf(check('18005KT 9999 CLR', { visibility: 7 }), /^Visibility 9999/).status, 'notChecked');
   assert.equal(textOf(check('18005KT CAVOK', { visibility: 7 }), /^Visibility CAVOK/).status, 'notChecked');

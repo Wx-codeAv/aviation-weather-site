@@ -120,7 +120,7 @@ function checkCeiling(parsed, limit, out, words = REPORT_WORDS) {
     out.push({ status: 'notChecked', text: `Ceiling wasn't checked because sky condition is missing or unreadable in this ${words.noun}.`,
       incomplete: 'sky condition is missing or unreadable, so ceiling wasn\'t checked' });
   } else if (ceiling === null) {
-    out.push({ status: 'within', text: `No ceiling reported. ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
+    out.push({ status: 'within', text: `No ceiling ${words.reported}. ${min.charAt(0).toUpperCase()}${min.slice(1)} isn't affected.` });
   } else if (ceiling === limit) {
     out.push({ status: 'at', text: `Ceiling ${ceiling.toLocaleString()} ft is at ${min}.` });
   } else {
@@ -131,6 +131,8 @@ function checkCeiling(parsed, limit, out, words = REPORT_WORDS) {
 // Limits are compared with the exact distance, so 6000 m is 3.7 SM here. Flight category
 // keeps the reportable table (metersToSM), where 6000 m is 4 SM.
 const METERS_PER_STATUTE_MILE = 1609.344;
+// 9999 and CAVOK say "10 km or more", which is at least 6.2137 SM. A limit above that can't be confirmed.
+const TEN_KM_IN_SM = 10000 / METERS_PER_STATUTE_MILE;
 
 // One decimal, or more only if rounding would make the value look equal to the limit.
 // Otherwise "4800 m (3.0 SM) is below your 3 SM minimum" would read as a mistake.
@@ -169,8 +171,8 @@ function checkVisibility(parsed, limit, out, words = REPORT_WORDS) {
   // These say "at least", so a limit above them can't be confirmed either way.
   const metricFloor = vis.cavok || (vis.unit === 'm' && vis.value >= 9999);
   if (vis.plus || metricFloor) {
-    const floor = vis.plus ? vis.value : 6;
-    const said = vis.plus ? `${vis.raw}, better than ${vis.value} SM` : `${vis.raw}, 10 km or more (about 6 SM)`;
+    const floor = vis.plus ? vis.value : TEN_KM_IN_SM;
+    const said = vis.plus ? `${vis.raw}, better than ${vis.value} SM` : `${vis.raw}, 10 km or more (about 6.2 SM)`;
     if (limit <= floor) {
       out.push({ status: 'within', text: `Visibility ${said} meets ${min}.` });
     } else {

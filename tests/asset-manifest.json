@@ -1,14 +1,15 @@
 {
   "version": "2026-11-08e",
   "files": {
-    "css/main.css": "0058633e50c78820a02eb5d2867c4a0ca3ba5b892e44d52e88c771cfedb7242f",
+    "css/main.css": "0c6c126f123f352048a6b36b9d6065687bff8b2b25e012f75ea49cc23b2761ed",
     "js/main.js": "4d5fc2595fbf3671ebd0bdf897cf0714f6062df65c67f368d361f9e5f790e53b",
     "js/metar-decoder.js": "02a27f38d2913d8ae1e0d21ab938ad714bf5af372e3e4196c549b9485777f34b",
-    "js/minimums-check.js": "57413f71676fc6f1f4e10978ff74d58bbf5ea2cc843250004547e428f56c1f71",
+    "js/minimums-check.js": "a09979bc627bda29311dc208a18acc6e157f5a92dbc7f476449f0d9be26af4e9",
     "js/poh-c172s.js": "615f64ca9dec58341cdd52148afafff911fa2e38b34bc1038cfde1c145725fb6",
     "js/poh-interp.js": "bf5ae747d7be75310fa08ef58866e8768f4c1a3c1d30124c773575a67d3c5b19",
     "js/taf-decoder.js": "e8c2f94b2ccbd3b090f985ae827c90ca734af7995288ce9f2f0c3095f26b3b07",
-    "js/taf-slider.js": "9c7398e668ba3a66ee48f7723d4e3d7928db8343e2ead5e5e02e0d4e3eceb208",
+    "js/taf-minimums.js": "2f8d99ba0f11243327941930b3018558c12b966265b5f68eb6f16fbec45d3e09",
+    "js/taf-slider.js": "b56c1262848364211d244101a03ce7a9614e946e9f2e2b01c85a357b6a9d98c5",
     "js/wind-math.js": "2258d3cade998685ad344c8ba4eadf10096ad08bc23b440ab2591657c62b25ba",
     "assets/data/airports-us.json": "e07afa35f839a02146ad8d842ec288c4bd462b1db03d8f4b6dac7465945092b1"
   }
