@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180.png">
-  <link rel="stylesheet" href="../../css/main.css?v=2026-11-07c">
+  <link rel="stylesheet" href="../../css/main.css?v=2026-11-08">
 </head>
 <body>
 
@@ -714,7 +714,7 @@
             <strong>Educational example only.</strong> This scenario is designed to teach the questions a pilot should ask — not to make a decision for any actual flight. Always consult official FAA/NWS sources.
           </p>
           <p>
-            You're planning a westbound IFR flight from Kansas City (KMCI) to Denver (KDEN, elevation 5,433 ft), 540 nm. Your Cessna 182T (turbocharged) cruises at 155 kt TAS. You pull the 12-hour FB for your 14:00Z departure:
+            You're planning a westbound IFR flight from Kansas City (KMCI) to Denver (KDEN, elevation 5,433 ft), 540 nm. For this scenario, assume your Cessna T182T (turbocharged) cruises at 155 kt TAS at every altitude below. You pull the 12-hour FB for your 14:00Z departure:
           </p>
           <ul>
             <li>6,000 ft: <strong>(blank)</strong> — station is within 1,500 ft of terrain</li>
@@ -722,19 +722,19 @@
             <li>12,000 ft: <strong>2832-12</strong> → winds 280°/32 kt, −12°C</li>
             <li>18,000 ft: <strong>2848-28</strong> → winds 280°/48 kt, −28°C</li>
           </ul>
-          <p>The GFA shows an overcast layer from 11,000–16,000 ft along most of the route. AIRMET Zulu is not currently active. The FB temperature at 9,000 ft is −5°C, so every altitude in the cloud layer is below freezing.</p>
+          <p>The GFA shows an overcast layer from 11,000–16,000 ft along most of the route. AIRMET Zulu is not currently active. At your 10,000 ft cruise altitude the interpolated FB temperature is about −7°C, and the cloud base is at 11,000 ft, where it is colder still, so every altitude in the cloud layer is below freezing.</p>
 
           <details class="qa">
             <summary>Option A: File for 10,000 ft, an even thousand for a westbound IFR flight with the smallest headwind of the usable altitudes.</summary>
-            <p><strong>Reasonable, but check the math.</strong> The FB has no 10,000 ft entry, so interpolate between 9,000 ft (270°/18 kt, −5°C) and 12,000 ft (280°/32 kt, −12°C), as a briefer would (AIM 7-1-5). That gives about 270°/23 kt and −7°C at 10,000 ft. On a westbound track of roughly 270°, that wind is almost a direct headwind of about 23 kt. 155 − 23 = 132 kt groundspeed. 540 nm / 132 kt = 4.1 hours. Fuel: check. 10,000 ft is an even thousand, which 14 CFR 91.179 requires for a magnetic course of 180 through 359 degrees on an IFR flight in level cruise in uncontrolled airspace, so 9,000 ft is not an option here even though its headwind is smaller. Clouds start at 11,000 ft, so 10,000 ft is below the cloud layer. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (FAA-H-8083-28 §27.2.1.1.1)</p>
+            <p><strong>Reasonable, but check the math.</strong> The FB has no 10,000 ft entry, so interpolate between 9,000 ft (270°/18 kt, −5°C) and 12,000 ft (280°/32 kt, −12°C), the way a briefer does for winds: "The briefer will interpolate wind directions and speeds between levels and stations as necessary to provide expected conditions at planned altitudes" (AIM 7-1-5). Temperature works the same way. That gives about 270°/23 kt and −7°C at 10,000 ft. On a westbound track of roughly 270°, that wind is almost a direct headwind of about 23 kt. 155 − 23 = 132 kt groundspeed. 540 nm / 132 kt = 4.1 hours. Fuel: check. 10,000 ft is an even thousand, which 14 CFR 91.179 requires for a magnetic course of 180 through 359 degrees on an IFR flight in level cruise in uncontrolled airspace, so 9,000 ft is not an option here even though its headwind is smaller. Clouds start at 11,000 ft, so 10,000 ft is below the cloud layer. This might be the better choice if you can stay below the clouds. Key question: what are the cloud bases? (FAA-H-8083-28 §27.2.1.1.1)</p>
           </details>
           <details class="qa">
             <summary>Option B: File for 12,000 ft — in the cloud layer with a 32-kt headwind.</summary>
-            <p><strong>Check the icing risk.</strong> 12,000 ft is inside the GFA cloud layer (11,000–16,000 ft) at −12°C. The temperature is in the rime ice range (−15°C to −20°C is typical rime; −12°C is mixed to clear territory). No AIRMET Zulu is active, but the conditions (cloud, below 0°C) make icing possible without an advisory. For a turbocharged 182 with no FIKI, flying in cloud at −12°C for potentially hours is a risk that should be explicitly weighed. PIREPs from aircraft in that layer are your best current data. (FAA-H-8083-28 §20.3; AC 91-74B)</p>
+            <p><strong>Check the icing risk.</strong> 12,000 ft is inside the GFA cloud layer (11,000–16,000 ft) at −12°C. The temperature is in the rime ice range (−15°C to −20°C is typical rime; −12°C is mixed to clear territory). No AIRMET Zulu is active, but the conditions (cloud, below 0°C) make icing possible without an advisory. For a turbocharged T182T with no FIKI, flying in cloud at −12°C for potentially hours is a risk that should be explicitly weighed. PIREPs from aircraft in that layer are your best current data. (FAA-H-8083-28 §20.3; AC 91-74B)</p>
           </details>
           <details class="qa">
             <summary>Option C: File for 18,000 ft — above the clouds, smooth air, but 48 kt headwind.</summary>
-            <p><strong>The headwind math kills this option.</strong> 155 − 48 = 107 kt groundspeed. 540 nm / 107 kt = 5.0 hours. That's about 1.0 hour more than at 10,000 ft. At 18,000 ft you're also in the oxygen-required zone (above 14,000 ft for more than 30 minutes as a required crew member). Unless you have supplemental O₂ and the fuel, this isn't the answer. (14 CFR 91.211)</p>
+            <p><strong>The headwind math kills this option.</strong> 155 − 48 = 107 kt groundspeed. 540 nm / 107 kt = 5.0 hours. That's about 1.0 hour more than at 10,000 ft. At 18,000 ft you're also well inside the oxygen-required zone. 14 CFR 91.211(a) requires the required minimum flight crew to use supplemental oxygen "during the entire flight time" at cabin pressure altitudes above 14,000 ft MSL, and each occupant to be provided with it above 15,000 ft MSL. Unless you have supplemental O₂ and the fuel, this isn't the answer. (14 CFR 91.211(a)(2) and (a)(3))</p>
           </details>
           <details class="qa">
             <summary>Option D: File for 10,000 ft, check PIREPs for cloud bases, and plan an altitude amendment if the bases are at or below 10,000 ft.</summary>
@@ -776,6 +776,6 @@
     </div>
   </footer>
 
-  <script src="../../js/main.js?v=2026-11-07c"></script>
+  <script src="../../js/main.js?v=2026-11-08"></script>
 </body>
 </html>

@@ -34,7 +34,12 @@ test('winds aloft scenario: westbound KMCI to KDEN with an even-thousand IFR alt
   assert.match(w, /540 nm \/ 132 kt = 4\.1 hours/);
   assert.match(w, /about 1\.0 hour more than at 10,000 ft/);
   assert.doesNotMatch(w, /gallons/);
-  assert.match(w, /The FB temperature at 9,000 ft is −5°C, so every altitude in the cloud layer is below freezing\./);
+  assert.match(w, /At your 10,000 ft cruise altitude the interpolated FB temperature is about −7°C, and the cloud base is at 11,000 ft, where it is colder still, so every altitude in the cloud layer is below freezing\./);
+  assert.match(w, /assume your Cessna T182T \(turbocharged\) cruises at 155 kt TAS at every altitude below/);
+  assert.doesNotMatch(w, /Cessna 182T/);
+  assert.match(w, /"The briefer will interpolate wind directions and speeds between levels and stations as necessary to provide expected conditions at planned altitudes" \(AIM 7-1-5\)/);
+  assert.match(w, /"during the entire flight time" at cabin pressure altitudes above 14,000 ft MSL, and each occupant to be provided with it above 15,000 ft MSL/);
+  assert.doesNotMatch(w, /for more than 30 minutes as a required crew member/);
   assert.match(w, /if the bases are at or below 10,000 ft/);
   assert.doesNotMatch(w, /from Denver \(KDEN/);
   assert.doesNotMatch(w, /540 nm \/ 137 kt/);
@@ -75,7 +80,8 @@ test('wind shear page uses the PIREP codes', () => {
   const s = text('learn/wind-shear-mountain-wave.html');
   assert.doesNotMatch(s, /MOG TRB|SVR TRB/);
   assert.match(s, /\/TB MOD or \/TB SEV PIREPs/);
-  assert.match(s, /two reports of \/TB MOD at 12,000 ft; one report of \/TB SEV at 9,500 ft/);
+  assert.match(s, /\/TB MOD reported at 12,000 ft; \/TB SEV reported at 9,500 ft with a 2,000-ft altitude deviation/);
+  assert.doesNotMatch(s, /two reports of|one report of/, 'the counts were invented scenario data with no source');
 });
 
 test('icing: Handbook section cites, friction heating, droplet-size weight, tailplane cites', () => {
@@ -89,10 +95,12 @@ test('icing: Handbook section cites, friction heating, droplet-size weight, tail
   assert.match(i, /Supercooled liquid water content and temperature matter most/);
   assert.match(i, /providing downward lift \(AC 91-74B ¶3-7\)/);
   assert.doesNotMatch(i, /pushing the tail up/);
-  // The four approved spots now cite AC 91-74B ¶3-7. Other §4.4 cites on this page are not yet checked (batch 3).
-  assert.equal((i.match(/AC 91-74B ¶3-7/g) || []).length, 4);
-  assert.doesNotMatch(i, /Ref: AC 91-74B §4\.4/);
-  assert.doesNotMatch(i, /\(AC 91-74B §4\.4\.2–4\.4\.3\)|retract flaps immediately\. \(AC 91-74B §4\.4\.3\)/);
+  // AC 91-74B has no paragraph 4.4: every tailplane cite now points at a real paragraph, or was removed.
+  assert.doesNotMatch(i, /AC 91-74B §4\.4/);
+  assert.equal((i.match(/AC 91-74B ¶3-7/g) || []).length, 5, 'Ref line, two flap cites, the lift sentence, the diagram comment');
+  assert.match(i, /AC 91-74B says the tailplane is a better ice collector than the wings because it presents a thinner surface to the airstream \(AC 91-74B ¶3-1\)/);
+  assert.match(i, /retracting flaps could lead to a stall, so configuration changes should be made only per manufacturer guidance \(AC 91-74B ¶5-10a\(2\)\)/);
+  assert.match(i, /<strong>The symptom trap:<\/strong>/);
   assert.doesNotMatch(i, /Tailplane Icing Program · FAA-H-8083-28/);
 });
 
@@ -111,9 +119,18 @@ test('weather charts: data time column, forecast sentence, isobar and bombogenes
   assert.equal((c.match(/<td>00Z and 12Z \(radiosonde observations\)<\/td>/g) || []).length, 5);
   assert.doesNotMatch(c, /4x daily/);
   assert.match(c, /Radiosondes are assigned observation times of 1200 UTC and 0000 UTC \(FAA-H-8083-28 §24\.8\.1\)/);
+  assert.match(c, /The GFS and NAM produce constant pressure level forecasts four times per day, with initial times of 00, 06, 12, and 18 UTC \(FAA-H-8083-28 §27\.11\.1\.1\)/);
   assert.doesNotMatch(c, /between 4 mb isobars/);
   assert.match(c, /about 17\.8 mb over 24 hours at the latitude of New York City/);
   assert.doesNotMatch(c, /1 mb\/hr/);
+});
+
+test('airmets-sigmets: Convective SIGMET valid time has both dates and the sources', () => {
+  const a = text('learn/airmets-sigmets.html');
+  assert.match(a, /valid for 2 hours until about December 1, 2026 \(FAA-H-8083-28 §26\.2\.4\.2\.3\)\. The NWS is changing the valid time to 1 hour on or about that date \(NWS SCN 26-85; AIM 7-1-6\)/);
+  assert.match(a, /Valid for 2 hours until about December 1, 2026, then 1 hour \(NWS SCN 26-85; AIM 7-1-6\)/);
+  assert.match(a, /valid 2 hours until about December 1, 2026, then 1 hour \(NWS SCN 26-85; AIM 7-1-6\)/);
+  assert.doesNotMatch(a, /valid for up to 2 hours|Valid only 2 hours/);
 });
 
 test('navlog: hemispheric rule messages say MSL and name the 3,000 ft above the surface condition', () => {
@@ -141,6 +158,12 @@ test('the text added in batch 2 has no em dashes', () => {
     ['learn/thunderstorm-life-cycle.html', 'Valid for 2 hours until about December 1, 2026', '</li>'],
     ['learn/weather-charts.html', 'Radiosondes are assigned observation times', '</p>'],
     ['learn/weather-charts.html', 'Closely spaced isobars mean', '</li>'],
+    ['learn/weather-charts.html', 'Models also forecast these levels', '</p>'],
+    ['learn/airmets-sigmets.html', 'Valid for 2 hours until about December 1, 2026, then', '</li>'],
+    ['learn/airmets-sigmets.html', 'valid 2 hours until about December 1, 2026, then', '</li>'],
+    ['learn/icing.html', 'AC 91-74B does not list a tailplane stall recovery', 'General guidance:'],
+    ['learn/winds-aloft-jet-stream.html', 'At your 10,000 ft cruise altitude', '</p>'],
+    ['learn/winds-aloft-jet-stream.html', 'At 18,000 ft you\'re also well inside', 'this isn\'t the answer'],
     ['navlog.html', 'The hemispheric check applies to VFR cruise', '"'],
   ];
   for (const [file, start, end] of added) {
