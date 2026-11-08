@@ -111,6 +111,9 @@ test('icing: no universal flap retraction or reflex recovery advice, and the AFM
   assert.match(i, /Do not treat flap retraction as a universal first step/);
   assert.match(i, /For other aircraft, retracting the flaps or slats at this stage could lead to a stall\./);
   assert.match(i, /"similar to those for wing stall recovery, and in some respects opposite from those for recovery from the ICTS" \(AC 91-74B ¶5-13a\)/);
+  assert.match(i, /Wing stall and tailplane stall are not recovered the same way\. The AC says its roll upset procedures, which include "Reduce the AOA by reducing the aircraft pitch"/);
+  assert.match(i, /It does not say which respects\./);
+  assert.doesNotMatch(i, /makes it worse/);
   assert.match(i, /"adhere to AFM limitations and procedures for flap use in icing, if any" \(AC 91-74B ¶5-10e\(1\)\)/);
   assert.match(i, /"consider a partial- or no-flap landing" \(AC 91-74B ¶5-10e\(2\)\)/);
   // each of the lines that used to give a flap or stall recovery action now defers to the AFM or POH and cites 5-10
