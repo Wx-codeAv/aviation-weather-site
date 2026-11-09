@@ -23,7 +23,9 @@ const airports = JSON.parse(fs.readFileSync(path.join(__dirname, '../assets/data
 // METAR check changed, and that has to be a decision, not a side effect.
 // Re-pinned once on purpose: "(about 6 SM)" became "(about 6.2 SM)" on the 9999 and CAVOK lines (264 lines,
 // no status changed), because 9999 and CAVOK mean at least 10 km, which is 6.2137 SM.
-const METAR_OUTPUT_SHA256 = 'b6be09990dfe7887b1937397bf5cc0dd8f67d445ecfea10c4e50efdcf4949212';
+// Re-pinned a second time on purpose, when the limit comparison stopped rounding to a tenth first: four crosswinds
+// in the fixture that read "at limit" are really 9.96 kt against 10 and 4.99 kt against 5, and now say "within".
+const METAR_OUTPUT_SHA256 = '9e492f90d5e0a9c9573695a4cf85feb5a5365ac637c96e25d9b19d9f6b6f9c8f';
 
 test('the METAR minimums check says exactly what it said before the forecast panel existed', () => {
   assert.equal(snapshot.build().split('\n').length, 1452);

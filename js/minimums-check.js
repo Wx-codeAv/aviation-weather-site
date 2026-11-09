@@ -67,16 +67,38 @@ function formatKnots(value) {
   return `${formatNumber(roundTenth(value))} kt`;
 }
 
+// The status follows the exact value. Only floating-point noise counts as equal: 20 kt at 30 degrees
+// computes to 9.999999999999998, and that is exactly at a 10 kt limit, not under it.
+const LIMIT_TOLERANCE = 1e-9;
+
+function relationToLimit(value, limit) {
+  if (Math.abs(value - limit) <= LIMIT_TOLERANCE) return 'at';
+  return value > limit ? 'above' : 'below';
+}
+
+// The number as shown. One decimal normally, but never so rounded that it reads as the limit when the
+// value is not: 10.04 against a 10 kt limit shows as 10.04, not 10.
+function formatKnotsNear(value, limit) {
+  if (limit !== null && limit !== undefined && relationToLimit(value, limit) !== 'at') {
+    for (let decimals = 1; decimals <= 6; decimals++) {
+      const text = value.toFixed(decimals);
+      if (Number(text) !== limit) return `${text.replace(/\.?0+$/, '')} kt`;
+    }
+  }
+  return formatKnots(value);
+}
+
 function compareToLimit(name, value, limit) {
-  const v = roundTenth(value);
   if (limit === null || limit === undefined) {
-    return { status: 'notChecked', text: `${name} ${formatKnots(v)} wasn't checked because no limit is saved.`,
+    return { status: 'notChecked', text: `${name} ${formatKnots(value)} wasn't checked because no limit is saved.`,
       incomplete: `no limit is saved for ${name.toLowerCase()}, so it wasn't checked` };
   }
   const plural = name === 'Gusts';
-  if (v > limit) return { status: 'exceeds', text: `${name} ${formatKnots(v)} ${plural ? 'exceed' : 'exceeds'} your ${limit} kt limit.` };
-  if (v === limit) return { status: 'at', text: `${name} ${formatKnots(v)} ${plural ? 'are' : 'is'} at your ${limit} kt limit.` };
-  return { status: 'within', text: `${name} ${formatKnots(v)} ${plural ? 'are' : 'is'} within your ${limit} kt limit.` };
+  const shown = formatKnotsNear(value, limit);
+  const relation = relationToLimit(value, limit);
+  if (relation === 'above') return { status: 'exceeds', text: `${name} ${shown} ${plural ? 'exceed' : 'exceeds'} your ${limit} kt limit.` };
+  if (relation === 'at') return { status: 'at', text: `${name} ${shown} ${plural ? 'are' : 'is'} at your ${limit} kt limit.` };
+  return { status: 'within', text: `${name} ${shown} ${plural ? 'are' : 'is'} within your ${limit} kt limit.` };
 }
 
 // A variable wind has no direction, so the whole wind could be crosswind on any runway. The
@@ -85,9 +107,8 @@ function compareToLimit(name, value, limit) {
 function compareVariableCrosswind(name, value, limit, because = 'variable wind') {
   const result = compareToLimit(name, value, limit);
   if (limit === null || limit === undefined) return result;
-  const v = roundTenth(value);
-  const relation = v > limit ? 'above' : v === limit ? 'at' : 'within';
-  return { ...result, text: `${name} could be the full ${formatKnots(v)} (${because}), ${relation} your ${limit} kt limit.` };
+  const relation = { above: 'above', at: 'at', below: 'within' }[relationToLimit(value, limit)];
+  return { ...result, text: `${name} could be the full ${formatKnotsNear(value, limit)} (${because}), ${relation} your ${limit} kt limit.` };
 }
 
 // The largest crosswind share of the wind anywhere in a variable sector, which runs
